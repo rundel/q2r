@@ -1,0 +1,8 @@
+# Known-failing quarto-web fixtures, skipped per round-trip path.
+# Format: <path_id>\t<file>     # optional reason
+# path_id values:
+#   all           - skip this file for every path
+#   ts_rt         - R ts_ast writer round-trip
+#   pd_rt         - R pd_ast writer round-trip
+#   pampa_ts_rt   - pampa writer via R ts_tree input
+#   pampa_pd_rt   - pampa writer via R pandoc input

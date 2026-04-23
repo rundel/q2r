@@ -1,4 +1,6 @@
 ^\.vscode$
+^tests/fixtures$
+^\.gitmodules$
 ^src/\.cargo$
 ^src/rust/vendor$
 ^src/rust/target$
