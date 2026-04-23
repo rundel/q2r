@@ -1,0 +1,31 @@
+[package]
+name = 'q2r'
+publish = false
+version = '0.1.0'
+edition = '2024'
+rust-version = '1.85'
+
+[lib]
+crate-type = [ 'rlib', 'staticlib' ]
+name = 'q2r'
+
+[[bin]]
+name = 'document'
+path = 'document.rs'
+
+[dependencies]
+extendr-api = '0.9.0'
+tree-sitter = '0.25.10'
+
+[dependencies.pampa]
+git = 'https://github.com/quarto-dev/q2'
+rev = 'e47c6e1d62ab4d935434a1f5875f7bed10c140f1'
+default-features = false
+
+[dependencies.tree-sitter-qmd]
+git = 'https://github.com/quarto-dev/q2'
+rev = 'e47c6e1d62ab4d935434a1f5875f7bed10c140f1'
+
+[profile.release]
+lto = true
+codegen-units = 1

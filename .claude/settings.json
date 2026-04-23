@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/rundel/Desktop/Projects/q2/**)",
+      "Bash(gh search *)",
+      "Bash(gh api *)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(x['name']\\) for x in d[:30]] if isinstance\\(d,list\\) else print\\(d\\)\")",
+      "Bash(Rscript -e 'if \\(!requireNamespace\\(\"rextendr\", quietly = TRUE\\)\\) install.packages\\(\"rextendr\", repos = \"https://cloud.r-project.org\"\\); packageVersion\\(\"rextendr\"\\)')",
+      "Bash(rustc --version)",
+      "Bash(cargo --version)",
+      "Bash(Rscript -e 'rextendr::document\\(\\)')",
+      "Bash(Rscript -e 'devtools::load_all\\(quiet = TRUE\\); cat\\(\"=== TEXT INPUT ===\\\\n\"\\); r = q2r::pampa_parse\\(\"# hi\\\\n\\\\ntext\"\\); str\\(r\\); cat\\(\"\\\\n=== FILE INPUT ===\\\\n\"\\); r2 = q2r::pampa_parse\\(\"inst/extdata/hello.qmd\"\\); str\\(r2\\)')",
+      "Bash(Rscript -e ' *)",
+      "Bash(Rscript -e 'devtools::test\\(\\)')",
+      "Read(//Users/rundel/.cargo/registry/src/**)",
+      "Bash(Rscript -e 'devtools::document\\(\\)')",
+      "Bash(cat)",
+      "Bash(chmod +x /tmp/test_tree.sh)",
+      "Bash(/tmp/test_tree.sh)",
+      "Bash(cargo run *)",
+      "Bash(Rscript -e 'cat\\(format\\(args\\(cli::tree\\)\\)\\);cat\\(\"\\\\n\\\\n\"\\);cat\\(deparse\\(cli::tree\\)[1:30], sep=\"\\\\n\"\\)')"
+    ]
+  }
+}
