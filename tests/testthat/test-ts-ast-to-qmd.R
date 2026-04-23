@@ -4,30 +4,20 @@ ts_ast_kind_tree = function(n) {
 }
 
 expect_roundtrip = function(src, info = NULL) {
-  res  = pampa_parse(src, format = "ts_ast")
-  out  = to_qmd(res@ts_ast)
-  res2 = pampa_parse(out, format = "ts_ast")
+  res  = pampa_parse_ts(src)
+  out  = to_qmd(res)
+  res2 = pampa_parse_ts(out)
   expect_identical(
-    ts_ast_kind_tree(res2@ts_ast@root),
-    ts_ast_kind_tree(res@ts_ast@root),
+    ts_ast_kind_tree(res2@root),
+    ts_ast_kind_tree(res@root),
     info = info %||% deparse(src)
   )
 }
 
-test_that("to_qmd dispatches on ts_tree, ts_node, and pampa_result", {
-  res = pampa_parse("# Hi\n", format = "ts_ast")
-  expect_identical(to_qmd(res),             "# Hi\n")
-  expect_identical(to_qmd(res@ts_ast),      "# Hi\n")
-  expect_identical(to_qmd(res@ts_ast@root), "# Hi\n")
-})
-
-test_that("to_qmd on a pampa_result falls back to the pd_ast when ts_ast is absent", {
-  res = pampa_parse("# Hi\n", format = "pd_ast")
-  expect_identical(to_qmd(res), "# Hi {#hi}\n")
-})
-
-test_that("to_qmd on an empty pampa_result errors", {
-  expect_error(to_qmd(pampa_result()), "neither a ts_ast nor a pd_ast")
+test_that("to_qmd dispatches on ts_tree and ts_node", {
+  res = pampa_parse_ts("# Hi\n")
+  expect_identical(to_qmd(res),       "# Hi\n")
+  expect_identical(to_qmd(res@root),  "# Hi\n")
 })
 
 test_that("to_qmd round-trips headings and paragraphs", {
@@ -38,13 +28,13 @@ test_that("to_qmd round-trips headings and paragraphs", {
 })
 
 test_that("to_qmd appends a trailing newline when source lacks one", {
-  res = pampa_parse("# no trailing", format = "ts_ast")
-  expect_identical(to_qmd(res@ts_ast), "# no trailing\n")
+  res = pampa_parse_ts("# no trailing")
+  expect_identical(to_qmd(res), "# no trailing\n")
 })
 
 test_that("to_qmd canonicalizes blank-line runs and trailing whitespace", {
-  res = pampa_parse("# h\n\n\n\ntext\n\n", format = "ts_ast")
-  out = to_qmd(res@ts_ast)
+  res = pampa_parse_ts("# h\n\n\n\ntext\n\n")
+  out = to_qmd(res)
   expect_identical(out, "# h\n\ntext\n")
   expect_roundtrip("# h\n\n\n\ntext\n\n")
 })

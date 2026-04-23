@@ -33,15 +33,6 @@ pandoc_fence_for = function(text, char = "`", min = 3L) {
   strrep(char, n)
 }
 
-S7::method(to_qmd, pampa_result) = function(x) {
-  if (!is.null(x@ts_ast)) return(to_qmd(x@ts_ast))
-  if (!is.null(x@pd_ast)) return(to_qmd(x@pd_ast))
-  stop(
-    "to_qmd(): pampa_result has neither a ts_ast nor a pd_ast; re-run ",
-    "pampa_parse() with format = \"ts_ast\" or \"pd_ast\" (or \"all\")"
-  )
-}
-
 S7::method(to_qmd, pandoc) = function(x) {
   if (!identical(x@meta@kind, "map") || length(x@meta@value) > 0L) {
     warning("to_qmd(): pandoc document metadata is not yet serialized, skipping")

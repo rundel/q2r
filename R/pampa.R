@@ -1,47 +1,88 @@
-#' @include result.R from-rust.R diagnostic.R
+#' @include from-rust.R diagnostic.R pd-ast-pandoc.R ts-ast.R
 NULL
 
-#' Parse QMD input with pampa
-#'
-#' @param input A single string. Treated as a file path if it does not
-#'   contain newlines and `file.exists()` returns TRUE; otherwise treated
-#'   as raw text.
-#' @param format Which artifacts to populate on the returned
-#'   [`pampa_result`]. One of `"pd_ast"` (S7 Pandoc AST, default),
-#'   `"tree"` (tree-sitter AST text), `"ts_ast"` (structured tree-sitter
-#'   AST as an S7 `ts_tree`), `"native"` (Pandoc native AST text), or
-#'   `"all"` (all of the above). Diagnostics are always included.
-#' @return A [`pampa_result`] with the requested slots populated.
-#'   Pretty-printed diagnostic output is produced on demand by the
-#'   `print()` / `format()` methods on [`pampa_diagnostic`].
-#' @export
-pampa_parse = function(input, format = c("pd_ast", "tree", "ts_ast", "native", "all")) {
+pampa_read_input = function(input) {
   stopifnot(is.character(input), length(input) == 1L, !is.na(input))
-  format = match.arg(format)
-
   is_text = grepl("\n", input, fixed = TRUE)
   if (!is_text && file.exists(input) && !dir.exists(input)) {
-    text = paste(readLines(input, warn = FALSE), collapse = "\n")
-    filename = basename(input)
+    list(
+      text     = paste(readLines(input, warn = FALSE), collapse = "\n"),
+      filename = basename(input)
+    )
   } else {
-    text = input
-    filename = "<text>"
+    list(text = input, filename = "<text>")
   }
+}
 
-  raw = pampa_parse_impl(text, filename)
-
-  diagnostics = lapply(
+pampa_diagnostics_from_raw = function(raw, text, filename) {
+  lapply(
     raw$diagnostics %||% list(),
     diagnostic_from_list,
     source_text = text,
     source_filename = filename
   )
+}
 
-  pampa_result(
-    pd_ast      = if (format %in% c("pd_ast", "all")) pandoc_from_list(raw$pd_ast),
-    tree        = if (format %in% c("tree", "all")) raw$tree,
-    ts_ast      = if (format %in% c("ts_ast", "all")) ts_tree_from_list(raw$ts_ast),
-    native      = if (format %in% c("native", "all")) raw$native,
-    diagnostics = diagnostics
-  )
+#' Parse QMD input with pampa and return the Pandoc AST
+#'
+#' @param input A single string. Treated as a file path if it does not
+#'   contain newlines and `file.exists()` returns TRUE; otherwise
+#'   treated as raw text.
+#' @return A [`pandoc`] object with any parse diagnostics attached in
+#'   its `@diagnostics` slot. If pampa fails to produce a Pandoc AST the
+#'   returned object has an empty `@blocks`; the diagnostics explain why.
+#' @export
+pampa_parse_pd = function(input) {
+  src = pampa_read_input(input)
+  raw = pampa_parse_pd_impl(src$text, src$filename)
+  diagnostics = pampa_diagnostics_from_raw(raw, src$text, src$filename)
+
+  doc = if (is.null(raw$pd_ast)) pandoc() else pandoc_from_list(raw$pd_ast)
+  doc@diagnostics = diagnostics
+  doc
+}
+
+#' Parse QMD input with tree-sitter and return the tree-sitter AST
+#'
+#' @param input A single string. Treated as a file path if it does not
+#'   contain newlines and `file.exists()` returns TRUE; otherwise
+#'   treated as raw text.
+#' @return A [`ts_tree`] object with any parse diagnostics attached in
+#'   its `@diagnostics` slot. Tree-sitter parsing itself never fails;
+#'   the diagnostics surface higher-level pampa errors.
+#' @export
+pampa_parse_ts = function(input) {
+  src = pampa_read_input(input)
+  raw = pampa_parse_ts_impl(src$text, src$filename)
+  diagnostics = pampa_diagnostics_from_raw(raw, src$text, src$filename)
+
+  tree = ts_tree_from_list(raw$ts_ast)
+  tree@diagnostics = diagnostics
+  tree
+}
+
+#' Dump pampa's raw tree-sitter tree for QMD input
+#'
+#' Test helper that returns the `print_whole_tree` lines pampa emits
+#' when run with `-v`. Use [`pampa_parse_ts()`] for a structured AST.
+#'
+#' @param input A single string, handled like [`pampa_parse_pd()`].
+#' @return A character vector of lines.
+#' @export
+pampa_tree = function(input) {
+  src = pampa_read_input(input)
+  pampa_tree_impl(src$text, src$filename)
+}
+
+#' Render QMD input to Pandoc native AST text
+#'
+#' Test helper that returns pampa's native-format rendering of the
+#' parsed document.
+#'
+#' @param input A single string, handled like [`pampa_parse_pd()`].
+#' @return A character vector of lines (empty if parsing failed).
+#' @export
+pampa_native = function(input) {
+  src = pampa_read_input(input)
+  pampa_native_impl(src$text, src$filename)
 }

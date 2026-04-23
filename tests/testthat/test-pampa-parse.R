@@ -1,55 +1,30 @@
-test_that("pampa_parse returns a pampa_result regardless of format", {
-  for (fmt in c("pd_ast", "tree", "ts_ast", "native", "all")) {
-    res = pampa_parse("hello", format = fmt)
-    expect_true(S7::S7_inherits(res, pampa_result))
-  }
+test_that("pampa_parse_pd returns a pandoc object with a diagnostics slot", {
+  res = pampa_parse_pd("hello")
+  expect_true(S7::S7_inherits(res, pandoc))
+  expect_type(res@diagnostics, "list")
 })
 
-test_that("format = 'pd_ast' populates only @pd_ast (and diagnostics)", {
-  res = pampa_parse("hello", format = "pd_ast")
-  expect_true(S7::S7_inherits(res@pd_ast, pandoc))
-  expect_null(res@tree)
-  expect_null(res@ts_ast)
-  expect_null(res@native)
+test_that("pampa_parse_ts returns a ts_tree object with a diagnostics slot", {
+  res = pampa_parse_ts("hello")
+  expect_true(S7::S7_inherits(res, ts_tree))
+  expect_type(res@diagnostics, "list")
 })
 
-test_that("format = 'tree' populates only @tree", {
-  res = pampa_parse("hello", format = "tree")
-  expect_null(res@pd_ast)
-  expect_type(res@tree, "character")
-  expect_gt(length(res@tree), 0L)
-  expect_null(res@ts_ast)
-  expect_null(res@native)
+test_that("pampa_tree returns the raw tree-sitter dump as character lines", {
+  tree = pampa_tree("hello")
+  expect_type(tree, "character")
+  expect_gt(length(tree), 0L)
 })
 
-test_that("format = 'ts_ast' populates only @ts_ast", {
-  res = pampa_parse("hello", format = "ts_ast")
-  expect_null(res@pd_ast)
-  expect_null(res@tree)
-  expect_true(S7::S7_inherits(res@ts_ast, ts_tree))
-  expect_null(res@native)
-})
-
-test_that("format = 'native' populates only @native", {
-  res = pampa_parse("hello", format = "native")
-  expect_null(res@pd_ast)
-  expect_null(res@tree)
-  expect_null(res@ts_ast)
-  expect_type(res@native, "character")
-  expect_gt(length(res@native), 0L)
-})
-
-test_that("format = 'all' populates every slot", {
-  res = pampa_parse("hello", format = "all")
-  expect_true(S7::S7_inherits(res@pd_ast, pandoc))
-  expect_type(res@tree, "character")
-  expect_true(S7::S7_inherits(res@ts_ast, ts_tree))
-  expect_type(res@native, "character")
+test_that("pampa_native returns the Pandoc native AST text", {
+  native = pampa_native("hello")
+  expect_type(native, "character")
+  expect_gt(length(native), 0L)
 })
 
 test_that("a paragraph parses to pandoc_paragraph with the right inlines", {
-  res = pampa_parse("hello world", format = "pd_ast")
-  blocks = res@pd_ast@blocks@content
+  res = pampa_parse_pd("hello world")
+  blocks = res@blocks@content
   expect_length(blocks, 1L)
   expect_true(S7::S7_inherits(blocks[[1L]], pandoc_paragraph))
   inlines = blocks[[1L]]@content@content
@@ -62,15 +37,15 @@ test_that("a paragraph parses to pandoc_paragraph with the right inlines", {
 })
 
 test_that("a header parses to pandoc_header with level + auto-id", {
-  res = pampa_parse("# Hello world", format = "pd_ast")
-  blocks = res@pd_ast@blocks@content
+  res = pampa_parse_pd("# Hello world")
+  blocks = res@blocks@content
   expect_true(S7::S7_inherits(blocks[[1L]], pandoc_header))
   expect_identical(blocks[[1L]]@level, 1L)
 })
 
 test_that("emphasis parses to pandoc_emph wrapping a pandoc_str", {
-  res = pampa_parse("A *b*", format = "pd_ast")
-  para = res@pd_ast@blocks@content[[1L]]
+  res = pampa_parse_pd("A *b*")
+  para = res@blocks@content[[1L]]
   emph_idx = which(vapply(
     para@content@content,
     function(x) S7::S7_inherits(x, pandoc_emph),
@@ -84,8 +59,8 @@ test_that("emphasis parses to pandoc_emph wrapping a pandoc_str", {
 
 test_that("a fenced code block parses to pandoc_code_block with the right text and class", {
   qmd = "```r\nx + 1\n```"
-  res = pampa_parse(qmd, format = "pd_ast")
-  cb = res@pd_ast@blocks@content[[1L]]
+  res = pampa_parse_pd(qmd)
+  cb = res@blocks@content[[1L]]
   expect_true(S7::S7_inherits(cb, pandoc_code_block))
   expect_match(cb@text, "x \\+ 1")
   expect_true("r" %in% cb@attr@classes)
@@ -93,16 +68,16 @@ test_that("a fenced code block parses to pandoc_code_block with the right text a
 
 test_that("a bullet list parses to pandoc_bullet_list with one item per entry", {
   qmd = "- a\n- b\n- c"
-  res = pampa_parse(qmd, format = "pd_ast")
-  bl = res@pd_ast@blocks@content[[1L]]
+  res = pampa_parse_pd(qmd)
+  bl = res@blocks@content[[1L]]
   expect_true(S7::S7_inherits(bl, pandoc_bullet_list))
   expect_length(bl@content, 3L)
   expect_true(S7::S7_inherits(bl@content[[1L]], pandoc_blocks))
 })
 
 test_that("a link parses to pandoc_link with url + content", {
-  res = pampa_parse("see [the docs](https://example.com)", format = "pd_ast")
-  para = res@pd_ast@blocks@content[[1L]]
+  res = pampa_parse_pd("see [the docs](https://example.com)")
+  para = res@blocks@content[[1L]]
   link = Filter(
     function(x) S7::S7_inherits(x, pandoc_link),
     para@content@content

@@ -1,4 +1,4 @@
-#' @include ts-ast.R result.R
+#' @include ts-ast.R
 NULL
 
 #' Render a tree-sitter AST back to QMD text

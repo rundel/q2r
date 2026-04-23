@@ -4,7 +4,7 @@
 \alias{pandoc}
 \title{Top-level Pandoc document}
 \usage{
-pandoc(meta = <object>, blocks = <object>)
+pandoc(meta = <object>, blocks = <object>, diagnostics = list())
 }
 \description{
 Top-level Pandoc document

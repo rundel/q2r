@@ -28,7 +28,7 @@ ts_node(
   children = <object>
 )
 
-ts_tree(root = <object>, language = "qmd")
+ts_tree(root = <object>, language = "qmd", diagnostics = list())
 }
 \description{
 S7 classes representing the tree-sitter (\code{tree-sitter-qmd}) AST

@@ -311,7 +311,9 @@ S7::method(print, pandoc_node) = function(x, ...) {
   invisible(x)
 }
 
-S7::method(print, pandoc) = function(x, ...) {
+S7::method(print, pandoc) = function(x,
+                                      color = cli::num_ansi_colors() > 1L,
+                                      ...) {
   env = pandoc_tree_env()
   child_ids = character()
   if (!identical(x@meta@kind, "map") || length(x@meta@value) > 0L) {
@@ -322,6 +324,10 @@ S7::method(print, pandoc) = function(x, ...) {
   }
   root = pandoc_tree_add(env, "pandoc", child_ids)
   pandoc_render_tree(root, env)
+  if (length(x@diagnostics)) {
+    cat("\n-- diagnostics --\n")
+    for (d in x@diagnostics) print(d, color = color)
+  }
   invisible(x)
 }
 

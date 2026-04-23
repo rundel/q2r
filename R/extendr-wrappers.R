@@ -5,16 +5,39 @@
 #' @useDynLib q2r, .registration = TRUE
 NULL
 
-#' Parse QMD text with pampa.
+#' Parse QMD text with pampa and return the Pandoc AST.
 #'
-#' Returns a list with `tree` (tree-sitter AST text), `ts_ast`
-#' (structured tree-sitter AST as a nested tagged list), `diagnostics`
-#' (list of structured diagnostic records that can be rendered via
-#' `pampa_diag_format_impl`), `native` (Pandoc native-format text), and
-#' `pd_ast` (tagged nested list suitable for conversion to S7 `pandoc`
-#' objects).
+#' Returns a list with `pd_ast` (tagged nested list suitable for
+#' conversion to S7 `pandoc` objects, or `NULL` if parsing failed) and
+#' `diagnostics` (list of structured diagnostic records that can be
+#' rendered via `pampa_diag_format_impl`).
 #' @export
-pampa_parse_impl <- function(text, filename) .Call(wrap__pampa_parse_impl, text, filename)
+pampa_parse_pd_impl <- function(text, filename) .Call(wrap__pampa_parse_pd_impl, text, filename)
+
+#' Parse QMD text with tree-sitter and return the tree-sitter AST.
+#'
+#' Returns a list with `ts_ast` (structured tree-sitter AST as a nested
+#' tagged list) and `diagnostics` (list of structured diagnostic records
+#' from pampa's QMD reader). The tree-sitter AST itself never fails to
+#' produce; `diagnostics` surfaces higher-level pampa parse errors.
+#' @export
+pampa_parse_ts_impl <- function(text, filename) .Call(wrap__pampa_parse_ts_impl, text, filename)
+
+#' Capture pampa's tree-sitter debug dump for QMD text.
+#'
+#' Returns the lines of the `print_whole_tree` output that pampa emits
+#' to stderr when run with `-v`. Primarily a testing helper for
+#' cross-checking the structured `ts_ast` against pampa's own view.
+#' @export
+pampa_tree_impl <- function(text, filename) .Call(wrap__pampa_tree_impl, text, filename)
+
+#' Render QMD text to Pandoc's native AST format.
+#'
+#' Returns the lines of `pampa::writers::native::write` applied to the
+#' parsed Pandoc document, or an empty vector if parsing failed.
+#' Primarily a testing helper.
+#' @export
+pampa_native_impl <- function(text, filename) .Call(wrap__pampa_native_impl, text, filename)
 
 #' Pretty-print a diagnostic by reconstructing it from its slot values.
 #'

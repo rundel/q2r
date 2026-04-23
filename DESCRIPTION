@@ -29,7 +29,6 @@ Collate:
     'pd-ast-inline.R'
     'pd-ast-block.R'
     'pd-ast-pandoc.R'
-    'result.R'
     'from-rust.R'
     'pampa.R'
     'pd-ast-print.R'

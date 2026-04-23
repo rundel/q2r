@@ -2,7 +2,7 @@
 % Please edit documentation in R/diagnostic.R
 \name{pampa_diagnostic}
 \alias{pampa_diagnostic}
-\title{Parse diagnostic produced by \code{pampa_parse()}}
+\title{Parse diagnostic produced by the pampa parser}
 \usage{
 pampa_diagnostic(
   kind = "error",

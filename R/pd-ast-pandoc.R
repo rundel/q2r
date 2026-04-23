@@ -1,4 +1,4 @@
-#' @include pd-ast-block.R pd-ast-inline.R
+#' @include pd-ast-block.R pd-ast-inline.R diagnostic.R
 NULL
 
 #' Top-level Pandoc document
@@ -8,7 +8,14 @@ pandoc = S7::new_class(
   "pandoc",
   package = "q2r",
   properties = list(
-    meta   = S7::new_property(pandoc_meta_value, default = pandoc_meta_value()),
-    blocks = S7::new_property(pandoc_blocks, default = pandoc_blocks(list()))
-  )
+    meta        = S7::new_property(pandoc_meta_value, default = pandoc_meta_value()),
+    blocks      = S7::new_property(pandoc_blocks, default = pandoc_blocks(list())),
+    diagnostics = S7::new_property(S7::class_list, default = list())
+  ),
+  validator = function(self) {
+    if (length(self@diagnostics) &&
+        !all(vapply(self@diagnostics, S7::S7_inherits, logical(1), pampa_diagnostic))) {
+      "@diagnostics must be a list of pampa_diagnostic objects"
+    }
+  }
 )

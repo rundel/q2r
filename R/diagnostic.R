@@ -1,4 +1,4 @@
-#' Parse diagnostic produced by `pampa_parse()`
+#' Parse diagnostic produced by the pampa parser
 #'
 #' Structured representation of a single diagnostic message returned
 #' by the Quarto parser. Pretty-printed output is generated on demand

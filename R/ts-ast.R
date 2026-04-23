@@ -1,3 +1,6 @@
+#' @include diagnostic.R
+NULL
+
 #' Tree-sitter AST classes
 #'
 #' S7 classes representing the tree-sitter (`tree-sitter-qmd`) AST
@@ -70,9 +73,16 @@ ts_tree = S7::new_class(
   "ts_tree",
   package = "q2r",
   properties = list(
-    root     = S7::new_property(ts_node, default = ts_node()),
-    language = S7::new_property(S7::class_character, default = "qmd")
-  )
+    root        = S7::new_property(ts_node, default = ts_node()),
+    language    = S7::new_property(S7::class_character, default = "qmd"),
+    diagnostics = S7::new_property(S7::class_list, default = list())
+  ),
+  validator = function(self) {
+    if (length(self@diagnostics) &&
+        !all(vapply(self@diagnostics, S7::S7_inherits, logical(1), pampa_diagnostic))) {
+      "@diagnostics must be a list of pampa_diagnostic objects"
+    }
+  }
 )
 
 ts_format_position = function(range) {
@@ -106,7 +116,9 @@ S7::method(print, ts_node) = function(x, ...) {
   invisible(x)
 }
 
-S7::method(print, ts_tree) = function(x, ...) {
+S7::method(print, ts_tree) = function(x,
+                                       color = cli::num_ansi_colors() > 1L,
+                                       ...) {
   env = pandoc_tree_env()
   root_child = ts_collect_node(x@root, env)
   root = pandoc_tree_add(
@@ -115,5 +127,9 @@ S7::method(print, ts_tree) = function(x, ...) {
     root_child
   )
   pandoc_render_tree(root, env)
+  if (length(x@diagnostics)) {
+    cat("\n-- diagnostics --\n")
+    for (d in x@diagnostics) print(d, color = color)
+  }
   invisible(x)
 }

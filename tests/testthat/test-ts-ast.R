@@ -19,16 +19,16 @@ test_that("ts_node validates field_name and text scalar-string invariant", {
   expect_error(ts_node(text = c("a", "b")), "text")
 })
 
-test_that("pampa_parse with format = 'ts_ast' yields a structured tree rooted at 'document'", {
-  res = pampa_parse("# Heading\n\nHello *world*.\n", format = "ts_ast")
-  expect_true(S7::S7_inherits(res@ts_ast, ts_tree))
-  expect_identical(res@ts_ast@root@kind, "document")
-  expect_true(S7::S7_inherits(res@ts_ast@root@children, ts_nodes))
-  expect_gt(length(res@ts_ast@root@children@content), 0L)
+test_that("pampa_parse_ts yields a structured tree rooted at 'document'", {
+  res = pampa_parse_ts("# Heading\n\nHello *world*.\n")
+  expect_true(S7::S7_inherits(res, ts_tree))
+  expect_identical(res@root@kind, "document")
+  expect_true(S7::S7_inherits(res@root@children, ts_nodes))
+  expect_gt(length(res@root@children@content), 0L)
 })
 
 test_that("leaf nodes carry a text substring from the source", {
-  res = pampa_parse("# Hi\n", format = "ts_ast")
+  res = pampa_parse_ts("# Hi\n")
   leaves = character()
   walk = function(n) {
     if (length(n@children@content) == 0L) {
@@ -37,12 +37,12 @@ test_that("leaf nodes carry a text substring from the source", {
       for (c in n@children@content) walk(c)
     }
   }
-  walk(res@ts_ast@root)
+  walk(res@root)
   expect_true(any(grepl("Hi", leaves, fixed = TRUE)))
 })
 
 test_that("leaves always carry @text; non-leaf @text is populated only when children leave byte gaps", {
-  res = pampa_parse("# Hi\n", format = "ts_ast")
+  res = pampa_parse_ts("# Hi\n")
   check = function(n) {
     if (length(n@children@content) == 0L) {
       expect_false(is.null(n@text))
@@ -61,25 +61,25 @@ test_that("leaves always carry @text; non-leaf @text is populated only when chil
       for (c in kids) check(c)
     }
   }
-  check(res@ts_ast@root)
+  check(res@root)
 })
 
 test_that("every node exposes an is_named logical flag", {
-  res = pampa_parse("# Hi\n", format = "ts_ast")
+  res = pampa_parse_ts("# Hi\n")
   named = logical()
   walk = function(n) {
     named <<- c(named, n@is_named)
     for (c in n@children@content) walk(c)
   }
-  walk(res@ts_ast@root)
+  walk(res@root)
   expect_true(is.logical(named))
   expect_gt(length(named), 0L)
   expect_false(any(is.na(named)))
 })
 
 test_that("ts_tree prints without error and includes root kind", {
-  res = pampa_parse("# Hi\n", format = "ts_ast")
-  out = utils::capture.output(print(res@ts_ast))
+  res = pampa_parse_ts("# Hi\n")
+  out = utils::capture.output(print(res))
   expect_true(any(grepl("document", out)))
 })
 
@@ -108,9 +108,9 @@ tree_ranges_by_kind = function(tree_lines) {
 }
 
 test_that("ts_ast and tree dump agree on ranges when input lacks a trailing newline", {
-  res = pampa_parse("# Hello world!", format = "all")
-  ts_ast_nodes = ts_ranges_by_kind(res@ts_ast@root)
-  tree_nodes = tree_ranges_by_kind(res@tree)
+  src = "# Hello world!"
+  ts_ast_nodes = ts_ranges_by_kind(pampa_parse_ts(src)@root)
+  tree_nodes = tree_ranges_by_kind(pampa_tree(src))
 
   expect_identical(length(ts_ast_nodes), length(tree_nodes))
   expect_identical(
@@ -124,14 +124,14 @@ test_that("ts_ast and tree dump agree on ranges when input lacks a trailing newl
 
 test_that("ts_ast and tree dump agree on the document root range with/without trailing newline", {
   for (src in c("# Hello world!", "# Hello world!\n", "hello", "hello\n")) {
-    res = pampa_parse(src, format = "all")
-    tree_first = res@tree[[1L]]
+    tree = pampa_tree(src)
+    tree_first = tree[[1L]]
     m = regmatches(
       tree_first,
       regexec("\\((\\d+), (\\d+)\\) - \\((\\d+), (\\d+)\\)", tree_first)
     )[[1L]]
     tree_range = as.integer(c(m[[2L]], m[[3L]], m[[4L]], m[[5L]]))
-    root = res@ts_ast@root
+    root = pampa_parse_ts(src)@root
     ts_ast_range = c(
       root@range@start_point@row, root@range@start_point@column,
       root@range@end_point@row,   root@range@end_point@column
