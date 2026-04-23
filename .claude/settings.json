@@ -18,7 +18,12 @@
       "Bash(chmod +x /tmp/test_tree.sh)",
       "Bash(/tmp/test_tree.sh)",
       "Bash(cargo run *)",
-      "Bash(Rscript -e 'cat\\(format\\(args\\(cli::tree\\)\\)\\);cat\\(\"\\\\n\\\\n\"\\);cat\\(deparse\\(cli::tree\\)[1:30], sep=\"\\\\n\"\\)')"
+      "Bash(Rscript -e 'cat\\(format\\(args\\(cli::tree\\)\\)\\);cat\\(\"\\\\n\\\\n\"\\);cat\\(deparse\\(cli::tree\\)[1:30], sep=\"\\\\n\"\\)')",
+      "Bash(Rscript -e 'library\\(cli\\); d = data.frame\\(id=c\\(\"a\",\"b\",\"c\",\"d\"\\), children=I\\(list\\(c\\(\"b\",\"c\"\\), c\\(\"d\"\\), character\\(0\\), character\\(0\\)\\)\\), label=c\\(\"root\",\"child1 \\(label\\)\",\"child2\",\"grandchild\"\\)\\); cat\\(tree\\(d\\), sep=\"\\\\n\"\\)')",
+      "Bash(Rscript -e 'packageVersion\\(\"cli\"\\)')",
+      "Bash(Rscript -e 'devtools::document\\(quiet = TRUE\\)')",
+      "Bash(Rscript -e 'devtools::test\\(filter = \"ast-print\", reporter = \"summary\"\\)')",
+      "Bash(Rscript -e 'devtools::test\\(reporter = \"summary\"\\)')"
     ]
   }
 }

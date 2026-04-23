@@ -94,28 +94,26 @@ ts_format_label = function(x) {
   sprintf("%s%s %s%s", field, kind, pos, text_snip)
 }
 
-#' Walk a tree-sitter CST node and print it as an indented tree
-#'
-#' @param x A `ts_node` or `ts_tree`.
-#' @param depth Current indent depth (internal).
-#' @export
-ts_tree_print = function(x, depth = 0L) {
-  if (S7::S7_inherits(x, ts_tree)) {
-    cat("ts_tree language=", x@language, "\n", sep = "")
-    ts_tree_print(x@root, 1L)
-    return(invisible(x))
-  }
-  cat(strrep("  ", depth), ts_format_label(x), "\n", sep = "")
-  for (child in x@children@content) ts_tree_print(child, depth + 1L)
-  invisible(x)
+ts_collect_node = function(x, env) {
+  child_ids = vapply(x@children@content, ts_collect_node, character(1L), env = env)
+  pandoc_tree_add(env, ts_format_label(x), child_ids)
 }
 
 S7::method(print, ts_node) = function(x, ...) {
-  ts_tree_print(x, 0L)
+  env = pandoc_tree_env()
+  root = ts_collect_node(x, env)
+  pandoc_render_tree(root, env)
   invisible(x)
 }
 
 S7::method(print, ts_tree) = function(x, ...) {
-  ts_tree_print(x, 0L)
+  env = pandoc_tree_env()
+  root_child = ts_collect_node(x@root, env)
+  root = pandoc_tree_add(
+    env,
+    paste0("ts_tree language=", x@language),
+    root_child
+  )
+  pandoc_render_tree(root, env)
   invisible(x)
 }

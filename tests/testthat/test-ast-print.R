@@ -1,5 +1,8 @@
 capture_tree = function(x) {
-  paste(utils::capture.output(print(x)), collapse = "\n")
+  withr::with_options(
+    list(cli.unicode = TRUE),
+    paste(utils::capture.output(print(x)), collapse = "\n")
+  )
 }
 
 test_that("pandoc_str prints as quoted text", {
@@ -12,10 +15,10 @@ test_that("pandoc_space prints as just its name", {
   expect_identical(out, "space")
 })
 
-test_that("pandoc_emph nests its content with 2-space indent", {
+test_that("pandoc_emph nests its content under a tree branch", {
   e = pandoc_emph(content = pandoc_inlines(list(pandoc_str(text = "x"))))
   out = capture_tree(e)
-  expect_identical(out, "emph\n  str \"x\"")
+  expect_identical(out, "emph\n└─str \"x\"")
 })
 
 test_that("pandoc_header label includes level", {
@@ -90,15 +93,15 @@ test_that("full document prints as hierarchical tree matching spec", {
   out = capture_tree(doc)
   expected = paste(
     "pandoc",
-    "  header level=1",
-    "    str \"Hello\"",
-    "    space",
-    "    str \"world\"",
-    "  paragraph",
-    "    str \"A\"",
-    "    space",
-    "    emph",
-    "      str \"b\"",
+    "├─header level=1",
+    "│ ├─str \"Hello\"",
+    "│ ├─space",
+    "│ └─str \"world\"",
+    "└─paragraph",
+    "  ├─str \"A\"",
+    "  ├─space",
+    "  └─emph",
+    "    └─str \"b\"",
     sep = "\n"
   )
   expect_identical(out, expected)

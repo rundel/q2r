@@ -230,80 +230,111 @@ S7::method(pandoc_children, pandoc_citation) = function(x) {
   list(prefix = x@prefix, suffix = x@suffix)
 }
 
-pandoc_walk_child = function(child, label, depth) {
-  if (is.null(child)) return(invisible())
-
-  if (S7::S7_inherits(child, pandoc_blocks) || S7::S7_inherits(child, pandoc_inlines)) {
-    if (length(child@content) == 0L) return(invisible())
-    if (!is.null(label) && nzchar(label)) {
-      cat(strrep("  ", depth), label, ":\n", sep = "")
-      for (c2 in child@content) pandoc_tree(c2, depth + 1L)
-    } else {
-      for (c2 in child@content) pandoc_tree(c2, depth)
-    }
-    return(invisible())
-  }
-
-  if (is.list(child) && !S7::S7_inherits(child, pandoc_node)) {
-    if (length(child) == 0L) return(invisible())
-    if (!is.null(label) && nzchar(label)) {
-      cat(strrep("  ", depth), label, ":\n", sep = "")
-      d2 = depth + 1L
-    } else {
-      d2 = depth
-    }
-    for (c2 in child) pandoc_walk_child(c2, NULL, d2)
-    return(invisible())
-  }
-
-  pandoc_tree(child, depth)
+pandoc_tree_env = function() {
+  env = new.env(parent = emptyenv())
+  env$counter = 0L
+  env$ids = character()
+  env$labels = character()
+  env$children = list()
+  env
 }
 
-#' Walk a pandoc AST node and print it as an indented tree
-#'
-#' @param x An AST node, `pandoc` document, or `pandoc_blocks`/`pandoc_inlines`.
-#' @param depth Current indent depth (internal).
-#' @export
-pandoc_tree = function(x, depth = 0L) {
-  if (S7::S7_inherits(x, pandoc_blocks) || S7::S7_inherits(x, pandoc_inlines)) {
-    for (child in x@content) pandoc_tree(child, depth)
-    return(invisible(x))
-  }
+pandoc_tree_add = function(env, label, children = character()) {
+  env$counter = env$counter + 1L
+  id = paste0("n", env$counter)
+  env$ids = c(env$ids, id)
+  env$labels = c(env$labels, label)
+  env$children[[length(env$children) + 1L]] = children
+  id
+}
 
-  cat(strrep("  ", depth), pandoc_format_label(x), "\n", sep = "")
+pandoc_tree_df = function(env) {
+  data.frame(
+    id = env$ids,
+    children = I(env$children),
+    label = env$labels,
+    stringsAsFactors = FALSE
+  )
+}
 
+pandoc_collect_node = function(x, env) {
   kids = pandoc_children(x)
   names_kids = names(kids)
   if (is.null(names_kids)) names_kids = rep("", length(kids))
   single = length(kids) == 1L
 
+  child_ids = character()
   for (i in seq_along(kids)) {
-    label = if (single) NULL else names_kids[[i]]
-    pandoc_walk_child(kids[[i]], label, depth + 1L)
+    label_i = if (single) "" else names_kids[[i]]
+    child_ids = c(child_ids, pandoc_collect_child(kids[[i]], label_i, env))
   }
-  invisible(x)
+
+  pandoc_tree_add(env, pandoc_format_label(x), child_ids)
+}
+
+pandoc_collect_child = function(child, label, env) {
+  if (is.null(child)) return(character())
+
+  if (S7::S7_inherits(child, pandoc_blocks) || S7::S7_inherits(child, pandoc_inlines)) {
+    if (length(child@content) == 0L) return(character())
+    item_ids = unlist(lapply(child@content, pandoc_collect_node, env = env))
+    if (nzchar(label)) {
+      return(pandoc_tree_add(env, paste0(label, ":"), item_ids))
+    }
+    return(item_ids)
+  }
+
+  if (is.list(child) && !S7::S7_inherits(child, pandoc_node)) {
+    if (length(child) == 0L) return(character())
+    item_ids = unlist(lapply(child, pandoc_collect_child, label = "", env = env))
+    if (nzchar(label)) {
+      return(pandoc_tree_add(env, paste0(label, ":"), item_ids))
+    }
+    return(item_ids)
+  }
+
+  pandoc_collect_node(child, env)
+}
+
+pandoc_render_tree = function(root_id, env) {
+  cat(cli::tree(pandoc_tree_df(env), root = root_id), sep = "\n")
+}
+
+pandoc_render_forest = function(child_ids, env) {
+  for (id in child_ids) pandoc_render_tree(id, env)
 }
 
 S7::method(print, pandoc_node) = function(x, ...) {
-  pandoc_tree(x, 0L)
+  env = pandoc_tree_env()
+  root = pandoc_collect_node(x, env)
+  pandoc_render_tree(root, env)
   invisible(x)
 }
 
 S7::method(print, pandoc) = function(x, ...) {
-  cat("pandoc\n")
+  env = pandoc_tree_env()
+  child_ids = character()
   if (!identical(x@meta@kind, "map") || length(x@meta@value) > 0L) {
-    cat("  meta: ", x@meta@kind, "\n", sep = "")
+    child_ids = c(child_ids, pandoc_tree_add(env, paste0("meta: ", x@meta@kind)))
   }
-  for (child in x@blocks@content) pandoc_tree(child, 1L)
+  for (block in x@blocks@content) {
+    child_ids = c(child_ids, pandoc_collect_node(block, env))
+  }
+  root = pandoc_tree_add(env, "pandoc", child_ids)
+  pandoc_render_tree(root, env)
   invisible(x)
 }
 
 S7::method(print, pandoc_blocks) = function(x, ...) {
-  for (child in x@content) pandoc_tree(child, 0L)
+  env = pandoc_tree_env()
+  ids = vapply(x@content, pandoc_collect_node, character(1L), env = env)
+  pandoc_render_forest(ids, env)
   invisible(x)
 }
 
 S7::method(print, pandoc_inlines) = function(x, ...) {
-  for (child in x@content) pandoc_tree(child, 0L)
+  env = pandoc_tree_env()
+  ids = vapply(x@content, pandoc_collect_node, character(1L), env = env)
+  pandoc_render_forest(ids, env)
   invisible(x)
 }
