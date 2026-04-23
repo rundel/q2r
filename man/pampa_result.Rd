@@ -5,9 +5,9 @@
 \title{Result of \code{pampa_parse()}}
 \usage{
 pampa_result(
-  ast = NULL,
+  pd_ast = NULL,
   tree = NULL,
-  cst = NULL,
+  ts_ast = NULL,
   native = NULL,
   diagnostics = list()
 )

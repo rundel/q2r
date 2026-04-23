@@ -1,4 +1,4 @@
-#' @include ast-pandoc.R ast-cst.R result.R
+#' @include pd-ast-pandoc.R ts-ast.R result.R
 NULL
 
 attr_from_list = function(x) {

@@ -2,17 +2,17 @@ use extendr_api::prelude::*;
 use pampa::readers::qmd;
 use pampa::writers::native;
 
-mod ast_to_r;
-mod cst_to_r;
 mod diag_to_r;
+mod pd_ast_to_r;
+mod ts_ast_to_r;
 
 /// Parse QMD text with pampa.
 ///
-/// Returns a list with `tree` (tree-sitter CST text), `cst` (structured
-/// tree-sitter CST as a nested tagged list), `diagnostics` (list of
-/// structured diagnostic records that can be rendered via
+/// Returns a list with `tree` (tree-sitter AST text), `ts_ast`
+/// (structured tree-sitter AST as a nested tagged list), `diagnostics`
+/// (list of structured diagnostic records that can be rendered via
 /// `pampa_diag_format_impl`), `native` (Pandoc native-format text), and
-/// `ast` (tagged nested list suitable for conversion to S7 `pandoc`
+/// `pd_ast` (tagged nested list suitable for conversion to S7 `pandoc`
 /// objects).
 /// @export
 #[extendr]
@@ -30,7 +30,7 @@ fn pampa_parse_impl(text: &str, filename: &str) -> List {
         .lines()
         .map(str::to_string)
         .collect();
-    let cst = cst_to_r::parse_cst_to_r(text.as_bytes());
+    let ts_ast = ts_ast_to_r::parse_ts_ast_to_r(text.as_bytes());
 
     match result {
         Ok((pandoc, ctx, diags)) => {
@@ -46,13 +46,13 @@ fn pampa_parse_impl(text: &str, filename: &str) -> List {
                 .iter()
                 .map(|d| diag_to_r::diag_to_r(d, &ctx.source_context))
                 .collect();
-            let ast = ast_to_r::pandoc_to_r(&pandoc);
+            let pd_ast = pd_ast_to_r::pandoc_to_r(&pandoc);
             list!(
                 tree = tree_lines,
-                cst = cst,
+                ts_ast = ts_ast,
                 diagnostics = List::from_values(diag_list),
                 native = native_lines,
-                ast = ast
+                pd_ast = pd_ast
             )
         }
         Err(diags) => {
@@ -65,10 +65,10 @@ fn pampa_parse_impl(text: &str, filename: &str) -> List {
             let empty: Vec<String> = Vec::new();
             list!(
                 tree = tree_lines,
-                cst = cst,
+                ts_ast = ts_ast,
                 diagnostics = List::from_values(diag_list),
                 native = empty,
-                ast = NULL
+                pd_ast = NULL
             )
         }
     }

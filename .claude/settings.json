@@ -37,7 +37,8 @@
       "Bash(Rscript -e 'devtools::load_all\\(\".\", quiet = TRUE\\); out = to_qmd\\(pampa_parse\\(\"# hi\\\\n\\\\ntext with *emph* and **strong**.\\\\n\", format = \"ast\"\\)\\); print\\(out\\); cat\\(\"---BYTES---\\\\n\"\\); writeLines\\(rawToChar\\(as.raw\\(utf8ToInt\\(out\\)\\)\\)\\)')",
       "Bash(Rscript -e 'devtools::test\\(filter = \"cst-to-qmd\", quiet = TRUE\\)')",
       "Bash(Rscript -e 'devtools::test\\(filter = \"cst-to-qmd\"\\)')",
-      "Bash(Rscript -e 'devtools::test\\(filter = \"ast-to-qmd\"\\)')"
+      "Bash(Rscript -e 'devtools::test\\(filter = \"ast-to-qmd\"\\)')",
+      "Bash(git mv *)"
     ],
     "additionalDirectories": [
       "/tmp",

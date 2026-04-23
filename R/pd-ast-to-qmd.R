@@ -1,4 +1,4 @@
-#' @include cst-to-qmd.R ast-pandoc.R ast-block.R ast-inline.R ast-support.R
+#' @include ts-ast-to-qmd.R pd-ast-pandoc.R pd-ast-block.R pd-ast-inline.R pd-ast-support.R
 NULL
 
 pandoc_attr_qmd = function(attr) {
@@ -34,11 +34,11 @@ pandoc_fence_for = function(text, char = "`", min = 3L) {
 }
 
 S7::method(to_qmd, pampa_result) = function(x) {
-  if (!is.null(x@cst)) return(to_qmd(x@cst))
-  if (!is.null(x@ast)) return(to_qmd(x@ast))
+  if (!is.null(x@ts_ast)) return(to_qmd(x@ts_ast))
+  if (!is.null(x@pd_ast)) return(to_qmd(x@pd_ast))
   stop(
-    "to_qmd(): pampa_result has neither a CST nor an AST; re-run ",
-    "pampa_parse() with format = \"cst\" or \"ast\" (or \"all\")"
+    "to_qmd(): pampa_result has neither a ts_ast nor a pd_ast; re-run ",
+    "pampa_parse() with format = \"ts_ast\" or \"pd_ast\" (or \"all\")"
   )
 }
 

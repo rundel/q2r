@@ -4,7 +4,7 @@
 \alias{pampa_parse}
 \title{Parse QMD input with pampa}
 \usage{
-pampa_parse(input, format = c("ast", "tree", "cst", "native", "all"))
+pampa_parse(input, format = c("pd_ast", "tree", "ts_ast", "native", "all"))
 }
 \arguments{
 \item{input}{A single string. Treated as a file path if it does not
@@ -12,11 +12,10 @@ contain newlines and \code{file.exists()} returns TRUE; otherwise treated
 as raw text.}
 
 \item{format}{Which artifacts to populate on the returned
-\code{\link{pampa_result}}. One of \code{"ast"} (S7 Pandoc AST, default), \code{"tree"}
-(tree-sitter concrete syntax tree text), \code{"cst"} (structured
-tree-sitter CST as an S7 \code{ts_tree}), \code{"native"} (Pandoc native
-AST text), or \code{"all"} (all of the above). Diagnostics are always
-included.}
+\code{\link{pampa_result}}. One of \code{"pd_ast"} (S7 Pandoc AST, default),
+\code{"tree"} (tree-sitter AST text), \code{"ts_ast"} (structured tree-sitter
+AST as an S7 \code{ts_tree}), \code{"native"} (Pandoc native AST text), or
+\code{"all"} (all of the above). Diagnostics are always included.}
 }
 \value{
 A \code{\link{pampa_result}} with the requested slots populated.

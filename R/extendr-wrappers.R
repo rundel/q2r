@@ -7,11 +7,11 @@ NULL
 
 #' Parse QMD text with pampa.
 #'
-#' Returns a list with `tree` (tree-sitter CST text), `cst` (structured
-#' tree-sitter CST as a nested tagged list), `diagnostics` (list of
-#' structured diagnostic records that can be rendered via
+#' Returns a list with `tree` (tree-sitter AST text), `ts_ast`
+#' (structured tree-sitter AST as a nested tagged list), `diagnostics`
+#' (list of structured diagnostic records that can be rendered via
 #' `pampa_diag_format_impl`), `native` (Pandoc native-format text), and
-#' `ast` (tagged nested list suitable for conversion to S7 `pandoc`
+#' `pd_ast` (tagged nested list suitable for conversion to S7 `pandoc`
 #' objects).
 #' @export
 pampa_parse_impl <- function(text, filename) .Call(wrap__pampa_parse_impl, text, filename)

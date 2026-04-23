@@ -18,19 +18,19 @@ ast_struct = function(x) {
 }
 
 expect_ast_roundtrip = function(src, info = NULL) {
-  res  = pampa_parse(src, format = "ast")
-  out  = to_qmd(res@ast)
-  res2 = pampa_parse(out, format = "ast")
+  res  = pampa_parse(src, format = "pd_ast")
+  out  = to_qmd(res@pd_ast)
+  res2 = pampa_parse(out, format = "pd_ast")
   expect_identical(
-    ast_struct(res2@ast),
-    ast_struct(res@ast),
+    ast_struct(res2@pd_ast),
+    ast_struct(res@pd_ast),
     info = info %||% deparse(src)
   )
 }
 
 test_that("to_qmd dispatches on pandoc and pandoc_blocks/inlines", {
-  res = pampa_parse("Hello *world*.\n", format = "ast")
-  out = to_qmd(res@ast)
+  res = pampa_parse("Hello *world*.\n", format = "pd_ast")
+  out = to_qmd(res@pd_ast)
   expect_type(out, "character")
   expect_true(endsWith(out, "\n"))
 
@@ -40,7 +40,7 @@ test_that("to_qmd dispatches on pandoc and pandoc_blocks/inlines", {
 })
 
 test_that("to_qmd on an empty pampa_result errors", {
-  expect_error(to_qmd(pampa_result()), "neither a CST nor an AST")
+  expect_error(to_qmd(pampa_result()), "neither a ts_ast nor a pd_ast")
 })
 
 test_that("to_qmd round-trips paragraphs and inline styling via the AST", {
@@ -180,8 +180,8 @@ x <- 1
 
 Inline math $x^2$ and display $$y = 1$$.
 "
-  res  = pampa_parse(src, format = "ast")
-  out  = to_qmd(res@ast)
-  res2 = pampa_parse(out, format = "ast")
-  expect_identical(ast_struct(res2@ast), ast_struct(res@ast))
+  res  = pampa_parse(src, format = "pd_ast")
+  out  = to_qmd(res@pd_ast)
+  res2 = pampa_parse(out, format = "pd_ast")
+  expect_identical(ast_struct(res2@pd_ast), ast_struct(res@pd_ast))
 })

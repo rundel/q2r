@@ -1,4 +1,4 @@
-#' @include ast-pandoc.R
+#' @include pd-ast-pandoc.R
 NULL
 
 #' Label a pandoc AST node for tree display

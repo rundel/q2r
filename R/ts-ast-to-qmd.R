@@ -1,7 +1,7 @@
-#' @include ast-cst.R result.R
+#' @include ts-ast.R result.R
 NULL
 
-#' Render a tree-sitter CST back to QMD text
+#' Render a tree-sitter AST back to QMD text
 #'
 #' Walks a [`ts_tree`] or [`ts_node`] and emits QMD source text by
 #' dispatching on node kind. Output is canonical: blank-line counts,

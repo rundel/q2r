@@ -12,7 +12,7 @@ fn node_to_r(cursor: &mut TreeCursor, src: &[u8]) -> Robj {
     let start = node.start_position();
     let end = node.end_position();
 
-    // NOTE: CST `text` semantics deliberately differ from the AST export.
+    // NOTE: ts_ast `text` semantics deliberately differ from the pd_ast export.
     // Leaves always carry their source text; additionally, any non-leaf
     // whose children do not cover every byte of its range (a grammar
     // "gap" - e.g. `pandoc_math`, `pandoc_display_math` inner content,
@@ -20,7 +20,7 @@ fn node_to_r(cursor: &mut TreeCursor, src: &[u8]) -> Robj {
     // This lets `to_qmd()` on the R side reconstruct bytes that
     // tree-sitter-qmd parses via anonymous regexes and therefore never
     // emits as named nodes. Revisit if the upstream grammar is changed
-    // to surface those bytes as real CST nodes.
+    // to surface those bytes as real named nodes.
     let text: Robj = {
         let sb = node.start_byte();
         let eb = node.end_byte();
@@ -94,7 +94,7 @@ fn children_to_r(cursor: &mut TreeCursor, src: &[u8]) -> Robj {
     List::from_values(out).into()
 }
 
-pub fn parse_cst_to_r(src: &[u8]) -> Robj {
+pub fn parse_ts_ast_to_r(src: &[u8]) -> Robj {
     let mut parser = MarkdownParser::default();
     parser
         .parser

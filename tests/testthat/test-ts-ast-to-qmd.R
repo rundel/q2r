@@ -1,33 +1,33 @@
-cst_kind_tree = function(n) {
+ts_ast_kind_tree = function(n) {
   if (length(n@children@content) == 0L) return(n@kind)
-  list(n@kind, lapply(n@children@content, cst_kind_tree))
+  list(n@kind, lapply(n@children@content, ts_ast_kind_tree))
 }
 
 expect_roundtrip = function(src, info = NULL) {
-  res  = pampa_parse(src, format = "cst")
-  out  = to_qmd(res@cst)
-  res2 = pampa_parse(out, format = "cst")
+  res  = pampa_parse(src, format = "ts_ast")
+  out  = to_qmd(res@ts_ast)
+  res2 = pampa_parse(out, format = "ts_ast")
   expect_identical(
-    cst_kind_tree(res2@cst@root),
-    cst_kind_tree(res@cst@root),
+    ts_ast_kind_tree(res2@ts_ast@root),
+    ts_ast_kind_tree(res@ts_ast@root),
     info = info %||% deparse(src)
   )
 }
 
 test_that("to_qmd dispatches on ts_tree, ts_node, and pampa_result", {
-  res = pampa_parse("# Hi\n", format = "cst")
-  expect_identical(to_qmd(res),          "# Hi\n")
-  expect_identical(to_qmd(res@cst),      "# Hi\n")
-  expect_identical(to_qmd(res@cst@root), "# Hi\n")
+  res = pampa_parse("# Hi\n", format = "ts_ast")
+  expect_identical(to_qmd(res),             "# Hi\n")
+  expect_identical(to_qmd(res@ts_ast),      "# Hi\n")
+  expect_identical(to_qmd(res@ts_ast@root), "# Hi\n")
 })
 
-test_that("to_qmd on a pampa_result falls back to the AST when CST is absent", {
-  res = pampa_parse("# Hi\n", format = "ast")
+test_that("to_qmd on a pampa_result falls back to the pd_ast when ts_ast is absent", {
+  res = pampa_parse("# Hi\n", format = "pd_ast")
   expect_identical(to_qmd(res), "# Hi {#hi}\n")
 })
 
 test_that("to_qmd on an empty pampa_result errors", {
-  expect_error(to_qmd(pampa_result()), "neither a CST nor an AST")
+  expect_error(to_qmd(pampa_result()), "neither a ts_ast nor a pd_ast")
 })
 
 test_that("to_qmd round-trips headings and paragraphs", {
@@ -38,13 +38,13 @@ test_that("to_qmd round-trips headings and paragraphs", {
 })
 
 test_that("to_qmd appends a trailing newline when source lacks one", {
-  res = pampa_parse("# no trailing", format = "cst")
-  expect_identical(to_qmd(res@cst), "# no trailing\n")
+  res = pampa_parse("# no trailing", format = "ts_ast")
+  expect_identical(to_qmd(res@ts_ast), "# no trailing\n")
 })
 
 test_that("to_qmd canonicalizes blank-line runs and trailing whitespace", {
-  res = pampa_parse("# h\n\n\n\ntext\n\n", format = "cst")
-  out = to_qmd(res@cst)
+  res = pampa_parse("# h\n\n\n\ntext\n\n", format = "ts_ast")
+  out = to_qmd(res@ts_ast)
   expect_identical(out, "# h\n\ntext\n")
   expect_roundtrip("# h\n\n\n\ntext\n\n")
 })

@@ -7,10 +7,10 @@
 pampa_parse_impl(text, filename)
 }
 \description{
-Returns a list with \code{tree} (tree-sitter CST text), \code{cst} (structured
-tree-sitter CST as a nested tagged list), \code{diagnostics} (list of
-structured diagnostic records that can be rendered via
+Returns a list with \code{tree} (tree-sitter AST text), \code{ts_ast}
+(structured tree-sitter AST as a nested tagged list), \code{diagnostics}
+(list of structured diagnostic records that can be rendered via
 \code{pampa_diag_format_impl}), \code{native} (Pandoc native-format text), and
-\code{ast} (tagged nested list suitable for conversion to S7 \code{pandoc}
+\code{pd_ast} (tagged nested list suitable for conversion to S7 \code{pandoc}
 objects).
 }

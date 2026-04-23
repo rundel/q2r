@@ -1,4 +1,4 @@
-#' @include ast-block.R ast-inline.R
+#' @include pd-ast-block.R pd-ast-inline.R
 NULL
 
 #' Top-level Pandoc document

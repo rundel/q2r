@@ -1,8 +1,8 @@
-#' Tree-sitter concrete syntax tree classes
+#' Tree-sitter AST classes
 #'
-#' S7 classes representing the tree-sitter (`tree-sitter-qmd`) concrete
-#' syntax tree produced by pampa for a QMD document. Unlike the Pandoc
-#' AST, CST node kinds are open-ended grammar-defined strings, so a
+#' S7 classes representing the tree-sitter (`tree-sitter-qmd`) AST
+#' produced by pampa for a QMD document. Unlike the Pandoc AST,
+#' tree-sitter node kinds are open-ended grammar-defined strings, so a
 #' single `ts_node` class with a `kind` string property is used.
 #'
 #' @export
