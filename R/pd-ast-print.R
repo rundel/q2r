@@ -23,13 +23,26 @@ pandoc_children = S7::new_generic("pandoc_children", "x")
 
 pandoc_strip_prefix = function(name) sub("^pandoc_", "", name)
 
-pandoc_truncate = function(text, n = 40L) {
+pandoc_style_kind  = function(x) cli::col_cyan(x)
+pandoc_style_val   = function(x) cli::col_green(x)
+pandoc_style_field = function(x) cli::col_silver(x)
+pandoc_style_attr  = function(x) cli::col_yellow(x)
+pandoc_style_pos   = function(x) cli::col_silver(x)
+
+pandoc_field = function(key) pandoc_style_field(paste0(key, "="))
+
+pandoc_truncate = function(text,
+                           n = getOption("q2r.print_max_width", 40L),
+                           side = getOption("q2r.print_trunc_side", "right")) {
   if (length(text) == 0L) return("")
-  s = paste(text, collapse = " ")
-  if (nchar(s) > n) paste0(substr(s, 1L, n - 1L), "…") else s
+  side = match.arg(side, c("right", "left", "center"))
+  s = encodeString(paste(text, collapse = " "))
+  stringr::str_trunc(s, width = n, side = side, ellipsis = "…")
 }
 
-pandoc_quote = function(text) paste0("\"", pandoc_truncate(text), "\"")
+pandoc_quote = function(text) {
+  pandoc_style_val(paste0("\"", pandoc_truncate(text), "\""))
+}
 
 pandoc_format_attr = function(attr) {
   if (pandoc_attr_is_empty(attr)) return("")
@@ -40,7 +53,7 @@ pandoc_format_attr = function(attr) {
     kv = paste0(names(attr@attributes), "=", attr@attributes)
     parts = c(parts, kv)
   }
-  paste0(" (", paste(parts, collapse = " "), ")")
+  pandoc_style_attr(paste0(" (", paste(parts, collapse = " "), ")"))
 }
 
 pandoc_class_name = function(x) {
@@ -49,116 +62,161 @@ pandoc_class_name = function(x) {
 }
 
 S7::method(pandoc_format_label, pandoc_node) = function(x) {
-  pandoc_strip_prefix(pandoc_class_name(x))
+  pandoc_style_kind(pandoc_strip_prefix(pandoc_class_name(x)))
 }
 
 S7::method(pandoc_children, pandoc_node) = function(x) list()
 
 S7::method(pandoc_format_label, pandoc_str) = function(x) {
-  paste0("str ", pandoc_quote(x@text))
+  paste0(pandoc_style_kind("str"), " ", pandoc_quote(x@text))
 }
 
 S7::method(pandoc_format_label, pandoc_code) = function(x) {
-  paste0("code ", pandoc_quote(x@text), pandoc_format_attr(x@attr))
+  paste0(pandoc_style_kind("code"), " ", pandoc_quote(x@text), pandoc_format_attr(x@attr))
 }
 
 S7::method(pandoc_format_label, pandoc_code_block) = function(x) {
-  paste0("code_block ", pandoc_quote(x@text), pandoc_format_attr(x@attr))
+  paste0(pandoc_style_kind("code_block"), " ", pandoc_quote(x@text), pandoc_format_attr(x@attr))
 }
 
 S7::method(pandoc_format_label, pandoc_math) = function(x) {
-  paste0("math type=", x@math_type, " ", pandoc_quote(x@text))
+  paste0(
+    pandoc_style_kind("math"), " ",
+    pandoc_field("type"), x@math_type, " ",
+    pandoc_quote(x@text)
+  )
 }
 
 S7::method(pandoc_format_label, pandoc_raw_block) = function(x) {
-  paste0("raw_block format=", x@format, " ", pandoc_quote(x@text))
+  paste0(
+    pandoc_style_kind("raw_block"), " ",
+    pandoc_field("format"), x@format, " ",
+    pandoc_quote(x@text)
+  )
 }
 
 S7::method(pandoc_format_label, pandoc_raw_inline) = function(x) {
-  paste0("raw_inline format=", x@format, " ", pandoc_quote(x@text))
+  paste0(
+    pandoc_style_kind("raw_inline"), " ",
+    pandoc_field("format"), x@format, " ",
+    pandoc_quote(x@text)
+  )
 }
 
 S7::method(pandoc_format_label, pandoc_header) = function(x) {
-  paste0("header level=", x@level, pandoc_format_attr(x@attr))
+  paste0(
+    pandoc_style_kind("header"), " ",
+    pandoc_field("level"), x@level,
+    pandoc_format_attr(x@attr)
+  )
 }
 
 S7::method(pandoc_format_label, pandoc_link) = function(x) {
-  tail = if (nchar(x@title) > 0L) paste0(" title=", pandoc_quote(x@title)) else ""
-  paste0("link url=", pandoc_quote(x@url), tail, pandoc_format_attr(x@attr))
+  tail = if (nchar(x@title) > 0L) {
+    paste0(" ", pandoc_field("title"), pandoc_quote(x@title))
+  } else ""
+  paste0(
+    pandoc_style_kind("link"), " ",
+    pandoc_field("url"), pandoc_quote(x@url),
+    tail, pandoc_format_attr(x@attr)
+  )
 }
 
 S7::method(pandoc_format_label, pandoc_image) = function(x) {
-  tail = if (nchar(x@title) > 0L) paste0(" title=", pandoc_quote(x@title)) else ""
-  paste0("image url=", pandoc_quote(x@url), tail, pandoc_format_attr(x@attr))
+  tail = if (nchar(x@title) > 0L) {
+    paste0(" ", pandoc_field("title"), pandoc_quote(x@title))
+  } else ""
+  paste0(
+    pandoc_style_kind("image"), " ",
+    pandoc_field("url"), pandoc_quote(x@url),
+    tail, pandoc_format_attr(x@attr)
+  )
 }
 
 S7::method(pandoc_format_label, pandoc_quoted) = function(x) {
-  paste0("quoted type=", x@quote_type)
+  paste0(pandoc_style_kind("quoted"), " ", pandoc_field("type"), x@quote_type)
 }
 
 S7::method(pandoc_format_label, pandoc_cite) = function(x) {
-  paste0("cite (", length(x@citations), " citations)")
+  paste0(pandoc_style_kind("cite"), " (", length(x@citations), " citations)")
 }
 
 S7::method(pandoc_format_label, pandoc_ordered_list) = function(x) {
   paste0(
-    "ordered_list start=", x@attr@start,
-    " style=", x@attr@style,
-    " delim=", x@attr@delim
+    pandoc_style_kind("ordered_list"), " ",
+    pandoc_field("start"), x@attr@start, " ",
+    pandoc_field("style"), x@attr@style, " ",
+    pandoc_field("delim"), x@attr@delim
   )
 }
 
 S7::method(pandoc_format_label, pandoc_div) = function(x) {
-  paste0("div", pandoc_format_attr(x@attr))
+  paste0(pandoc_style_kind("div"), pandoc_format_attr(x@attr))
 }
 
 S7::method(pandoc_format_label, pandoc_span) = function(x) {
-  paste0("span", pandoc_format_attr(x@attr))
+  paste0(pandoc_style_kind("span"), pandoc_format_attr(x@attr))
 }
 
 S7::method(pandoc_format_label, pandoc_figure) = function(x) {
-  paste0("figure", pandoc_format_attr(x@attr))
+  paste0(pandoc_style_kind("figure"), pandoc_format_attr(x@attr))
 }
 
 S7::method(pandoc_format_label, pandoc_table) = function(x) {
-  paste0("table", pandoc_format_attr(x@attr))
+  paste0(pandoc_style_kind("table"), pandoc_format_attr(x@attr))
 }
 
 S7::method(pandoc_format_label, pandoc_note_reference) = function(x) {
-  paste0("note_reference id=", x@id)
+  paste0(pandoc_style_kind("note_reference"), " ", pandoc_field("id"), x@id)
 }
 
 S7::method(pandoc_format_label, pandoc_note_definition_para) = function(x) {
-  paste0("note_definition_para id=", x@id)
+  paste0(pandoc_style_kind("note_definition_para"), " ", pandoc_field("id"), x@id)
 }
 
 S7::method(pandoc_format_label, pandoc_note_definition_fenced_block) = function(x) {
-  paste0("note_definition_fenced_block id=", x@id)
+  paste0(pandoc_style_kind("note_definition_fenced_block"), " ", pandoc_field("id"), x@id)
 }
 
 S7::method(pandoc_format_label, pandoc_custom_block) = function(x) {
-  paste0("custom_block type=", x@type_name, pandoc_format_attr(x@attr))
+  paste0(
+    pandoc_style_kind("custom_block"), " ",
+    pandoc_field("type"), x@type_name,
+    pandoc_format_attr(x@attr)
+  )
 }
 
 S7::method(pandoc_format_label, pandoc_custom_inline) = function(x) {
-  paste0("custom_inline type=", x@type_name, pandoc_format_attr(x@attr))
+  paste0(
+    pandoc_style_kind("custom_inline"), " ",
+    pandoc_field("type"), x@type_name,
+    pandoc_format_attr(x@attr)
+  )
 }
 
 S7::method(pandoc_format_label, pandoc_shortcode) = function(x) {
-  paste0("shortcode name=", x@name)
+  paste0(pandoc_style_kind("shortcode"), " ", pandoc_field("name"), x@name)
 }
 
 S7::method(pandoc_format_label, pandoc_attr_inline) = function(x) {
-  paste0("attr_inline", pandoc_format_attr(x@attr))
+  paste0(pandoc_style_kind("attr_inline"), pandoc_format_attr(x@attr))
 }
 
-S7::method(pandoc_format_label, pandoc_block_metadata) = function(x) "block_metadata"
+S7::method(pandoc_format_label, pandoc_block_metadata) = function(x) {
+  pandoc_style_kind("block_metadata")
+}
 
 S7::method(pandoc_format_label, pandoc_citation) = function(x) {
-  paste0("citation id=", x@id, " mode=", x@mode)
+  paste0(
+    pandoc_style_kind("citation"), " ",
+    pandoc_field("id"), x@id, " ",
+    pandoc_field("mode"), x@mode
+  )
 }
 
-S7::method(pandoc_format_label, pandoc_definition_item) = function(x) "definition_item"
+S7::method(pandoc_format_label, pandoc_definition_item) = function(x) {
+  pandoc_style_kind("definition_item")
+}
 
 children_content = function(x) list(content = x@content)
 
@@ -279,7 +337,7 @@ pandoc_collect_child = function(child, label, env) {
     if (length(child@content) == 0L) return(character())
     item_ids = unlist(lapply(child@content, pandoc_collect_node, env = env))
     if (nzchar(label)) {
-      return(pandoc_tree_add(env, paste0(label, ":"), item_ids))
+      return(pandoc_tree_add(env, pandoc_style_field(paste0(label, ":")), item_ids))
     }
     return(item_ids)
   }
@@ -288,7 +346,7 @@ pandoc_collect_child = function(child, label, env) {
     if (length(child) == 0L) return(character())
     item_ids = unlist(lapply(child, pandoc_collect_child, label = "", env = env))
     if (nzchar(label)) {
-      return(pandoc_tree_add(env, paste0(label, ":"), item_ids))
+      return(pandoc_tree_add(env, pandoc_style_field(paste0(label, ":")), item_ids))
     }
     return(item_ids)
   }
@@ -317,12 +375,15 @@ S7::method(print, pandoc) = function(x,
   env = pandoc_tree_env()
   child_ids = character()
   if (!identical(x@meta@kind, "map") || length(x@meta@value) > 0L) {
-    child_ids = c(child_ids, pandoc_tree_add(env, paste0("meta: ", x@meta@kind)))
+    child_ids = c(child_ids, pandoc_tree_add(
+      env,
+      paste0(pandoc_style_kind("meta"), ": ", x@meta@kind)
+    ))
   }
   for (block in x@blocks@content) {
     child_ids = c(child_ids, pandoc_collect_node(block, env))
   }
-  root = pandoc_tree_add(env, "pandoc", child_ids)
+  root = pandoc_tree_add(env, pandoc_style_kind("pandoc"), child_ids)
   pandoc_render_tree(root, env)
   if (length(x@diagnostics)) {
     cat("\n-- diagnostics --\n")

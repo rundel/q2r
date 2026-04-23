@@ -94,9 +94,15 @@ ts_format_position = function(range) {
 }
 
 ts_format_label = function(x) {
-  pos = ts_format_position(x@range)
-  kind = if (x@is_named) x@kind else paste0("\"", x@kind, "\"")
-  field = if (!is.null(x@field_name)) paste0(x@field_name, ": ") else ""
+  pos = pandoc_style_pos(ts_format_position(x@range))
+  kind = if (x@is_named) {
+    pandoc_style_kind(x@kind)
+  } else {
+    pandoc_style_val(paste0("\"", x@kind, "\""))
+  }
+  field = if (!is.null(x@field_name)) {
+    paste0(pandoc_style_field(paste0(x@field_name, ":")), " ")
+  } else ""
   is_leaf = length(x@children@content) == 0L
   text_snip = if (is_leaf && !is.null(x@text) && nzchar(x@text)) {
     paste0(" ", pandoc_quote(x@text))
@@ -123,7 +129,10 @@ S7::method(print, ts_tree) = function(x,
   root_child = ts_collect_node(x@root, env)
   root = pandoc_tree_add(
     env,
-    paste0("ts_tree language=", x@language),
+    paste0(
+      pandoc_style_kind("ts_tree"), " ",
+      pandoc_field("language"), x@language
+    ),
     root_child
   )
   pandoc_render_tree(root, env)

@@ -17,7 +17,8 @@ Depends:
     R (>= 4.2)
 Imports:
     cli,
-    S7
+    S7,
+    stringr
 Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
@@ -34,4 +35,5 @@ Collate:
     'pd-ast-print.R'
     'ts-ast-to-qmd.R'
     'pd-ast-to-qmd.R'
+    'q2r-package.R'
     'zzz.R'

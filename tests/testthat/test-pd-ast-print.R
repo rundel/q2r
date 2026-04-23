@@ -126,3 +126,65 @@ test_that("long text is truncated in labels", {
   expect_true(grepl("…\"$", out))
   expect_lt(nchar(out), 60L)
 })
+
+test_that("q2r.print_max_width controls label width", {
+  long = paste(rep("x", 100), collapse = "")
+  s = pandoc_str(text = long)
+  withr::with_options(list(q2r.print_max_width = 10L), {
+    out = capture_tree(s)
+    expect_identical(out, paste0("str \"", strrep("x", 9L), "…\""))
+  })
+  withr::with_options(list(q2r.print_max_width = 20L), {
+    out = capture_tree(s)
+    expect_identical(out, paste0("str \"", strrep("x", 19L), "…\""))
+  })
+})
+
+test_that("q2r.print_trunc_side selects the ellipsis position", {
+  src = "abcdefghijklmnopqrstuvwxyz"
+  s = pandoc_str(text = src)
+  withr::with_options(list(q2r.print_max_width = 10L, q2r.print_trunc_side = "right"), {
+    expect_identical(capture_tree(s), "str \"abcdefghi…\"")
+  })
+  withr::with_options(list(q2r.print_max_width = 10L, q2r.print_trunc_side = "left"), {
+    expect_identical(capture_tree(s), "str \"…rstuvwxyz\"")
+  })
+  withr::with_options(list(q2r.print_max_width = 10L, q2r.print_trunc_side = "center"), {
+    expect_identical(capture_tree(s), "str \"abcde…wxyz\"")
+  })
+})
+
+test_that("q2r.print_trunc_side rejects unknown sides", {
+  s = pandoc_str(text = "hello world")
+  withr::with_options(list(q2r.print_trunc_side = "bogus"), {
+    expect_error(capture_tree(s), "should be one of")
+  })
+})
+
+test_that("meta characters in text are escaped the way print() shows them", {
+  cb = pandoc_code_block(text = "x <- 1\nplot(x)")
+  out = capture_tree(cb)
+  expect_identical(out, "code_block \"x <- 1\\nplot(x)\"")
+})
+
+test_that("tree labels apply cli semantic styling under color", {
+  withr::with_options(list(cli.num_colors = 256L, cli.unicode = TRUE), {
+    h = pandoc_header(
+      level = 2L,
+      attr = pandoc_attr(id = "sec-intro"),
+      content = pandoc_inlines(list(pandoc_str(text = "Hello")))
+    )
+    out_raw = paste(utils::capture.output(print(h)), collapse = "\n")
+
+    expect_match(out_raw, cli::col_cyan("header"), fixed = TRUE)
+    expect_match(out_raw, cli::col_silver("level="), fixed = TRUE)
+    expect_match(out_raw, cli::col_yellow(" (#sec-intro)"), fixed = TRUE)
+    expect_match(out_raw, cli::col_green("\"Hello\""), fixed = TRUE)
+    expect_match(out_raw, cli::col_cyan("str"), fixed = TRUE)
+
+    expect_identical(
+      cli::ansi_strip(out_raw),
+      "header level=2 (#sec-intro)\n└─str \"Hello\""
+    )
+  })
+})
