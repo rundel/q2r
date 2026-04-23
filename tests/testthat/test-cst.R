@@ -41,14 +41,24 @@ test_that("leaf nodes carry a text substring from the source", {
   expect_true(any(grepl("Hi", leaves, fixed = TRUE)))
 })
 
-test_that("internal nodes have NULL text; leaves have non-NULL text", {
+test_that("leaves always carry @text; non-leaf @text is populated only when children leave byte gaps", {
   res = pampa_parse("# Hi\n", format = "cst")
   check = function(n) {
     if (length(n@children@content) == 0L) {
       expect_false(is.null(n@text))
     } else {
-      expect_null(n@text)
-      for (c in n@children@content) check(c)
+      kids = n@children@content
+      starts = vapply(kids, function(c) c@range@start_byte, integer(1))
+      ends   = vapply(kids, function(c) c@range@end_byte,   integer(1))
+      covered_to = n@range@start_byte
+      has_gap = FALSE
+      for (i in seq_along(kids)) {
+        if (starts[i] > covered_to) { has_gap = TRUE; break }
+        if (ends[i] > covered_to) covered_to = ends[i]
+      }
+      if (!has_gap && covered_to < n@range@end_byte) has_gap = TRUE
+      if (has_gap) expect_false(is.null(n@text)) else expect_null(n@text)
+      for (c in kids) check(c)
     }
   }
   check(res@cst@root)

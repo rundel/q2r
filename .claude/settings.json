@@ -27,7 +27,16 @@
       "Bash(Rscript -e 'devtools::load_all\\(quiet = TRUE\\); res = q2r::pampa_parse\\(\"inst/extdata/hello.qmd\"\\); cat\\(res$diagnostics, sep = \"\\\\n\"\\)')",
       "Bash(Rscript -e 'devtools::load_all\\(quiet = TRUE\\); res = q2r::pampa_parse\\(\"inst/extdata/hello.qmd\"\\); cat\\(res@diagnostics, sep = \"\\\\n\"\\)')",
       "Bash(Rscript -e 'devtools::load_all\\(quiet = TRUE\\); res = q2r::pampa_parse\\(\"inst/extdata/hello.qmd\", color = TRUE\\); txt = res@diagnostics[[1]]@formatted; cat\\(\"has ANSI:\", grepl\\(\"\\\\x1b\", txt\\), \"\\\\n\"\\); clean = q2r::pampa_parse\\(\"---\\\\ntitle: x\\\\n---\\\\n\\\\n# Hi\\\\n\", color = FALSE\\); cat\\(\"clean n diagnostics:\", length\\(clean@diagnostics\\), \"\\\\n\"\\)')",
-      "Bash(Rscript -e 'devtools::load_all\\(quiet = TRUE\\); res = q2r::pampa_parse\\(\"inst/extdata/hello.qmd\"\\); cat\\(\"n diags:\", length\\(res@diagnostics\\), \"\\\\n\\\\n\"\\); d = res@diagnostics[[1]]; cat\\(\"slots:\", paste\\(S7::prop_names\\(d\\), collapse=\", \"\\), \"\\\\n\"\\); cat\\(\"location start_row:\", d@location$start_row, \"\\\\n\\\\n\"\\); cat\\(\"--- print\\(d\\) plain ---\\\\n\"\\); print\\(d, color = FALSE\\); cat\\(\"\\\\n--- print\\(d\\) colored has ANSI? ---\\\\n\"\\); cat\\(\"has ANSI:\", grepl\\(\"\\\\x1b\", format\\(d, color = TRUE\\)\\), \"\\\\n\"\\); cat\\(\"\\\\n--- clean doc ---\\\\n\"\\); clean = q2r::pampa_parse\\(\"# hi\\\\n\"\\); cat\\(\"n diags:\", length\\(clean@diagnostics\\), \"\\\\n\"\\)')"
+      "Bash(Rscript -e 'devtools::load_all\\(quiet = TRUE\\); res = q2r::pampa_parse\\(\"inst/extdata/hello.qmd\"\\); cat\\(\"n diags:\", length\\(res@diagnostics\\), \"\\\\n\\\\n\"\\); d = res@diagnostics[[1]]; cat\\(\"slots:\", paste\\(S7::prop_names\\(d\\), collapse=\", \"\\), \"\\\\n\"\\); cat\\(\"location start_row:\", d@location$start_row, \"\\\\n\\\\n\"\\); cat\\(\"--- print\\(d\\) plain ---\\\\n\"\\); print\\(d, color = FALSE\\); cat\\(\"\\\\n--- print\\(d\\) colored has ANSI? ---\\\\n\"\\); cat\\(\"has ANSI:\", grepl\\(\"\\\\x1b\", format\\(d, color = TRUE\\)\\), \"\\\\n\"\\); cat\\(\"\\\\n--- clean doc ---\\\\n\"\\); clean = q2r::pampa_parse\\(\"# hi\\\\n\"\\); cat\\(\"n diags:\", length\\(clean@diagnostics\\), \"\\\\n\"\\)')",
+      "Read(//Users/rundel/Desktop/Projects/**)",
+      "Read(//Users/rundel/.cargo/**)",
+      "Bash(Rscript /tmp/collect_gaps.R)",
+      "Bash(Rscript /tmp/test_to_qmd.R)",
+      "Bash(Rscript -e 'devtools::test\\(filter = \"cst\", reporter = \"summary\"\\)')"
+    ],
+    "additionalDirectories": [
+      "/tmp",
+      "/private/tmp"
     ]
   }
 }

@@ -12,16 +12,32 @@ fn node_to_r(cursor: &mut TreeCursor, src: &[u8]) -> Robj {
     let start = node.start_position();
     let end = node.end_position();
 
-    let children = children_to_r(cursor, src);
-
-    let text: Robj = if node.child_count() == 0 {
+    // NOTE: CST `text` semantics deliberately differ from the AST export.
+    // Leaves always carry their source text; additionally, any non-leaf
+    // whose children do not cover every byte of its range (a grammar
+    // "gap" - e.g. `pandoc_math`, `pandoc_display_math` inner content,
+    // or `code_fence_content`'s body) also carries the full source span.
+    // This lets `to_qmd()` on the R side reconstruct bytes that
+    // tree-sitter-qmd parses via anonymous regexes and therefore never
+    // emits as named nodes. Revisit if the upstream grammar is changed
+    // to surface those bytes as real CST nodes.
+    let text: Robj = {
         let sb = node.start_byte();
         let eb = node.end_byte();
-        let slice = src.get(sb..eb).unwrap_or(&[]);
-        Robj::from(String::from_utf8_lossy(slice).into_owned())
-    } else {
-        Robj::from(NULL)
+        let needs_text = if node.child_count() == 0 {
+            true
+        } else {
+            has_child_gap(&node, sb, eb)
+        };
+        if needs_text {
+            let slice = src.get(sb..eb).unwrap_or(&[]);
+            Robj::from(String::from_utf8_lossy(slice).into_owned())
+        } else {
+            Robj::from(NULL)
+        }
     };
+
+    let children = children_to_r(cursor, src);
 
     list!(
         kind = node.kind(),
@@ -37,6 +53,31 @@ fn node_to_r(cursor: &mut TreeCursor, src: &[u8]) -> Robj {
         children = children
     )
     .into()
+}
+
+fn has_child_gap(node: &Node, start_byte: usize, end_byte: usize) -> bool {
+    let mut walker = node.walk();
+    let mut covered_to = start_byte;
+    let mut any = false;
+    if walker.goto_first_child() {
+        loop {
+            any = true;
+            let ch = walker.node();
+            if ch.start_byte() > covered_to {
+                return true;
+            }
+            if ch.end_byte() > covered_to {
+                covered_to = ch.end_byte();
+            }
+            if !walker.goto_next_sibling() {
+                break;
+            }
+        }
+    }
+    if !any {
+        return false;
+    }
+    covered_to < end_byte
 }
 
 fn children_to_r(cursor: &mut TreeCursor, src: &[u8]) -> Robj {
