@@ -39,7 +39,21 @@
       "Bash(Rscript -e 'devtools::test\\(filter = \"cst-to-qmd\"\\)')",
       "Bash(Rscript -e 'devtools::test\\(filter = \"ast-to-qmd\"\\)')",
       "Bash(git mv *)",
-      "Bash(Rscript -e 'devtools::load_all\\(quiet = TRUE\\); res = pampa_parse_pd\\(\"# hi\\\\n\"\\); cat\\(class\\(res\\)[1], \"\\\\n\"\\); print\\(res\\); cat\\(\"---\\\\n\"\\); res2 = pampa_parse_ts\\(\"# hi\\\\n\"\\); print\\(res2\\); cat\\(\"---\\\\nnative:\\\\n\"\\); cat\\(pampa_native\\(\"# hi\\\\n\"\\), sep=\"\\\\n\"\\)')"
+      "Bash(Rscript -e 'devtools::load_all\\(quiet = TRUE\\); res = pampa_parse_pd\\(\"# hi\\\\n\"\\); cat\\(class\\(res\\)[1], \"\\\\n\"\\); print\\(res\\); cat\\(\"---\\\\n\"\\); res2 = pampa_parse_ts\\(\"# hi\\\\n\"\\); print\\(res2\\); cat\\(\"---\\\\nnative:\\\\n\"\\); cat\\(pampa_native\\(\"# hi\\\\n\"\\), sep=\"\\\\n\"\\)')",
+      "Bash(Rscript -e 'print\\(encodeString\\(\"a\\\\nb\\\\tc\"\\)\\); print\\(stringr::str_trunc\\(\"hello world foo\", 10, ellipsis = \"…\"\\)\\)')",
+      "Bash(Rscript -e 'devtools::load_all\\(quiet = TRUE\\); x = pampa_parse_pd\\(\"```r\\\\nx <- 1\\\\nplot\\(x\\)\\\\n```\\\\n\"\\); print\\(x\\); cat\\(\"---\\\\n\"\\); options\\(q2r.print_max_width = 15\\); print\\(x\\)')",
+      "Bash(Rscript -e 'devtools::load_all\\(quiet = TRUE\\); x = pampa_parse_pd\\(\"a very very very very very very long paragraph that should be truncated when rendered in the tree\"\\); print\\(x\\); cat\\(\"---\\\\n\"\\); options\\(q2r.print_max_width = 20\\); print\\(x\\)')",
+      "Bash(Rscript -e 'devtools::load_all\\(quiet = TRUE\\); options\\(q2r.print_max_width = 25\\); x = pampa_parse_pd\\(\"```r\\\\nplot\\(mtcars$mpg, mtcars$disp, col=\\\\\"red\\\\\"\\)\\\\n```\\\\n\"\\); print\\(x\\)')",
+      "Bash(Rscript -e 'devtools::load_all\\(quiet = TRUE\\); options\\(q2r.print_max_width = 25\\); x = pampa_parse_pd\\(\"```r\\\\nplot\\(mtcars$mpg, mtcars$disp, col=\\\\\"red\\\\\"\\)\\\\n```\\\\n\"\\); for \\(s in c\\(\"right\",\"left\",\"center\"\\)\\) { options\\(q2r.print_trunc_side = s\\); cat\\(\"-- side =\", s, \"--\\\\n\"\\); print\\(x\\) }')",
+      "Bash(Rscript -e 'devtools::load_all\\(quiet=TRUE\\); options\\(cli.num_colors=256\\); print\\(pampa_parse_pd\\(\"# Hello {#sec-intro}\\\\n\\\\nA paragraph with *emph* and [link]\\(http://x \\\\\"title\\\\\"\\).\\\\n\\\\n```r\\\\nx <- 1\\\\n```\\\\n\"\\)\\)')",
+      "Bash(Rscript -e 'devtools::load_all\\(quiet=TRUE\\); options\\(cli.num_colors=256\\); print\\(pampa_parse_ts\\(\"# Hello\\\\n\\\\nA *paragraph*.\\\\n\"\\)\\)')",
+      "Bash(Rscript -e 'devtools::test\\(filter = \"pd-ast-print\"\\)')",
+      "Bash(sed -n '1,80p' /Users/rundel/Desktop/Projects/q2/crates/quarto-pandoc-types/src/pandoc.rs)",
+      "Bash(sed -n '1,80p' /Users/rundel/Desktop/Projects/q2/crates/quarto-pandoc-types/src/list.rs)",
+      "Bash(cargo build *)",
+      "Bash(Rscript -e 'devtools::document\\(quiet = TRUE\\); devtools::load_all\\(quiet = TRUE\\) *)",
+      "Bash(git commit *)",
+      "Bash(git add *)"
     ],
     "additionalDirectories": [
       "/tmp",
