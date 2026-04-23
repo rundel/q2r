@@ -53,7 +53,9 @@
       "Bash(cargo build *)",
       "Bash(Rscript -e 'devtools::document\\(quiet = TRUE\\); devtools::load_all\\(quiet = TRUE\\) *)",
       "Bash(git commit *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git submodule *)",
+      "Bash(Q2R_QUARTO_WEB_REPORT=/tmp/q2r-rt.txt Rscript -e 'suppressMessages\\(devtools::test\\(filter = \"quarto-web-roundtrip\", reporter = \"minimal\"\\)\\)')"
     ],
     "additionalDirectories": [
       "/tmp",
