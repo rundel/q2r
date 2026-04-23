@@ -60,3 +60,7 @@ R package that wraps the `pampa` Rust crate from [quarto-dev/q2](https://github.
 - Users must have `rustc ≥ 1.85` installed (rustup is the reliable path).
 - `default-features = false` has not yet been verified to build across all pampa library paths we call; if it fails, narrow the feature subset (never re-enable `lua-filter`).
 - The diagnostic reconstruction path assumes a single-file `SourceContext` and `SourceInfo::Original`. Diagnostics coming from pampa that point into `Substring`/`Concat` sources render correctly *because* `map_offset` has already resolved them to file-level byte offsets before we flatten to R; changes to pampa's diagnostic shape (e.g., multi-file details) could break this silently.
+
+## TODO
+
+- AST → QMD: `pandoc_figure` does not structurally round-trip. Pandoc lifts a standalone-image paragraph into `Figure { content: [Plain [Image ...]], caption, ... }`; our fallback wraps that in a `::: {}` fenced div, which on re-parse yields `Div { Paragraph [Image] }` with no `pandoc_figure` wrapper. Fix: detect the common "figure wrapping a single image" shape and emit just the bare `![alt](url)` line (and carry the caption through the image's title / standard caption syntax) so pandoc's implicit-figure lifting reconstructs the original. Also decide how to serialize non-trivial figure captions.

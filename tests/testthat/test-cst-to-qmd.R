@@ -21,9 +21,13 @@ test_that("to_qmd dispatches on ts_tree, ts_node, and pampa_result", {
   expect_identical(to_qmd(res@cst@root), "# Hi\n")
 })
 
-test_that("to_qmd on a pampa_result without a CST errors", {
+test_that("to_qmd on a pampa_result falls back to the AST when CST is absent", {
   res = pampa_parse("# Hi\n", format = "ast")
-  expect_error(to_qmd(res), "no CST")
+  expect_identical(to_qmd(res), "# Hi {#hi}\n")
+})
+
+test_that("to_qmd on an empty pampa_result errors", {
+  expect_error(to_qmd(pampa_result()), "neither a CST nor an AST")
 })
 
 test_that("to_qmd round-trips headings and paragraphs", {

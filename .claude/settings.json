@@ -32,7 +32,12 @@
       "Read(//Users/rundel/.cargo/**)",
       "Bash(Rscript /tmp/collect_gaps.R)",
       "Bash(Rscript /tmp/test_to_qmd.R)",
-      "Bash(Rscript -e 'devtools::test\\(filter = \"cst\", reporter = \"summary\"\\)')"
+      "Bash(Rscript -e 'devtools::test\\(filter = \"cst\", reporter = \"summary\"\\)')",
+      "Bash(Rscript -e 'devtools::load_all\\(\".\", quiet = TRUE\\); cat\\(\"=== loaded ===\\\\n\"\\); cat\\(to_qmd\\(pampa_parse\\(\"# hi\\\\n\\\\ntext with *emph* and **strong**.\\\\n\", format = \"ast\"\\)\\)\\)')",
+      "Bash(Rscript -e 'devtools::load_all\\(\".\", quiet = TRUE\\); out = to_qmd\\(pampa_parse\\(\"# hi\\\\n\\\\ntext with *emph* and **strong**.\\\\n\", format = \"ast\"\\)\\); print\\(out\\); cat\\(\"---BYTES---\\\\n\"\\); writeLines\\(rawToChar\\(as.raw\\(utf8ToInt\\(out\\)\\)\\)\\)')",
+      "Bash(Rscript -e 'devtools::test\\(filter = \"cst-to-qmd\", quiet = TRUE\\)')",
+      "Bash(Rscript -e 'devtools::test\\(filter = \"cst-to-qmd\"\\)')",
+      "Bash(Rscript -e 'devtools::test\\(filter = \"ast-to-qmd\"\\)')"
     ],
     "additionalDirectories": [
       "/tmp",

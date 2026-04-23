@@ -31,6 +31,7 @@ Collate:
     'diagnostic.R'
     'result.R'
     'cst-to-qmd.R'
+    'ast-to-qmd.R'
     'extendr-wrappers.R'
     'from-rust.R'
     'pampa.R'

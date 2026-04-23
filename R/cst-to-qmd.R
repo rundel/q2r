@@ -14,16 +14,6 @@ to_qmd = S7::new_generic("to_qmd", "x")
 
 S7::method(to_qmd, ts_tree) = function(x) to_qmd(x@root)
 
-S7::method(to_qmd, pampa_result) = function(x) {
-  if (is.null(x@cst)) {
-    stop(
-      "to_qmd(): pampa_result has no CST; re-run pampa_parse() with ",
-      "format = \"cst\" (or \"all\")"
-    )
-  }
-  to_qmd(x@cst)
-}
-
 S7::method(to_qmd, ts_node) = function(x) {
   if (length(x@children@content) == 0L) {
     return(if (is.null(x@text)) "" else x@text)
