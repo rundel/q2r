@@ -9,11 +9,12 @@ pampa_result(
   tree = NULL,
   cst = NULL,
   native = NULL,
-  diagnostics = character(0)
+  diagnostics = list()
 )
 }
 \description{
 Wrapper carrying any combination of the artifacts the parser can
 produce. Slots not requested by \code{format} are \code{NULL} (or empty for
-\code{diagnostics}).
+\code{diagnostics}). The \code{diagnostics} slot is always populated as a
+(possibly empty) list of \code{\link{pampa_diagnostic}} objects.
 }

@@ -1734,6 +1734,8 @@ version = "0.1.0"
 dependencies = [
  "extendr-api",
  "pampa",
+ "quarto-error-reporting",
+ "quarto-source-map",
  "tree-sitter",
  "tree-sitter-qmd",
 ]

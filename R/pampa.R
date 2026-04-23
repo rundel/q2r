@@ -1,4 +1,4 @@
-#' @include result.R from-rust.R
+#' @include result.R from-rust.R diagnostic.R
 NULL
 
 #' Parse QMD input with pampa
@@ -13,6 +13,8 @@ NULL
 #'   AST text), or `"all"` (all of the above). Diagnostics are always
 #'   included.
 #' @return A [`pampa_result`] with the requested slots populated.
+#'   Pretty-printed diagnostic output is produced on demand by the
+#'   `print()` / `format()` methods on [`pampa_diagnostic`].
 #' @export
 pampa_parse = function(input, format = c("ast", "tree", "cst", "native", "all")) {
   stopifnot(is.character(input), length(input) == 1L, !is.na(input))
@@ -29,11 +31,18 @@ pampa_parse = function(input, format = c("ast", "tree", "cst", "native", "all"))
 
   raw = pampa_parse_impl(text, filename)
 
+  diagnostics = lapply(
+    raw$diagnostics %||% list(),
+    diagnostic_from_list,
+    source_text = text,
+    source_filename = filename
+  )
+
   pampa_result(
     ast         = if (format %in% c("ast", "all")) pandoc_from_list(raw$ast),
     tree        = if (format %in% c("tree", "all")) raw$tree,
     cst         = if (format %in% c("cst", "all")) ts_tree_from_list(raw$cst),
     native      = if (format %in% c("native", "all")) raw$native,
-    diagnostics = raw$diagnostics %||% character()
+    diagnostics = diagnostics
   )
 }

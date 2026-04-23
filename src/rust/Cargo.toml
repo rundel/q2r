@@ -26,6 +26,14 @@ default-features = false
 git = 'https://github.com/quarto-dev/q2'
 rev = 'e47c6e1d62ab4d935434a1f5875f7bed10c140f1'
 
+[dependencies.quarto-source-map]
+git = 'https://github.com/quarto-dev/q2'
+rev = 'e47c6e1d62ab4d935434a1f5875f7bed10c140f1'
+
+[dependencies.quarto-error-reporting]
+git = 'https://github.com/quarto-dev/q2'
+rev = 'e47c6e1d62ab4d935434a1f5875f7bed10c140f1'
+
 [profile.release]
 lto = true
 codegen-units = 1

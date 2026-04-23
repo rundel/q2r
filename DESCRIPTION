@@ -28,6 +28,7 @@ Collate:
     'ast-inline.R'
     'ast-pandoc.R'
     'ast-print.R'
+    'diagnostic.R'
     'extendr-wrappers.R'
     'result.R'
     'from-rust.R'

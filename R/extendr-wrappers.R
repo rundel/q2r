@@ -8,10 +8,23 @@ NULL
 #' Parse QMD text with pampa.
 #'
 #' Returns a list with `tree` (tree-sitter CST text), `cst` (structured
-#' tree-sitter CST as a nested tagged list), `diagnostics`, `native`
-#' (Pandoc native-format text), and `ast` (tagged nested list suitable
-#' for conversion to S7 `pandoc` objects).
+#' tree-sitter CST as a nested tagged list), `diagnostics` (list of
+#' structured diagnostic records that can be rendered via
+#' `pampa_diag_format_impl`), `native` (Pandoc native-format text), and
+#' `ast` (tagged nested list suitable for conversion to S7 `pandoc`
+#' objects).
 #' @export
 pampa_parse_impl <- function(text, filename) .Call(wrap__pampa_parse_impl, text, filename)
+
+#' Pretty-print a diagnostic by reconstructing it from its slot values.
+#'
+#' Accepts the structured fields carried by a `pampa_diagnostic` S7
+#' object (`kind`, `code`, `title`, `problem`, `details`, `hints`,
+#' `location`) together with the original source text, filename, and
+#' a flag controlling OSC 8 terminal hyperlinks. Returns the ariadne
+#' rendering (which includes ANSI colour codes); callers that want
+#' colourless output should strip ANSI afterward.
+#' @export
+pampa_diag_format_impl <- function(kind, code, title, problem, details, hints, location, source_text, source_filename, hyperlinks) .Call(wrap__pampa_diag_format_impl, kind, code, title, problem, details, hints, location, source_text, source_filename, hyperlinks)
 
 # nolint end

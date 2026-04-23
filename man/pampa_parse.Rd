@@ -20,6 +20,8 @@ included.}
 }
 \value{
 A \code{\link{pampa_result}} with the requested slots populated.
+Pretty-printed diagnostic output is produced on demand by the
+\code{print()} / \code{format()} methods on \code{\link{pampa_diagnostic}}.
 }
 \description{
 Parse QMD input with pampa

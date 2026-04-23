@@ -1,11 +1,12 @@
-#' @include ast-pandoc.R ast-cst.R
+#' @include ast-pandoc.R ast-cst.R diagnostic.R
 NULL
 
 #' Result of `pampa_parse()`
 #'
 #' Wrapper carrying any combination of the artifacts the parser can
 #' produce. Slots not requested by `format` are `NULL` (or empty for
-#' `diagnostics`).
+#' `diagnostics`). The `diagnostics` slot is always populated as a
+#' (possibly empty) list of [`pampa_diagnostic`] objects.
 #'
 #' @export
 pampa_result = S7::new_class(
@@ -16,7 +17,7 @@ pampa_result = S7::new_class(
     tree        = S7::new_property(S7::class_any, default = NULL),
     cst         = S7::new_property(S7::class_any, default = NULL),
     native      = S7::new_property(S7::class_any, default = NULL),
-    diagnostics = S7::new_property(S7::class_character, default = character())
+    diagnostics = S7::new_property(S7::class_list, default = list())
   ),
   validator = function(self) {
     if (!is.null(self@ast) && !S7::S7_inherits(self@ast, pandoc)) {
@@ -27,11 +28,16 @@ pampa_result = S7::new_class(
       "@cst must be NULL or a ts_tree object"
     } else if (!is.null(self@native) && !is.character(self@native)) {
       "@native must be NULL or a character vector"
+    } else if (length(self@diagnostics) &&
+               !all(vapply(self@diagnostics, S7::S7_inherits, logical(1), pampa_diagnostic))) {
+      "@diagnostics must be a list of pampa_diagnostic objects"
     }
   }
 )
 
-S7::method(print, pampa_result) = function(x, ...) {
+S7::method(print, pampa_result) = function(x,
+                                            color = cli::num_ansi_colors() > 1L,
+                                            ...) {
   if (!is.null(x@tree)) {
     cat("-- tree --\n")
     cat(x@tree, sep = "\n")
@@ -43,8 +49,7 @@ S7::method(print, pampa_result) = function(x, ...) {
   }
   if (length(x@diagnostics)) {
     cat("\n-- diagnostics --\n")
-    cat(x@diagnostics, sep = "\n")
-    cat("\n")
+    for (d in x@diagnostics) print(d, color = color)
   }
   if (!is.null(x@native)) {
     cat("\n-- native --\n")
