@@ -39,6 +39,25 @@ pampa_tree_impl <- function(text, filename) .Call(wrap__pampa_tree_impl, text, f
 #' @export
 pampa_native_impl <- function(text, filename) .Call(wrap__pampa_native_impl, text, filename)
 
+#' Render QMD input through pampa's own QMD writer (text/file path).
+#'
+#' Parses `text` with pampa's QMD reader and writes the resulting Pandoc
+#' AST back out using `pampa::writers::qmd::write`. Primarily a testing
+#' helper for comparing against the R-side `to_qmd()` implementations.
+#' Returns a list with `text` (the rendered QMD) and `diagnostics`.
+#' @export
+pampa_write_qmd_text_impl <- function(text, filename) .Call(wrap__pampa_write_qmd_text_impl, text, filename)
+
+#' Render an R-constructed Pandoc AST through pampa's QMD writer.
+#'
+#' Takes a tagged-list Pandoc AST (same shape emitted by
+#' `pampa_parse_pd_impl`), reconstructs a `pampa::pandoc::Pandoc` value,
+#' and writes it out via `pampa::writers::qmd::write`. Returns a list
+#' with `text` (rendered QMD, or `NULL` on error) and `diagnostics`
+#' (any writer diagnostics; empty on success).
+#' @export
+pampa_write_qmd_ast_impl <- function(r_ast) .Call(wrap__pampa_write_qmd_ast_impl, r_ast)
+
 #' Pretty-print a diagnostic by reconstructing it from its slot values.
 #'
 #' Accepts the structured fields carried by a `pampa_diagnostic` S7

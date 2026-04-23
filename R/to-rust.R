@@ -1,0 +1,128 @@
+#' @include pd-ast-pandoc.R pd-ast-block.R pd-ast-inline.R pd-ast-support.R
+NULL
+
+attr_to_list = function(attr) {
+  keys = names(attr@attributes) %||% character()
+  values = unname(attr@attributes) %||% character()
+  list(
+    id      = attr@id,
+    classes = as.character(attr@classes),
+    keys    = as.character(keys),
+    values  = as.character(values)
+  )
+}
+
+inlines_to_list = function(x) {
+  lapply(x@content, inline_to_list)
+}
+
+blocks_to_list = function(x) {
+  lapply(x@content, block_to_list)
+}
+
+citation_to_list = function(x) {
+  list(
+    id       = x@id,
+    mode     = x@mode,
+    prefix   = inlines_to_list(x@prefix),
+    suffix   = inlines_to_list(x@suffix),
+    note_num = as.integer(x@note_num),
+    hash     = as.integer(x@hash)
+  )
+}
+
+inline_to_list = function(x) {
+  if (S7::S7_inherits(x, pandoc_str))         return(list(tag = "Str", text = x@text))
+  if (S7::S7_inherits(x, pandoc_space))       return(list(tag = "Space"))
+  if (S7::S7_inherits(x, pandoc_soft_break))  return(list(tag = "SoftBreak"))
+  if (S7::S7_inherits(x, pandoc_line_break))  return(list(tag = "LineBreak"))
+  if (S7::S7_inherits(x, pandoc_emph))        return(list(tag = "Emph",        content = inlines_to_list(x@content)))
+  if (S7::S7_inherits(x, pandoc_underline))   return(list(tag = "Underline",   content = inlines_to_list(x@content)))
+  if (S7::S7_inherits(x, pandoc_strong))      return(list(tag = "Strong",      content = inlines_to_list(x@content)))
+  if (S7::S7_inherits(x, pandoc_strikeout))   return(list(tag = "Strikeout",   content = inlines_to_list(x@content)))
+  if (S7::S7_inherits(x, pandoc_superscript)) return(list(tag = "Superscript", content = inlines_to_list(x@content)))
+  if (S7::S7_inherits(x, pandoc_subscript))   return(list(tag = "Subscript",   content = inlines_to_list(x@content)))
+  if (S7::S7_inherits(x, pandoc_small_caps))  return(list(tag = "SmallCaps",   content = inlines_to_list(x@content)))
+  if (S7::S7_inherits(x, pandoc_code))        return(list(tag = "Code", attr = attr_to_list(x@attr), text = x@text))
+  if (S7::S7_inherits(x, pandoc_math))        return(list(tag = "Math", math_type = x@math_type, text = x@text))
+  if (S7::S7_inherits(x, pandoc_raw_inline))  return(list(tag = "RawInline", format = x@format, text = x@text))
+  if (S7::S7_inherits(x, pandoc_quoted))      return(list(tag = "Quoted", quote_type = x@quote_type, content = inlines_to_list(x@content)))
+  if (S7::S7_inherits(x, pandoc_link))        return(list(
+    tag = "Link", attr = attr_to_list(x@attr), content = inlines_to_list(x@content),
+    url = x@url, title = x@title
+  ))
+  if (S7::S7_inherits(x, pandoc_image))       return(list(
+    tag = "Image", attr = attr_to_list(x@attr), content = inlines_to_list(x@content),
+    url = x@url, title = x@title
+  ))
+  if (S7::S7_inherits(x, pandoc_note))        return(list(tag = "Note",  content = blocks_to_list(x@content)))
+  if (S7::S7_inherits(x, pandoc_span))        return(list(tag = "Span",  attr = attr_to_list(x@attr), content = inlines_to_list(x@content)))
+  if (S7::S7_inherits(x, pandoc_cite))        return(list(
+    tag = "Cite", citations = lapply(x@citations, citation_to_list),
+    content = inlines_to_list(x@content)
+  ))
+  if (S7::S7_inherits(x, pandoc_note_reference)) return(list(tag = "NoteReference", id = x@id))
+  if (S7::S7_inherits(x, pandoc_attr_inline))    return(list(tag = "AttrInline", attr = attr_to_list(x@attr)))
+  if (S7::S7_inherits(x, pandoc_insert))         return(list(tag = "Insert",      attr = attr_to_list(x@attr), content = inlines_to_list(x@content)))
+  if (S7::S7_inherits(x, pandoc_delete))         return(list(tag = "Delete",      attr = attr_to_list(x@attr), content = inlines_to_list(x@content)))
+  if (S7::S7_inherits(x, pandoc_highlight))      return(list(tag = "Highlight",   attr = attr_to_list(x@attr), content = inlines_to_list(x@content)))
+  if (S7::S7_inherits(x, pandoc_edit_comment))   return(list(tag = "EditComment", attr = attr_to_list(x@attr), content = inlines_to_list(x@content)))
+  stop("to-rust: unhandled inline class '", pandoc_class_name(x), "'")
+}
+
+block_to_list = function(x) {
+  if (S7::S7_inherits(x, pandoc_plain))      return(list(tag = "Plain",     content = inlines_to_list(x@content)))
+  if (S7::S7_inherits(x, pandoc_paragraph))  return(list(tag = "Paragraph", content = inlines_to_list(x@content)))
+  if (S7::S7_inherits(x, pandoc_line_block)) return(list(
+    tag = "LineBlock",
+    content = lapply(x@content, inlines_to_list)
+  ))
+  if (S7::S7_inherits(x, pandoc_code_block)) return(list(tag = "CodeBlock", attr = attr_to_list(x@attr), text = x@text))
+  if (S7::S7_inherits(x, pandoc_raw_block))  return(list(tag = "RawBlock",  format = x@format, text = x@text))
+  if (S7::S7_inherits(x, pandoc_block_quote)) return(list(tag = "BlockQuote", content = blocks_to_list(x@content)))
+  if (S7::S7_inherits(x, pandoc_ordered_list)) return(list(
+    tag   = "OrderedList",
+    start = as.integer(x@attr@start),
+    style = x@attr@style,
+    delim = x@attr@delim,
+    items = lapply(x@content, blocks_to_list)
+  ))
+  if (S7::S7_inherits(x, pandoc_bullet_list)) return(list(
+    tag   = "BulletList",
+    items = lapply(x@content, blocks_to_list)
+  ))
+  if (S7::S7_inherits(x, pandoc_definition_list)) return(list(
+    tag   = "DefinitionList",
+    items = lapply(x@content, function(item) list(
+      term = inlines_to_list(item@term),
+      defs = lapply(item@defs, blocks_to_list)
+    ))
+  ))
+  if (S7::S7_inherits(x, pandoc_header))         return(list(
+    tag = "Header", level = as.integer(x@level),
+    attr = attr_to_list(x@attr), content = inlines_to_list(x@content)
+  ))
+  if (S7::S7_inherits(x, pandoc_horizontal_rule)) return(list(tag = "HorizontalRule"))
+  if (S7::S7_inherits(x, pandoc_figure))         return(list(
+    tag = "Figure", attr = attr_to_list(x@attr),
+    caption = blocks_to_list(x@caption@long),
+    content = blocks_to_list(x@content)
+  ))
+  if (S7::S7_inherits(x, pandoc_div))            return(list(
+    tag = "Div", attr = attr_to_list(x@attr), content = blocks_to_list(x@content)
+  ))
+  if (S7::S7_inherits(x, pandoc_note_definition_para)) return(list(
+    tag = "NoteDefinitionPara", id = x@id, content = inlines_to_list(x@content)
+  ))
+  if (S7::S7_inherits(x, pandoc_note_definition_fenced_block)) return(list(
+    tag = "NoteDefinitionFencedBlock", id = x@id, content = blocks_to_list(x@content)
+  ))
+  if (S7::S7_inherits(x, pandoc_caption_block)) return(list(
+    tag = "CaptionBlock", content = inlines_to_list(x@content)
+  ))
+  stop("to-rust: unhandled block class '", pandoc_class_name(x), "'")
+}
+
+pandoc_to_list = function(x) {
+  list(tag = "Pandoc", blocks = blocks_to_list(x@blocks))
+}

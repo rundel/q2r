@@ -7,9 +7,11 @@
 pampa_parse_pd(input)
 }
 \arguments{
-\item{input}{A single string. Treated as a file path if it does not
-contain newlines and \code{file.exists()} returns TRUE; otherwise
-treated as raw text.}
+\item{input}{Either a single string (treated as a file path if it
+does not contain newlines and \code{file.exists()} returns TRUE, else as
+raw text) or a \code{\link{ts_tree}} object. For a \code{ts_tree}, the tree is
+rendered to QMD via \code{\link[=to_qmd]{to_qmd()}} and re-parsed; this exercises the
+full ts -> Pandoc pipeline on an R-held AST.}
 }
 \value{
 A \code{\link{pandoc}} object with any parse diagnostics attached in

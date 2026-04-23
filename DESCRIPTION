@@ -31,6 +31,7 @@ Collate:
     'pd-ast-block.R'
     'pd-ast-pandoc.R'
     'from-rust.R'
+    'to-rust.R'
     'pampa.R'
     'pd-ast-print.R'
     'ts-ast-to-qmd.R'

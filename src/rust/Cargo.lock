@@ -1733,6 +1733,7 @@ name = "q2r"
 version = "0.1.0"
 dependencies = [
  "extendr-api",
+ "hashlink",
  "pampa",
  "quarto-error-reporting",
  "quarto-source-map",

@@ -1,9 +1,10 @@
 use extendr_api::prelude::*;
 use pampa::readers::qmd;
-use pampa::writers::native;
+use pampa::writers::{native, qmd as qmd_writer};
 
 mod diag_to_r;
 mod pd_ast_to_r;
+mod r_to_pd_ast;
 mod ts_ast_to_r;
 
 fn diags_to_list<I>(diags: I, ctx: &quarto_source_map::SourceContext) -> List
@@ -122,6 +123,69 @@ fn pampa_native_impl(text: &str, filename: &str) -> Vec<String> {
     }
 }
 
+/// Render QMD input through pampa's own QMD writer (text/file path).
+///
+/// Parses `text` with pampa's QMD reader and writes the resulting Pandoc
+/// AST back out using `pampa::writers::qmd::write`. Primarily a testing
+/// helper for comparing against the R-side `to_qmd()` implementations.
+/// Returns a list with `text` (the rendered QMD) and `diagnostics`.
+/// @export
+#[extendr]
+fn pampa_write_qmd_text_impl(text: &str, filename: &str) -> List {
+    let mut sink = std::io::sink();
+    match qmd::read(text.as_bytes(), false, filename, &mut sink, false, None) {
+        Ok((pandoc, ctx, parse_diags)) => {
+            let mut out: Vec<u8> = Vec::new();
+            match qmd_writer::write(&pandoc, &mut out) {
+                Ok(()) => {
+                    let rendered = String::from_utf8_lossy(&out).into_owned();
+                    let diag_list = diags_to_list_ref(&parse_diags, &ctx.source_context);
+                    list!(text = rendered, diagnostics = diag_list)
+                }
+                Err(write_diags) => {
+                    let diag_list = diags_to_list(write_diags, &ctx.source_context);
+                    list!(text = NULL, diagnostics = diag_list)
+                }
+            }
+        }
+        Err(diags) => {
+            let ctx = fallback_source_context(text, filename);
+            let diag_list = diags_to_list(diags, &ctx);
+            list!(text = NULL, diagnostics = diag_list)
+        }
+    }
+}
+
+/// Render an R-constructed Pandoc AST through pampa's QMD writer.
+///
+/// Takes a tagged-list Pandoc AST (same shape emitted by
+/// `pampa_parse_pd_impl`), reconstructs a `pampa::pandoc::Pandoc` value,
+/// and writes it out via `pampa::writers::qmd::write`. Returns a list
+/// with `text` (rendered QMD, or `NULL` on error) and `diagnostics`
+/// (any writer diagnostics; empty on success).
+/// @export
+#[extendr]
+fn pampa_write_qmd_ast_impl(r_ast: Robj) -> List {
+    let pandoc = match r_to_pd_ast::pandoc_from_r(&r_ast) {
+        Ok(p) => p,
+        Err(e) => {
+            return list!(text = NULL, error = e.to_string(), diagnostics = List::new(0));
+        }
+    };
+    let mut out: Vec<u8> = Vec::new();
+    match qmd_writer::write(&pandoc, &mut out) {
+        Ok(()) => {
+            let rendered = String::from_utf8_lossy(&out).into_owned();
+            list!(text = rendered, diagnostics = List::new(0))
+        }
+        Err(write_diags) => {
+            let ctx = quarto_source_map::SourceContext::new();
+            let diag_list = diags_to_list(write_diags, &ctx);
+            list!(text = NULL, diagnostics = diag_list)
+        }
+    }
+}
+
 /// Pretty-print a diagnostic by reconstructing it from its slot values.
 ///
 /// Accepts the structured fields carried by a `pampa_diagnostic` S7
@@ -164,5 +228,7 @@ extendr_module! {
     fn pampa_parse_ts_impl;
     fn pampa_tree_impl;
     fn pampa_native_impl;
+    fn pampa_write_qmd_text_impl;
+    fn pampa_write_qmd_ast_impl;
     fn pampa_diag_format_impl;
 }
