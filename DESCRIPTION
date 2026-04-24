@@ -37,4 +37,5 @@ Collate:
     'ts-ast-to-qmd.R'
     'pd-ast-to-qmd.R'
     'q2r-package.R'
+    'tests.R'
     'zzz.R'
