@@ -139,25 +139,71 @@ pandoc_from_list = function(x) {
   )
 }
 
+ts_point_class_  = c("q2r::ts_point", "S7_object")
+ts_range_class_  = c("q2r::ts_range", "S7_object")
+ts_nodes_class_  = c("q2r::ts_nodes", "S7_object")
+ts_node_class_   = c("q2r::ts_node",  "S7_object")
+
+ts_point_fast = function(row, column) {
+  o = S7::S7_object()
+  attr(o, "class")    = ts_point_class_
+  attr(o, "S7_class") = ts_point
+  attr(o, "row")      = row
+  attr(o, "column")   = column
+  o
+}
+
+ts_range_fast = function(start_byte, end_byte, start_point, end_point) {
+  o = S7::S7_object()
+  attr(o, "class")       = ts_range_class_
+  attr(o, "S7_class")    = ts_range
+  attr(o, "start_byte")  = start_byte
+  attr(o, "end_byte")    = end_byte
+  attr(o, "start_point") = start_point
+  attr(o, "end_point")   = end_point
+  o
+}
+
+ts_nodes_fast = function(content) {
+  o = S7::S7_object()
+  attr(o, "class")    = ts_nodes_class_
+  attr(o, "S7_class") = ts_nodes
+  attr(o, "content")  = content
+  o
+}
+
+ts_node_fast = function(kind, is_named, field_name, range, text, children) {
+  o = S7::S7_object()
+  attr(o, "class")      = ts_node_class_
+  attr(o, "S7_class")   = ts_node
+  attr(o, "kind")       = kind
+  attr(o, "is_named")   = is_named
+  attr(o, "field_name") = field_name
+  attr(o, "range")      = range
+  attr(o, "text")       = text
+  attr(o, "children")   = children
+  o
+}
+
 ts_node_from_list = function(x) {
-  ts_node(
+  ts_node_fast(
     kind       = x$kind %||% "",
     is_named   = isTRUE(x$is_named),
     field_name = x$field_name,
-    range      = ts_range(
+    range      = ts_range_fast(
       start_byte  = as.integer(x$start_byte),
       end_byte    = as.integer(x$end_byte),
-      start_point = ts_point(
-        row    = as.integer(x$start_row),
-        column = as.integer(x$start_col)
+      start_point = ts_point_fast(
+        as.integer(x$start_row),
+        as.integer(x$start_col)
       ),
-      end_point   = ts_point(
-        row    = as.integer(x$end_row),
-        column = as.integer(x$end_col)
+      end_point   = ts_point_fast(
+        as.integer(x$end_row),
+        as.integer(x$end_col)
       )
     ),
     text     = x$text,
-    children = ts_nodes(lapply(x$children %||% list(), ts_node_from_list))
+    children = ts_nodes_fast(lapply(x$children %||% list(), ts_node_from_list))
   )
 }
 
