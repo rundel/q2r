@@ -37,11 +37,29 @@ ts_concat = function(x) paste0(ts_children_qmd(x), collapse = "")
 
 ts_concat_nl = function(x) paste0(ts_concat(x), "\n")
 
+# Handler factory: use @text when set (grammar-gap fallback), otherwise
+# delegate to `fallback`. When `fallback = NULL`, @text is required and
+# its absence is an error.
+ts_text_or = function(fallback = ts_concat) {
+  if (is.null(fallback)) {
+    function(x) {
+      if (!is.null(x@text)) return(x@text)
+      stop("to_qmd(): '", x@kind, "' node has no @text fallback")
+    }
+  } else {
+    function(x) {
+      if (!is.null(x@text)) return(x@text)
+      fallback(x)
+    }
+  }
+}
+
 ts_kind_handlers = list(
-  document = ts_concat,
+  document = function(x) {
+    paste(ts_children_qmd(x), collapse = "\n")
+  },
   section = function(x) {
-    parts = ts_children_qmd(x)
-    paste0(paste(parts, collapse = "\n"), "")
+    paste(ts_children_qmd(x), collapse = "\n")
   },
   metadata = ts_concat,
 
@@ -54,11 +72,22 @@ ts_kind_handlers = list(
     }
   },
 
-  pandoc_paragraph = ts_concat_nl,
-  pandoc_block_quote = ts_concat,
+  pandoc_paragraph = ts_text_or(function(x) {
+    ch = x@children@content
+    if (length(ch) == 0L) return("")
+    kinds = vapply(ch, function(c) c@kind, character(1L))
+    parts = ts_children_qmd(x)
+    n = length(ch)
+    if (kinds[n] == "block_continuation") {
+      paste0(paste0(parts[-n], collapse = ""), "\n", parts[n])
+    } else {
+      paste0(paste0(parts, collapse = ""), "\n")
+    }
+  }),
+  pandoc_block_quote = ts_text_or(),
 
-  pandoc_list = ts_concat,
-  list_item = ts_concat,
+  pandoc_list = ts_text_or(),
+  list_item    = ts_text_or(),
 
   pandoc_code_block = function(x) {
     ch = x@children@content
@@ -66,7 +95,8 @@ ts_kind_handlers = list(
     parts = ts_children_qmd(x)
     out = parts[1L]
     i = 2L
-    if (i <= length(parts) && kinds[i] == "attribute_specifier") {
+    while (i <= length(parts) &&
+           kinds[i] %in% c("attribute_specifier", "info_string")) {
       out = paste0(out, parts[i])
       i = i + 1L
     }
@@ -75,38 +105,41 @@ ts_kind_handlers = list(
       out = paste0(out, parts[i])
       i = i + 1L
     }
-    if (i <= length(parts)) {
+    had_close = i <= length(parts)
+    if (had_close) {
       out = paste0(out, parts[i])
       i = i + 1L
     }
-    paste0(out, "\n")
+    if (i <= length(parts)) {
+      out = paste0(out, paste0(parts[i:length(parts)], collapse = ""))
+    } else if (had_close || !endsWith(out, "\n")) {
+      out = paste0(out, "\n")
+    }
+    out
   },
 
-  code_fence_content = function(x) {
-    if (!is.null(x@text)) return(x@text)
-    stop("to_qmd(): 'code_fence_content' node has no @text fallback")
-  },
+  code_fence_content = ts_text_or(NULL),
 
-  pandoc_emph = ts_concat,
-  pandoc_strong = ts_concat,
+  pandoc_emph      = ts_concat,
+  pandoc_strong    = ts_concat,
   pandoc_code_span = ts_concat,
-  content = ts_concat,
+  content          = ts_concat,
 
-  pandoc_span = ts_concat,
-  pandoc_image = ts_concat,
-  target = function(x) paste0("](", ts_concat(x)),
+  pandoc_span  = ts_text_or(),
+  pandoc_image = ts_text_or(),
+  target       = ts_text_or(NULL),
 
-  attribute_specifier = ts_concat,
-  commonmark_specifier = function(x) {
-    paste(ts_children_qmd(x), collapse = " ")
-  },
+  attribute_specifier  = ts_concat,
+  commonmark_specifier = ts_text_or(),
+  language_specifier   = ts_text_or(),
+  key_value_specifier  = ts_concat,
+  key_value_value      = ts_text_or(),
 
-  pandoc_math = function(x) {
-    if (!is.null(x@text)) return(x@text)
-    stop("to_qmd(): 'pandoc_math' node has no @text fallback")
-  },
-  pandoc_display_math = function(x) {
-    if (!is.null(x@text)) return(x@text)
-    stop("to_qmd(): 'pandoc_display_math' node has no @text fallback")
-  }
+  pandoc_math         = ts_text_or(NULL),
+  pandoc_display_math = ts_text_or(NULL),
+  pandoc_div          = ts_text_or(NULL),
+  pipe_table          = ts_text_or(NULL),
+  caption             = ts_text_or(NULL),
+  shortcode           = ts_text_or(NULL),
+  inline_ref_def      = ts_text_or(NULL)
 )
