@@ -55,7 +55,15 @@
       "Bash(git commit *)",
       "Bash(git add *)",
       "Bash(git submodule *)",
-      "Bash(Q2R_QUARTO_WEB_REPORT=/tmp/q2r-rt.txt Rscript -e 'suppressMessages\\(devtools::test\\(filter = \"quarto-web-roundtrip\", reporter = \"minimal\"\\)\\)')"
+      "Bash(Q2R_QUARTO_WEB_REPORT=/tmp/q2r-rt.txt Rscript -e 'suppressMessages\\(devtools::test\\(filter = \"quarto-web-roundtrip\", reporter = \"minimal\"\\)\\)')",
+      "Bash(Rscript -e 'devtools::load_all\\(quiet=TRUE\\); testthat::test_file\\(\"tests/testthat/test-quarto-web-roundtrip.R\", reporter = \"summary\"\\)')",
+      "Bash(Rscript -e *)",
+      "Read(//Users/rundel/Desktop/project/parsermd/**)",
+      "Read(//Users/rundel/Desktop/project/parsermd/tests/**)",
+      "Bash(Rscript /tmp/q2r-fast-test.R)",
+      "Bash(Rscript /tmp/q2r-fast2.R)",
+      "Bash(time TESTTHAT_MAX_FAILS=Inf Rscript -e ' *)",
+      "Bash(Rscript /tmp/q2r-diag.R)"
     ],
     "additionalDirectories": [
       "/tmp",
