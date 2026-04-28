@@ -9,11 +9,14 @@ use pampa::pandoc::block::{
 };
 use pampa::pandoc::caption::Caption;
 use pampa::pandoc::inline::{
-    Cite, Citation, CitationMode, Code, Delete, EditComment, Emph, Highlight, Image, Insert,
-    LineBreak, Link, Math, MathType, Note, NoteReference, Quoted, QuoteType, RawInline,
+    Cite, Citation, CitationMode, Code, Delete, EditComment, Emph, Highlight, Image, InlineAttr,
+    Insert, LineBreak, Link, Math, MathType, Note, NoteReference, Quoted, QuoteType, RawInline,
     SmallCaps, SoftBreak, Space, Str, Strikeout, Strong, Subscript, Superscript, Underline, Span,
 };
 use pampa::pandoc::list::{ListAttributes, ListNumberDelim, ListNumberStyle};
+use pampa::pandoc::table::{
+    Alignment, Cell, ColSpec, ColWidth, Row, Table, TableBody, TableFoot, TableHead,
+};
 use pampa::pandoc::{Attr, Block, ConfigValue, Inline, Pandoc};
 use quarto_source_map::SourceInfo;
 
@@ -165,6 +168,221 @@ fn attr_field(list: &List) -> ERResult<Attr> {
     }
 }
 
+fn alignment_from_str(s: &str) -> Alignment {
+    match s {
+        "Left" => Alignment::Left,
+        "Right" => Alignment::Right,
+        "Center" => Alignment::Center,
+        _ => Alignment::Default,
+    }
+}
+
+fn opt_f64(r: &Robj) -> Option<f64> {
+    if r.is_null() {
+        return None;
+    }
+    if let Ok(v) = f64::try_from(r) {
+        return Some(v);
+    }
+    if let Ok(v) = <Vec<f64>>::try_from(r) {
+        if v.len() == 1 {
+            return Some(v[0]);
+        }
+    }
+    None
+}
+
+fn colspec_from_r(r: &Robj) -> ERResult<ColSpec> {
+    let lst = as_list(r)?;
+    let alignment = alignment_from_str(&str_or_empty(&lst, "alignment"));
+    let width = match field(&lst, "width") {
+        Some(w) => match opt_f64(&w) {
+            Some(v) => ColWidth::Percentage(v),
+            None => ColWidth::Default,
+        },
+        None => ColWidth::Default,
+    };
+    Ok((alignment, width))
+}
+
+fn caption_from_r(r: &Robj) -> ERResult<Caption> {
+    if r.is_null() {
+        return Ok(Caption {
+            short: None,
+            long: None,
+            source_info: SourceInfo::default(),
+        });
+    }
+    let lst = as_list(r)?;
+    let short = match field(&lst, "short") {
+        Some(s) if !s.is_null() => Some(inlines_from_r(&s)?),
+        _ => None,
+    };
+    let long_blocks = match field(&lst, "long") {
+        Some(l) => blocks_from_r(&l)?,
+        None => Vec::new(),
+    };
+    let long = if long_blocks.is_empty() {
+        None
+    } else {
+        Some(long_blocks)
+    };
+    Ok(Caption {
+        short,
+        long,
+        source_info: SourceInfo::default(),
+    })
+}
+
+fn cell_from_list(list: List) -> ERResult<Cell> {
+    let attr = attr_field(&list)?;
+    let alignment = alignment_from_str(&str_or_empty(&list, "alignment"));
+    let row_span = field(&list, "row_span")
+        .and_then(|r| opt_i32(&r))
+        .unwrap_or(1) as usize;
+    let col_span = field(&list, "col_span")
+        .and_then(|r| opt_i32(&r))
+        .unwrap_or(1) as usize;
+    let content = blocks_from_content_field(&list, "content")?;
+    Ok(Cell {
+        attr,
+        alignment,
+        row_span,
+        col_span,
+        content,
+        source_info: SourceInfo::default(),
+        attr_source: AttrSourceInfo::empty(),
+    })
+}
+
+fn cells_from_field(list: &List, name: &str) -> ERResult<Vec<Cell>> {
+    match field(list, name) {
+        Some(r) => items_from_r(&r)?
+            .into_iter()
+            .map(cell_from_list)
+            .collect(),
+        None => Ok(Vec::new()),
+    }
+}
+
+fn row_from_list(list: List) -> ERResult<Row> {
+    let attr = attr_field(&list)?;
+    let cells = cells_from_field(&list, "cells")?;
+    Ok(Row {
+        attr,
+        cells,
+        source_info: SourceInfo::default(),
+        attr_source: AttrSourceInfo::empty(),
+    })
+}
+
+fn rows_from_field(list: &List, name: &str) -> ERResult<Vec<Row>> {
+    match field(list, name) {
+        Some(r) => items_from_r(&r)?
+            .into_iter()
+            .map(row_from_list)
+            .collect(),
+        None => Ok(Vec::new()),
+    }
+}
+
+fn table_head_from_r(r: &Robj) -> ERResult<TableHead> {
+    if r.is_null() {
+        return Ok(TableHead {
+            attr: empty_attr(),
+            rows: Vec::new(),
+            source_info: SourceInfo::default(),
+            attr_source: AttrSourceInfo::empty(),
+        });
+    }
+    let lst = as_list(r)?;
+    Ok(TableHead {
+        attr: attr_field(&lst)?,
+        rows: rows_from_field(&lst, "rows")?,
+        source_info: SourceInfo::default(),
+        attr_source: AttrSourceInfo::empty(),
+    })
+}
+
+fn table_body_from_list(list: List) -> ERResult<TableBody> {
+    let attr = attr_field(&list)?;
+    let rowhead_columns = field(&list, "row_head_columns")
+        .and_then(|r| opt_i32(&r))
+        .unwrap_or(0) as usize;
+    let head = rows_from_field(&list, "head_rows")?;
+    let body = rows_from_field(&list, "body_rows")?;
+    Ok(TableBody {
+        attr,
+        rowhead_columns,
+        head,
+        body,
+        source_info: SourceInfo::default(),
+        attr_source: AttrSourceInfo::empty(),
+    })
+}
+
+fn table_foot_from_r(r: &Robj) -> ERResult<TableFoot> {
+    if r.is_null() {
+        return Ok(TableFoot {
+            attr: empty_attr(),
+            rows: Vec::new(),
+            source_info: SourceInfo::default(),
+            attr_source: AttrSourceInfo::empty(),
+        });
+    }
+    let lst = as_list(r)?;
+    Ok(TableFoot {
+        attr: attr_field(&lst)?,
+        rows: rows_from_field(&lst, "rows")?,
+        source_info: SourceInfo::default(),
+        attr_source: AttrSourceInfo::empty(),
+    })
+}
+
+fn table_from_list(list: List) -> ERResult<Table> {
+    let attr = attr_field(&list)?;
+    let caption = match field(&list, "caption") {
+        Some(c) => caption_from_r(&c)?,
+        None => Caption {
+            short: None,
+            long: None,
+            source_info: SourceInfo::default(),
+        },
+    };
+    let colspec = match field(&list, "colspec") {
+        Some(cs) => items_from_r(&cs)?
+            .into_iter()
+            .map(|item| colspec_from_r(&item.into()))
+            .collect::<ERResult<Vec<_>>>()?,
+        None => Vec::new(),
+    };
+    let head = match field(&list, "head") {
+        Some(h) => table_head_from_r(&h)?,
+        None => table_head_from_r(&Robj::from(NULL))?,
+    };
+    let bodies = match field(&list, "bodies") {
+        Some(b) => items_from_r(&b)?
+            .into_iter()
+            .map(table_body_from_list)
+            .collect::<ERResult<Vec<_>>>()?,
+        None => Vec::new(),
+    };
+    let foot = match field(&list, "foot") {
+        Some(f) => table_foot_from_r(&f)?,
+        None => table_foot_from_r(&Robj::from(NULL))?,
+    };
+    Ok(Table {
+        attr,
+        caption,
+        colspec,
+        head,
+        bodies,
+        foot,
+        source_info: SourceInfo::default(),
+        attr_source: AttrSourceInfo::empty(),
+    })
+}
+
 fn citation_from_list(list: List) -> ERResult<Citation> {
     let id = str_or_empty(&list, "id");
     let mode = match str_or_empty(&list, "mode").as_str() {
@@ -306,7 +524,7 @@ fn inline_from_list(list: List) -> ERResult<Inline> {
             id: need_str(&list, "id")?,
             source_info: si,
         }),
-        "AttrInline" => Inline::Attr(attr_field(&list)?, asi()),
+        "AttrInline" => Inline::Attr(InlineAttr::new(attr_field(&list)?, asi())),
         "Insert" => Inline::Insert(Insert {
             attr: attr_field(&list)?,
             content: inlines_from_content_field(&list, "content")?,
@@ -519,7 +737,8 @@ fn block_from_list(list: List) -> ERResult<Block> {
             content: inlines_from_content_field(&list, "content")?,
             source_info: si,
         }),
-        "Table" | "BlockMetadata" | "CustomBlock" => {
+        "Table" => Block::Table(table_from_list(list)?),
+        "BlockMetadata" | "CustomBlock" => {
             return Err(Error::Other(format!(
                 "block tag '{}' is not yet supported by the R -> Rust converter",
                 tag

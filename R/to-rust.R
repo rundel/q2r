@@ -120,7 +120,62 @@ block_to_list = function(x) {
   if (S7::S7_inherits(x, pandoc_caption_block)) return(list(
     tag = "CaptionBlock", content = inlines_to_list(x@content)
   ))
+  if (S7::S7_inherits(x, pandoc_table)) return(table_to_list(x))
   stop("to-rust: unhandled block class '", pandoc_class_name(x), "'")
+}
+
+caption_to_list = function(x) {
+  list(
+    short = if (is.null(x@short)) NULL else inlines_to_list(x@short),
+    long  = blocks_to_list(x@long)
+  )
+}
+
+colspec_to_list = function(x) {
+  list(alignment = x@alignment, width = x@width)
+}
+
+cell_to_list = function(x) {
+  list(
+    attr      = attr_to_list(x@attr),
+    alignment = x@alignment,
+    row_span  = as.integer(x@row_span),
+    col_span  = as.integer(x@col_span),
+    content   = blocks_to_list(x@content)
+  )
+}
+
+row_to_list = function(x) {
+  list(attr = attr_to_list(x@attr), cells = lapply(x@cells, cell_to_list))
+}
+
+table_head_to_list = function(x) {
+  list(attr = attr_to_list(x@attr), rows = lapply(x@rows, row_to_list))
+}
+
+table_body_to_list = function(x) {
+  list(
+    attr             = attr_to_list(x@attr),
+    row_head_columns = as.integer(x@row_head_columns),
+    head_rows        = lapply(x@head_rows, row_to_list),
+    body_rows        = lapply(x@body_rows, row_to_list)
+  )
+}
+
+table_foot_to_list = function(x) {
+  list(attr = attr_to_list(x@attr), rows = lapply(x@rows, row_to_list))
+}
+
+table_to_list = function(x) {
+  list(
+    tag     = "Table",
+    attr    = attr_to_list(x@attr),
+    caption = caption_to_list(x@caption),
+    colspec = lapply(x@colspec, colspec_to_list),
+    head    = table_head_to_list(x@head),
+    bodies  = lapply(x@bodies, table_body_to_list),
+    foot    = table_foot_to_list(x@foot)
+  )
 }
 
 pandoc_to_list = function(x) {

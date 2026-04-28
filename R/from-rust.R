@@ -17,6 +17,22 @@ inlines_from_list = function(items) {
   pandoc_inlines(lapply(items %||% list(), inline_from_list))
 }
 
+shortcode_arg_from_list = function(x) {
+  kind = x$kind %||% "string"
+  out = list(kind = kind)
+  if (kind == "shortcode") {
+    out$value = inline_from_list(x$value)
+  } else if (kind == "kv") {
+    out$key   = x$key %||% ""
+    out$value = shortcode_arg_from_list(x$value)
+  } else if (kind == "kv_group") {
+    out$value = lapply(x$value %||% list(), shortcode_arg_from_list)
+  } else {
+    out$value = x$value
+  }
+  out
+}
+
 blocks_from_list = function(items) {
   pandoc_blocks(lapply(items %||% list(), block_from_list))
 }
@@ -58,7 +74,12 @@ inline_from_list = function(x) {
       citations = lapply(x$citations %||% list(), citation_from_list),
       content = inlines_from_list(x$content)
     ),
-    Shortcode   = pandoc_shortcode(name = x$name %||% "", args = x$args %||% list()),
+    Shortcode   = pandoc_shortcode(
+      name            = x$name %||% "",
+      is_escaped      = isTRUE(x$is_escaped),
+      positional_args = lapply(x$positional_args %||% list(), shortcode_arg_from_list),
+      keyword_args    = lapply(x$keyword_args    %||% list(), shortcode_arg_from_list)
+    ),
     CustomInline = pandoc_custom_inline(
       type_name = x$type_name %||% "",
       slots = x$slots %||% list(),
@@ -104,7 +125,14 @@ block_from_list = function(x) {
       content = blocks_from_list(x$content)
     ),
     Div            = pandoc_div(attr = attr_from_list(x$attr), content = blocks_from_list(x$content)),
-    Table          = pandoc_table(attr = attr_from_list(x$attr)),  # deep table conversion: TODO
+    Table          = pandoc_table(
+      attr    = attr_from_list(x$attr),
+      caption = caption_from_list(x$caption),
+      colspec = lapply(x$colspec %||% list(), colspec_from_list),
+      head    = table_head_from_list(x$head),
+      bodies  = lapply(x$bodies %||% list(), table_body_from_list),
+      foot    = table_foot_from_list(x$foot)
+    ),
     BlockMetadata  = pandoc_block_metadata(meta = pandoc_meta_value()),
     NoteDefinitionPara = pandoc_note_definition_para(id = x$id, content = inlines_from_list(x$content)),
     NoteDefinitionFencedBlock = pandoc_note_definition_fenced_block(
@@ -117,6 +145,61 @@ block_from_list = function(x) {
       attr = attr_from_list(x$attr)
     ),
     stop("unhandled block tag: ", x$tag)
+  )
+}
+
+caption_from_list = function(x) {
+  if (is.null(x)) return(pandoc_caption())
+  short = if (is.null(x$short)) NULL else inlines_from_list(x$short)
+  pandoc_caption(short = short, long = blocks_from_list(x$long))
+}
+
+colspec_from_list = function(x) {
+  pandoc_col_spec(
+    alignment = x$alignment %||% "Default",
+    width     = x$width
+  )
+}
+
+cell_from_list = function(x) {
+  pandoc_cell(
+    attr      = attr_from_list(x$attr),
+    alignment = x$alignment %||% "Default",
+    row_span  = as.integer(x$row_span %||% 1L),
+    col_span  = as.integer(x$col_span %||% 1L),
+    content   = blocks_from_list(x$content)
+  )
+}
+
+row_from_list = function(x) {
+  pandoc_row(
+    attr  = attr_from_list(x$attr),
+    cells = lapply(x$cells %||% list(), cell_from_list)
+  )
+}
+
+table_head_from_list = function(x) {
+  if (is.null(x)) return(pandoc_table_head())
+  pandoc_table_head(
+    attr = attr_from_list(x$attr),
+    rows = lapply(x$rows %||% list(), row_from_list)
+  )
+}
+
+table_body_from_list = function(x) {
+  pandoc_table_body(
+    attr             = attr_from_list(x$attr),
+    row_head_columns = as.integer(x$row_head_columns %||% 0L),
+    head_rows        = lapply(x$head_rows %||% list(), row_from_list),
+    body_rows        = lapply(x$body_rows %||% list(), row_from_list)
+  )
+}
+
+table_foot_from_list = function(x) {
+  if (is.null(x)) return(pandoc_table_foot())
+  pandoc_table_foot(
+    attr = attr_from_list(x$attr),
+    rows = lapply(x$rows %||% list(), row_from_list)
   )
 }
 

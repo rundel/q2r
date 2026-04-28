@@ -20,20 +20,20 @@ hashlink = '0.11'
 
 [dependencies.pampa]
 git = 'https://github.com/quarto-dev/q2'
-rev = 'e47c6e1d62ab4d935434a1f5875f7bed10c140f1'
+rev = '349148ae8d9d8e19d9c1075f564a3c5d43a43a4a'
 default-features = false
 
 [dependencies.tree-sitter-qmd]
 git = 'https://github.com/quarto-dev/q2'
-rev = 'e47c6e1d62ab4d935434a1f5875f7bed10c140f1'
+rev = '349148ae8d9d8e19d9c1075f564a3c5d43a43a4a'
 
 [dependencies.quarto-source-map]
 git = 'https://github.com/quarto-dev/q2'
-rev = 'e47c6e1d62ab4d935434a1f5875f7bed10c140f1'
+rev = '349148ae8d9d8e19d9c1075f564a3c5d43a43a4a'
 
 [dependencies.quarto-error-reporting]
 git = 'https://github.com/quarto-dev/q2'
-rev = 'e47c6e1d62ab4d935434a1f5875f7bed10c140f1'
+rev = '349148ae8d9d8e19d9c1075f564a3c5d43a43a4a'
 
 [profile.release]
 lto = true

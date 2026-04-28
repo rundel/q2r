@@ -4,8 +4,20 @@
 \alias{pandoc_shortcode}
 \title{Shortcode}
 \usage{
-pandoc_shortcode(source_info = <object>, name = "", args = list())
+pandoc_shortcode(
+  source_info = <object>,
+  name = "",
+  is_escaped = FALSE,
+  positional_args = list(),
+  keyword_args = list()
+)
 }
 \description{
-Shortcode
+\code{positional_args} and \code{keyword_args} are lists of arg records. Each arg
+record is a list with \code{kind} ∈ \code{"string"}, \code{"number"}, \code{"boolean"},
+\code{"shortcode"}, \code{"kv"}, \code{"kv_group"}. \code{string}/\code{number}/\code{boolean} carry a
+\code{value}; \code{shortcode} carries a nested \code{pandoc_shortcode} in \code{value}; \code{kv}
+carries \code{key} (character) and \code{value} (another arg record); \code{kv_group}
+carries \code{value} as a list of \code{kv} records (used for positional KeyValue
+bundles).
 }

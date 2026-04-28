@@ -27,11 +27,28 @@ R package that wraps the `pampa` Rust crate from [quarto-dev/q2](https://github.
 - Bridge: `extendr` + `rextendr` (matches Posit-authored Rust-backed R packages).
 - Rebuild after Rust edits: `rextendr::document()`. Iterate interactively: `devtools::load_all()`.
 
+## Round-trip iteration tools
+
+The `tools/` directory (gitignored, in `.Rbuildignore`) holds throwaway scripts for iterating on the pd_ast → QMD round-trip. Both load the package via `devtools::load_all()` and run against the `tests/fixtures/quarto-web/` submodule.
+
+- [`tools/rt/rt.R`](tools/rt/rt.R) — round-trip a small named set of files. Pass `-v` for diff context.
+  ```
+  Rscript tools/rt/rt.R about.qmd docs/authoring/_kbd.qmd
+  Rscript tools/rt/rt.R -v docs/reference/globs.qmd
+  ```
+- [`tools/rt/rt-fails.R`](tools/rt/rt-fails.R) — sweep every quarto-web `.qmd` (or a regex-filtered subset) and print only failures with one-line diff context. ~100s for the full ~568-file sweep, much faster than running the testthat round-trip files.
+  ```
+  Rscript tools/rt/rt-fails.R              # all files
+  Rscript tools/rt/rt-fails.R "_kbd|globs" # filter by regex
+  ```
+
+Each FAIL line is followed by either a `rt-diag:` reason (rendered output failed to re-parse) or a `native | CTX/A/B` block showing the first byte at which the original and re-rendered native ASTs diverge — useful for guessing the failing renderer.
+
 ## Pampa dependency
 
 - Pulled via a Cargo git dependency on the whole `quarto-dev/q2` repo, pinned by `rev`. See [src/rust/Cargo.toml](src/rust/Cargo.toml).
 - A whole-repo git dep is required because `pampa` has ~15 workspace-local `path = "../quarto-*"` sibling crates; vendoring or depending on `pampa` alone does not resolve.
-- Current pinned commit: `e47c6e1d62ab4d935434a1f5875f7bed10c140f1`. Bumps are deliberate: update the `rev` **and** regenerate `Cargo.lock`. All three q2 deps (`pampa`, `tree-sitter-qmd`, `quarto-source-map`, `quarto-error-reporting`) must be bumped together.
+- Current pinned commit: `349148ae8d9d8e19d9c1075f564a3c5d43a43a4a`. Bumps are deliberate: update the `rev` **and** regenerate `Cargo.lock`. All three q2 deps (`pampa`, `tree-sitter-qmd`, `quarto-source-map`, `quarto-error-reporting`) must be bumped together.
 - `default-features = false` on `pampa` drops `terminal-support`, `json-filter`, `lua-filter`, `template-fs`. None of these are needed for library-style parsing; disabling keeps builds lean and avoids Lua / subprocess linkage.
 - `quarto-source-map` is a direct dep because we construct a `SourceContext` ourselves on the `Err` branch of `qmd::read` (the reader only returns a context on `Ok`) and on every `pampa_diag_format_impl` call.
 - `quarto-error-reporting` is a direct dep because we need `TextRenderOptions` (hyperlink toggle) and to `Deserialize`/reconstruct `DiagnosticMessage` values.

@@ -209,14 +209,25 @@ pandoc_span = S7::new_class(
 )
 
 #' Shortcode
+#'
+#' `positional_args` and `keyword_args` are lists of arg records. Each arg
+#' record is a list with `kind` ∈ `"string"`, `"number"`, `"boolean"`,
+#' `"shortcode"`, `"kv"`, `"kv_group"`. `string`/`number`/`boolean` carry a
+#' `value`; `shortcode` carries a nested `pandoc_shortcode` in `value`; `kv`
+#' carries `key` (character) and `value` (another arg record); `kv_group`
+#' carries `value` as a list of `kv` records (used for positional KeyValue
+#' bundles).
+#'
 #' @export
 pandoc_shortcode = S7::new_class(
   "pandoc_shortcode",
   package = "q2r",
   parent = pandoc_inline,
   properties = list(
-    name = S7::new_property(S7::class_character, default = ""),
-    args = S7::new_property(S7::class_list, default = list())
+    name            = S7::new_property(S7::class_character, default = ""),
+    is_escaped      = S7::new_property(S7::class_logical,   default = FALSE),
+    positional_args = S7::new_property(S7::class_list,      default = list()),
+    keyword_args    = S7::new_property(S7::class_list,      default = list())
   )
 )
 
