@@ -67,6 +67,13 @@ inline_to_list = function(x) {
   if (S7::S7_inherits(x, pandoc_delete))         return(list(tag = "Delete",      attr = attr_to_list(x@attr), content = inlines_to_list(x@content)))
   if (S7::S7_inherits(x, pandoc_highlight))      return(list(tag = "Highlight",   attr = attr_to_list(x@attr), content = inlines_to_list(x@content)))
   if (S7::S7_inherits(x, pandoc_edit_comment))   return(list(tag = "EditComment", attr = attr_to_list(x@attr), content = inlines_to_list(x@content)))
+  if (S7::S7_inherits(x, pandoc_shortcode))      return(list(
+    tag             = "Shortcode",
+    name            = x@name,
+    is_escaped      = isTRUE(x@is_escaped),
+    positional_args = x@positional_args,
+    keyword_args    = x@keyword_args
+  ))
   stop("to-rust: unhandled inline class '", pandoc_class_name(x), "'")
 }
 

@@ -74,12 +74,17 @@ inline_from_list = function(x) {
       citations = lapply(x$citations %||% list(), citation_from_list),
       content = inlines_from_list(x$content)
     ),
-    Shortcode   = pandoc_shortcode(
-      name            = x$name %||% "",
-      is_escaped      = isTRUE(x$is_escaped),
-      positional_args = lapply(x$positional_args %||% list(), shortcode_arg_from_list),
-      keyword_args    = lapply(x$keyword_args    %||% list(), shortcode_arg_from_list)
-    ),
+    Shortcode   = {
+      kw_in = x$keyword_args %||% list()
+      kw_keys = vapply(kw_in, function(a) a$key %||% "", character(1L))
+      kw_in = kw_in[order(kw_keys)]
+      pandoc_shortcode(
+        name            = x$name %||% "",
+        is_escaped      = isTRUE(x$is_escaped),
+        positional_args = lapply(x$positional_args %||% list(), shortcode_arg_from_list),
+        keyword_args    = lapply(kw_in, shortcode_arg_from_list)
+      )
+    },
     CustomInline = pandoc_custom_inline(
       type_name = x$type_name %||% "",
       slots = x$slots %||% list(),

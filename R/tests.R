@@ -46,7 +46,7 @@ gen_pd_rt_test = function(rel, skip_map = list()) {
     "  rendered = to_qmd(pd)",
     "  pd2 = pampa_parse_pd(rendered)",
     "  expect_false(has_error_diagnostics(pd2))",
-    "  expect_true(compare_pd_native(text, rendered))"
+    "  expect_true(compare_pd_ast(text, rendered))"
   ))
 }
 
@@ -59,7 +59,7 @@ gen_pampa_ts_rt_test = function(rel, skip_map = list()) {
     "  rendered = pampa_to_qmd(ts)",
     "  pd2 = pampa_parse_pd(rendered)",
     "  expect_false(has_error_diagnostics(pd2))",
-    "  expect_true(compare_pd_native(text, rendered))"
+    "  expect_true(compare_pd_ast(text, rendered))"
   ))
 }
 
@@ -72,6 +72,6 @@ gen_pampa_pd_rt_test = function(rel, skip_map = list()) {
     "  rendered = pampa_to_qmd(pd)",
     "  pd2 = pampa_parse_pd(rendered)",
     "  expect_false(has_error_diagnostics(pd2))",
-    "  expect_true(compare_pd_native(text, rendered))"
+    "  expect_true(compare_pd_ast(text, rendered))"
   ))
 }
