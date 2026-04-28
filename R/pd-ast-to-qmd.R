@@ -103,6 +103,8 @@ S7::method(to_qmd, pandoc_str)        = function(x) {
   text = gsub("`", "\\\\`", text, perl = TRUE)
   text = gsub("(\\[|\\])", "\\\\\\1", text, perl = TRUE)
   text = gsub("\\^", "\\\\^", text, perl = TRUE)
+  text = gsub("<", "\\\\<", text, perl = TRUE)
+  text = gsub("\\$", "\\\\$", text, perl = TRUE)
   text
 }
 S7::method(to_qmd, pandoc_space)      = function(x) " "
@@ -141,7 +143,7 @@ S7::method(to_qmd, pandoc_math) = function(x) {
 
 S7::method(to_qmd, pandoc_raw_inline) = function(x) {
   if (identical(x@format, "html") &&
-      grepl("^</?[A-Za-z][^<>]*>$|^<!--.*-->$", x@text, perl = TRUE)) {
+      grepl("^\\s?</?[A-Za-z][^<>]*>\\s?$|^\\s?<!--.*-->\\s?$", x@text, perl = TRUE)) {
     return(x@text)
   }
   fence = pandoc_fence_for(x@text, "`", 1L)
@@ -165,6 +167,21 @@ S7::method(to_qmd, pandoc_note) = function(x) {
 }
 
 S7::method(to_qmd, pandoc_span) = function(x) {
+  if ("quarto-math-with-attribute" %in% x@attr@classes &&
+      length(x@content@content) == 1L &&
+      S7::S7_inherits(x@content@content[[1L]], pandoc_math) &&
+      identical(x@content@content[[1L]]@math_type, "display")) {
+    math = x@content@content[[1L]]
+    bare_classes = setdiff(x@attr@classes, "quarto-math-with-attribute")
+    bare_attr = pandoc_attr(
+      id         = x@attr@id,
+      classes    = bare_classes,
+      attributes = x@attr@attributes
+    )
+    attr_str = pandoc_attr_qmd(bare_attr)
+    sep = if (nchar(attr_str)) " " else ""
+    return(paste0("$$", math@text, "$$", sep, attr_str))
+  }
   paste0("[", to_qmd(x@content), "]", pandoc_attr_qmd(x@attr))
 }
 
@@ -190,8 +207,9 @@ S7::method(to_qmd, pandoc_cite) = function(x) {
     c1 = x@citations[[1L]]
     pre = to_qmd(c1@prefix)
     suf = to_qmd(c1@suffix)
-    if (identical(c1@mode, "AuthorInText") && !nchar(pre) && !nchar(suf)) {
-      return(paste0("@", c1@id))
+    if (identical(c1@mode, "AuthorInText") && !nchar(pre)) {
+      if (!nchar(suf)) return(paste0("@", c1@id))
+      return(paste0("@", c1@id, " [", suf, "]"))
     }
   }
   paste0("[", paste(vapply(x@citations, cite_token, character(1L)), collapse = "; "), "]")
@@ -245,7 +263,14 @@ S7::method(to_qmd, pandoc_plain)     = function(x) paste0(to_qmd(x@content), "\n
 S7::method(to_qmd, pandoc_paragraph) = function(x) {
   body = to_qmd(x@content)
   lines = strsplit(body, "\n", fixed = TRUE)[[1L]]
-  if (length(lines)) lines[1L] = pandoc_escape_block_lead(lines[1L])
+  if (length(lines)) {
+    escaped_first = pandoc_escape_block_lead(lines[[1L]])
+    if (!identical(escaped_first, lines[[1L]])) {
+      lines = vapply(lines, pandoc_escape_block_lead, character(1L), USE.NAMES = FALSE)
+    } else {
+      lines[[1L]] = escaped_first
+    }
+  }
   paste0(paste(lines, collapse = "\n"), "\n")
 }
 
@@ -273,7 +298,16 @@ S7::method(to_qmd, pandoc_block_quote) = function(x) {
   inner = to_qmd(x@content)
   lines = strsplit(sub("\n+$", "", inner), "\n", fixed = TRUE)[[1L]]
   if (length(lines) == 0L) lines = ""
-  paste0(paste0("> ", lines, collapse = "\n"), "\n")
+  out = paste0("> ", lines)
+  in_math = FALSE
+  for (i in seq_along(out)) {
+    has_fence = grepl("\\$\\$", out[[i]])
+    if (in_math && startsWith(out[[i]], "> > ")) {
+      out[[i]] = sub("^> ", "", out[[i]])
+    }
+    if (has_fence) in_math = !in_math
+  }
+  paste0(paste(out, collapse = "\n"), "\n")
 }
 
 S7::method(to_qmd, pandoc_line_block) = function(x) {
@@ -296,14 +330,43 @@ S7::method(to_qmd, pandoc_bullet_list) = function(x) {
   paste0(paste(items, collapse = sep), "\n")
 }
 
+pandoc_ordered_list_label = function(n, style) {
+  to_roman_lower = function(n) tolower(as.character(utils::as.roman(n)))
+  to_roman_upper = function(n) as.character(utils::as.roman(n))
+  to_alpha = function(n, upper) {
+    chars = if (upper) LETTERS else letters
+    out = character()
+    repeat {
+      out = c(chars[((n - 1L) %% 26L) + 1L], out)
+      n = (n - 1L) %/% 26L
+      if (n == 0L) break
+    }
+    paste(out, collapse = "")
+  }
+  switch(style,
+    Example     = "@",
+    LowerRoman  = to_roman_lower(n),
+    UpperRoman  = to_roman_upper(n),
+    LowerAlpha  = to_alpha(n, upper = FALSE),
+    UpperAlpha  = to_alpha(n, upper = TRUE),
+    as.character(n)
+  )
+}
+
 S7::method(to_qmd, pandoc_ordered_list) = function(x) {
   start = x@attr@start
-  delim_tail = switch(x@attr@delim, OneParen = ")", TwoParens = ")", ".")
+  style = x@attr@style
+  delim = x@attr@delim
   loose = pandoc_list_is_loose(x@content)
   sep = if (loose) "\n\n" else "\n"
   items = character(length(x@content))
   for (i in seq_along(x@content)) {
-    marker = paste0(start + i - 1L, delim_tail, " ")
+    label = pandoc_ordered_list_label(start + i - 1L, style)
+    marker = switch(delim,
+      OneParen  = paste0(label, ") "),
+      TwoParens = paste0("(", label, ") "),
+      paste0(label, ". ")
+    )
     pad = strrep(" ", nchar(marker))
     items[i] = pandoc_indent_lines(to_qmd(x@content[[i]]), marker, pad, empty_blanks = loose)
   }
