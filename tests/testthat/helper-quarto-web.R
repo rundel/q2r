@@ -40,10 +40,30 @@ ts_kind_tree = function(node) {
 
 ts_tree_kind_tree = function(tree) ts_kind_tree(tree@root)
 
-compare_ts_kind = function(a, b) identical(ts_tree_kind_tree(a), ts_tree_kind_tree(b))
+expect_ts_kind_equal = function(actual, expected) {
+  act_lab = testthat::quasi_label(rlang::enquo(actual),   arg = "actual")
+  exp_lab = testthat::quasi_label(rlang::enquo(expected), arg = "expected")
+  act = ts_tree_kind_tree(actual)
+  exp = ts_tree_kind_tree(expected)
+  diff = waldo::compare(act, exp, x_arg = act_lab$lab, y_arg = exp_lab$lab, max_diffs = 20)
+  testthat::expect(
+    length(diff) == 0,
+    paste0("ts kind tree mismatch:\n", paste(diff, collapse = "\n\n"))
+  )
+  invisible(actual)
+}
 
-compare_pd_ast = function(a, b) {
-  identical(q2r:::pandoc_to_list(a), q2r:::pandoc_to_list(b))
+expect_pd_ast_equal = function(actual, expected) {
+  act_lab = testthat::quasi_label(rlang::enquo(actual),   arg = "actual")
+  exp_lab = testthat::quasi_label(rlang::enquo(expected), arg = "expected")
+  act = q2r:::pandoc_to_list(actual)
+  exp = q2r:::pandoc_to_list(expected)
+  diff = waldo::compare(act, exp, x_arg = act_lab$lab, y_arg = exp_lab$lab, max_diffs = 20)
+  testthat::expect(
+    length(diff) == 0,
+    paste0("pd ast mismatch:\n", paste(diff, collapse = "\n\n"))
+  )
+  invisible(actual)
 }
 
 update_tests = function(target, files, mtime_paths, gen_func, skip_map = list()) {

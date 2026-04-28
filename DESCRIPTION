@@ -20,7 +20,9 @@ Imports:
     S7,
     stringr
 Suggests:
-    testthat (>= 3.0.0)
+    rlang,
+    testthat (>= 3.0.0),
+    waldo
 Config/testthat/edition: 3
 Collate:
     'diagnostic.R'

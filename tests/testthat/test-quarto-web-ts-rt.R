@@ -8,7 +8,7 @@ test_that("_tools/screenshots/examples/about-pages/about-broadside.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/about-pages/about-jolla.qmd", {
@@ -19,7 +19,7 @@ test_that("_tools/screenshots/examples/about-pages/about-jolla.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/about-pages/about-marquee.qmd", {
@@ -30,7 +30,7 @@ test_that("_tools/screenshots/examples/about-pages/about-marquee.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/about-pages/about-solana.qmd", {
@@ -41,7 +41,7 @@ test_that("_tools/screenshots/examples/about-pages/about-solana.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/about-pages/about-trestles.qmd", {
@@ -52,7 +52,7 @@ test_that("_tools/screenshots/examples/about-pages/about-trestles.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/breadcrumbs/index.qmd", {
@@ -63,7 +63,7 @@ test_that("_tools/screenshots/examples/breadcrumbs/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/breadcrumbs/tutorials.qmd", {
@@ -74,7 +74,7 @@ test_that("_tools/screenshots/examples/breadcrumbs/tutorials.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/hybrid-nav/fundamentals.qmd", {
@@ -85,7 +85,7 @@ test_that("_tools/screenshots/examples/hybrid-nav/fundamentals.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/hybrid-nav/howto.qmd", {
@@ -96,7 +96,7 @@ test_that("_tools/screenshots/examples/hybrid-nav/howto.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/hybrid-nav/index.qmd", {
@@ -107,7 +107,7 @@ test_that("_tools/screenshots/examples/hybrid-nav/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/hybrid-nav/reference.qmd", {
@@ -118,7 +118,7 @@ test_that("_tools/screenshots/examples/hybrid-nav/reference.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/hybrid-nav/tutorial-1.qmd", {
@@ -129,7 +129,7 @@ test_that("_tools/screenshots/examples/hybrid-nav/tutorial-1.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/hybrid-nav/tutorial-2.qmd", {
@@ -140,7 +140,7 @@ test_that("_tools/screenshots/examples/hybrid-nav/tutorial-2.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/hybrid-nav/tutorials.qmd", {
@@ -151,7 +151,7 @@ test_that("_tools/screenshots/examples/hybrid-nav/tutorials.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/myblog/about.qmd", {
@@ -162,7 +162,7 @@ test_that("_tools/screenshots/examples/myblog/about.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/myblog/index.qmd", {
@@ -173,7 +173,7 @@ test_that("_tools/screenshots/examples/myblog/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/myblog/posts/first-post/index.qmd", {
@@ -184,7 +184,7 @@ test_that("_tools/screenshots/examples/myblog/posts/first-post/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/myblog/posts/welcome/index.qmd", {
@@ -195,7 +195,7 @@ test_that("_tools/screenshots/examples/myblog/posts/welcome/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/navbar-basic/about.qmd", {
@@ -206,7 +206,7 @@ test_that("_tools/screenshots/examples/navbar-basic/about.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/navbar-basic/index.qmd", {
@@ -217,7 +217,7 @@ test_that("_tools/screenshots/examples/navbar-basic/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/navbar-basic/talks.qmd", {
@@ -228,7 +228,7 @@ test_that("_tools/screenshots/examples/navbar-basic/talks.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/navbar-tools/index.qmd", {
@@ -239,7 +239,7 @@ test_that("_tools/screenshots/examples/navbar-tools/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/quarto-demo/basics-jupyter.qmd", {
@@ -250,7 +250,7 @@ test_that("_tools/screenshots/examples/quarto-demo/basics-jupyter.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd", {
@@ -261,7 +261,7 @@ test_that("_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/quarto-demo/layout-jupyter.qmd", {
@@ -272,7 +272,7 @@ test_that("_tools/screenshots/examples/quarto-demo/layout-jupyter.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("404.qmd", {
@@ -283,7 +283,7 @@ test_that("404.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("about.qmd", {
@@ -294,7 +294,7 @@ test_that("about.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("bug-reports.qmd", {
@@ -305,7 +305,7 @@ test_that("bug-reports.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/_require-1.3.qmd", {
@@ -316,7 +316,7 @@ test_that("docs/_require-1.3.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/_require-1.4.qmd", {
@@ -327,7 +327,7 @@ test_that("docs/_require-1.4.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/advanced/environment-vars.qmd", {
@@ -338,7 +338,7 @@ test_that("docs/advanced/environment-vars.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/advanced/html/external-sources.qmd", {
@@ -349,7 +349,7 @@ test_that("docs/advanced/html/external-sources.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/advanced/index.qmd", {
@@ -360,7 +360,7 @@ test_that("docs/advanced/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/advanced/inspect/index.qmd", {
@@ -371,7 +371,7 @@ test_that("docs/advanced/inspect/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/advanced/jupyter/kernel-execution.qmd", {
@@ -382,7 +382,7 @@ test_that("docs/advanced/jupyter/kernel-execution.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/advanced/latex-raw.qmd", {
@@ -393,7 +393,7 @@ test_that("docs/advanced/latex-raw.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/advanced/quarto-ast.qmd", {
@@ -404,7 +404,7 @@ test_that("docs/advanced/quarto-ast.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/advanced/quarto-execute-info.qmd", {
@@ -415,7 +415,7 @@ test_that("docs/advanced/quarto-execute-info.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/advanced/typst/brand-yaml.qmd", {
@@ -426,7 +426,7 @@ test_that("docs/advanced/typst/brand-yaml.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/advanced/typst/typst-css.qmd", {
@@ -437,7 +437,7 @@ test_that("docs/advanced/typst/typst-css.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/advanced/typst/typst-gather.qmd", {
@@ -448,7 +448,7 @@ test_that("docs/advanced/typst/typst-gather.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_brand-example.qmd", {
@@ -459,7 +459,7 @@ test_that("docs/authoring/_brand-example.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_cross-reference-divs-diagram.qmd", {
@@ -470,7 +470,7 @@ test_that("docs/authoring/_cross-reference-divs-diagram.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_cross-reference-divs-figure.qmd", {
@@ -481,7 +481,7 @@ test_that("docs/authoring/_cross-reference-divs-figure.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_cross-reference-divs-listing.qmd", {
@@ -492,7 +492,7 @@ test_that("docs/authoring/_cross-reference-divs-listing.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_cross-reference-divs-table.qmd", {
@@ -503,7 +503,7 @@ test_that("docs/authoring/_cross-reference-divs-table.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_cross-reference-divs-video.qmd", {
@@ -514,7 +514,7 @@ test_that("docs/authoring/_cross-reference-divs-video.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_cross-references-callouts.qmd", {
@@ -525,7 +525,7 @@ test_that("docs/authoring/_cross-references-callouts.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_cross-references-listings.qmd", {
@@ -536,7 +536,7 @@ test_that("docs/authoring/_cross-references-listings.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_embed-examples/sample-notebook-view.qmd", {
@@ -547,7 +547,7 @@ test_that("docs/authoring/_embed-examples/sample-notebook-view.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_embed-examples/sample.qmd", {
@@ -558,7 +558,7 @@ test_that("docs/authoring/_embed-examples/sample.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_embeds-ipynb.qmd", {
@@ -569,7 +569,7 @@ test_that("docs/authoring/_embeds-ipynb.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_figure-examples/_examples.qmd", {
@@ -580,7 +580,7 @@ test_that("docs/authoring/_figure-examples/_examples.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_kbd.qmd", {
@@ -591,7 +591,7 @@ test_that("docs/authoring/_kbd.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_mermaid-examples/customize.qmd", {
@@ -602,7 +602,7 @@ test_that("docs/authoring/_mermaid-examples/customize.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_mermaid-examples/dark.qmd", {
@@ -613,7 +613,7 @@ test_that("docs/authoring/_mermaid-examples/dark.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_mermaid-examples/darkly.qmd", {
@@ -624,7 +624,7 @@ test_that("docs/authoring/_mermaid-examples/darkly.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_mermaid-examples/default.qmd", {
@@ -635,7 +635,7 @@ test_that("docs/authoring/_mermaid-examples/default.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_mermaid-examples/forest.qmd", {
@@ -646,7 +646,7 @@ test_that("docs/authoring/_mermaid-examples/forest.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_mermaid-examples/neutral.qmd", {
@@ -657,7 +657,7 @@ test_that("docs/authoring/_mermaid-examples/neutral.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_mermaid-examples/sandstone.qmd", {
@@ -668,7 +668,7 @@ test_that("docs/authoring/_mermaid-examples/sandstone.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_mermaid-examples/solar.qmd", {
@@ -679,7 +679,7 @@ test_that("docs/authoring/_mermaid-examples/solar.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_mermaid-examples/vapor.qmd", {
@@ -690,7 +690,7 @@ test_that("docs/authoring/_mermaid-examples/vapor.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_mermaid-theming.qmd", {
@@ -701,7 +701,7 @@ test_that("docs/authoring/_mermaid-theming.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_pagebreak.qmd", {
@@ -712,7 +712,7 @@ test_that("docs/authoring/_pagebreak.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_shortcodes.qmd", {
@@ -723,7 +723,7 @@ test_that("docs/authoring/_shortcodes.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/appendices.qmd", {
@@ -734,7 +734,7 @@ test_that("docs/authoring/appendices.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/article-layout.qmd", {
@@ -745,7 +745,7 @@ test_that("docs/authoring/article-layout.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/brand.qmd", {
@@ -756,7 +756,7 @@ test_that("docs/authoring/brand.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/callouts.qmd", {
@@ -767,7 +767,7 @@ test_that("docs/authoring/callouts.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/citations.qmd", {
@@ -778,7 +778,7 @@ test_that("docs/authoring/citations.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/code-annotation-example/revealjs.qmd", {
@@ -789,7 +789,7 @@ test_that("docs/authoring/code-annotation-example/revealjs.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/code-annotation.qmd", {
@@ -800,7 +800,7 @@ test_that("docs/authoring/code-annotation.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/conditional.qmd", {
@@ -811,7 +811,7 @@ test_that("docs/authoring/conditional.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/contents.qmd", {
@@ -822,7 +822,7 @@ test_that("docs/authoring/contents.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/create-citeable-articles.qmd", {
@@ -833,7 +833,7 @@ test_that("docs/authoring/create-citeable-articles.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/cross-reference-options.qmd", {
@@ -844,7 +844,7 @@ test_that("docs/authoring/cross-reference-options.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/cross-references-custom.qmd", {
@@ -855,7 +855,7 @@ test_that("docs/authoring/cross-references-custom.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/cross-references-divs.qmd", {
@@ -866,7 +866,7 @@ test_that("docs/authoring/cross-references-divs.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/cross-references.qmd", {
@@ -877,7 +877,7 @@ test_that("docs/authoring/cross-references.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/diagrams.qmd", {
@@ -888,7 +888,7 @@ test_that("docs/authoring/diagrams.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/figures.qmd", {
@@ -899,7 +899,7 @@ test_that("docs/authoring/figures.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/front-matter.qmd", {
@@ -910,7 +910,7 @@ test_that("docs/authoring/front-matter.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/includes.qmd", {
@@ -921,7 +921,7 @@ test_that("docs/authoring/includes.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/language.qmd", {
@@ -932,7 +932,7 @@ test_that("docs/authoring/language.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/lipsum.qmd", {
@@ -943,7 +943,7 @@ test_that("docs/authoring/lipsum.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/markdown-basics.qmd", {
@@ -954,7 +954,7 @@ test_that("docs/authoring/markdown-basics.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/notebook-embed.qmd", {
@@ -965,7 +965,7 @@ test_that("docs/authoring/notebook-embed.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/penguins-qmd.qmd", {
@@ -976,7 +976,7 @@ test_that("docs/authoring/penguins-qmd.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/placeholder.qmd", {
@@ -987,7 +987,7 @@ test_that("docs/authoring/placeholder.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/shortcodes.qmd", {
@@ -998,7 +998,7 @@ test_that("docs/authoring/shortcodes.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/tables.qmd", {
@@ -1009,7 +1009,7 @@ test_that("docs/authoring/tables.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/title-blocks.qmd", {
@@ -1020,7 +1020,7 @@ test_that("docs/authoring/title-blocks.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/variables.qmd", {
@@ -1031,7 +1031,7 @@ test_that("docs/authoring/variables.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/version.qmd", {
@@ -1042,7 +1042,7 @@ test_that("docs/authoring/version.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/authoring/videos.qmd", {
@@ -1053,7 +1053,7 @@ test_that("docs/authoring/videos.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/index.qmd", {
@@ -1064,7 +1064,7 @@ test_that("docs/blog/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2022-02-13-feature-callouts/index.qmd", {
@@ -1075,7 +1075,7 @@ test_that("docs/blog/posts/2022-02-13-feature-callouts/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2022-02-15-feature-tables/index.qmd", {
@@ -1086,7 +1086,7 @@ test_that("docs/blog/posts/2022-02-15-feature-tables/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2022-02-17-advanced-layout/index.qmd", {
@@ -1097,7 +1097,7 @@ test_that("docs/blog/posts/2022-02-17-advanced-layout/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2022-06-21-rstudio-conf-2022-quarto/index.qmd", {
@@ -1108,7 +1108,7 @@ test_that("docs/blog/posts/2022-06-21-rstudio-conf-2022-quarto/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2022-07-25-feature-extensions/index.qmd", {
@@ -1119,7 +1119,7 @@ test_that("docs/blog/posts/2022-07-25-feature-extensions/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2022-10-25-shinylive-extension/index.qmd", {
@@ -1130,7 +1130,7 @@ test_that("docs/blog/posts/2022-10-25-shinylive-extension/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2023-03-13-code-annotation/index.qmd", {
@@ -1141,7 +1141,7 @@ test_that("docs/blog/posts/2023-03-13-code-annotation/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2023-03-15-multi-format/index.qmd", {
@@ -1152,7 +1152,7 @@ test_that("docs/blog/posts/2023-03-15-multi-format/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2023-03-17-jupyter-cell-embedding/index.qmd", {
@@ -1163,7 +1163,7 @@ test_that("docs/blog/posts/2023-03-17-jupyter-cell-embedding/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2023-03-20-confluence/index.qmd", {
@@ -1174,7 +1174,7 @@ test_that("docs/blog/posts/2023-03-20-confluence/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2023-04-26-1.3-release/index.qmd", {
@@ -1185,7 +1185,7 @@ test_that("docs/blog/posts/2023-04-26-1.3-release/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2023-05-15-get-started/index.qmd", {
@@ -1196,7 +1196,7 @@ test_that("docs/blog/posts/2023-05-15-get-started/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2023-05-22-quarto-for-academics/index.qmd", {
@@ -1207,7 +1207,7 @@ test_that("docs/blog/posts/2023-05-22-quarto-for-academics/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2023-12-05-asa-traveling-courses/index.qmd", {
@@ -1218,7 +1218,7 @@ test_that("docs/blog/posts/2023-12-05-asa-traveling-courses/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2023-12-07-quarto-dashboards-demo/index.qmd", {
@@ -1229,7 +1229,7 @@ test_that("docs/blog/posts/2023-12-07-quarto-dashboards-demo/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-01-24-1.4-release/index.qmd", {
@@ -1240,7 +1240,7 @@ test_that("docs/blog/posts/2024-01-24-1.4-release/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-03-26-hugging-face/index.qmd", {
@@ -1251,7 +1251,7 @@ test_that("docs/blog/posts/2024-03-26-hugging-face/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-04-01-manuscripts-rmedicine/index.qmd", {
@@ -1262,7 +1262,7 @@ test_that("docs/blog/posts/2024-04-01-manuscripts-rmedicine/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-05-28-conf-workshops/index.qmd", {
@@ -1273,7 +1273,7 @@ test_that("docs/blog/posts/2024-05-28-conf-workshops/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/great-tables-oceania.qmd", {
@@ -1284,7 +1284,7 @@ test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/great-t
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/great-tables-solar-zenith.qmd", {
@@ -1295,7 +1295,7 @@ test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/great-t
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/gt-cars.qmd", {
@@ -1306,7 +1306,7 @@ test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/gt-cars
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/gt-islands.qmd", {
@@ -1317,7 +1317,7 @@ test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/gt-isla
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/pandas-acting-on-data.qmd", {
@@ -1328,7 +1328,7 @@ test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/pandas-
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/pandas-confusion-matrix.qmd", {
@@ -1339,7 +1339,7 @@ test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/pandas-
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/index.qmd", {
@@ -1350,7 +1350,7 @@ test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-07-11-1.5-release/index.qmd", {
@@ -1361,7 +1361,7 @@ test_that("docs/blog/posts/2024-07-11-1.5-release/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-10-15-conf-workshops-materials/index.qmd", {
@@ -1372,7 +1372,7 @@ test_that("docs/blog/posts/2024-10-15-conf-workshops-materials/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-11-06-conf-talks/index.qmd", {
@@ -1383,7 +1383,7 @@ test_that("docs/blog/posts/2024-11-06-conf-talks/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-11-22-dashboards-workshop/index.qmd", {
@@ -1394,7 +1394,7 @@ test_that("docs/blog/posts/2024-11-22-dashboards-workshop/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-11-25-1.6-release/index.qmd", {
@@ -1405,7 +1405,7 @@ test_that("docs/blog/posts/2024-11-25-1.6-release/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-12-04-websites-workshop/index.qmd", {
@@ -1416,7 +1416,7 @@ test_that("docs/blog/posts/2024-12-04-websites-workshop/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2024-12-12-includes-meta/index.qmd", {
@@ -1427,7 +1427,7 @@ test_that("docs/blog/posts/2024-12-12-includes-meta/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2025-01-15-quarto-tip-brand-positron/index.qmd", {
@@ -1438,7 +1438,7 @@ test_that("docs/blog/posts/2025-01-15-quarto-tip-brand-positron/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2025-04-28-1.7-release/index.qmd", {
@@ -1449,7 +1449,7 @@ test_that("docs/blog/posts/2025-04-28-1.7-release/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2025-05-19-quarto-codespaces/index.qmd", {
@@ -1460,7 +1460,7 @@ test_that("docs/blog/posts/2025-05-19-quarto-codespaces/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2025-07-24-parameterized-reports-python/index.qmd", {
@@ -1471,7 +1471,7 @@ test_that("docs/blog/posts/2025-07-24-parameterized-reports-python/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2025-07-28-R-package-release-1.5/index.qmd", {
@@ -1482,7 +1482,7 @@ test_that("docs/blog/posts/2025-07-28-R-package-release-1.5/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2025-10-13-1.8-release/index.qmd", {
@@ -1493,7 +1493,7 @@ test_that("docs/blog/posts/2025-10-13-1.8-release/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2025-10-20-quarto-wizard-1-0-0/index.qmd", {
@@ -1504,7 +1504,7 @@ test_that("docs/blog/posts/2025-10-20-quarto-wizard-1-0-0/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2025-10-27-conf-workshops-materials/index.qmd", {
@@ -1515,7 +1515,7 @@ test_that("docs/blog/posts/2025-10-27-conf-workshops-materials/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2025-11-24-conf-talk-videos/index.qmd", {
@@ -1526,7 +1526,7 @@ test_that("docs/blog/posts/2025-11-24-conf-talk-videos/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2026-03-05-pdf-accessibility-and-standards/index.qmd", {
@@ -1537,7 +1537,7 @@ test_that("docs/blog/posts/2026-03-05-pdf-accessibility-and-standards/index.qmd"
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2026-03-24-1.9-release/index.qmd", {
@@ -1548,7 +1548,7 @@ test_that("docs/blog/posts/2026-03-24-1.9-release/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2026-03-31-typst-books-and-more/index.qmd", {
@@ -1559,7 +1559,7 @@ test_that("docs/blog/posts/2026-03-31-typst-books-and-more/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2026-04-06-whats-next-quarto-2/index.qmd", {
@@ -1570,7 +1570,7 @@ test_that("docs/blog/posts/2026-04-06-whats-next-quarto-2/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/blog/posts/2026-04-14-chrome-headless-shell/index.qmd", {
@@ -1581,7 +1581,7 @@ test_that("docs/blog/posts/2026-04-14-chrome-headless-shell/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/books/_book-vs-website-key.qmd", {
@@ -1592,7 +1592,7 @@ test_that("docs/books/_book-vs-website-key.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/books/book-basics.qmd", {
@@ -1603,7 +1603,7 @@ test_that("docs/books/book-basics.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/books/book-crossrefs.qmd", {
@@ -1614,7 +1614,7 @@ test_that("docs/books/book-crossrefs.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/books/book-output.qmd", {
@@ -1625,7 +1625,7 @@ test_that("docs/books/book-output.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/books/book-structure.qmd", {
@@ -1636,7 +1636,7 @@ test_that("docs/books/book-structure.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/add.qmd", {
@@ -1647,7 +1647,7 @@ test_that("docs/cli/add.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/call.qmd", {
@@ -1658,7 +1658,7 @@ test_that("docs/cli/call.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/capabilities.qmd", {
@@ -1669,7 +1669,7 @@ test_that("docs/cli/capabilities.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/check.qmd", {
@@ -1680,7 +1680,7 @@ test_that("docs/cli/check.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/convert.qmd", {
@@ -1691,7 +1691,7 @@ test_that("docs/cli/convert.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/create.qmd", {
@@ -1702,7 +1702,7 @@ test_that("docs/cli/create.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/index.qmd", {
@@ -1713,7 +1713,7 @@ test_that("docs/cli/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/inspect.qmd", {
@@ -1724,7 +1724,7 @@ test_that("docs/cli/inspect.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/install.qmd", {
@@ -1735,7 +1735,7 @@ test_that("docs/cli/install.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/list.qmd", {
@@ -1746,7 +1746,7 @@ test_that("docs/cli/list.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/pandoc.qmd", {
@@ -1757,7 +1757,7 @@ test_that("docs/cli/pandoc.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/preview.qmd", {
@@ -1768,7 +1768,7 @@ test_that("docs/cli/preview.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/publish.qmd", {
@@ -1779,7 +1779,7 @@ test_that("docs/cli/publish.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/remove.qmd", {
@@ -1790,7 +1790,7 @@ test_that("docs/cli/remove.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/render.qmd", {
@@ -1801,7 +1801,7 @@ test_that("docs/cli/render.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/run.qmd", {
@@ -1812,7 +1812,7 @@ test_that("docs/cli/run.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/serve.qmd", {
@@ -1823,7 +1823,7 @@ test_that("docs/cli/serve.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/tools.qmd", {
@@ -1834,7 +1834,7 @@ test_that("docs/cli/tools.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/typst.qmd", {
@@ -1845,7 +1845,7 @@ test_that("docs/cli/typst.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/uninstall.qmd", {
@@ -1856,7 +1856,7 @@ test_that("docs/cli/uninstall.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/update.qmd", {
@@ -1867,7 +1867,7 @@ test_that("docs/cli/update.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/cli/use.qmd", {
@@ -1878,7 +1878,7 @@ test_that("docs/cli/use.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/computations/caching.qmd", {
@@ -1889,7 +1889,7 @@ test_that("docs/computations/caching.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/computations/execution-options.qmd", {
@@ -1900,7 +1900,7 @@ test_that("docs/computations/execution-options.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/computations/inline-code.qmd", {
@@ -1911,7 +1911,7 @@ test_that("docs/computations/inline-code.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/computations/julia.qmd", {
@@ -1922,7 +1922,7 @@ test_that("docs/computations/julia.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/computations/ojs.qmd", {
@@ -1933,7 +1933,7 @@ test_that("docs/computations/ojs.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/computations/parameters.qmd", {
@@ -1944,7 +1944,7 @@ test_that("docs/computations/parameters.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/computations/python.qmd", {
@@ -1955,7 +1955,7 @@ test_that("docs/computations/python.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/computations/r.qmd", {
@@ -1966,7 +1966,7 @@ test_that("docs/computations/r.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/computations/render-scripts.qmd", {
@@ -1977,7 +1977,7 @@ test_that("docs/computations/render-scripts.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/_TODO.qmd", {
@@ -1988,7 +1988,7 @@ test_that("docs/dashboards/_examples/_TODO.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/altair.qmd", {
@@ -1999,7 +1999,7 @@ test_that("docs/dashboards/_examples/altair.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/cell-layout.qmd", {
@@ -2010,7 +2010,7 @@ test_that("docs/dashboards/_examples/cell-layout.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/flow.qmd", {
@@ -2021,7 +2021,7 @@ test_that("docs/dashboards/_examples/flow.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/gapminder-content.qmd", {
@@ -2032,7 +2032,7 @@ test_that("docs/dashboards/_examples/gapminder-content.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/gapminder.qmd", {
@@ -2043,7 +2043,7 @@ test_that("docs/dashboards/_examples/gapminder.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/inputs/card-toolbar.qmd", {
@@ -2054,7 +2054,7 @@ test_that("docs/dashboards/_examples/inputs/card-toolbar.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/inputs/column-layout.qmd", {
@@ -2065,7 +2065,7 @@ test_that("docs/dashboards/_examples/inputs/column-layout.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/inputs/inline-sidebar.qmd", {
@@ -2076,7 +2076,7 @@ test_that("docs/dashboards/_examples/inputs/inline-sidebar.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/inputs/inline-toolbar.qmd", {
@@ -2087,7 +2087,7 @@ test_that("docs/dashboards/_examples/inputs/inline-toolbar.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/inputs/input-panel.qmd", {
@@ -2098,7 +2098,7 @@ test_that("docs/dashboards/_examples/inputs/input-panel.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/inputs/page-sidebar.qmd", {
@@ -2109,7 +2109,7 @@ test_that("docs/dashboards/_examples/inputs/page-sidebar.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/inputs/right-sidebar.qmd", {
@@ -2120,7 +2120,7 @@ test_that("docs/dashboards/_examples/inputs/right-sidebar.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/inputs/toolbar.qmd", {
@@ -2131,7 +2131,7 @@ test_that("docs/dashboards/_examples/inputs/toolbar.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/julia/julia-plotly.qmd", {
@@ -2142,7 +2142,7 @@ test_that("docs/dashboards/_examples/julia/julia-plotly.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/leaflet.qmd", {
@@ -2153,7 +2153,7 @@ test_that("docs/dashboards/_examples/leaflet.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/markdown.qmd", {
@@ -2164,7 +2164,7 @@ test_that("docs/dashboards/_examples/markdown.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/navigation.qmd", {
@@ -2175,7 +2175,7 @@ test_that("docs/dashboards/_examples/navigation.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/penguins-obervable.qmd", {
@@ -2186,7 +2186,7 @@ test_that("docs/dashboards/_examples/penguins-obervable.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/python-wide.qmd", {
@@ -2197,7 +2197,7 @@ test_that("docs/dashboards/_examples/python-wide.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/python/python-itables.qmd", {
@@ -2208,7 +2208,7 @@ test_that("docs/dashboards/_examples/python/python-itables.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/python/python-tabulate.qmd", {
@@ -2219,7 +2219,7 @@ test_that("docs/dashboards/_examples/python/python-tabulate.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/r/dt.qmd", {
@@ -2230,7 +2230,7 @@ test_that("docs/dashboards/_examples/r/dt.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/shiny-diamonds.qmd", {
@@ -2241,7 +2241,7 @@ test_that("docs/dashboards/_examples/shiny-diamonds.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/shiny-global-sidebar.qmd", {
@@ -2252,7 +2252,7 @@ test_that("docs/dashboards/_examples/shiny-global-sidebar.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/shiny-python-simple.qmd", {
@@ -2263,7 +2263,7 @@ test_that("docs/dashboards/_examples/shiny-python-simple.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/shiny-sidebar.qmd", {
@@ -2274,7 +2274,7 @@ test_that("docs/dashboards/_examples/shiny-sidebar.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_examples/valuebox.qmd", {
@@ -2285,7 +2285,7 @@ test_that("docs/dashboards/_examples/valuebox.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_inputs.qmd", {
@@ -2296,7 +2296,7 @@ test_that("docs/dashboards/_inputs.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/_layouts-old.qmd", {
@@ -2307,7 +2307,7 @@ test_that("docs/dashboards/_layouts-old.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/data-display.qmd", {
@@ -2318,7 +2318,7 @@ test_that("docs/dashboards/data-display.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/deployment.qmd", {
@@ -2329,7 +2329,7 @@ test_that("docs/dashboards/deployment.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/index.qmd", {
@@ -2340,7 +2340,7 @@ test_that("docs/dashboards/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/inputs.qmd", {
@@ -2351,7 +2351,7 @@ test_that("docs/dashboards/inputs.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/interactivity/index.qmd", {
@@ -2362,7 +2362,7 @@ test_that("docs/dashboards/interactivity/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/interactivity/observable.qmd", {
@@ -2373,7 +2373,7 @@ test_that("docs/dashboards/interactivity/observable.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/interactivity/shiny-python/_shiny-requirements.qmd", {
@@ -2384,7 +2384,7 @@ test_that("docs/dashboards/interactivity/shiny-python/_shiny-requirements.qmd", 
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/interactivity/shiny-python/execution.qmd", {
@@ -2395,7 +2395,7 @@ test_that("docs/dashboards/interactivity/shiny-python/execution.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/interactivity/shiny-python/index.qmd", {
@@ -2406,7 +2406,7 @@ test_that("docs/dashboards/interactivity/shiny-python/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/interactivity/shiny-python/running.qmd", {
@@ -2417,7 +2417,7 @@ test_that("docs/dashboards/interactivity/shiny-python/running.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/interactivity/shiny-r.qmd", {
@@ -2428,7 +2428,7 @@ test_that("docs/dashboards/interactivity/shiny-r.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/layout.qmd", {
@@ -2439,7 +2439,7 @@ test_that("docs/dashboards/layout.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/parameters.qmd", {
@@ -2450,7 +2450,7 @@ test_that("docs/dashboards/parameters.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/dashboards/theming.qmd", {
@@ -2461,7 +2461,7 @@ test_that("docs/dashboards/theming.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/download/changelog/1.1/index.qmd", {
@@ -2472,7 +2472,7 @@ test_that("docs/download/changelog/1.1/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/download/changelog/1.2/index.qmd", {
@@ -2483,7 +2483,7 @@ test_that("docs/download/changelog/1.2/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/download/changelog/1.3/index.qmd", {
@@ -2494,7 +2494,7 @@ test_that("docs/download/changelog/1.3/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/download/changelog/1.4/index.qmd", {
@@ -2505,7 +2505,7 @@ test_that("docs/download/changelog/1.4/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/download/changelog/1.5/index.qmd", {
@@ -2516,7 +2516,7 @@ test_that("docs/download/changelog/1.5/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/download/changelog/1.6/index.qmd", {
@@ -2527,7 +2527,7 @@ test_that("docs/download/changelog/1.6/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/download/changelog/1.7/index.qmd", {
@@ -2538,7 +2538,7 @@ test_that("docs/download/changelog/1.7/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/download/changelog/1.8/index.qmd", {
@@ -2549,7 +2549,7 @@ test_that("docs/download/changelog/1.8/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/download/index.qmd", {
@@ -2560,7 +2560,7 @@ test_that("docs/download/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/download/prerelease.qmd", {
@@ -2571,7 +2571,7 @@ test_that("docs/download/prerelease.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/download/release.qmd", {
@@ -2582,7 +2582,7 @@ test_that("docs/download/release.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/download/tarball.qmd", {
@@ -2593,7 +2593,7 @@ test_that("docs/download/tarball.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/_extension-trust.qmd", {
@@ -2604,7 +2604,7 @@ test_that("docs/extensions/_extension-trust.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/_extension-version.qmd", {
@@ -2615,7 +2615,7 @@ test_that("docs/extensions/_extension-version.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/_formats-common.qmd", {
@@ -2626,7 +2626,7 @@ test_that("docs/extensions/_formats-common.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/_listing-chooser.qmd", {
@@ -2637,7 +2637,7 @@ test_that("docs/extensions/_listing-chooser.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/_listing-footer.qmd", {
@@ -2648,7 +2648,7 @@ test_that("docs/extensions/_listing-footer.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/_listing-preamble.qmd", {
@@ -2659,7 +2659,7 @@ test_that("docs/extensions/_listing-preamble.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/_shortcode-escaping.qmd", {
@@ -2670,7 +2670,7 @@ test_that("docs/extensions/_shortcode-escaping.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/brand.qmd", {
@@ -2681,7 +2681,7 @@ test_that("docs/extensions/brand.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/creating.qmd", {
@@ -2692,7 +2692,7 @@ test_that("docs/extensions/creating.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/distributing.qmd", {
@@ -2703,7 +2703,7 @@ test_that("docs/extensions/distributing.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/engine.qmd", {
@@ -2714,7 +2714,7 @@ test_that("docs/extensions/engine.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/filters.qmd", {
@@ -2725,7 +2725,7 @@ test_that("docs/extensions/filters.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/formats.qmd", {
@@ -2736,7 +2736,7 @@ test_that("docs/extensions/formats.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/index.qmd", {
@@ -2747,7 +2747,7 @@ test_that("docs/extensions/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/listing-filters.qmd", {
@@ -2758,7 +2758,7 @@ test_that("docs/extensions/listing-filters.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/listing-formats.qmd", {
@@ -2769,7 +2769,7 @@ test_that("docs/extensions/listing-formats.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/listing-journals.qmd", {
@@ -2780,7 +2780,7 @@ test_that("docs/extensions/listing-journals.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/listing-revealjs.qmd", {
@@ -2791,7 +2791,7 @@ test_that("docs/extensions/listing-revealjs.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/lua-api.qmd", {
@@ -2802,7 +2802,7 @@ test_that("docs/extensions/lua-api.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/lua.qmd", {
@@ -2813,7 +2813,7 @@ test_that("docs/extensions/lua.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/managing.qmd", {
@@ -2824,7 +2824,7 @@ test_that("docs/extensions/managing.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/metadata.qmd", {
@@ -2835,7 +2835,7 @@ test_that("docs/extensions/metadata.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/nbfilter.qmd", {
@@ -2846,7 +2846,7 @@ test_that("docs/extensions/nbfilter.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/project-types.qmd", {
@@ -2857,7 +2857,7 @@ test_that("docs/extensions/project-types.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/revealjs.qmd", {
@@ -2868,7 +2868,7 @@ test_that("docs/extensions/revealjs.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/shortcodes.qmd", {
@@ -2879,7 +2879,7 @@ test_that("docs/extensions/shortcodes.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/extensions/starter-templates.qmd", {
@@ -2890,7 +2890,7 @@ test_that("docs/extensions/starter-templates.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/faq/index.qmd", {
@@ -2901,7 +2901,7 @@ test_that("docs/faq/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/faq/rmarkdown.qmd", {
@@ -2912,7 +2912,7 @@ test_that("docs/faq/rmarkdown.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/gallery/index.qmd", {
@@ -2923,7 +2923,7 @@ test_that("docs/gallery/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/authoring/_authoring-complete.qmd", {
@@ -2934,7 +2934,7 @@ test_that("docs/get-started/authoring/_authoring-complete.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/authoring/_authoring.qmd", {
@@ -2945,7 +2945,7 @@ test_that("docs/get-started/authoring/_authoring.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/authoring/index.qmd", {
@@ -2956,7 +2956,7 @@ test_that("docs/get-started/authoring/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/authoring/jupyter.qmd", {
@@ -2967,7 +2967,7 @@ test_that("docs/get-started/authoring/jupyter.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/authoring/neovim.qmd", {
@@ -2978,7 +2978,7 @@ test_that("docs/get-started/authoring/neovim.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/authoring/positron.qmd", {
@@ -2989,7 +2989,7 @@ test_that("docs/get-started/authoring/positron.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/authoring/rstudio.qmd", {
@@ -3000,7 +3000,7 @@ test_that("docs/get-started/authoring/rstudio.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/authoring/text-editor.qmd", {
@@ -3011,7 +3011,7 @@ test_that("docs/get-started/authoring/text-editor.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/authoring/vscode.qmd", {
@@ -3022,7 +3022,7 @@ test_that("docs/get-started/authoring/vscode.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/computations/_computations-complete.qmd", {
@@ -3033,7 +3033,7 @@ test_that("docs/get-started/computations/_computations-complete.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/computations/_computations-text-editor.qmd", {
@@ -3044,7 +3044,7 @@ test_that("docs/get-started/computations/_computations-text-editor.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/computations/_computations.qmd", {
@@ -3055,7 +3055,7 @@ test_that("docs/get-started/computations/_computations.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/computations/_positron/python/computations-complete.qmd", {
@@ -3066,7 +3066,7 @@ test_that("docs/get-started/computations/_positron/python/computations-complete.
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/computations/_positron/python/computations.qmd", {
@@ -3077,7 +3077,7 @@ test_that("docs/get-started/computations/_positron/python/computations.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/computations/_positron/r/computations-complete.qmd", {
@@ -3088,7 +3088,7 @@ test_that("docs/get-started/computations/_positron/r/computations-complete.qmd",
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/computations/_positron/r/computations.qmd", {
@@ -3099,7 +3099,7 @@ test_that("docs/get-started/computations/_positron/r/computations.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/computations/index.qmd", {
@@ -3110,7 +3110,7 @@ test_that("docs/get-started/computations/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/computations/jupyter.qmd", {
@@ -3121,7 +3121,7 @@ test_that("docs/get-started/computations/jupyter.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/computations/neovim.qmd", {
@@ -3132,7 +3132,7 @@ test_that("docs/get-started/computations/neovim.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/computations/positron.qmd", {
@@ -3143,7 +3143,7 @@ test_that("docs/get-started/computations/positron.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/computations/rstudio.qmd", {
@@ -3154,7 +3154,7 @@ test_that("docs/get-started/computations/rstudio.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/computations/text-editor.qmd", {
@@ -3165,7 +3165,7 @@ test_that("docs/get-started/computations/text-editor.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/computations/vscode.qmd", {
@@ -3176,7 +3176,7 @@ test_that("docs/get-started/computations/vscode.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/hello/_hello.qmd", {
@@ -3187,7 +3187,7 @@ test_that("docs/get-started/hello/_hello.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/hello/_positron/python/hello.qmd", {
@@ -3198,7 +3198,7 @@ test_that("docs/get-started/hello/_positron/python/hello.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/hello/_positron/r/hello.qmd", {
@@ -3209,7 +3209,7 @@ test_that("docs/get-started/hello/_positron/r/hello.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/hello/index.qmd", {
@@ -3220,7 +3220,7 @@ test_that("docs/get-started/hello/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/hello/jupyter.qmd", {
@@ -3231,7 +3231,7 @@ test_that("docs/get-started/hello/jupyter.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/hello/neovim.qmd", {
@@ -3242,7 +3242,7 @@ test_that("docs/get-started/hello/neovim.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/hello/positron.qmd", {
@@ -3253,7 +3253,7 @@ test_that("docs/get-started/hello/positron.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/hello/rstudio.qmd", {
@@ -3264,7 +3264,7 @@ test_that("docs/get-started/hello/rstudio.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/hello/rstudio/_hello.qmd", {
@@ -3275,7 +3275,7 @@ test_that("docs/get-started/hello/rstudio/_hello.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/hello/text-editor.qmd", {
@@ -3286,7 +3286,7 @@ test_that("docs/get-started/hello/text-editor.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/hello/vscode.qmd", {
@@ -3297,7 +3297,7 @@ test_that("docs/get-started/hello/vscode.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/get-started/index.qmd", {
@@ -3308,7 +3308,7 @@ test_that("docs/get-started/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/guide/index.qmd", {
@@ -3319,7 +3319,7 @@ test_that("docs/guide/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/index.qmd", {
@@ -3330,7 +3330,7 @@ test_that("docs/interactive/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/layout.qmd", {
@@ -3341,7 +3341,7 @@ test_that("docs/interactive/layout.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/ojs/_reactivity.qmd", {
@@ -3352,7 +3352,7 @@ test_that("docs/interactive/ojs/_reactivity.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/ojs/code-reuse.qmd", {
@@ -3363,7 +3363,7 @@ test_that("docs/interactive/ojs/code-reuse.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/ojs/data-sources.qmd", {
@@ -3374,7 +3374,7 @@ test_that("docs/interactive/ojs/data-sources.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/ojs/examples/_shiny/binning/binning-shiny-ojs.qmd", {
@@ -3385,7 +3385,7 @@ test_that("docs/interactive/ojs/examples/_shiny/binning/binning-shiny-ojs.qmd", 
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/ojs/examples/_shiny/data/data-shiny-ojs.qmd", {
@@ -3396,7 +3396,7 @@ test_that("docs/interactive/ojs/examples/_shiny/data/data-shiny-ojs.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/ojs/examples/_shiny/kmeans/kmeans-shiny-ojs.qmd", {
@@ -3407,7 +3407,7 @@ test_that("docs/interactive/ojs/examples/_shiny/kmeans/kmeans-shiny-ojs.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/ojs/examples/arquero.qmd", {
@@ -3418,7 +3418,7 @@ test_that("docs/interactive/ojs/examples/arquero.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/ojs/examples/github.qmd", {
@@ -3429,7 +3429,7 @@ test_that("docs/interactive/ojs/examples/github.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/ojs/examples/layout.qmd", {
@@ -3440,7 +3440,7 @@ test_that("docs/interactive/ojs/examples/layout.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/ojs/examples/noaa-co2.qmd", {
@@ -3451,7 +3451,7 @@ test_that("docs/interactive/ojs/examples/noaa-co2.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/ojs/examples/penguins.qmd", {
@@ -3462,7 +3462,7 @@ test_that("docs/interactive/ojs/examples/penguins.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/ojs/examples/population.qmd", {
@@ -3473,7 +3473,7 @@ test_that("docs/interactive/ojs/examples/population.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/ojs/examples/sunburst.qmd", {
@@ -3484,7 +3484,7 @@ test_that("docs/interactive/ojs/examples/sunburst.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/ojs/index.qmd", {
@@ -3495,7 +3495,7 @@ test_that("docs/interactive/ojs/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/ojs/libraries.qmd", {
@@ -3506,7 +3506,7 @@ test_that("docs/interactive/ojs/libraries.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/ojs/ojs-cells.qmd", {
@@ -3517,7 +3517,7 @@ test_that("docs/interactive/ojs/ojs-cells.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/ojs/shiny.qmd", {
@@ -3528,7 +3528,7 @@ test_that("docs/interactive/ojs/shiny.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/shiny/_examples/covid19-bicartogram/covid19-bicartogram.qmd", {
@@ -3539,7 +3539,7 @@ test_that("docs/interactive/shiny/_examples/covid19-bicartogram/covid19-bicartog
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/shiny/_examples/diamonds/shiny-diamonds.qmd", {
@@ -3550,7 +3550,7 @@ test_that("docs/interactive/shiny/_examples/diamonds/shiny-diamonds.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/shiny/_examples/k-means/shiny-k-means.qmd", {
@@ -3561,7 +3561,7 @@ test_that("docs/interactive/shiny/_examples/k-means/shiny-k-means.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/shiny/_examples/old-faithful/shiny-old-faithful.qmd", {
@@ -3572,7 +3572,7 @@ test_that("docs/interactive/shiny/_examples/old-faithful/shiny-old-faithful.qmd"
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/shiny/execution.qmd", {
@@ -3583,7 +3583,7 @@ test_that("docs/interactive/shiny/execution.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/shiny/index.qmd", {
@@ -3594,7 +3594,7 @@ test_that("docs/interactive/shiny/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/shiny/resources.qmd", {
@@ -3605,7 +3605,7 @@ test_that("docs/interactive/shiny/resources.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/shiny/running.qmd", {
@@ -3616,7 +3616,7 @@ test_that("docs/interactive/shiny/running.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/widgets/htmlwidgets.qmd", {
@@ -3627,7 +3627,7 @@ test_that("docs/interactive/widgets/htmlwidgets.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/interactive/widgets/jupyter.qmd", {
@@ -3638,7 +3638,7 @@ test_that("docs/interactive/widgets/jupyter.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/journals/_draft/create-extensions.qmd", {
@@ -3649,7 +3649,7 @@ test_that("docs/journals/_draft/create-extensions.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/journals/_draft/extension-templates.qmd", {
@@ -3660,7 +3660,7 @@ test_that("docs/journals/_draft/extension-templates.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/journals/authors.qmd", {
@@ -3671,7 +3671,7 @@ test_that("docs/journals/authors.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/journals/formats.qmd", {
@@ -3682,7 +3682,7 @@ test_that("docs/journals/formats.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/journals/index.qmd", {
@@ -3693,7 +3693,7 @@ test_that("docs/journals/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/journals/templates.qmd", {
@@ -3704,7 +3704,7 @@ test_that("docs/journals/templates.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_authoring-content.qmd", {
@@ -3715,7 +3715,7 @@ test_that("docs/manuscripts/authoring/_authoring-content.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_citations.qmd", {
@@ -3726,7 +3726,7 @@ test_that("docs/manuscripts/authoring/_citations.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_cross-refs.qmd", {
@@ -3737,7 +3737,7 @@ test_that("docs/manuscripts/authoring/_cross-refs.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_embeds-ipynb.qmd", {
@@ -3748,7 +3748,7 @@ test_that("docs/manuscripts/authoring/_embeds-ipynb.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_embeds-qmd.qmd", {
@@ -3759,7 +3759,7 @@ test_that("docs/manuscripts/authoring/_embeds-qmd.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_equations.qmd", {
@@ -3770,7 +3770,7 @@ test_that("docs/manuscripts/authoring/_equations.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_figures.qmd", {
@@ -3781,7 +3781,7 @@ test_that("docs/manuscripts/authoring/_figures.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_files.qmd", {
@@ -3792,7 +3792,7 @@ test_that("docs/manuscripts/authoring/_files.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_footer.qmd", {
@@ -3803,7 +3803,7 @@ test_that("docs/manuscripts/authoring/_footer.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_front-matter.qmd", {
@@ -3814,7 +3814,7 @@ test_that("docs/manuscripts/authoring/_front-matter.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_inline-computations.qmd", {
@@ -3825,7 +3825,7 @@ test_that("docs/manuscripts/authoring/_inline-computations.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_markdown.qmd", {
@@ -3836,7 +3836,7 @@ test_that("docs/manuscripts/authoring/_markdown.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_overview.qmd", {
@@ -3847,7 +3847,7 @@ test_that("docs/manuscripts/authoring/_overview.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_setup.qmd", {
@@ -3858,7 +3858,7 @@ test_that("docs/manuscripts/authoring/_setup.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_structure.qmd", {
@@ -3869,7 +3869,7 @@ test_that("docs/manuscripts/authoring/_structure.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_tables.qmd", {
@@ -3880,7 +3880,7 @@ test_that("docs/manuscripts/authoring/_tables.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_visual-editor.qmd", {
@@ -3891,7 +3891,7 @@ test_that("docs/manuscripts/authoring/_visual-editor.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_workflow-ipynb.qmd", {
@@ -3902,7 +3902,7 @@ test_that("docs/manuscripts/authoring/_workflow-ipynb.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_workflow-qmd.qmd", {
@@ -3913,7 +3913,7 @@ test_that("docs/manuscripts/authoring/_workflow-qmd.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/_workflow.qmd", {
@@ -3924,7 +3924,7 @@ test_that("docs/manuscripts/authoring/_workflow.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/index.qmd", {
@@ -3935,7 +3935,7 @@ test_that("docs/manuscripts/authoring/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/jupyterlab.qmd", {
@@ -3946,7 +3946,7 @@ test_that("docs/manuscripts/authoring/jupyterlab.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/rstudio.qmd", {
@@ -3957,7 +3957,7 @@ test_that("docs/manuscripts/authoring/rstudio.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/authoring/vscode.qmd", {
@@ -3968,7 +3968,7 @@ test_that("docs/manuscripts/authoring/vscode.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/components.qmd", {
@@ -3979,7 +3979,7 @@ test_that("docs/manuscripts/components.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/index.qmd", {
@@ -3990,7 +3990,7 @@ test_that("docs/manuscripts/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/next-steps.qmd", {
@@ -4001,7 +4001,7 @@ test_that("docs/manuscripts/next-steps.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/manuscripts/publishing.qmd", {
@@ -4012,7 +4012,7 @@ test_that("docs/manuscripts/publishing.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/_ssg-intro.qmd", {
@@ -4023,7 +4023,7 @@ test_that("docs/output-formats/_ssg-intro.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/_ssg-workflow.qmd", {
@@ -4034,7 +4034,7 @@ test_that("docs/output-formats/_ssg-workflow.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/all-formats.qmd", {
@@ -4045,7 +4045,7 @@ test_that("docs/output-formats/all-formats.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/docusaurus.qmd", {
@@ -4056,7 +4056,7 @@ test_that("docs/output-formats/docusaurus.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/examples/gt-temps.qmd", {
@@ -4067,7 +4067,7 @@ test_that("docs/output-formats/examples/gt-temps.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/examples/pandas-temps.qmd", {
@@ -4078,7 +4078,7 @@ test_that("docs/output-formats/examples/pandas-temps.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/gfm.qmd", {
@@ -4089,7 +4089,7 @@ test_that("docs/output-formats/gfm.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/html-accessibility.qmd", {
@@ -4100,7 +4100,7 @@ test_that("docs/output-formats/html-accessibility.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/html-basics.qmd", {
@@ -4111,7 +4111,7 @@ test_that("docs/output-formats/html-basics.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/html-code.qmd", {
@@ -4122,7 +4122,7 @@ test_that("docs/output-formats/html-code.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/html-lightbox-figures.qmd", {
@@ -4133,7 +4133,7 @@ test_that("docs/output-formats/html-lightbox-figures.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/html-multi-format.qmd", {
@@ -4144,7 +4144,7 @@ test_that("docs/output-formats/html-multi-format.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/html-publishing.qmd", {
@@ -4155,7 +4155,7 @@ test_that("docs/output-formats/html-publishing.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/html-themes-more.qmd", {
@@ -4166,7 +4166,7 @@ test_that("docs/output-formats/html-themes-more.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/html-themes.qmd", {
@@ -4177,7 +4177,7 @@ test_that("docs/output-formats/html-themes.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/hugo.qmd", {
@@ -4188,7 +4188,7 @@ test_that("docs/output-formats/hugo.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/ms-word-templates.qmd", {
@@ -4199,7 +4199,7 @@ test_that("docs/output-formats/ms-word-templates.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/ms-word.qmd", {
@@ -4210,7 +4210,7 @@ test_that("docs/output-formats/ms-word.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/page-layout.qmd", {
@@ -4221,7 +4221,7 @@ test_that("docs/output-formats/page-layout.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/pdf-basics.qmd", {
@@ -4232,7 +4232,7 @@ test_that("docs/output-formats/pdf-basics.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/pdf-engine.qmd", {
@@ -4243,7 +4243,7 @@ test_that("docs/output-formats/pdf-engine.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/typst-custom.qmd", {
@@ -4254,7 +4254,7 @@ test_that("docs/output-formats/typst-custom.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/output-formats/typst.qmd", {
@@ -4265,7 +4265,7 @@ test_that("docs/output-formats/typst.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/_highlights-prerelease.qmd", {
@@ -4276,7 +4276,7 @@ test_that("docs/prerelease/_highlights-prerelease.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/_highlights-release.qmd", {
@@ -4287,7 +4287,7 @@ test_that("docs/prerelease/_highlights-release.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.10/_highlights.qmd", {
@@ -4298,7 +4298,7 @@ test_that("docs/prerelease/1.10/_highlights.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.10/index.qmd", {
@@ -4309,7 +4309,7 @@ test_that("docs/prerelease/1.10/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.3/_highlights.qmd", {
@@ -4320,7 +4320,7 @@ test_that("docs/prerelease/1.3/_highlights.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.3/ast.qmd", {
@@ -4331,7 +4331,7 @@ test_that("docs/prerelease/1.3/ast.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.3/custom-ast-nodes/callout.qmd", {
@@ -4342,7 +4342,7 @@ test_that("docs/prerelease/1.3/custom-ast-nodes/callout.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.3/custom-ast-nodes/conditional-block.qmd", {
@@ -4353,7 +4353,7 @@ test_that("docs/prerelease/1.3/custom-ast-nodes/conditional-block.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.3/custom-ast-nodes/tabset.qmd", {
@@ -4364,7 +4364,7 @@ test_that("docs/prerelease/1.3/custom-ast-nodes/tabset.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.3/index.qmd", {
@@ -4375,7 +4375,7 @@ test_that("docs/prerelease/1.3/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.3/pdf.qmd", {
@@ -4386,7 +4386,7 @@ test_that("docs/prerelease/1.3/pdf.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.3/tables.qmd", {
@@ -4397,7 +4397,7 @@ test_that("docs/prerelease/1.3/tables.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.3/website-nav.qmd", {
@@ -4408,7 +4408,7 @@ test_that("docs/prerelease/1.3/website-nav.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.4/_highlights.qmd", {
@@ -4419,7 +4419,7 @@ test_that("docs/prerelease/1.4/_highlights.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.4/ast.qmd", {
@@ -4430,7 +4430,7 @@ test_that("docs/prerelease/1.4/ast.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.4/crossref.qmd", {
@@ -4441,7 +4441,7 @@ test_that("docs/prerelease/1.4/crossref.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.4/email.qmd", {
@@ -4452,7 +4452,7 @@ test_that("docs/prerelease/1.4/email.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.4/index.qmd", {
@@ -4463,7 +4463,7 @@ test_that("docs/prerelease/1.4/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.4/lua_changes.qmd", {
@@ -4474,7 +4474,7 @@ test_that("docs/prerelease/1.4/lua_changes.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.5/_highlights.qmd", {
@@ -4485,7 +4485,7 @@ test_that("docs/prerelease/1.5/_highlights.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.5/index.qmd", {
@@ -4496,7 +4496,7 @@ test_that("docs/prerelease/1.5/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.6/_highlights.qmd", {
@@ -4507,7 +4507,7 @@ test_that("docs/prerelease/1.6/_highlights.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.6/index.qmd", {
@@ -4518,7 +4518,7 @@ test_that("docs/prerelease/1.6/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.7/_highlights.qmd", {
@@ -4529,7 +4529,7 @@ test_that("docs/prerelease/1.7/_highlights.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.7/index.qmd", {
@@ -4540,7 +4540,7 @@ test_that("docs/prerelease/1.7/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.8/_highlights.qmd", {
@@ -4551,7 +4551,7 @@ test_that("docs/prerelease/1.8/_highlights.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.8/index.qmd", {
@@ -4562,7 +4562,7 @@ test_that("docs/prerelease/1.8/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.9/_highlights.qmd", {
@@ -4573,7 +4573,7 @@ test_that("docs/prerelease/1.9/_highlights.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/prerelease/1.9/index.qmd", {
@@ -4584,7 +4584,7 @@ test_that("docs/prerelease/1.9/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/beamer.qmd", {
@@ -4595,7 +4595,7 @@ test_that("docs/presentations/beamer.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/index.qmd", {
@@ -4606,7 +4606,7 @@ test_that("docs/presentations/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/powerpoint.qmd", {
@@ -4617,7 +4617,7 @@ test_that("docs/presentations/powerpoint.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/_callout-auto-stretch-scrollable.qmd", {
@@ -4628,7 +4628,7 @@ test_that("docs/presentations/revealjs/_callout-auto-stretch-scrollable.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/advanced.qmd", {
@@ -4639,7 +4639,7 @@ test_that("docs/presentations/revealjs/advanced.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/demo/index.qmd", {
@@ -4650,7 +4650,7 @@ test_that("docs/presentations/revealjs/demo/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/demo/mini/absolute.qmd", {
@@ -4661,7 +4661,7 @@ test_that("docs/presentations/revealjs/demo/mini/absolute.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/demo/mini/auto-animate-code.qmd", {
@@ -4672,7 +4672,7 @@ test_that("docs/presentations/revealjs/demo/mini/auto-animate-code.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/demo/mini/auto-animate-movement.qmd", {
@@ -4683,7 +4683,7 @@ test_that("docs/presentations/revealjs/demo/mini/auto-animate-movement.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/demo/mini/auto-animate-stack.qmd", {
@@ -4694,7 +4694,7 @@ test_that("docs/presentations/revealjs/demo/mini/auto-animate-stack.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/demo/mini/auto-animate.qmd", {
@@ -4705,7 +4705,7 @@ test_that("docs/presentations/revealjs/demo/mini/auto-animate.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/demo/mini/fragments-custom.qmd", {
@@ -4716,7 +4716,7 @@ test_that("docs/presentations/revealjs/demo/mini/fragments-custom.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/demo/mini/fragments-nested.qmd", {
@@ -4727,7 +4727,7 @@ test_that("docs/presentations/revealjs/demo/mini/fragments-nested.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/demo/mini/fragments.qmd", {
@@ -4738,7 +4738,7 @@ test_that("docs/presentations/revealjs/demo/mini/fragments.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/demo/mini/stack.qmd", {
@@ -4749,7 +4749,7 @@ test_that("docs/presentations/revealjs/demo/mini/stack.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/demo/mini/zoom.qmd", {
@@ -4760,7 +4760,7 @@ test_that("docs/presentations/revealjs/demo/mini/zoom.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/_theme-dark.qmd", {
@@ -4771,7 +4771,7 @@ test_that("docs/presentations/revealjs/examples/_theme-dark.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/background-color.qmd", {
@@ -4782,7 +4782,7 @@ test_that("docs/presentations/revealjs/examples/background-color.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/background-gradient.qmd", {
@@ -4793,7 +4793,7 @@ test_that("docs/presentations/revealjs/examples/background-gradient.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/background-no-title.qmd", {
@@ -4804,7 +4804,7 @@ test_that("docs/presentations/revealjs/examples/background-no-title.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/code-echo.qmd", {
@@ -4815,7 +4815,7 @@ test_that("docs/presentations/revealjs/examples/code-echo.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/columns.qmd", {
@@ -4826,7 +4826,7 @@ test_that("docs/presentations/revealjs/examples/columns.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/creating-slides-1.qmd", {
@@ -4837,7 +4837,7 @@ test_that("docs/presentations/revealjs/examples/creating-slides-1.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/creating-slides-2.qmd", {
@@ -4848,7 +4848,7 @@ test_that("docs/presentations/revealjs/examples/creating-slides-2.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/creating-slides-3.qmd", {
@@ -4859,7 +4859,7 @@ test_that("docs/presentations/revealjs/examples/creating-slides-3.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/executable-code-figure-size.qmd", {
@@ -4870,7 +4870,7 @@ test_that("docs/presentations/revealjs/examples/executable-code-figure-size.qmd"
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/footer-and-logo.qmd", {
@@ -4881,7 +4881,7 @@ test_that("docs/presentations/revealjs/examples/footer-and-logo.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/image-background.qmd", {
@@ -4892,7 +4892,7 @@ test_that("docs/presentations/revealjs/examples/image-background.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/incremental-lists-1.qmd", {
@@ -4903,7 +4903,7 @@ test_that("docs/presentations/revealjs/examples/incremental-lists-1.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/incremental-lists-2.qmd", {
@@ -4914,7 +4914,7 @@ test_that("docs/presentations/revealjs/examples/incremental-lists-2.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/incremental-lists-3.qmd", {
@@ -4925,7 +4925,7 @@ test_that("docs/presentations/revealjs/examples/incremental-lists-3.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/incremental-pause.qmd", {
@@ -4936,7 +4936,7 @@ test_that("docs/presentations/revealjs/examples/incremental-pause.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/index.qmd", {
@@ -4947,7 +4947,7 @@ test_that("docs/presentations/revealjs/examples/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/line-highlighting-1.qmd", {
@@ -4958,7 +4958,7 @@ test_that("docs/presentations/revealjs/examples/line-highlighting-1.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/line-highlighting-2.qmd", {
@@ -4969,7 +4969,7 @@ test_that("docs/presentations/revealjs/examples/line-highlighting-2.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/line-highlighting-3.qmd", {
@@ -4980,7 +4980,7 @@ test_that("docs/presentations/revealjs/examples/line-highlighting-3.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/line-highlighting-4.qmd", {
@@ -4991,7 +4991,7 @@ test_that("docs/presentations/revealjs/examples/line-highlighting-4.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/no-footer-on-a-slide.qmd", {
@@ -5002,7 +5002,7 @@ test_that("docs/presentations/revealjs/examples/no-footer-on-a-slide.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/per-slide-footer.qmd", {
@@ -5013,7 +5013,7 @@ test_that("docs/presentations/revealjs/examples/per-slide-footer.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/scrollable-and-smaller.qmd", {
@@ -5024,7 +5024,7 @@ test_that("docs/presentations/revealjs/examples/scrollable-and-smaller.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/scrollable.qmd", {
@@ -5035,7 +5035,7 @@ test_that("docs/presentations/revealjs/examples/scrollable.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/slide-with-speaker-notes.qmd", {
@@ -5046,7 +5046,7 @@ test_that("docs/presentations/revealjs/examples/slide-with-speaker-notes.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/smaller.qmd", {
@@ -5057,7 +5057,7 @@ test_that("docs/presentations/revealjs/examples/smaller.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/examples/tabset.qmd", {
@@ -5068,7 +5068,7 @@ test_that("docs/presentations/revealjs/examples/tabset.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/index.qmd", {
@@ -5079,7 +5079,7 @@ test_that("docs/presentations/revealjs/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/presenting.qmd", {
@@ -5090,7 +5090,7 @@ test_that("docs/presentations/revealjs/presenting.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/presentations/revealjs/themes.qmd", {
@@ -5101,7 +5101,7 @@ test_that("docs/presentations/revealjs/themes.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/projects/binder.qmd", {
@@ -5112,7 +5112,7 @@ test_that("docs/projects/binder.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/projects/code-execution.qmd", {
@@ -5123,7 +5123,7 @@ test_that("docs/projects/code-execution.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/projects/environment.qmd", {
@@ -5134,7 +5134,7 @@ test_that("docs/projects/environment.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/projects/profiles.qmd", {
@@ -5145,7 +5145,7 @@ test_that("docs/projects/profiles.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/projects/quarto-projects.qmd", {
@@ -5156,7 +5156,7 @@ test_that("docs/projects/quarto-projects.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/projects/scripts.qmd", {
@@ -5167,7 +5167,7 @@ test_that("docs/projects/scripts.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/projects/virtual-environments.qmd", {
@@ -5178,7 +5178,7 @@ test_that("docs/projects/virtual-environments.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/publishing/_confluence_examples/confluence-demo.qmd", {
@@ -5189,7 +5189,7 @@ test_that("docs/publishing/_confluence_examples/confluence-demo.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/publishing/ci.qmd", {
@@ -5200,7 +5200,7 @@ test_that("docs/publishing/ci.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/publishing/confluence.qmd", {
@@ -5211,7 +5211,7 @@ test_that("docs/publishing/confluence.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/publishing/github-pages.qmd", {
@@ -5222,7 +5222,7 @@ test_that("docs/publishing/github-pages.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/publishing/hugging-face.qmd", {
@@ -5233,7 +5233,7 @@ test_that("docs/publishing/hugging-face.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/publishing/index.qmd", {
@@ -5244,7 +5244,7 @@ test_that("docs/publishing/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/publishing/netlify.qmd", {
@@ -5255,7 +5255,7 @@ test_that("docs/publishing/netlify.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/publishing/other.qmd", {
@@ -5266,7 +5266,7 @@ test_that("docs/publishing/other.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/publishing/posit-cloud.qmd", {
@@ -5277,7 +5277,7 @@ test_that("docs/publishing/posit-cloud.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/publishing/posit-connect-cloud.qmd", {
@@ -5288,7 +5288,7 @@ test_that("docs/publishing/posit-connect-cloud.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/publishing/quarto-pub.qmd", {
@@ -5299,7 +5299,7 @@ test_that("docs/publishing/quarto-pub.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/publishing/rstudio-connect.qmd", {
@@ -5310,7 +5310,7 @@ test_that("docs/publishing/rstudio-connect.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/cells/cells-jupyter.qmd", {
@@ -5321,7 +5321,7 @@ test_that("docs/reference/cells/cells-jupyter.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/cells/cells-knitr.qmd", {
@@ -5332,7 +5332,7 @@ test_that("docs/reference/cells/cells-knitr.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/cells/cells-ojs.qmd", {
@@ -5343,7 +5343,7 @@ test_that("docs/reference/cells/cells-ojs.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/cells/index.qmd", {
@@ -5354,7 +5354,7 @@ test_that("docs/reference/cells/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/dates.qmd", {
@@ -5365,7 +5365,7 @@ test_that("docs/reference/dates.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/asciidoc.qmd", {
@@ -5376,7 +5376,7 @@ test_that("docs/reference/formats/asciidoc.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/context.qmd", {
@@ -5387,7 +5387,7 @@ test_that("docs/reference/formats/context.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/dashboard.qmd", {
@@ -5398,7 +5398,7 @@ test_that("docs/reference/formats/dashboard.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/docbook.qmd", {
@@ -5409,7 +5409,7 @@ test_that("docs/reference/formats/docbook.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/docx.qmd", {
@@ -5420,7 +5420,7 @@ test_that("docs/reference/formats/docx.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/epub.qmd", {
@@ -5431,7 +5431,7 @@ test_that("docs/reference/formats/epub.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/fb2.qmd", {
@@ -5442,7 +5442,7 @@ test_that("docs/reference/formats/fb2.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/haddock.qmd", {
@@ -5453,7 +5453,7 @@ test_that("docs/reference/formats/haddock.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/html.qmd", {
@@ -5464,7 +5464,7 @@ test_that("docs/reference/formats/html.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/icml.qmd", {
@@ -5475,7 +5475,7 @@ test_that("docs/reference/formats/icml.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/ipynb.qmd", {
@@ -5486,7 +5486,7 @@ test_that("docs/reference/formats/ipynb.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/jats.qmd", {
@@ -5497,7 +5497,7 @@ test_that("docs/reference/formats/jats.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/man.qmd", {
@@ -5508,7 +5508,7 @@ test_that("docs/reference/formats/man.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/markdown/commonmark.qmd", {
@@ -5519,7 +5519,7 @@ test_that("docs/reference/formats/markdown/commonmark.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/markdown/gfm.qmd", {
@@ -5530,7 +5530,7 @@ test_that("docs/reference/formats/markdown/gfm.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/markdown/hugo.qmd", {
@@ -5541,7 +5541,7 @@ test_that("docs/reference/formats/markdown/hugo.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/markdown/markua.qmd", {
@@ -5552,7 +5552,7 @@ test_that("docs/reference/formats/markdown/markua.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/ms.qmd", {
@@ -5563,7 +5563,7 @@ test_that("docs/reference/formats/ms.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/muse.qmd", {
@@ -5574,7 +5574,7 @@ test_that("docs/reference/formats/muse.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/odt.qmd", {
@@ -5585,7 +5585,7 @@ test_that("docs/reference/formats/odt.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/opml.qmd", {
@@ -5596,7 +5596,7 @@ test_that("docs/reference/formats/opml.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/org.qmd", {
@@ -5607,7 +5607,7 @@ test_that("docs/reference/formats/org.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/pdf.qmd", {
@@ -5618,7 +5618,7 @@ test_that("docs/reference/formats/pdf.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/presentations/beamer.qmd", {
@@ -5629,7 +5629,7 @@ test_that("docs/reference/formats/presentations/beamer.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/presentations/pptx.qmd", {
@@ -5640,7 +5640,7 @@ test_that("docs/reference/formats/presentations/pptx.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/presentations/revealjs.qmd", {
@@ -5651,7 +5651,7 @@ test_that("docs/reference/formats/presentations/revealjs.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/rst.qmd", {
@@ -5662,7 +5662,7 @@ test_that("docs/reference/formats/rst.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/rtf.qmd", {
@@ -5673,7 +5673,7 @@ test_that("docs/reference/formats/rtf.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/tei.qmd", {
@@ -5684,7 +5684,7 @@ test_that("docs/reference/formats/tei.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/texinfo.qmd", {
@@ -5695,7 +5695,7 @@ test_that("docs/reference/formats/texinfo.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/textile.qmd", {
@@ -5706,7 +5706,7 @@ test_that("docs/reference/formats/textile.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/typst.qmd", {
@@ -5717,7 +5717,7 @@ test_that("docs/reference/formats/typst.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/wiki/dokuwiki.qmd", {
@@ -5728,7 +5728,7 @@ test_that("docs/reference/formats/wiki/dokuwiki.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/wiki/jira.qmd", {
@@ -5739,7 +5739,7 @@ test_that("docs/reference/formats/wiki/jira.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/wiki/mediawiki.qmd", {
@@ -5750,7 +5750,7 @@ test_that("docs/reference/formats/wiki/mediawiki.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/wiki/xwiki.qmd", {
@@ -5761,7 +5761,7 @@ test_that("docs/reference/formats/wiki/xwiki.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/formats/wiki/zimwiki.qmd", {
@@ -5772,7 +5772,7 @@ test_that("docs/reference/formats/wiki/zimwiki.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/globs.qmd", {
@@ -5783,7 +5783,7 @@ test_that("docs/reference/globs.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/index.qmd", {
@@ -5794,7 +5794,7 @@ test_that("docs/reference/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/metadata/brand.qmd", {
@@ -5805,7 +5805,7 @@ test_that("docs/reference/metadata/brand.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/metadata/citation.qmd", {
@@ -5816,7 +5816,7 @@ test_that("docs/reference/metadata/citation.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/metadata/crossref.qmd", {
@@ -5827,7 +5827,7 @@ test_that("docs/reference/metadata/crossref.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/projects/books.qmd", {
@@ -5838,7 +5838,7 @@ test_that("docs/reference/projects/books.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/projects/manuscripts.qmd", {
@@ -5849,7 +5849,7 @@ test_that("docs/reference/projects/manuscripts.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/projects/options.qmd", {
@@ -5860,7 +5860,7 @@ test_that("docs/reference/projects/options.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/reference/projects/websites.qmd", {
@@ -5871,7 +5871,7 @@ test_that("docs/reference/projects/websites.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/tools/_examples/diagrams.qmd", {
@@ -5882,7 +5882,7 @@ test_that("docs/tools/_examples/diagrams.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/tools/_examples/python.qmd", {
@@ -5893,7 +5893,7 @@ test_that("docs/tools/_examples/python.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/tools/_jupyter-lab-extension-install.qmd", {
@@ -5904,7 +5904,7 @@ test_that("docs/tools/_jupyter-lab-extension-install.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/tools/jupyter-lab-extension.qmd", {
@@ -5915,7 +5915,7 @@ test_that("docs/tools/jupyter-lab-extension.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/tools/jupyter-lab.qmd", {
@@ -5926,7 +5926,7 @@ test_that("docs/tools/jupyter-lab.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/tools/neovim.qmd", {
@@ -5937,7 +5937,7 @@ test_that("docs/tools/neovim.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/tools/positron/index.qmd", {
@@ -5948,7 +5948,7 @@ test_that("docs/tools/positron/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/tools/positron/notebook.qmd", {
@@ -5959,7 +5959,7 @@ test_that("docs/tools/positron/notebook.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/tools/positron/visual-editor.qmd", {
@@ -5970,7 +5970,7 @@ test_that("docs/tools/positron/visual-editor.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/tools/rstudio.qmd", {
@@ -5981,7 +5981,7 @@ test_that("docs/tools/rstudio.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/tools/text-editors.qmd", {
@@ -5992,7 +5992,7 @@ test_that("docs/tools/text-editors.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/tools/vscode/index.qmd", {
@@ -6003,7 +6003,7 @@ test_that("docs/tools/vscode/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/tools/vscode/notebook.qmd", {
@@ -6014,7 +6014,7 @@ test_that("docs/tools/vscode/notebook.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/tools/vscode/visual-editor.qmd", {
@@ -6025,7 +6025,7 @@ test_that("docs/tools/vscode/visual-editor.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/triaging/index.qmd", {
@@ -6036,7 +6036,7 @@ test_that("docs/triaging/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/troubleshooting/index.qmd", {
@@ -6047,7 +6047,7 @@ test_that("docs/troubleshooting/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/visual-editor/content.qmd", {
@@ -6058,7 +6058,7 @@ test_that("docs/visual-editor/content.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/visual-editor/index.qmd", {
@@ -6069,7 +6069,7 @@ test_that("docs/visual-editor/index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/visual-editor/markdown.qmd", {
@@ -6080,7 +6080,7 @@ test_that("docs/visual-editor/markdown.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/visual-editor/options.qmd", {
@@ -6091,7 +6091,7 @@ test_that("docs/visual-editor/options.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/visual-editor/technical.qmd", {
@@ -6102,7 +6102,7 @@ test_that("docs/visual-editor/technical.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/websites/website-about.qmd", {
@@ -6113,7 +6113,7 @@ test_that("docs/websites/website-about.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/websites/website-basics.qmd", {
@@ -6124,7 +6124,7 @@ test_that("docs/websites/website-basics.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/websites/website-blog.qmd", {
@@ -6135,7 +6135,7 @@ test_that("docs/websites/website-blog.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/websites/website-drafts.qmd", {
@@ -6146,7 +6146,7 @@ test_that("docs/websites/website-drafts.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/websites/website-listings-custom.qmd", {
@@ -6157,7 +6157,7 @@ test_that("docs/websites/website-listings-custom.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/websites/website-listings.qmd", {
@@ -6168,7 +6168,7 @@ test_that("docs/websites/website-listings.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/websites/website-llms.qmd", {
@@ -6179,7 +6179,7 @@ test_that("docs/websites/website-llms.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/websites/website-navigation.qmd", {
@@ -6190,7 +6190,7 @@ test_that("docs/websites/website-navigation.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/websites/website-search.qmd", {
@@ -6201,7 +6201,7 @@ test_that("docs/websites/website-search.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("docs/websites/website-tools.qmd", {
@@ -6212,7 +6212,7 @@ test_that("docs/websites/website-tools.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("index.qmd", {
@@ -6223,7 +6223,7 @@ test_that("index.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("license.qmd", {
@@ -6234,7 +6234,7 @@ test_that("license.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
 test_that("trademark.qmd", {
@@ -6245,6 +6245,6 @@ test_that("trademark.qmd", {
   rendered = to_qmd(ts)
   ts2 = pampa_parse_ts(rendered)
   expect_false(has_error_diagnostics(ts2))
-  expect_true(compare_ts_kind(ts, ts2))
+  expect_ts_kind_equal(ts2, ts)
 })
 
