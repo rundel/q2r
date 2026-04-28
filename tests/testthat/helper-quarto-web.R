@@ -42,11 +42,8 @@ ts_tree_kind_tree = function(tree) ts_kind_tree(tree@root)
 
 compare_ts_kind = function(a, b) identical(ts_tree_kind_tree(a), ts_tree_kind_tree(b))
 
-compare_pd_ast = function(a_text, b_text, filename = "<cmp>") {
-  identical(
-    q2r:::pandoc_to_list(pampa_parse_pd(a_text)),
-    q2r:::pandoc_to_list(pampa_parse_pd(b_text))
-  )
+compare_pd_ast = function(a, b) {
+  identical(q2r:::pandoc_to_list(a), q2r:::pandoc_to_list(b))
 }
 
 update_tests = function(target, files, mtime_paths, gen_func, skip_map = list()) {
