@@ -29,6 +29,27 @@ has_error_diagnostics = function(x) {
   any(vapply(diags, function(d) identical(d@kind, "error"), logical(1)))
 }
 
+expect_no_error_diagnostics = function(actual) {
+  act_lab = testthat::quasi_label(rlang::enquo(actual), arg = "actual")
+  diags = actual@diagnostics
+  errs = if (length(diags)) {
+    Filter(function(d) identical(d@kind, "error"), diags)
+  } else list()
+  if (length(errs) == 0L) {
+    testthat::expect(TRUE, "ok")
+  } else {
+    rendered = vapply(errs, function(d) format(d, color = FALSE), character(1L))
+    testthat::expect(
+      FALSE,
+      sprintf(
+        "%s has %d error diagnostic(s):\n\n%s",
+        act_lab$lab, length(errs), paste(rendered, collapse = "\n\n")
+      )
+    )
+  }
+  invisible(actual)
+}
+
 ts_kind_tree = function(node) {
   list(
     kind     = node@kind,

@@ -7,7 +7,7 @@ test_that("_tools/screenshots/examples/about-pages/about-broadside.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -18,7 +18,7 @@ test_that("_tools/screenshots/examples/about-pages/about-jolla.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -29,7 +29,7 @@ test_that("_tools/screenshots/examples/about-pages/about-marquee.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -40,7 +40,7 @@ test_that("_tools/screenshots/examples/about-pages/about-solana.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -51,7 +51,7 @@ test_that("_tools/screenshots/examples/about-pages/about-trestles.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -62,7 +62,7 @@ test_that("_tools/screenshots/examples/breadcrumbs/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -73,7 +73,7 @@ test_that("_tools/screenshots/examples/breadcrumbs/tutorials.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -84,7 +84,7 @@ test_that("_tools/screenshots/examples/hybrid-nav/fundamentals.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -95,7 +95,7 @@ test_that("_tools/screenshots/examples/hybrid-nav/howto.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -106,7 +106,7 @@ test_that("_tools/screenshots/examples/hybrid-nav/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -117,7 +117,7 @@ test_that("_tools/screenshots/examples/hybrid-nav/reference.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -128,7 +128,7 @@ test_that("_tools/screenshots/examples/hybrid-nav/tutorial-1.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -139,7 +139,7 @@ test_that("_tools/screenshots/examples/hybrid-nav/tutorial-2.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -150,7 +150,7 @@ test_that("_tools/screenshots/examples/hybrid-nav/tutorials.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -161,7 +161,7 @@ test_that("_tools/screenshots/examples/myblog/about.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -172,7 +172,7 @@ test_that("_tools/screenshots/examples/myblog/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -183,7 +183,7 @@ test_that("_tools/screenshots/examples/myblog/posts/first-post/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -194,7 +194,7 @@ test_that("_tools/screenshots/examples/myblog/posts/welcome/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -205,7 +205,7 @@ test_that("_tools/screenshots/examples/navbar-basic/about.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -216,7 +216,7 @@ test_that("_tools/screenshots/examples/navbar-basic/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -227,7 +227,7 @@ test_that("_tools/screenshots/examples/navbar-basic/talks.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -238,7 +238,7 @@ test_that("_tools/screenshots/examples/navbar-tools/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -249,7 +249,7 @@ test_that("_tools/screenshots/examples/quarto-demo/basics-jupyter.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -260,7 +260,7 @@ test_that("_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -271,7 +271,7 @@ test_that("_tools/screenshots/examples/quarto-demo/layout-jupyter.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -282,7 +282,7 @@ test_that("404.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -293,7 +293,7 @@ test_that("about.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -304,7 +304,7 @@ test_that("bug-reports.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -315,7 +315,7 @@ test_that("docs/_require-1.3.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -326,7 +326,7 @@ test_that("docs/_require-1.4.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -337,7 +337,7 @@ test_that("docs/advanced/environment-vars.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -348,7 +348,7 @@ test_that("docs/advanced/html/external-sources.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -359,7 +359,7 @@ test_that("docs/advanced/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -370,7 +370,7 @@ test_that("docs/advanced/inspect/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -381,7 +381,7 @@ test_that("docs/advanced/jupyter/kernel-execution.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -392,7 +392,7 @@ test_that("docs/advanced/latex-raw.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -403,7 +403,7 @@ test_that("docs/advanced/quarto-ast.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -414,7 +414,7 @@ test_that("docs/advanced/quarto-execute-info.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -425,7 +425,7 @@ test_that("docs/advanced/typst/brand-yaml.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -436,7 +436,7 @@ test_that("docs/advanced/typst/typst-css.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -447,7 +447,7 @@ test_that("docs/advanced/typst/typst-gather.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -458,7 +458,7 @@ test_that("docs/authoring/_brand-example.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -469,7 +469,7 @@ test_that("docs/authoring/_cross-reference-divs-diagram.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -480,7 +480,7 @@ test_that("docs/authoring/_cross-reference-divs-figure.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -491,7 +491,7 @@ test_that("docs/authoring/_cross-reference-divs-listing.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -502,7 +502,7 @@ test_that("docs/authoring/_cross-reference-divs-table.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -513,7 +513,7 @@ test_that("docs/authoring/_cross-reference-divs-video.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -524,7 +524,7 @@ test_that("docs/authoring/_cross-references-callouts.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -535,7 +535,7 @@ test_that("docs/authoring/_cross-references-listings.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -546,7 +546,7 @@ test_that("docs/authoring/_embed-examples/sample-notebook-view.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -557,7 +557,7 @@ test_that("docs/authoring/_embed-examples/sample.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -568,7 +568,7 @@ test_that("docs/authoring/_embeds-ipynb.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -579,7 +579,7 @@ test_that("docs/authoring/_figure-examples/_examples.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -590,7 +590,7 @@ test_that("docs/authoring/_kbd.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -601,7 +601,7 @@ test_that("docs/authoring/_mermaid-examples/customize.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -612,7 +612,7 @@ test_that("docs/authoring/_mermaid-examples/dark.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -623,7 +623,7 @@ test_that("docs/authoring/_mermaid-examples/darkly.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -634,7 +634,7 @@ test_that("docs/authoring/_mermaid-examples/default.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -645,7 +645,7 @@ test_that("docs/authoring/_mermaid-examples/forest.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -656,7 +656,7 @@ test_that("docs/authoring/_mermaid-examples/neutral.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -667,7 +667,7 @@ test_that("docs/authoring/_mermaid-examples/sandstone.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -678,7 +678,7 @@ test_that("docs/authoring/_mermaid-examples/solar.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -689,7 +689,7 @@ test_that("docs/authoring/_mermaid-examples/vapor.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -700,7 +700,7 @@ test_that("docs/authoring/_mermaid-theming.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -711,7 +711,7 @@ test_that("docs/authoring/_pagebreak.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -722,7 +722,7 @@ test_that("docs/authoring/_shortcodes.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -733,7 +733,7 @@ test_that("docs/authoring/appendices.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -744,7 +744,7 @@ test_that("docs/authoring/article-layout.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -755,7 +755,7 @@ test_that("docs/authoring/brand.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -766,7 +766,7 @@ test_that("docs/authoring/callouts.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -777,7 +777,7 @@ test_that("docs/authoring/citations.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -788,7 +788,7 @@ test_that("docs/authoring/code-annotation-example/revealjs.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -799,7 +799,7 @@ test_that("docs/authoring/code-annotation.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -810,7 +810,7 @@ test_that("docs/authoring/conditional.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -821,7 +821,7 @@ test_that("docs/authoring/contents.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -832,7 +832,7 @@ test_that("docs/authoring/create-citeable-articles.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -843,7 +843,7 @@ test_that("docs/authoring/cross-reference-options.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -854,7 +854,7 @@ test_that("docs/authoring/cross-references-custom.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -865,7 +865,7 @@ test_that("docs/authoring/cross-references-divs.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -876,7 +876,7 @@ test_that("docs/authoring/cross-references.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -887,7 +887,7 @@ test_that("docs/authoring/diagrams.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -898,7 +898,7 @@ test_that("docs/authoring/figures.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -909,7 +909,7 @@ test_that("docs/authoring/front-matter.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -920,7 +920,7 @@ test_that("docs/authoring/includes.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -931,7 +931,7 @@ test_that("docs/authoring/language.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -942,7 +942,7 @@ test_that("docs/authoring/lipsum.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -953,7 +953,7 @@ test_that("docs/authoring/markdown-basics.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -964,7 +964,7 @@ test_that("docs/authoring/notebook-embed.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -975,7 +975,7 @@ test_that("docs/authoring/penguins-qmd.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -986,7 +986,7 @@ test_that("docs/authoring/placeholder.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -997,7 +997,7 @@ test_that("docs/authoring/shortcodes.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1008,7 +1008,7 @@ test_that("docs/authoring/tables.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1019,7 +1019,7 @@ test_that("docs/authoring/title-blocks.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1030,7 +1030,7 @@ test_that("docs/authoring/variables.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1041,7 +1041,7 @@ test_that("docs/authoring/version.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1052,7 +1052,7 @@ test_that("docs/authoring/videos.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1063,7 +1063,7 @@ test_that("docs/blog/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1074,7 +1074,7 @@ test_that("docs/blog/posts/2022-02-13-feature-callouts/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1085,7 +1085,7 @@ test_that("docs/blog/posts/2022-02-15-feature-tables/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1096,7 +1096,7 @@ test_that("docs/blog/posts/2022-02-17-advanced-layout/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1107,7 +1107,7 @@ test_that("docs/blog/posts/2022-06-21-rstudio-conf-2022-quarto/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1118,7 +1118,7 @@ test_that("docs/blog/posts/2022-07-25-feature-extensions/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1129,7 +1129,7 @@ test_that("docs/blog/posts/2022-10-25-shinylive-extension/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1140,7 +1140,7 @@ test_that("docs/blog/posts/2023-03-13-code-annotation/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1151,7 +1151,7 @@ test_that("docs/blog/posts/2023-03-15-multi-format/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1162,7 +1162,7 @@ test_that("docs/blog/posts/2023-03-17-jupyter-cell-embedding/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1173,7 +1173,7 @@ test_that("docs/blog/posts/2023-03-20-confluence/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1184,7 +1184,7 @@ test_that("docs/blog/posts/2023-04-26-1.3-release/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1195,7 +1195,7 @@ test_that("docs/blog/posts/2023-05-15-get-started/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1206,7 +1206,7 @@ test_that("docs/blog/posts/2023-05-22-quarto-for-academics/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1217,7 +1217,7 @@ test_that("docs/blog/posts/2023-12-05-asa-traveling-courses/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1228,7 +1228,7 @@ test_that("docs/blog/posts/2023-12-07-quarto-dashboards-demo/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1239,7 +1239,7 @@ test_that("docs/blog/posts/2024-01-24-1.4-release/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1250,7 +1250,7 @@ test_that("docs/blog/posts/2024-03-26-hugging-face/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1261,7 +1261,7 @@ test_that("docs/blog/posts/2024-04-01-manuscripts-rmedicine/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1272,7 +1272,7 @@ test_that("docs/blog/posts/2024-05-28-conf-workshops/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1283,7 +1283,7 @@ test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/great-t
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1294,7 +1294,7 @@ test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/great-t
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1305,7 +1305,7 @@ test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/gt-cars
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1316,7 +1316,7 @@ test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/gt-isla
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1327,7 +1327,7 @@ test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/pandas-
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1338,7 +1338,7 @@ test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/pandas-
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1349,7 +1349,7 @@ test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1360,7 +1360,7 @@ test_that("docs/blog/posts/2024-07-11-1.5-release/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1371,7 +1371,7 @@ test_that("docs/blog/posts/2024-10-15-conf-workshops-materials/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1382,7 +1382,7 @@ test_that("docs/blog/posts/2024-11-06-conf-talks/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1393,7 +1393,7 @@ test_that("docs/blog/posts/2024-11-22-dashboards-workshop/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1404,7 +1404,7 @@ test_that("docs/blog/posts/2024-11-25-1.6-release/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1415,7 +1415,7 @@ test_that("docs/blog/posts/2024-12-04-websites-workshop/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1426,7 +1426,7 @@ test_that("docs/blog/posts/2024-12-12-includes-meta/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1437,7 +1437,7 @@ test_that("docs/blog/posts/2025-01-15-quarto-tip-brand-positron/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1448,7 +1448,7 @@ test_that("docs/blog/posts/2025-04-28-1.7-release/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1459,7 +1459,7 @@ test_that("docs/blog/posts/2025-05-19-quarto-codespaces/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1470,7 +1470,7 @@ test_that("docs/blog/posts/2025-07-24-parameterized-reports-python/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1481,7 +1481,7 @@ test_that("docs/blog/posts/2025-07-28-R-package-release-1.5/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1492,7 +1492,7 @@ test_that("docs/blog/posts/2025-10-13-1.8-release/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1503,7 +1503,7 @@ test_that("docs/blog/posts/2025-10-20-quarto-wizard-1-0-0/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1514,7 +1514,7 @@ test_that("docs/blog/posts/2025-10-27-conf-workshops-materials/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1525,7 +1525,7 @@ test_that("docs/blog/posts/2025-11-24-conf-talk-videos/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1536,7 +1536,7 @@ test_that("docs/blog/posts/2026-03-05-pdf-accessibility-and-standards/index.qmd"
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1547,7 +1547,7 @@ test_that("docs/blog/posts/2026-03-24-1.9-release/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1558,7 +1558,7 @@ test_that("docs/blog/posts/2026-03-31-typst-books-and-more/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1569,7 +1569,7 @@ test_that("docs/blog/posts/2026-04-06-whats-next-quarto-2/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1580,7 +1580,7 @@ test_that("docs/blog/posts/2026-04-14-chrome-headless-shell/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1591,7 +1591,7 @@ test_that("docs/books/_book-vs-website-key.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1602,7 +1602,7 @@ test_that("docs/books/book-basics.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1613,7 +1613,7 @@ test_that("docs/books/book-crossrefs.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1624,7 +1624,7 @@ test_that("docs/books/book-output.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1635,7 +1635,7 @@ test_that("docs/books/book-structure.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1646,7 +1646,7 @@ test_that("docs/cli/add.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1657,7 +1657,7 @@ test_that("docs/cli/call.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1668,7 +1668,7 @@ test_that("docs/cli/capabilities.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1679,7 +1679,7 @@ test_that("docs/cli/check.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1690,7 +1690,7 @@ test_that("docs/cli/convert.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1701,7 +1701,7 @@ test_that("docs/cli/create.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1712,7 +1712,7 @@ test_that("docs/cli/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1723,7 +1723,7 @@ test_that("docs/cli/inspect.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1734,7 +1734,7 @@ test_that("docs/cli/install.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1745,7 +1745,7 @@ test_that("docs/cli/list.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1756,7 +1756,7 @@ test_that("docs/cli/pandoc.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1767,7 +1767,7 @@ test_that("docs/cli/preview.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1778,7 +1778,7 @@ test_that("docs/cli/publish.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1789,7 +1789,7 @@ test_that("docs/cli/remove.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1800,7 +1800,7 @@ test_that("docs/cli/render.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1811,7 +1811,7 @@ test_that("docs/cli/run.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1822,7 +1822,7 @@ test_that("docs/cli/serve.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1833,7 +1833,7 @@ test_that("docs/cli/tools.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1844,7 +1844,7 @@ test_that("docs/cli/typst.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1855,7 +1855,7 @@ test_that("docs/cli/uninstall.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1866,7 +1866,7 @@ test_that("docs/cli/update.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1877,7 +1877,7 @@ test_that("docs/cli/use.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1888,7 +1888,7 @@ test_that("docs/computations/caching.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1899,7 +1899,7 @@ test_that("docs/computations/execution-options.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1910,7 +1910,7 @@ test_that("docs/computations/inline-code.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1921,7 +1921,7 @@ test_that("docs/computations/julia.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1932,7 +1932,7 @@ test_that("docs/computations/ojs.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1943,7 +1943,7 @@ test_that("docs/computations/parameters.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1954,7 +1954,7 @@ test_that("docs/computations/python.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1965,7 +1965,7 @@ test_that("docs/computations/r.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1976,7 +1976,7 @@ test_that("docs/computations/render-scripts.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1987,7 +1987,7 @@ test_that("docs/dashboards/_examples/_TODO.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -1998,7 +1998,7 @@ test_that("docs/dashboards/_examples/altair.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2009,7 +2009,7 @@ test_that("docs/dashboards/_examples/cell-layout.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2020,7 +2020,7 @@ test_that("docs/dashboards/_examples/flow.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2031,7 +2031,7 @@ test_that("docs/dashboards/_examples/gapminder-content.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2042,7 +2042,7 @@ test_that("docs/dashboards/_examples/gapminder.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2053,7 +2053,7 @@ test_that("docs/dashboards/_examples/inputs/card-toolbar.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2064,7 +2064,7 @@ test_that("docs/dashboards/_examples/inputs/column-layout.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2075,7 +2075,7 @@ test_that("docs/dashboards/_examples/inputs/inline-sidebar.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2086,7 +2086,7 @@ test_that("docs/dashboards/_examples/inputs/inline-toolbar.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2097,7 +2097,7 @@ test_that("docs/dashboards/_examples/inputs/input-panel.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2108,7 +2108,7 @@ test_that("docs/dashboards/_examples/inputs/page-sidebar.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2119,7 +2119,7 @@ test_that("docs/dashboards/_examples/inputs/right-sidebar.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2130,7 +2130,7 @@ test_that("docs/dashboards/_examples/inputs/toolbar.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2141,7 +2141,7 @@ test_that("docs/dashboards/_examples/julia/julia-plotly.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2152,7 +2152,7 @@ test_that("docs/dashboards/_examples/leaflet.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2163,7 +2163,7 @@ test_that("docs/dashboards/_examples/markdown.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2174,7 +2174,7 @@ test_that("docs/dashboards/_examples/navigation.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2185,7 +2185,7 @@ test_that("docs/dashboards/_examples/penguins-obervable.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2196,7 +2196,7 @@ test_that("docs/dashboards/_examples/python-wide.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2207,7 +2207,7 @@ test_that("docs/dashboards/_examples/python/python-itables.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2218,7 +2218,7 @@ test_that("docs/dashboards/_examples/python/python-tabulate.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2229,7 +2229,7 @@ test_that("docs/dashboards/_examples/r/dt.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2240,7 +2240,7 @@ test_that("docs/dashboards/_examples/shiny-diamonds.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2251,7 +2251,7 @@ test_that("docs/dashboards/_examples/shiny-global-sidebar.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2262,7 +2262,7 @@ test_that("docs/dashboards/_examples/shiny-python-simple.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2273,7 +2273,7 @@ test_that("docs/dashboards/_examples/shiny-sidebar.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2284,7 +2284,7 @@ test_that("docs/dashboards/_examples/valuebox.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2295,7 +2295,7 @@ test_that("docs/dashboards/_inputs.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2306,7 +2306,7 @@ test_that("docs/dashboards/_layouts-old.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2317,7 +2317,7 @@ test_that("docs/dashboards/data-display.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2328,7 +2328,7 @@ test_that("docs/dashboards/deployment.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2339,7 +2339,7 @@ test_that("docs/dashboards/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2350,7 +2350,7 @@ test_that("docs/dashboards/inputs.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2361,7 +2361,7 @@ test_that("docs/dashboards/interactivity/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2372,7 +2372,7 @@ test_that("docs/dashboards/interactivity/observable.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2383,7 +2383,7 @@ test_that("docs/dashboards/interactivity/shiny-python/_shiny-requirements.qmd", 
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2394,7 +2394,7 @@ test_that("docs/dashboards/interactivity/shiny-python/execution.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2405,7 +2405,7 @@ test_that("docs/dashboards/interactivity/shiny-python/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2416,7 +2416,7 @@ test_that("docs/dashboards/interactivity/shiny-python/running.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2427,7 +2427,7 @@ test_that("docs/dashboards/interactivity/shiny-r.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2438,7 +2438,7 @@ test_that("docs/dashboards/layout.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2449,7 +2449,7 @@ test_that("docs/dashboards/parameters.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2460,7 +2460,7 @@ test_that("docs/dashboards/theming.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2471,7 +2471,7 @@ test_that("docs/download/changelog/1.1/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2482,7 +2482,7 @@ test_that("docs/download/changelog/1.2/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2493,7 +2493,7 @@ test_that("docs/download/changelog/1.3/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2504,7 +2504,7 @@ test_that("docs/download/changelog/1.4/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2515,7 +2515,7 @@ test_that("docs/download/changelog/1.5/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2526,7 +2526,7 @@ test_that("docs/download/changelog/1.6/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2537,7 +2537,7 @@ test_that("docs/download/changelog/1.7/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2548,7 +2548,7 @@ test_that("docs/download/changelog/1.8/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2559,7 +2559,7 @@ test_that("docs/download/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2570,7 +2570,7 @@ test_that("docs/download/prerelease.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2581,7 +2581,7 @@ test_that("docs/download/release.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2592,7 +2592,7 @@ test_that("docs/download/tarball.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2603,7 +2603,7 @@ test_that("docs/extensions/_extension-trust.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2614,7 +2614,7 @@ test_that("docs/extensions/_extension-version.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2625,7 +2625,7 @@ test_that("docs/extensions/_formats-common.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2636,7 +2636,7 @@ test_that("docs/extensions/_listing-chooser.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2647,7 +2647,7 @@ test_that("docs/extensions/_listing-footer.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2658,7 +2658,7 @@ test_that("docs/extensions/_listing-preamble.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2669,7 +2669,7 @@ test_that("docs/extensions/_shortcode-escaping.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2680,7 +2680,7 @@ test_that("docs/extensions/brand.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2691,7 +2691,7 @@ test_that("docs/extensions/creating.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2702,7 +2702,7 @@ test_that("docs/extensions/distributing.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2713,7 +2713,7 @@ test_that("docs/extensions/engine.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2724,7 +2724,7 @@ test_that("docs/extensions/filters.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2735,7 +2735,7 @@ test_that("docs/extensions/formats.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2746,7 +2746,7 @@ test_that("docs/extensions/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2757,7 +2757,7 @@ test_that("docs/extensions/listing-filters.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2768,7 +2768,7 @@ test_that("docs/extensions/listing-formats.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2779,7 +2779,7 @@ test_that("docs/extensions/listing-journals.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2790,7 +2790,7 @@ test_that("docs/extensions/listing-revealjs.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2801,7 +2801,7 @@ test_that("docs/extensions/lua-api.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2812,7 +2812,7 @@ test_that("docs/extensions/lua.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2823,7 +2823,7 @@ test_that("docs/extensions/managing.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2834,7 +2834,7 @@ test_that("docs/extensions/metadata.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2845,7 +2845,7 @@ test_that("docs/extensions/nbfilter.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2856,7 +2856,7 @@ test_that("docs/extensions/project-types.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2867,7 +2867,7 @@ test_that("docs/extensions/revealjs.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2878,7 +2878,7 @@ test_that("docs/extensions/shortcodes.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2889,7 +2889,7 @@ test_that("docs/extensions/starter-templates.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2900,7 +2900,7 @@ test_that("docs/faq/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2911,7 +2911,7 @@ test_that("docs/faq/rmarkdown.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2922,7 +2922,7 @@ test_that("docs/gallery/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2933,7 +2933,7 @@ test_that("docs/get-started/authoring/_authoring-complete.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2944,7 +2944,7 @@ test_that("docs/get-started/authoring/_authoring.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2955,7 +2955,7 @@ test_that("docs/get-started/authoring/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2966,7 +2966,7 @@ test_that("docs/get-started/authoring/jupyter.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2977,7 +2977,7 @@ test_that("docs/get-started/authoring/neovim.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2988,7 +2988,7 @@ test_that("docs/get-started/authoring/positron.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -2999,7 +2999,7 @@ test_that("docs/get-started/authoring/rstudio.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3010,7 +3010,7 @@ test_that("docs/get-started/authoring/text-editor.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3021,7 +3021,7 @@ test_that("docs/get-started/authoring/vscode.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3032,7 +3032,7 @@ test_that("docs/get-started/computations/_computations-complete.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3043,7 +3043,7 @@ test_that("docs/get-started/computations/_computations-text-editor.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3054,7 +3054,7 @@ test_that("docs/get-started/computations/_computations.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3065,7 +3065,7 @@ test_that("docs/get-started/computations/_positron/python/computations-complete.
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3076,7 +3076,7 @@ test_that("docs/get-started/computations/_positron/python/computations.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3087,7 +3087,7 @@ test_that("docs/get-started/computations/_positron/r/computations-complete.qmd",
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3098,7 +3098,7 @@ test_that("docs/get-started/computations/_positron/r/computations.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3109,7 +3109,7 @@ test_that("docs/get-started/computations/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3120,7 +3120,7 @@ test_that("docs/get-started/computations/jupyter.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3131,7 +3131,7 @@ test_that("docs/get-started/computations/neovim.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3142,7 +3142,7 @@ test_that("docs/get-started/computations/positron.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3153,7 +3153,7 @@ test_that("docs/get-started/computations/rstudio.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3164,7 +3164,7 @@ test_that("docs/get-started/computations/text-editor.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3175,7 +3175,7 @@ test_that("docs/get-started/computations/vscode.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3186,7 +3186,7 @@ test_that("docs/get-started/hello/_hello.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3197,7 +3197,7 @@ test_that("docs/get-started/hello/_positron/python/hello.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3208,7 +3208,7 @@ test_that("docs/get-started/hello/_positron/r/hello.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3219,7 +3219,7 @@ test_that("docs/get-started/hello/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3230,7 +3230,7 @@ test_that("docs/get-started/hello/jupyter.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3241,7 +3241,7 @@ test_that("docs/get-started/hello/neovim.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3252,7 +3252,7 @@ test_that("docs/get-started/hello/positron.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3263,7 +3263,7 @@ test_that("docs/get-started/hello/rstudio.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3274,7 +3274,7 @@ test_that("docs/get-started/hello/rstudio/_hello.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3285,7 +3285,7 @@ test_that("docs/get-started/hello/text-editor.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3296,7 +3296,7 @@ test_that("docs/get-started/hello/vscode.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3307,7 +3307,7 @@ test_that("docs/get-started/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3318,7 +3318,7 @@ test_that("docs/guide/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3329,7 +3329,7 @@ test_that("docs/interactive/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3340,7 +3340,7 @@ test_that("docs/interactive/layout.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3351,7 +3351,7 @@ test_that("docs/interactive/ojs/_reactivity.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3362,7 +3362,7 @@ test_that("docs/interactive/ojs/code-reuse.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3373,7 +3373,7 @@ test_that("docs/interactive/ojs/data-sources.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3384,7 +3384,7 @@ test_that("docs/interactive/ojs/examples/_shiny/binning/binning-shiny-ojs.qmd", 
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3395,7 +3395,7 @@ test_that("docs/interactive/ojs/examples/_shiny/data/data-shiny-ojs.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3406,7 +3406,7 @@ test_that("docs/interactive/ojs/examples/_shiny/kmeans/kmeans-shiny-ojs.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3417,7 +3417,7 @@ test_that("docs/interactive/ojs/examples/arquero.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3428,7 +3428,7 @@ test_that("docs/interactive/ojs/examples/github.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3439,7 +3439,7 @@ test_that("docs/interactive/ojs/examples/layout.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3450,7 +3450,7 @@ test_that("docs/interactive/ojs/examples/noaa-co2.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3461,7 +3461,7 @@ test_that("docs/interactive/ojs/examples/penguins.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3472,7 +3472,7 @@ test_that("docs/interactive/ojs/examples/population.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3483,7 +3483,7 @@ test_that("docs/interactive/ojs/examples/sunburst.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3494,7 +3494,7 @@ test_that("docs/interactive/ojs/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3505,7 +3505,7 @@ test_that("docs/interactive/ojs/libraries.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3516,7 +3516,7 @@ test_that("docs/interactive/ojs/ojs-cells.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3527,7 +3527,7 @@ test_that("docs/interactive/ojs/shiny.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3538,7 +3538,7 @@ test_that("docs/interactive/shiny/_examples/covid19-bicartogram/covid19-bicartog
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3549,7 +3549,7 @@ test_that("docs/interactive/shiny/_examples/diamonds/shiny-diamonds.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3560,7 +3560,7 @@ test_that("docs/interactive/shiny/_examples/k-means/shiny-k-means.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3571,7 +3571,7 @@ test_that("docs/interactive/shiny/_examples/old-faithful/shiny-old-faithful.qmd"
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3582,7 +3582,7 @@ test_that("docs/interactive/shiny/execution.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3593,7 +3593,7 @@ test_that("docs/interactive/shiny/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3604,7 +3604,7 @@ test_that("docs/interactive/shiny/resources.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3615,7 +3615,7 @@ test_that("docs/interactive/shiny/running.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3626,7 +3626,7 @@ test_that("docs/interactive/widgets/htmlwidgets.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3637,7 +3637,7 @@ test_that("docs/interactive/widgets/jupyter.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3648,7 +3648,7 @@ test_that("docs/journals/_draft/create-extensions.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3659,7 +3659,7 @@ test_that("docs/journals/_draft/extension-templates.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3670,7 +3670,7 @@ test_that("docs/journals/authors.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3681,7 +3681,7 @@ test_that("docs/journals/formats.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3692,7 +3692,7 @@ test_that("docs/journals/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3703,7 +3703,7 @@ test_that("docs/journals/templates.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3714,7 +3714,7 @@ test_that("docs/manuscripts/authoring/_authoring-content.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3725,7 +3725,7 @@ test_that("docs/manuscripts/authoring/_citations.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3736,7 +3736,7 @@ test_that("docs/manuscripts/authoring/_cross-refs.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3747,7 +3747,7 @@ test_that("docs/manuscripts/authoring/_embeds-ipynb.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3758,7 +3758,7 @@ test_that("docs/manuscripts/authoring/_embeds-qmd.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3769,7 +3769,7 @@ test_that("docs/manuscripts/authoring/_equations.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3780,7 +3780,7 @@ test_that("docs/manuscripts/authoring/_figures.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3791,7 +3791,7 @@ test_that("docs/manuscripts/authoring/_files.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3802,7 +3802,7 @@ test_that("docs/manuscripts/authoring/_footer.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3813,7 +3813,7 @@ test_that("docs/manuscripts/authoring/_front-matter.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3824,7 +3824,7 @@ test_that("docs/manuscripts/authoring/_inline-computations.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3835,7 +3835,7 @@ test_that("docs/manuscripts/authoring/_markdown.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3846,7 +3846,7 @@ test_that("docs/manuscripts/authoring/_overview.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3857,7 +3857,7 @@ test_that("docs/manuscripts/authoring/_setup.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3868,7 +3868,7 @@ test_that("docs/manuscripts/authoring/_structure.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3879,7 +3879,7 @@ test_that("docs/manuscripts/authoring/_tables.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3890,7 +3890,7 @@ test_that("docs/manuscripts/authoring/_visual-editor.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3901,7 +3901,7 @@ test_that("docs/manuscripts/authoring/_workflow-ipynb.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3912,7 +3912,7 @@ test_that("docs/manuscripts/authoring/_workflow-qmd.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3923,7 +3923,7 @@ test_that("docs/manuscripts/authoring/_workflow.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3934,7 +3934,7 @@ test_that("docs/manuscripts/authoring/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3945,7 +3945,7 @@ test_that("docs/manuscripts/authoring/jupyterlab.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3956,7 +3956,7 @@ test_that("docs/manuscripts/authoring/rstudio.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3967,7 +3967,7 @@ test_that("docs/manuscripts/authoring/vscode.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3978,7 +3978,7 @@ test_that("docs/manuscripts/components.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -3989,7 +3989,7 @@ test_that("docs/manuscripts/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4000,7 +4000,7 @@ test_that("docs/manuscripts/next-steps.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4011,7 +4011,7 @@ test_that("docs/manuscripts/publishing.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4022,7 +4022,7 @@ test_that("docs/output-formats/_ssg-intro.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4033,7 +4033,7 @@ test_that("docs/output-formats/_ssg-workflow.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4044,7 +4044,7 @@ test_that("docs/output-formats/all-formats.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4055,7 +4055,7 @@ test_that("docs/output-formats/docusaurus.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4066,7 +4066,7 @@ test_that("docs/output-formats/examples/gt-temps.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4077,7 +4077,7 @@ test_that("docs/output-formats/examples/pandas-temps.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4088,7 +4088,7 @@ test_that("docs/output-formats/gfm.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4099,7 +4099,7 @@ test_that("docs/output-formats/html-accessibility.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4110,7 +4110,7 @@ test_that("docs/output-formats/html-basics.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4121,7 +4121,7 @@ test_that("docs/output-formats/html-code.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4132,7 +4132,7 @@ test_that("docs/output-formats/html-lightbox-figures.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4143,7 +4143,7 @@ test_that("docs/output-formats/html-multi-format.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4154,7 +4154,7 @@ test_that("docs/output-formats/html-publishing.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4165,7 +4165,7 @@ test_that("docs/output-formats/html-themes-more.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4176,7 +4176,7 @@ test_that("docs/output-formats/html-themes.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4187,7 +4187,7 @@ test_that("docs/output-formats/hugo.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4198,7 +4198,7 @@ test_that("docs/output-formats/ms-word-templates.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4209,7 +4209,7 @@ test_that("docs/output-formats/ms-word.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4220,7 +4220,7 @@ test_that("docs/output-formats/page-layout.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4231,7 +4231,7 @@ test_that("docs/output-formats/pdf-basics.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4242,7 +4242,7 @@ test_that("docs/output-formats/pdf-engine.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4253,7 +4253,7 @@ test_that("docs/output-formats/typst-custom.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4264,7 +4264,7 @@ test_that("docs/output-formats/typst.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4275,7 +4275,7 @@ test_that("docs/prerelease/_highlights-prerelease.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4286,7 +4286,7 @@ test_that("docs/prerelease/_highlights-release.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4297,7 +4297,7 @@ test_that("docs/prerelease/1.10/_highlights.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4308,7 +4308,7 @@ test_that("docs/prerelease/1.10/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4319,7 +4319,7 @@ test_that("docs/prerelease/1.3/_highlights.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4330,7 +4330,7 @@ test_that("docs/prerelease/1.3/ast.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4341,7 +4341,7 @@ test_that("docs/prerelease/1.3/custom-ast-nodes/callout.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4352,7 +4352,7 @@ test_that("docs/prerelease/1.3/custom-ast-nodes/conditional-block.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4363,7 +4363,7 @@ test_that("docs/prerelease/1.3/custom-ast-nodes/tabset.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4374,7 +4374,7 @@ test_that("docs/prerelease/1.3/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4385,7 +4385,7 @@ test_that("docs/prerelease/1.3/pdf.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4396,7 +4396,7 @@ test_that("docs/prerelease/1.3/tables.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4407,7 +4407,7 @@ test_that("docs/prerelease/1.3/website-nav.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4418,7 +4418,7 @@ test_that("docs/prerelease/1.4/_highlights.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4429,7 +4429,7 @@ test_that("docs/prerelease/1.4/ast.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4440,7 +4440,7 @@ test_that("docs/prerelease/1.4/crossref.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4451,7 +4451,7 @@ test_that("docs/prerelease/1.4/email.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4462,7 +4462,7 @@ test_that("docs/prerelease/1.4/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4473,7 +4473,7 @@ test_that("docs/prerelease/1.4/lua_changes.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4484,7 +4484,7 @@ test_that("docs/prerelease/1.5/_highlights.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4495,7 +4495,7 @@ test_that("docs/prerelease/1.5/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4506,7 +4506,7 @@ test_that("docs/prerelease/1.6/_highlights.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4517,7 +4517,7 @@ test_that("docs/prerelease/1.6/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4528,7 +4528,7 @@ test_that("docs/prerelease/1.7/_highlights.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4539,7 +4539,7 @@ test_that("docs/prerelease/1.7/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4550,7 +4550,7 @@ test_that("docs/prerelease/1.8/_highlights.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4561,7 +4561,7 @@ test_that("docs/prerelease/1.8/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4572,7 +4572,7 @@ test_that("docs/prerelease/1.9/_highlights.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4583,7 +4583,7 @@ test_that("docs/prerelease/1.9/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4594,7 +4594,7 @@ test_that("docs/presentations/beamer.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4605,7 +4605,7 @@ test_that("docs/presentations/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4616,7 +4616,7 @@ test_that("docs/presentations/powerpoint.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4627,7 +4627,7 @@ test_that("docs/presentations/revealjs/_callout-auto-stretch-scrollable.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4638,7 +4638,7 @@ test_that("docs/presentations/revealjs/advanced.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4649,7 +4649,7 @@ test_that("docs/presentations/revealjs/demo/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4660,7 +4660,7 @@ test_that("docs/presentations/revealjs/demo/mini/absolute.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4671,7 +4671,7 @@ test_that("docs/presentations/revealjs/demo/mini/auto-animate-code.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4682,7 +4682,7 @@ test_that("docs/presentations/revealjs/demo/mini/auto-animate-movement.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4693,7 +4693,7 @@ test_that("docs/presentations/revealjs/demo/mini/auto-animate-stack.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4704,7 +4704,7 @@ test_that("docs/presentations/revealjs/demo/mini/auto-animate.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4715,7 +4715,7 @@ test_that("docs/presentations/revealjs/demo/mini/fragments-custom.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4726,7 +4726,7 @@ test_that("docs/presentations/revealjs/demo/mini/fragments-nested.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4737,7 +4737,7 @@ test_that("docs/presentations/revealjs/demo/mini/fragments.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4748,7 +4748,7 @@ test_that("docs/presentations/revealjs/demo/mini/stack.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4759,7 +4759,7 @@ test_that("docs/presentations/revealjs/demo/mini/zoom.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4770,7 +4770,7 @@ test_that("docs/presentations/revealjs/examples/_theme-dark.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4781,7 +4781,7 @@ test_that("docs/presentations/revealjs/examples/background-color.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4792,7 +4792,7 @@ test_that("docs/presentations/revealjs/examples/background-gradient.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4803,7 +4803,7 @@ test_that("docs/presentations/revealjs/examples/background-no-title.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4814,7 +4814,7 @@ test_that("docs/presentations/revealjs/examples/code-echo.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4825,7 +4825,7 @@ test_that("docs/presentations/revealjs/examples/columns.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4836,7 +4836,7 @@ test_that("docs/presentations/revealjs/examples/creating-slides-1.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4847,7 +4847,7 @@ test_that("docs/presentations/revealjs/examples/creating-slides-2.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4858,7 +4858,7 @@ test_that("docs/presentations/revealjs/examples/creating-slides-3.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4869,7 +4869,7 @@ test_that("docs/presentations/revealjs/examples/executable-code-figure-size.qmd"
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4880,7 +4880,7 @@ test_that("docs/presentations/revealjs/examples/footer-and-logo.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4891,7 +4891,7 @@ test_that("docs/presentations/revealjs/examples/image-background.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4902,7 +4902,7 @@ test_that("docs/presentations/revealjs/examples/incremental-lists-1.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4913,7 +4913,7 @@ test_that("docs/presentations/revealjs/examples/incremental-lists-2.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4924,7 +4924,7 @@ test_that("docs/presentations/revealjs/examples/incremental-lists-3.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4935,7 +4935,7 @@ test_that("docs/presentations/revealjs/examples/incremental-pause.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4946,7 +4946,7 @@ test_that("docs/presentations/revealjs/examples/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4957,7 +4957,7 @@ test_that("docs/presentations/revealjs/examples/line-highlighting-1.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4968,7 +4968,7 @@ test_that("docs/presentations/revealjs/examples/line-highlighting-2.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4979,7 +4979,7 @@ test_that("docs/presentations/revealjs/examples/line-highlighting-3.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -4990,7 +4990,7 @@ test_that("docs/presentations/revealjs/examples/line-highlighting-4.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5001,7 +5001,7 @@ test_that("docs/presentations/revealjs/examples/no-footer-on-a-slide.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5012,7 +5012,7 @@ test_that("docs/presentations/revealjs/examples/per-slide-footer.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5023,7 +5023,7 @@ test_that("docs/presentations/revealjs/examples/scrollable-and-smaller.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5034,7 +5034,7 @@ test_that("docs/presentations/revealjs/examples/scrollable.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5045,7 +5045,7 @@ test_that("docs/presentations/revealjs/examples/slide-with-speaker-notes.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5056,7 +5056,7 @@ test_that("docs/presentations/revealjs/examples/smaller.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5067,7 +5067,7 @@ test_that("docs/presentations/revealjs/examples/tabset.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5078,7 +5078,7 @@ test_that("docs/presentations/revealjs/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5089,7 +5089,7 @@ test_that("docs/presentations/revealjs/presenting.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5100,7 +5100,7 @@ test_that("docs/presentations/revealjs/themes.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5111,7 +5111,7 @@ test_that("docs/projects/binder.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5122,7 +5122,7 @@ test_that("docs/projects/code-execution.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5133,7 +5133,7 @@ test_that("docs/projects/environment.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5144,7 +5144,7 @@ test_that("docs/projects/profiles.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5155,7 +5155,7 @@ test_that("docs/projects/quarto-projects.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5166,7 +5166,7 @@ test_that("docs/projects/scripts.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5177,7 +5177,7 @@ test_that("docs/projects/virtual-environments.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5188,7 +5188,7 @@ test_that("docs/publishing/_confluence_examples/confluence-demo.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5199,7 +5199,7 @@ test_that("docs/publishing/ci.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5210,7 +5210,7 @@ test_that("docs/publishing/confluence.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5221,7 +5221,7 @@ test_that("docs/publishing/github-pages.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5232,7 +5232,7 @@ test_that("docs/publishing/hugging-face.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5243,7 +5243,7 @@ test_that("docs/publishing/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5254,7 +5254,7 @@ test_that("docs/publishing/netlify.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5265,7 +5265,7 @@ test_that("docs/publishing/other.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5276,7 +5276,7 @@ test_that("docs/publishing/posit-cloud.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5287,7 +5287,7 @@ test_that("docs/publishing/posit-connect-cloud.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5298,7 +5298,7 @@ test_that("docs/publishing/quarto-pub.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5309,7 +5309,7 @@ test_that("docs/publishing/rstudio-connect.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5320,7 +5320,7 @@ test_that("docs/reference/cells/cells-jupyter.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5331,7 +5331,7 @@ test_that("docs/reference/cells/cells-knitr.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5342,7 +5342,7 @@ test_that("docs/reference/cells/cells-ojs.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5353,7 +5353,7 @@ test_that("docs/reference/cells/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5364,7 +5364,7 @@ test_that("docs/reference/dates.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5375,7 +5375,7 @@ test_that("docs/reference/formats/asciidoc.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5386,7 +5386,7 @@ test_that("docs/reference/formats/context.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5397,7 +5397,7 @@ test_that("docs/reference/formats/dashboard.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5408,7 +5408,7 @@ test_that("docs/reference/formats/docbook.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5419,7 +5419,7 @@ test_that("docs/reference/formats/docx.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5430,7 +5430,7 @@ test_that("docs/reference/formats/epub.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5441,7 +5441,7 @@ test_that("docs/reference/formats/fb2.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5452,7 +5452,7 @@ test_that("docs/reference/formats/haddock.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5463,7 +5463,7 @@ test_that("docs/reference/formats/html.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5474,7 +5474,7 @@ test_that("docs/reference/formats/icml.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5485,7 +5485,7 @@ test_that("docs/reference/formats/ipynb.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5496,7 +5496,7 @@ test_that("docs/reference/formats/jats.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5507,7 +5507,7 @@ test_that("docs/reference/formats/man.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5518,7 +5518,7 @@ test_that("docs/reference/formats/markdown/commonmark.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5529,7 +5529,7 @@ test_that("docs/reference/formats/markdown/gfm.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5540,7 +5540,7 @@ test_that("docs/reference/formats/markdown/hugo.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5551,7 +5551,7 @@ test_that("docs/reference/formats/markdown/markua.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5562,7 +5562,7 @@ test_that("docs/reference/formats/ms.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5573,7 +5573,7 @@ test_that("docs/reference/formats/muse.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5584,7 +5584,7 @@ test_that("docs/reference/formats/odt.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5595,7 +5595,7 @@ test_that("docs/reference/formats/opml.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5606,7 +5606,7 @@ test_that("docs/reference/formats/org.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5617,7 +5617,7 @@ test_that("docs/reference/formats/pdf.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5628,7 +5628,7 @@ test_that("docs/reference/formats/presentations/beamer.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5639,7 +5639,7 @@ test_that("docs/reference/formats/presentations/pptx.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5650,7 +5650,7 @@ test_that("docs/reference/formats/presentations/revealjs.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5661,7 +5661,7 @@ test_that("docs/reference/formats/rst.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5672,7 +5672,7 @@ test_that("docs/reference/formats/rtf.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5683,7 +5683,7 @@ test_that("docs/reference/formats/tei.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5694,7 +5694,7 @@ test_that("docs/reference/formats/texinfo.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5705,7 +5705,7 @@ test_that("docs/reference/formats/textile.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5716,7 +5716,7 @@ test_that("docs/reference/formats/typst.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5727,7 +5727,7 @@ test_that("docs/reference/formats/wiki/dokuwiki.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5738,7 +5738,7 @@ test_that("docs/reference/formats/wiki/jira.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5749,7 +5749,7 @@ test_that("docs/reference/formats/wiki/mediawiki.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5760,7 +5760,7 @@ test_that("docs/reference/formats/wiki/xwiki.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5771,7 +5771,7 @@ test_that("docs/reference/formats/wiki/zimwiki.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5782,7 +5782,7 @@ test_that("docs/reference/globs.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5793,7 +5793,7 @@ test_that("docs/reference/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5804,7 +5804,7 @@ test_that("docs/reference/metadata/brand.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5815,7 +5815,7 @@ test_that("docs/reference/metadata/citation.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5826,7 +5826,7 @@ test_that("docs/reference/metadata/crossref.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5837,7 +5837,7 @@ test_that("docs/reference/projects/books.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5848,7 +5848,7 @@ test_that("docs/reference/projects/manuscripts.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5859,7 +5859,7 @@ test_that("docs/reference/projects/options.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5870,7 +5870,7 @@ test_that("docs/reference/projects/websites.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5881,7 +5881,7 @@ test_that("docs/tools/_examples/diagrams.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5892,7 +5892,7 @@ test_that("docs/tools/_examples/python.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5903,7 +5903,7 @@ test_that("docs/tools/_jupyter-lab-extension-install.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5914,7 +5914,7 @@ test_that("docs/tools/jupyter-lab-extension.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5925,7 +5925,7 @@ test_that("docs/tools/jupyter-lab.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5936,7 +5936,7 @@ test_that("docs/tools/neovim.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5947,7 +5947,7 @@ test_that("docs/tools/positron/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5958,7 +5958,7 @@ test_that("docs/tools/positron/notebook.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5969,7 +5969,7 @@ test_that("docs/tools/positron/visual-editor.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5980,7 +5980,7 @@ test_that("docs/tools/rstudio.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -5991,7 +5991,7 @@ test_that("docs/tools/text-editors.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6002,7 +6002,7 @@ test_that("docs/tools/vscode/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6013,7 +6013,7 @@ test_that("docs/tools/vscode/notebook.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6024,7 +6024,7 @@ test_that("docs/tools/vscode/visual-editor.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6035,7 +6035,7 @@ test_that("docs/triaging/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6046,7 +6046,7 @@ test_that("docs/troubleshooting/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6057,7 +6057,7 @@ test_that("docs/visual-editor/content.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6068,7 +6068,7 @@ test_that("docs/visual-editor/index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6079,7 +6079,7 @@ test_that("docs/visual-editor/markdown.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6090,7 +6090,7 @@ test_that("docs/visual-editor/options.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6101,7 +6101,7 @@ test_that("docs/visual-editor/technical.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6112,7 +6112,7 @@ test_that("docs/websites/website-about.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6123,7 +6123,7 @@ test_that("docs/websites/website-basics.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6134,7 +6134,7 @@ test_that("docs/websites/website-blog.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6145,7 +6145,7 @@ test_that("docs/websites/website-drafts.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6156,7 +6156,7 @@ test_that("docs/websites/website-listings-custom.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6167,7 +6167,7 @@ test_that("docs/websites/website-listings.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6178,7 +6178,7 @@ test_that("docs/websites/website-llms.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6189,7 +6189,7 @@ test_that("docs/websites/website-navigation.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6200,7 +6200,7 @@ test_that("docs/websites/website-search.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6211,7 +6211,7 @@ test_that("docs/websites/website-tools.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6222,7 +6222,7 @@ test_that("index.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6233,7 +6233,7 @@ test_that("license.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
@@ -6244,7 +6244,7 @@ test_that("trademark.qmd", {
   if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
   rendered = pampa_to_qmd(ts)
   pd2 = pampa_parse_pd(rendered)
-  expect_false(has_error_diagnostics(pd2))
+  expect_no_error_diagnostics(pd2)
   expect_pd_ast_equal(pd2, pd)
 })
 
