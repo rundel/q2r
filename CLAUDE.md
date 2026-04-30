@@ -25,7 +25,7 @@ R package that wraps the `pampa` Rust crate from [quarto-dev/q2](https://github.
 
 - Rust **edition 2024** ⇒ **rustc ≥ 1.85** (declared in `DESCRIPTION` via `SystemRequirements`).
 - Bridge: `extendr` + `rextendr` (matches Posit-authored Rust-backed R packages).
-- Rebuild after Rust edits: `rextendr::document()`. Iterate interactively: `devtools::load_all()`.
+- Rebuild after Rust edits: `devtools::document()` (recompiles Rust and regenerates `R/extendr-wrappers.R`). Iterate interactively: `devtools::load_all()`.
 
 ## Round-trip iteration tools
 
