@@ -50,26 +50,15 @@ expect_no_error_diagnostics = function(actual) {
   invisible(actual)
 }
 
-ts_kind_tree = function(node) {
-  list(
-    kind     = node@kind,
-    named    = node@is_named,
-    field    = node@field_name %||% NA_character_,
-    children = lapply(node@children@content, ts_kind_tree)
-  )
-}
-
-ts_tree_kind_tree = function(tree) ts_kind_tree(tree@root)
-
-expect_ts_kind_equal = function(actual, expected) {
+expect_ts_ast_equal = function(actual, expected) {
   act_lab = testthat::quasi_label(rlang::enquo(actual),   arg = "actual")
   exp_lab = testthat::quasi_label(rlang::enquo(expected), arg = "expected")
-  act = ts_tree_kind_tree(actual)
-  exp = ts_tree_kind_tree(expected)
+  act = q2r:::ts_tree_to_list(actual)
+  exp = q2r:::ts_tree_to_list(expected)
   diff = waldo::compare(act, exp, x_arg = act_lab$lab, y_arg = exp_lab$lab, max_diffs = 20)
   testthat::expect(
     length(diff) == 0,
-    paste0("ts kind tree mismatch:\n", paste(diff, collapse = "\n\n"))
+    paste0("ts ast mismatch:\n", paste(diff, collapse = "\n\n"))
   )
   invisible(actual)
 }

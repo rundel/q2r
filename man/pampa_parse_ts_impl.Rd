@@ -4,7 +4,7 @@
 \alias{pampa_parse_ts_impl}
 \title{Parse QMD text with tree-sitter and return the tree-sitter AST.}
 \usage{
-pampa_parse_ts_impl(text, filename)
+pampa_parse_ts_impl(text, filename, prune_errors)
 }
 \description{
 Returns a list with \code{ts_ast} (structured tree-sitter AST as a nested

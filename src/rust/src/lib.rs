@@ -43,9 +43,9 @@ fn fallback_source_context(text: &str, filename: &str) -> quarto_source_map::Sou
 /// rendered via `pampa_diag_format_impl`).
 /// @export
 #[extendr]
-fn pampa_parse_pd_impl(text: &str, filename: &str) -> List {
+fn pampa_parse_pd_impl(text: &str, filename: &str, prune_errors: bool) -> List {
     let mut sink = std::io::sink();
-    let result = qmd::read(text.as_bytes(), false, filename, &mut sink, false, None);
+    let result = qmd::read(text.as_bytes(), false, filename, &mut sink, prune_errors, None);
     match result {
         Ok((pandoc, ctx, diags)) => {
             let pd_ast = pd_ast_to_r::pandoc_to_r(&pandoc);
@@ -68,10 +68,10 @@ fn pampa_parse_pd_impl(text: &str, filename: &str) -> List {
 /// produce; `diagnostics` surfaces higher-level pampa parse errors.
 /// @export
 #[extendr]
-fn pampa_parse_ts_impl(text: &str, filename: &str) -> List {
+fn pampa_parse_ts_impl(text: &str, filename: &str, prune_errors: bool) -> List {
     let ts_ast = ts_ast_to_r::parse_ts_ast_to_r(text.as_bytes());
     let mut sink = std::io::sink();
-    let result = qmd::read(text.as_bytes(), false, filename, &mut sink, false, None);
+    let result = qmd::read(text.as_bytes(), false, filename, &mut sink, prune_errors, None);
     let diag_list = match result {
         Ok((_, ctx, diags)) => diags_to_list_ref(&diags, &ctx.source_context),
         Err(diags) => {
@@ -91,7 +91,7 @@ fn pampa_parse_ts_impl(text: &str, filename: &str) -> List {
 #[extendr]
 fn pampa_tree_impl(text: &str, filename: &str) -> Vec<String> {
     let mut tree_buf: Vec<u8> = Vec::new();
-    let _ = qmd::read(text.as_bytes(), false, filename, &mut tree_buf, false, None);
+    let _ = qmd::read(text.as_bytes(), false, filename, &mut tree_buf, true, None);
     String::from_utf8_lossy(&tree_buf)
         .lines()
         .map(str::to_string)
@@ -107,7 +107,7 @@ fn pampa_tree_impl(text: &str, filename: &str) -> Vec<String> {
 #[extendr]
 fn pampa_native_impl(text: &str, filename: &str) -> Vec<String> {
     let mut sink = std::io::sink();
-    let result = qmd::read(text.as_bytes(), false, filename, &mut sink, false, None);
+    let result = qmd::read(text.as_bytes(), false, filename, &mut sink, true, None);
     match result {
         Ok((pandoc, ctx, _)) => {
             let mut nbuf: Vec<u8> = Vec::new();
@@ -133,7 +133,7 @@ fn pampa_native_impl(text: &str, filename: &str) -> Vec<String> {
 #[extendr]
 fn pampa_write_qmd_text_impl(text: &str, filename: &str) -> List {
     let mut sink = std::io::sink();
-    match qmd::read(text.as_bytes(), false, filename, &mut sink, false, None) {
+    match qmd::read(text.as_bytes(), false, filename, &mut sink, true, None) {
         Ok((pandoc, ctx, parse_diags)) => {
             let mut out: Vec<u8> = Vec::new();
             match qmd_writer::write(&pandoc, &mut out) {

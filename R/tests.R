@@ -28,12 +28,12 @@ gen_ts_rt_test = function(rel, skip_map = list()) {
   gen_test_block(rel, skip_map, c(
     "  skip_if_no_quarto_web()",
     paste0("  text = quarto_web_read(", deparse(rel, width.cutoff = 500L), ")"),
-    "  ts = pampa_parse_ts(text)",
-    "  if (has_error_diagnostics(ts)) skip(\"initial parse produced error diagnostics\")",
+    "  ts = pampa_parse_ts(text, quiet = TRUE)",
+    "  expect_no_error_diagnostics(ts)",
     "  rendered = to_qmd(ts)",
-    "  ts2 = pampa_parse_ts(rendered)",
+    "  ts2 = pampa_parse_ts(rendered, quiet = TRUE)",
     "  expect_no_error_diagnostics(ts2)",
-    "  expect_ts_kind_equal(ts2, ts)"
+    "  expect_ts_ast_equal(ts2, ts)"
   ))
 }
 
@@ -41,10 +41,10 @@ gen_pd_rt_test = function(rel, skip_map = list()) {
   gen_test_block(rel, skip_map, c(
     "  skip_if_no_quarto_web()",
     paste0("  text = quarto_web_read(", deparse(rel, width.cutoff = 500L), ")"),
-    "  pd = pampa_parse_pd(text)",
-    "  if (has_error_diagnostics(pd)) skip(\"initial parse produced error diagnostics\")",
+    "  pd = pampa_parse_pd(text, quiet = TRUE)",
+    "  expect_no_error_diagnostics(pd)",
     "  rendered = to_qmd(pd)",
-    "  pd2 = pampa_parse_pd(rendered)",
+    "  pd2 = pampa_parse_pd(rendered, quiet = TRUE)",
     "  expect_no_error_diagnostics(pd2)",
     "  expect_pd_ast_equal(pd2, pd)"
   ))
@@ -54,12 +54,12 @@ gen_pampa_ts_rt_test = function(rel, skip_map = list()) {
   gen_test_block(rel, skip_map, c(
     "  skip_if_no_quarto_web()",
     paste0("  text = quarto_web_read(", deparse(rel, width.cutoff = 500L), ")"),
-    "  ts = pampa_parse_ts(text)",
-    "  if (has_error_diagnostics(ts)) skip(\"initial parse produced error diagnostics\")",
+    "  ts = pampa_parse_ts(text, quiet = TRUE)",
+    "  expect_no_error_diagnostics(ts)",
     "  rendered = pampa_to_qmd(ts)",
-    "  ts2 = pampa_parse_ts(rendered)",
+    "  ts2 = pampa_parse_ts(rendered, quiet = TRUE)",
     "  expect_no_error_diagnostics(ts2)",
-    "  expect_ts_kind_equal(ts2, ts)"
+    "  expect_ts_ast_equal(ts2, ts)"
   ))
 }
 
@@ -67,10 +67,10 @@ gen_pampa_pd_rt_test = function(rel, skip_map = list()) {
   gen_test_block(rel, skip_map, c(
     "  skip_if_no_quarto_web()",
     paste0("  text = quarto_web_read(", deparse(rel, width.cutoff = 500L), ")"),
-    "  pd = pampa_parse_pd(text)",
-    "  if (has_error_diagnostics(pd)) skip(\"initial parse produced error diagnostics\")",
+    "  pd = pampa_parse_pd(text, quiet = TRUE)",
+    "  expect_no_error_diagnostics(pd)",
     "  rendered = pampa_to_qmd(pd)",
-    "  pd2 = pampa_parse_pd(rendered)",
+    "  pd2 = pampa_parse_pd(rendered, quiet = TRUE)",
     "  expect_no_error_diagnostics(pd2)",
     "  expect_pd_ast_equal(pd2, pd)"
   ))

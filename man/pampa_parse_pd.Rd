@@ -4,7 +4,7 @@
 \alias{pampa_parse_pd}
 \title{Parse QMD input with pampa and return the Pandoc AST}
 \usage{
-pampa_parse_pd(input)
+pampa_parse_pd(input, quiet = FALSE, prune_errors = TRUE)
 }
 \arguments{
 \item{input}{Either a single string (treated as a file path if it
@@ -12,6 +12,17 @@ does not contain newlines and \code{file.exists()} returns TRUE, else as
 raw text) or a \code{\link{ts_tree}} object. For a \code{ts_tree}, the tree is
 rendered to QMD via \code{\link[=to_qmd]{to_qmd()}} and re-parsed; this exercises the
 full ts -> Pandoc pipeline on an R-held AST.}
+
+\item{quiet}{If \code{FALSE} (the default) any error-kind diagnostics are
+raised as R errors (after attaching diagnostics to the result),
+and warning-kind diagnostics are emitted as R warnings. If \code{TRUE}
+no signal is raised; diagnostics are still attached to the
+returned object's \verb{@diagnostics} slot.}
+
+\item{prune_errors}{If \code{TRUE} (the default, matching the pampa CLI)
+parser-error diagnostics are deduplicated by tree-sitter \code{ERROR}
+node, keeping the earliest per node. Set to \code{FALSE} to see every
+raw diagnostic pampa produces (useful for debugging the parser).}
 }
 \value{
 A \code{\link{pandoc}} object with any parse diagnostics attached in

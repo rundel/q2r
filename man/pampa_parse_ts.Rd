@@ -4,12 +4,23 @@
 \alias{pampa_parse_ts}
 \title{Parse QMD input with tree-sitter and return the tree-sitter AST}
 \usage{
-pampa_parse_ts(input)
+pampa_parse_ts(input, quiet = FALSE, prune_errors = TRUE)
 }
 \arguments{
 \item{input}{A single string. Treated as a file path if it does not
 contain newlines and \code{file.exists()} returns TRUE; otherwise
 treated as raw text.}
+
+\item{quiet}{If \code{FALSE} (the default) any error-kind diagnostics are
+raised as R errors (after attaching diagnostics to the result),
+and warning-kind diagnostics are emitted as R warnings. If \code{TRUE}
+no signal is raised; diagnostics are still attached to the
+returned object's \verb{@diagnostics} slot.}
+
+\item{prune_errors}{If \code{TRUE} (the default, matching the pampa CLI)
+parser-error diagnostics are deduplicated by tree-sitter \code{ERROR}
+node, keeping the earliest per node. Set to \code{FALSE} to see every
+raw diagnostic pampa produces (useful for debugging the parser).}
 }
 \value{
 A \code{\link{ts_tree}} object with any parse diagnostics attached in

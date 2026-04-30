@@ -94,16 +94,16 @@ test_that("to_qmd emits block quotes, lists, and horizontal rules", {
   expect_identical(to_qmd(bq), "> hi\n")
 
   bl = pandoc_bullet_list(content = list(
-    pandoc_blocks(list(pandoc_paragraph(content = pandoc_inlines(list(pandoc_str(text = "a")))))),
-    pandoc_blocks(list(pandoc_paragraph(content = pandoc_inlines(list(pandoc_str(text = "b"))))))
+    pandoc_blocks(list(pandoc_plain(content = pandoc_inlines(list(pandoc_str(text = "a")))))),
+    pandoc_blocks(list(pandoc_plain(content = pandoc_inlines(list(pandoc_str(text = "b"))))))
   ))
   expect_identical(to_qmd(bl), "- a\n- b\n")
 
   ol = pandoc_ordered_list(
     attr = pandoc_list_attributes(start = 1L, style = "Decimal", delim = "Period"),
     content = list(
-      pandoc_blocks(list(pandoc_paragraph(content = pandoc_inlines(list(pandoc_str(text = "one")))))),
-      pandoc_blocks(list(pandoc_paragraph(content = pandoc_inlines(list(pandoc_str(text = "two"))))))
+      pandoc_blocks(list(pandoc_plain(content = pandoc_inlines(list(pandoc_str(text = "one")))))),
+      pandoc_blocks(list(pandoc_plain(content = pandoc_inlines(list(pandoc_str(text = "two"))))))
     )
   )
   expect_identical(to_qmd(ol), "1. one\n2. two\n")
@@ -145,9 +145,13 @@ test_that("to_qmd emits footnote definitions and references", {
   expect_identical(to_qmd(nd), "[^1]: footnote\n")
 })
 
-test_that("to_qmd warns on pandoc_table placeholder", {
-  expect_warning(out <- to_qmd(pandoc_table()), "pandoc_table")
-  expect_true(grepl("table", out))
+test_that("to_qmd renders a simple pipe table and is stable on re-render", {
+  src = "| a | b |\n|---|---|\n| 1 | 2 |\n| 3 | 4 |\n"
+  out  = to_qmd(pampa_parse_pd(src))
+  expect_match(out, "\\| a \\| b \\|")
+  expect_match(out, "\\| 1 \\| 2 \\|")
+  out2 = to_qmd(pampa_parse_pd(out))
+  expect_identical(out2, out)
 })
 
 test_that("to_qmd warns on custom_block / custom_inline", {

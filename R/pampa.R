@@ -30,18 +30,28 @@ pampa_diagnostics_from_raw = function(raw, text, filename) {
 #'   raw text) or a [`ts_tree`] object. For a `ts_tree`, the tree is
 #'   rendered to QMD via [`to_qmd()`] and re-parsed; this exercises the
 #'   full ts -> Pandoc pipeline on an R-held AST.
+#' @param quiet If `FALSE` (the default) any error-kind diagnostics are
+#'   raised as R errors (after attaching diagnostics to the result),
+#'   and warning-kind diagnostics are emitted as R warnings. If `TRUE`
+#'   no signal is raised; diagnostics are still attached to the
+#'   returned object's `@diagnostics` slot.
+#' @param prune_errors If `TRUE` (the default, matching the pampa CLI)
+#'   parser-error diagnostics are deduplicated by tree-sitter `ERROR`
+#'   node, keeping the earliest per node. Set to `FALSE` to see every
+#'   raw diagnostic pampa produces (useful for debugging the parser).
 #' @return A [`pandoc`] object with any parse diagnostics attached in
 #'   its `@diagnostics` slot. If pampa fails to produce a Pandoc AST the
 #'   returned object has an empty `@blocks`; the diagnostics explain why.
 #' @export
-pampa_parse_pd = function(input) {
+pampa_parse_pd = function(input, quiet = FALSE, prune_errors = TRUE) {
   if (S7::S7_inherits(input, ts_tree)) input = to_qmd(input)
   src = pampa_read_input(input)
-  raw = pampa_parse_pd_impl(src$text, src$filename)
+  raw = pampa_parse_pd_impl(src$text, src$filename, isTRUE(prune_errors))
   diagnostics = pampa_diagnostics_from_raw(raw, src$text, src$filename)
 
   doc = if (is.null(raw$pd_ast)) pandoc() else pandoc_from_list(raw$pd_ast)
   doc@diagnostics = diagnostics
+  pampa_signal_diagnostics(diagnostics, quiet = quiet)
   doc
 }
 
@@ -50,17 +60,27 @@ pampa_parse_pd = function(input) {
 #' @param input A single string. Treated as a file path if it does not
 #'   contain newlines and `file.exists()` returns TRUE; otherwise
 #'   treated as raw text.
+#' @param quiet If `FALSE` (the default) any error-kind diagnostics are
+#'   raised as R errors (after attaching diagnostics to the result),
+#'   and warning-kind diagnostics are emitted as R warnings. If `TRUE`
+#'   no signal is raised; diagnostics are still attached to the
+#'   returned object's `@diagnostics` slot.
+#' @param prune_errors If `TRUE` (the default, matching the pampa CLI)
+#'   parser-error diagnostics are deduplicated by tree-sitter `ERROR`
+#'   node, keeping the earliest per node. Set to `FALSE` to see every
+#'   raw diagnostic pampa produces (useful for debugging the parser).
 #' @return A [`ts_tree`] object with any parse diagnostics attached in
 #'   its `@diagnostics` slot. Tree-sitter parsing itself never fails;
 #'   the diagnostics surface higher-level pampa errors.
 #' @export
-pampa_parse_ts = function(input) {
+pampa_parse_ts = function(input, quiet = FALSE, prune_errors = TRUE) {
   src = pampa_read_input(input)
-  raw = pampa_parse_ts_impl(src$text, src$filename)
+  raw = pampa_parse_ts_impl(src$text, src$filename, isTRUE(prune_errors))
   diagnostics = pampa_diagnostics_from_raw(raw, src$text, src$filename)
 
   tree = ts_tree_from_list(raw$ts_ast)
   tree@diagnostics = diagnostics
+  pampa_signal_diagnostics(diagnostics, quiet = quiet)
   tree
 }
 

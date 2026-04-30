@@ -85,6 +85,23 @@ ts_tree = S7::new_class(
   }
 )
 
+ts_node_to_list = function(node) {
+  list(
+    kind       = node@kind,
+    is_named   = node@is_named,
+    field_name = node@field_name,
+    text       = node@text,
+    children   = lapply(node@children@content, ts_node_to_list)
+  )
+}
+
+ts_tree_to_list = function(tree) {
+  list(
+    language = tree@language,
+    root     = ts_node_to_list(tree@root)
+  )
+}
+
 ts_format_position = function(range) {
   sprintf(
     "(%d, %d) - (%d, %d)",

@@ -4,7 +4,7 @@
 \alias{pampa_parse_pd_impl}
 \title{Parse QMD text with pampa and return the Pandoc AST.}
 \usage{
-pampa_parse_pd_impl(text, filename)
+pampa_parse_pd_impl(text, filename, prune_errors)
 }
 \description{
 Returns a list with \code{pd_ast} (tagged nested list suitable for

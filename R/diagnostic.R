@@ -75,6 +75,32 @@ format_pampa_diagnostic = function(x, color = cli::num_ansi_colors() > 1L) {
   txt
 }
 
+pampa_signal_diagnostics = function(diagnostics, quiet = FALSE) {
+  if (isTRUE(quiet) || !length(diagnostics)) return(invisible())
+
+  color = cli::num_ansi_colors() > 1L
+
+  warns = Filter(function(d) identical(d@kind, "warning"), diagnostics)
+  if (length(warns)) {
+    txt = paste(
+      vapply(warns, format_pampa_diagnostic, character(1L), color = color),
+      collapse = "\n"
+    )
+    warning(txt, call. = FALSE)
+  }
+
+  errs = Filter(function(d) identical(d@kind, "error"), diagnostics)
+  if (length(errs)) {
+    txt = paste(
+      vapply(errs, format_pampa_diagnostic, character(1L), color = color),
+      collapse = "\n"
+    )
+    stop(txt, call. = FALSE)
+  }
+
+  invisible()
+}
+
 S7::method(format, pampa_diagnostic) = format_pampa_diagnostic
 
 S7::method(print, pampa_diagnostic) = function(x,

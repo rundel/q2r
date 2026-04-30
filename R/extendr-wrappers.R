@@ -12,7 +12,7 @@ NULL
 #' `diagnostics` (list of structured diagnostic records that can be
 #' rendered via `pampa_diag_format_impl`).
 #' @export
-pampa_parse_pd_impl <- function(text, filename) .Call(wrap__pampa_parse_pd_impl, text, filename)
+pampa_parse_pd_impl <- function(text, filename, prune_errors) .Call(wrap__pampa_parse_pd_impl, text, filename, prune_errors)
 
 #' Parse QMD text with tree-sitter and return the tree-sitter AST.
 #'
@@ -21,7 +21,7 @@ pampa_parse_pd_impl <- function(text, filename) .Call(wrap__pampa_parse_pd_impl,
 #' from pampa's QMD reader). The tree-sitter AST itself never fails to
 #' produce; `diagnostics` surfaces higher-level pampa parse errors.
 #' @export
-pampa_parse_ts_impl <- function(text, filename) .Call(wrap__pampa_parse_ts_impl, text, filename)
+pampa_parse_ts_impl <- function(text, filename, prune_errors) .Call(wrap__pampa_parse_ts_impl, text, filename, prune_errors)
 
 #' Capture pampa's tree-sitter debug dump for QMD text.
 #'
