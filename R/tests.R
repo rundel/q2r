@@ -57,9 +57,9 @@ gen_pampa_ts_rt_test = function(rel, skip_map = list()) {
     "  ts = pampa_parse_ts(text)",
     "  if (has_error_diagnostics(ts)) skip(\"initial parse produced error diagnostics\")",
     "  rendered = pampa_to_qmd(ts)",
-    "  pd2 = pampa_parse_pd(rendered)",
-    "  expect_no_error_diagnostics(pd2)",
-    "  expect_pd_ast_equal(pd2, pd)"
+    "  ts2 = pampa_parse_ts(rendered)",
+    "  expect_no_error_diagnostics(ts2)",
+    "  expect_ts_kind_equal(ts2, ts)"
   ))
 }
 
