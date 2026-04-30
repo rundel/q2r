@@ -14,6 +14,9 @@ A single string.
 }
 \description{
 Walks a \code{\link{ts_tree}} or \code{\link{ts_node}} and emits QMD source text by
-dispatching on node kind. Output is canonical: blank-line counts,
-trailing whitespace, and indentation variants are normalized.
+dispatching on node kind. Aims for functional equivalence: the
+output must re-parse to a structurally equal \code{ts_ast}. Where a
+parent node carries \verb{@text} for grammar gaps (whitespace its
+children don't model), that text is preserved verbatim, so blank
+lines and other inter-element whitespace round-trip faithfully.
 }

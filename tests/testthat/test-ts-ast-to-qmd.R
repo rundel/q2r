@@ -32,10 +32,7 @@ test_that("to_qmd appends a trailing newline when source lacks one", {
   expect_identical(to_qmd(res), "# no trailing\n")
 })
 
-test_that("to_qmd canonicalizes blank-line runs and trailing whitespace", {
-  res = pampa_parse_ts("# h\n\n\n\ntext\n\n")
-  out = to_qmd(res)
-  expect_identical(out, "# h\n\ntext\n")
+test_that("to_qmd preserves blank-line runs and trailing whitespace", {
   expect_roundtrip("# h\n\n\n\ntext\n\n")
 })
 

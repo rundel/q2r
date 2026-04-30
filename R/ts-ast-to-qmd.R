@@ -4,8 +4,11 @@ NULL
 #' Render a tree-sitter AST back to QMD text
 #'
 #' Walks a [`ts_tree`] or [`ts_node`] and emits QMD source text by
-#' dispatching on node kind. Output is canonical: blank-line counts,
-#' trailing whitespace, and indentation variants are normalized.
+#' dispatching on node kind. Aims for functional equivalence: the
+#' output must re-parse to a structurally equal `ts_ast`. Where a
+#' parent node carries `@text` for grammar gaps (whitespace its
+#' children don't model), that text is preserved verbatim, so blank
+#' lines and other inter-element whitespace round-trip faithfully.
 #'
 #' @param x A [`ts_tree`] or [`ts_node`].
 #' @return A single string.
@@ -56,11 +59,11 @@ ts_text_or = function(fallback = ts_concat) {
 
 ts_kind_handlers = list(
   document = function(x) {
-    paste(ts_children_qmd(x), collapse = "\n")
+    paste(ts_children_qmd(x), collapse = "")
   },
-  section = function(x) {
-    paste(ts_children_qmd(x), collapse = "\n")
-  },
+  section = ts_text_or(function(x) {
+    paste(ts_children_qmd(x), collapse = "")
+  }),
   metadata = ts_concat,
 
   atx_heading = function(x) {
