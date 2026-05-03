@@ -14,10 +14,11 @@ use pampa::pandoc::inline::{
     SmallCaps, SoftBreak, Space, Str, Strikeout, Strong, Subscript, Superscript, Underline, Span,
 };
 use pampa::pandoc::list::{ListAttributes, ListNumberDelim, ListNumberStyle};
+use std::collections::HashMap;
 use pampa::pandoc::table::{
     Alignment, Cell, ColSpec, ColWidth, Row, Table, TableBody, TableFoot, TableHead,
 };
-use pampa::pandoc::{Attr, Block, ConfigValue, Inline, Pandoc};
+use pampa::pandoc::{Attr, Block, ConfigValue, Inline, Pandoc, Shortcode, ShortcodeArg};
 use quarto_source_map::SourceInfo;
 
 fn field(list: &List, name: &str) -> Option<Robj> {
@@ -175,6 +176,21 @@ fn alignment_from_str(s: &str) -> Alignment {
         "Center" => Alignment::Center,
         _ => Alignment::Default,
     }
+}
+
+fn opt_bool(r: &Robj) -> Option<bool> {
+    if r.is_null() {
+        return None;
+    }
+    if let Ok(v) = bool::try_from(r) {
+        return Some(v);
+    }
+    if let Some(slice) = r.as_logical_slice() {
+        if slice.len() == 1 {
+            return Some(slice[0].to_bool());
+        }
+    }
+    None
 }
 
 fn opt_f64(r: &Robj) -> Option<f64> {
@@ -409,6 +425,83 @@ fn citation_from_list(list: List) -> ERResult<Citation> {
     })
 }
 
+fn shortcode_arg_from_r(r: &Robj) -> ERResult<ShortcodeArg> {
+    let lst = as_list(r)?;
+    let kind = need_str(&lst, "kind")?;
+    let value = field(&lst, "value")
+        .ok_or_else(|| Error::Other(format!("shortcode arg '{}' missing 'value'", kind)))?;
+    Ok(match kind.as_str() {
+        "string" => ShortcodeArg::String(opt_str(&value).ok_or_else(|| {
+            Error::Other("shortcode arg 'string' value not a string".into())
+        })?),
+        "number" => ShortcodeArg::Number(opt_f64(&value).ok_or_else(|| {
+            Error::Other("shortcode arg 'number' value not numeric".into())
+        })?),
+        "boolean" => ShortcodeArg::Boolean(opt_bool(&value).ok_or_else(|| {
+            Error::Other("shortcode arg 'boolean' value not boolean".into())
+        })?),
+        "shortcode" => {
+            let inner = as_list(&value)?;
+            ShortcodeArg::Shortcode(shortcode_from_list(inner)?)
+        }
+        "kv_group" => {
+            let items = items_from_r(&value)?;
+            let mut map: HashMap<String, ShortcodeArg> = HashMap::new();
+            for item in items {
+                let k = need_str(&item, "key")?;
+                let v_r = field(&item, "value").ok_or_else(|| {
+                    Error::Other("shortcode kv missing 'value'".into())
+                })?;
+                map.insert(k, shortcode_arg_from_r(&v_r)?);
+            }
+            ShortcodeArg::KeyValue(map)
+        }
+        other => {
+            return Err(Error::Other(format!(
+                "unknown shortcode arg kind '{}'",
+                other
+            )));
+        }
+    })
+}
+
+fn shortcode_from_list(list: List) -> ERResult<Shortcode> {
+    let is_escaped = field(&list, "is_escaped")
+        .and_then(|r| opt_bool(&r))
+        .unwrap_or(false);
+    let name = need_str(&list, "name")?;
+    let positional_args = match field(&list, "positional_args") {
+        Some(r) => {
+            let items = items_from_r(&r)?;
+            let mut out: Vec<ShortcodeArg> = Vec::with_capacity(items.len());
+            for item in items {
+                let as_robj: Robj = item.into();
+                out.push(shortcode_arg_from_r(&as_robj)?);
+            }
+            out
+        }
+        None => Vec::new(),
+    };
+    let mut keyword_args: LinkedHashMap<String, ShortcodeArg> = LinkedHashMap::new();
+    if let Some(r) = field(&list, "keyword_args") {
+        let items = items_from_r(&r)?;
+        for item in items {
+            let k = need_str(&item, "key")?;
+            let v_r = field(&item, "value").ok_or_else(|| {
+                Error::Other("shortcode keyword_arg missing 'value'".into())
+            })?;
+            keyword_args.insert(k, shortcode_arg_from_r(&v_r)?);
+        }
+    }
+    Ok(Shortcode {
+        is_escaped,
+        name,
+        positional_args,
+        keyword_args,
+        source_info: SourceInfo::default(),
+    })
+}
+
 fn inline_from_list(list: List) -> ERResult<Inline> {
     let tag = need_tag(&list)?;
     let si = SourceInfo::default();
@@ -549,7 +642,8 @@ fn inline_from_list(list: List) -> ERResult<Inline> {
             source_info: si,
             attr_source: asi(),
         }),
-        "Shortcode" | "CustomInline" => {
+        "Shortcode" => Inline::Shortcode(shortcode_from_list(list)?),
+        "CustomInline" => {
             return Err(Error::Other(format!(
                 "inline tag '{}' is not yet supported by the R -> Rust converter",
                 tag
