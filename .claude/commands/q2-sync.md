@@ -109,26 +109,25 @@ Confirms the package loads, the basic parse path works, and diagnostic formattin
 
 ## Phase 6: Tests
 
-Run the round-trip suites first. They are the canonical correctness check for ts_ast and pd_ast handling:
+Run the round-trip suites first (canonical correctness check for ts_ast and pd_ast handling), then the full suite. **Always raise the failure cap** — the summary reporter truncates at 10 by default in non-interactive mode, which makes the failure count meaningless:
 
 ```
-Rscript -e 'devtools::test(filter = "quarto-web")'
+Rscript -e 'options(testthat.summary.max_reports = Inf); devtools::test(filter = "quarto-web", reporter = "summary")'
+Rscript -e 'options(testthat.summary.max_reports = Inf); devtools::test(reporter = "summary")'
 ```
 
-Then the full suite:
+Redirect to a temp file and grep the count rather than printing the whole log inline.
 
-```
-Rscript -e 'devtools::test()'
-```
+Report the failure tally and group failures by failure mode (e.g., "12 tests fail with `pd ast mismatch: trailing blank line in raw block`", "3 tests fail with re-parse error in `<small>{=html}` context"). Do not run a pre-bump comparison sweep — that doubles the work and the user can request it explicitly if the failure list is hard to interpret.
 
-For each failure decide whether it is:
+For each failure-mode group decide whether it is:
 
 - An absorption gap (we missed updating something on our side): fix it.
 - A genuine upstream behavior change (snapshots / golden output need to move): get explicit user sign-off before updating snapshots.
 
 If grammar-gap cleanup was on the table in Phase 3 and the user approved it, this is the place to rip out the corresponding `@text` paths in `ts_ast_to_r.rs` and the matching handlers in `R/ts-ast-to-qmd.R`, then re-run round-trips to confirm functional equivalence still holds.
 
-CHECKPOINT 3: present the test results. If anything is failing or any snapshot moved, get sign-off before continuing.
+CHECKPOINT 3: present the test results, grouped by failure mode. If anything is failing or any snapshot moved, get sign-off before continuing.
 
 ## Phase 7: Wrap up
 

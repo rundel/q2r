@@ -13,7 +13,10 @@
       "Bash(./target/debug/pampa -t qmd /Users/rundel/Desktop/Projects/q2r/tests/fixtures/quarto-web/docs/authoring/_kbd.qmd)",
       "Bash(cp /Users/rundel/Desktop/Projects/q2r/src/rust/Cargo.toml /tmp/q2r-Cargo.toml.new)",
       "Bash(cp /Users/rundel/Desktop/Projects/q2r/src/rust/Cargo.lock /tmp/q2r-Cargo.lock.new)",
-      "Bash(git -C /Users/rundel/Desktop/Projects/q2r checkout -- src/rust/Cargo.toml src/rust/Cargo.lock)"
+      "Bash(git -C /Users/rundel/Desktop/Projects/q2r checkout -- src/rust/Cargo.toml src/rust/Cargo.lock)",
+      "Read(//Users/rundel/.claude/**)",
+      "Read(//Users/rundel/.claude/commands/**)",
+      "Skill(q2-sync)"
     ]
   }
 }
