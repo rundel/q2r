@@ -1,13 +1,17 @@
 # q2r
 
-R package that wraps the `pampa` Rust crate from [quarto-dev/q2](https://github.com/quarto-dev/q2) to expose Quarto's QMD parser to R. Exploratory: the main user-facing function [`q2r::pampa_parse()`](R/pampa.R) takes text or a file path and returns a [`pampa_result`](R/result.R) S7 object carrying the tree-sitter AST (`ts_ast`), parse diagnostics, the Pandoc AST (`pd_ast`, as S7 `pandoc` objects), and the Pandoc AST rendered in native format.
+R package that wraps the `pampa` Rust crate from [quarto-dev/q2](https://github.com/quarto-dev/q2) to expose Quarto's QMD parser to R. Exploratory. The two main entry points are [`pampa_parse_pd()`](R/pampa.R) (returns an S7 [`pandoc`](R/pd-ast-pandoc.R) object — the parsed Pandoc AST) and [`pampa_parse_ts()`](R/pampa.R) (returns an S7 [`ts_tree`](R/ts-ast.R) — the tree-sitter AST). Both accept text or a file path and attach any parse [`pampa_diagnostic`](R/diagnostic.R) records to the returned object's `@diagnostics` slot. Helpers: [`pampa_to_qmd()`](R/pampa.R) renders back to QMD via pampa's writer, [`pampa_native()`](R/pampa.R) emits Pandoc's native AST format, [`pampa_tree()`](R/pampa.R) captures pampa's `-v` tree dump.
 
 ## Architecture
 
 ### Rust
 
-- [src/rust/src/lib.rs](src/rust/src/lib.rs) exposes two `#[extendr]` functions:
-  - `pampa_parse_impl(text, filename)` calls [`pampa::readers::qmd::read`](../q2/crates/pampa/src/readers/qmd.rs) with a `Vec<u8>` as the `output_stream` argument (captures the `print_whole_tree` dump that `pampa -v` normally sends to stderr), renders the returned `Pandoc` AST via [`pampa::writers::native::write`](../q2/crates/pampa/src/writers/native.rs), and converts each `DiagnosticMessage` into a structured R list via `diag_to_r::diag_to_r`. No pretty-printed diagnostic text is produced at parse time.
+- [src/rust/src/lib.rs](src/rust/src/lib.rs) exposes seven `#[extendr]` functions; all parser entry points call [`pampa::readers::qmd::read`](../q2/crates/pampa/src/readers/qmd.rs) and convert each `DiagnosticMessage` into a structured R list via `diag_to_r::diag_to_r`. No pretty-printed diagnostic text is produced at parse time.
+  - `pampa_parse_pd_impl(text, filename, prune_errors)` returns `list(pd_ast, diagnostics)`. `pd_ast` is the tagged nested list produced by `pd_ast_to_r::pandoc_to_r` (or `NULL` on error).
+  - `pampa_parse_ts_impl(text, filename, prune_errors)` returns `list(ts_ast, diagnostics)`. `ts_ast` is built directly via `ts_ast_to_r::parse_ts_ast_to_r` (tree-sitter parsing never fails); diagnostics are still produced by running `qmd::read` and discarding the Pandoc result.
+  - `pampa_tree_impl(text, filename)` is the only entry point that uses `qmd::read`'s `output_stream` argument as a non-sink — passes a `Vec<u8>` to capture the `print_whole_tree` dump that `pampa -v` normally sends to stderr. Returns it as `Vec<String>`.
+  - `pampa_native_impl(text, filename)` runs `qmd::read` then `pampa::writers::native::write` and returns the lines. Testing helper.
+  - `pampa_write_qmd_text_impl(text, filename)` and `pampa_write_qmd_ast_impl(r_ast)` invoke `pampa::writers::qmd::write` from text input or from an R-constructed tagged-list AST (reconstructed via `r_to_pd_ast::pandoc_from_r`). Both return `list(text, diagnostics)`. Used by `pampa_to_qmd()`.
   - `pampa_diag_format_impl(kind, code, title, problem, details, hints, location, source_text, source_filename, hyperlinks)` reconstructs a `DiagnosticMessage` from the slot values of a [`pampa_diagnostic`](R/diagnostic.R) S7 object, builds a fresh `SourceContext` from `source_text` + `source_filename`, and calls `DiagnosticMessage::to_text_with_options` to render ariadne output. This is the "S7 → Rust → formatted text" path used by `print()` / `format()`.
 - [src/rust/src/diag_to_r.rs](src/rust/src/diag_to_r.rs) owns both halves of the round trip:
   - `diag_to_r(&DiagnosticMessage, &SourceContext) -> Robj` flattens the message into a named list with `kind`, `code`, `title`, `problem`, `details`, `hints`, `location` (`map_offset`-resolved to `file`, `start_offset`/`row`/`column`, `end_offset`/`row`/`column`).
@@ -16,9 +20,9 @@ R package that wraps the `pampa` Rust crate from [quarto-dev/q2](https://github.
 
 ### R
 
-- [R/pampa.R](R/pampa.R) wraps the extendr bindings with `pampa_parse()`. Input heuristic: string contains `\n` ⇒ text; else `file.exists() && !dir.exists()` ⇒ file; else text. The original `text` and `filename` are threaded into every `pampa_diagnostic` so each diagnostic is self-contained for later rendering.
-- [R/diagnostic.R](R/diagnostic.R) defines the `pampa_diagnostic` S7 class. Slots mirror the Rust list plus `source_text` / `source_filename`. `format(x, color = ...)` and `print(x, color = ...)` call back into Rust via `pampa_diag_format_impl`; when `color = FALSE`, remaining ANSI is stripped with `cli::ansi_strip()`. `color` is **only** a display-time argument — `pampa_parse()` itself has no `color` parameter.
-- [R/result.R](R/result.R) defines `pampa_result`, whose `@diagnostics` slot is a list of `pampa_diagnostic` objects. `print.pampa_result(x, color = ...)` threads `color` through to each diagnostic.
+- [R/pampa.R](R/pampa.R) wraps the extendr bindings with `pampa_parse_pd()`, `pampa_parse_ts()`, `pampa_to_qmd()`, `pampa_tree()`, `pampa_native()`. Input heuristic (in `pampa_read_input`): string contains `\n` ⇒ text; else `file.exists() && !dir.exists()` ⇒ file; else text. The original `text` and `filename` are threaded into every `pampa_diagnostic` so each diagnostic is self-contained for later rendering. Both parsers accept `quiet` (suppress signaling) and `prune_errors` (matches pampa CLI: dedupe parser-error diagnostics by tree-sitter `ERROR` node, keeping the earliest); `pampa_parse_pd()` additionally accepts a `ts_tree` input by routing through `to_qmd()` first.
+- [R/diagnostic.R](R/diagnostic.R) defines the `pampa_diagnostic` S7 class plus `pampa_signal_diagnostics()` (the function `pampa_parse_*` calls to raise R warnings/errors when `quiet = FALSE`). Slots mirror the Rust list plus `source_text` / `source_filename`. `format(x, color = ...)` and `print(x, color = ...)` call back into Rust via `pampa_diag_format_impl`; when `color = FALSE`, remaining ANSI is stripped with `cli::ansi_strip()`. `color` is **only** a display-time argument — neither `pampa_parse_pd()` nor `pampa_parse_ts()` has a `color` parameter.
+- Diagnostics ride on the parsed object's `@diagnostics` slot (`pandoc@diagnostics`, `ts_tree@diagnostics`). There is no longer a wrapper `pampa_result` class.
 - [R/ts-ast-to-qmd.R](R/ts-ast-to-qmd.R) defines `to_qmd()` (S7 generic on `ts_tree` / `ts_node`), which walks the tree-sitter AST and emits QMD source text via a per-kind handler table (`ts_kind_handlers`). The goal is **functional equivalence**: the output must re-parse to a structurally identical `ts_ast`. For wrapper nodes whose children leave gaps (e.g. `section` between metadata and the first heading, math, `code_fence_content`), handlers fall back to `@text` populated by the Rust exporter, so inter-element whitespace round-trips verbatim. Unknown kinds emit a warning and default to plain child concatenation. Use [`ts_to_text()`](R/ts-ast.R) when byte-exact reconstruction is required instead.
 
 ## Toolchain
@@ -26,6 +30,7 @@ R package that wraps the `pampa` Rust crate from [quarto-dev/q2](https://github.
 - Rust **edition 2024** ⇒ **rustc ≥ 1.85** (declared in `DESCRIPTION` via `SystemRequirements`).
 - Bridge: `extendr` + `rextendr` (matches Posit-authored Rust-backed R packages).
 - Rebuild after Rust edits: `devtools::document()` (recompiles Rust and regenerates `R/extendr-wrappers.R`). Iterate interactively: `devtools::load_all()`.
+- Running `devtools::test()` non-interactively: the `summary` reporter caps at 10 failures by default, which makes counts meaningless. Always raise the cap with `options(testthat.summary.max_reports = Inf)` when running for tally/comparison purposes (the per-reporter `max_fails` / env var / `set_max_fails()` knobs all silently no-op for the summary reporter — `testthat.summary.max_reports` is the only one that works).
 
 ## Round-trip iteration tools
 
@@ -48,7 +53,7 @@ Each FAIL line is followed by either a `rt-diag:` reason (rendered output failed
 
 - Pulled via a Cargo git dependency on the whole `quarto-dev/q2` repo, pinned by `rev`. See [src/rust/Cargo.toml](src/rust/Cargo.toml).
 - A whole-repo git dep is required because `pampa` has ~15 workspace-local `path = "../quarto-*"` sibling crates; vendoring or depending on `pampa` alone does not resolve.
-- Current pinned commit: `349148ae8d9d8e19d9c1075f564a3c5d43a43a4a`. Bumps are deliberate: update the `rev` **and** regenerate `Cargo.lock`. All three q2 deps (`pampa`, `tree-sitter-qmd`, `quarto-source-map`, `quarto-error-reporting`) must be bumped together.
+- Current pinned commit: `132c13c89741d073fbc207ea611c82fd2ed8762c`. Bumps are deliberate: update the `rev` **and** regenerate `Cargo.lock`. All four q2 deps (`pampa`, `tree-sitter-qmd`, `quarto-source-map`, `quarto-error-reporting`) must be bumped together.
 - `default-features = false` on `pampa` drops `terminal-support`, `json-filter`, `lua-filter`, `template-fs`. None of these are needed for library-style parsing; disabling keeps builds lean and avoids Lua / subprocess linkage.
 - `quarto-source-map` is a direct dep because we construct a `SourceContext` ourselves on the `Err` branch of `qmd::read` (the reader only returns a context on `Ok`) and on every `pampa_diag_format_impl` call.
 - `quarto-error-reporting` is a direct dep because we need `TextRenderOptions` (hyperlink toggle) and to `Deserialize`/reconstruct `DiagnosticMessage` values.
