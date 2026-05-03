@@ -136,11 +136,28 @@ pampa_to_qmd = function(input) {
            "a ts_tree, a pandoc object, or a tagged-list AST")
     }
     r = pampa_write_qmd_ast_impl(ast_list)
-    list(text = r$text, diagnostics = list())
+    list(
+      text = r$text,
+      diagnostics = pampa_diagnostics_from_raw(r, "", "<ast>"),
+      error = r$error
+    )
   }
 
   if (is.null(raw$text)) {
-    stop("pampa_to_qmd(): pampa's QMD writer failed; see attached diagnostics")
+    msg = if (length(raw$error)) {
+      paste0("pampa_to_qmd(): pampa's QMD writer failed: ", raw$error)
+    } else {
+      "pampa_to_qmd(): pampa's QMD writer failed; see attached diagnostics"
+    }
+    stop(structure(
+      class = c("pampa_to_qmd_error", "error", "condition"),
+      list(
+        message = msg,
+        call = sys.call(-1L),
+        diagnostics = raw$diagnostics,
+        error = raw$error
+      )
+    ))
   }
   result = raw$text
   if (length(raw$diagnostics)) attr(result, "diagnostics") = raw$diagnostics
