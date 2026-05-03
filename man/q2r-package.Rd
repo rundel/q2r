@@ -31,5 +31,10 @@ inserted.}
 \author{
 \strong{Maintainer}: Colin Rundel \email{cr173@duke.edu}
 
+Authors:
+\itemize{
+  \item Colin Rundel \email{cr173@duke.edu}
+}
+
 }
 \keyword{internal}
