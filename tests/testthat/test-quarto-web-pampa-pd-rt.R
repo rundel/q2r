@@ -518,7 +518,14 @@ test_that("docs/authoring/_cross-reference-divs-video.qmd", {
 })
 
 test_that("docs/authoring/_cross-references-callouts.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/_cross-references-callouts.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/authoring/_cross-references-listings.qmd", {
@@ -566,7 +573,14 @@ test_that("docs/authoring/_embeds-ipynb.qmd", {
 })
 
 test_that("docs/authoring/_figure-examples/_examples.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/_figure-examples/_examples.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/authoring/_kbd.qmd", {
@@ -680,7 +694,14 @@ test_that("docs/authoring/_mermaid-examples/vapor.qmd", {
 })
 
 test_that("docs/authoring/_mermaid-theming.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/_mermaid-theming.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/authoring/_pagebreak.qmd", {
@@ -717,15 +738,36 @@ test_that("docs/authoring/appendices.qmd", {
 })
 
 test_that("docs/authoring/article-layout.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/article-layout.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/authoring/brand.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/brand.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/authoring/callouts.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/callouts.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/authoring/citations.qmd", {
@@ -784,7 +826,14 @@ test_that("docs/authoring/contents.qmd", {
 })
 
 test_that("docs/authoring/create-citeable-articles.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/create-citeable-articles.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/authoring/cross-reference-options.qmd", {
@@ -799,11 +848,25 @@ test_that("docs/authoring/cross-reference-options.qmd", {
 })
 
 test_that("docs/authoring/cross-references-custom.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/cross-references-custom.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/authoring/cross-references-divs.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/cross-references-divs.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/authoring/cross-references.qmd", {
@@ -829,15 +892,36 @@ test_that("docs/authoring/diagrams.qmd", {
 })
 
 test_that("docs/authoring/figures.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/figures.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/authoring/front-matter.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/front-matter.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/authoring/includes.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/includes.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/authoring/language.qmd", {
@@ -1028,7 +1112,14 @@ test_that("docs/blog/posts/2022-06-21-rstudio-conf-2022-quarto/index.qmd", {
 })
 
 test_that("docs/blog/posts/2022-07-25-feature-extensions/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2022-07-25-feature-extensions/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2022-10-25-shinylive-extension/index.qmd", {
@@ -1076,11 +1167,25 @@ test_that("docs/blog/posts/2023-03-17-jupyter-cell-embedding/index.qmd", {
 })
 
 test_that("docs/blog/posts/2023-03-20-confluence/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2023-03-20-confluence/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2023-04-26-1.3-release/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2023-04-26-1.3-release/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2023-05-15-get-started/index.qmd", {
@@ -1106,7 +1211,14 @@ test_that("docs/blog/posts/2023-05-22-quarto-for-academics/index.qmd", {
 })
 
 test_that("docs/blog/posts/2023-12-05-asa-traveling-courses/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2023-12-05-asa-traveling-courses/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2023-12-07-quarto-dashboards-demo/index.qmd", {
@@ -1143,7 +1255,14 @@ test_that("docs/blog/posts/2024-03-26-hugging-face/index.qmd", {
 })
 
 test_that("docs/blog/posts/2024-04-01-manuscripts-rmedicine/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2024-04-01-manuscripts-rmedicine/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2024-05-28-conf-workshops/index.qmd", {
@@ -1158,35 +1277,91 @@ test_that("docs/blog/posts/2024-05-28-conf-workshops/index.qmd", {
 })
 
 test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/great-tables-oceania.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/great-tables-oceania.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/great-tables-solar-zenith.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/great-tables-solar-zenith.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/gt-cars.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/gt-cars.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/gt-islands.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/gt-islands.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/pandas-acting-on-data.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/pandas-acting-on-data.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/pandas-confusion-matrix.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/examples/pandas-confusion-matrix.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2024-07-02-beautiful-tables-in-typst/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2024-07-11-1.5-release/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2024-07-11-1.5-release/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2024-10-15-conf-workshops-materials/index.qmd", {
@@ -1267,7 +1442,14 @@ test_that("docs/blog/posts/2025-01-15-quarto-tip-brand-positron/index.qmd", {
 })
 
 test_that("docs/blog/posts/2025-04-28-1.7-release/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2025-04-28-1.7-release/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2025-05-19-quarto-codespaces/index.qmd", {
@@ -1282,11 +1464,25 @@ test_that("docs/blog/posts/2025-05-19-quarto-codespaces/index.qmd", {
 })
 
 test_that("docs/blog/posts/2025-07-24-parameterized-reports-python/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2025-07-24-parameterized-reports-python/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2025-07-28-R-package-release-1.5/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2025-07-28-R-package-release-1.5/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2025-10-13-1.8-release/index.qmd", {
@@ -1345,11 +1541,25 @@ test_that("docs/blog/posts/2026-03-05-pdf-accessibility-and-standards/index.qmd"
 })
 
 test_that("docs/blog/posts/2026-03-24-1.9-release/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2026-03-24-1.9-release/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2026-03-31-typst-books-and-more/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2026-03-31-typst-books-and-more/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2026-04-06-whats-next-quarto-2/index.qmd", {
@@ -1683,7 +1893,14 @@ test_that("docs/computations/caching.qmd", {
 })
 
 test_that("docs/computations/execution-options.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/computations/execution-options.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/computations/inline-code.qmd", {
@@ -1984,7 +2201,14 @@ test_that("docs/dashboards/_examples/python-wide.qmd", {
 })
 
 test_that("docs/dashboards/_examples/python/python-itables.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/dashboards/_examples/python/python-itables.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/dashboards/_examples/python/python-tabulate.qmd", {
@@ -2076,7 +2300,14 @@ test_that("docs/dashboards/_inputs.qmd", {
 })
 
 test_that("docs/dashboards/_layouts-old.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/dashboards/_layouts-old.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/dashboards/data-display.qmd", {
@@ -2091,11 +2322,25 @@ test_that("docs/dashboards/data-display.qmd", {
 })
 
 test_that("docs/dashboards/deployment.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/dashboards/deployment.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/dashboards/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/dashboards/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/dashboards/inputs.qmd", {
@@ -2385,7 +2630,14 @@ test_that("docs/extensions/_formats-common.qmd", {
 })
 
 test_that("docs/extensions/_listing-chooser.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/extensions/_listing-chooser.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/extensions/_listing-footer.qmd", {
@@ -2411,7 +2663,14 @@ test_that("docs/extensions/_listing-preamble.qmd", {
 })
 
 test_that("docs/extensions/_shortcode-escaping.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/extensions/_shortcode-escaping.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/extensions/brand.qmd", {
@@ -2426,7 +2685,14 @@ test_that("docs/extensions/brand.qmd", {
 })
 
 test_that("docs/extensions/creating.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/extensions/creating.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/extensions/distributing.qmd", {
@@ -2452,7 +2718,14 @@ test_that("docs/extensions/engine.qmd", {
 })
 
 test_that("docs/extensions/filters.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/extensions/filters.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/extensions/formats.qmd", {
@@ -2522,7 +2795,14 @@ test_that("docs/extensions/listing-revealjs.qmd", {
 })
 
 test_that("docs/extensions/lua-api.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/extensions/lua-api.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/extensions/lua.qmd", {
@@ -2581,11 +2861,25 @@ test_that("docs/extensions/project-types.qmd", {
 })
 
 test_that("docs/extensions/revealjs.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/extensions/revealjs.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/extensions/shortcodes.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/extensions/shortcodes.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/extensions/starter-templates.qmd", {
@@ -2622,7 +2916,14 @@ test_that("docs/faq/rmarkdown.qmd", {
 })
 
 test_that("docs/gallery/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/gallery/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/get-started/authoring/_authoring-complete.qmd", {
@@ -2956,7 +3257,14 @@ test_that("docs/get-started/hello/positron.qmd", {
 })
 
 test_that("docs/get-started/hello/rstudio.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/get-started/hello/rstudio.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/get-started/hello/rstudio/_hello.qmd", {
@@ -3015,7 +3323,14 @@ test_that("docs/guide/index.qmd", {
 })
 
 test_that("docs/interactive/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/interactive/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/interactive/layout.qmd", {
@@ -3349,11 +3664,25 @@ test_that("docs/journals/_draft/extension-templates.qmd", {
 })
 
 test_that("docs/journals/authors.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/journals/authors.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/journals/formats.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/journals/formats.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/journals/index.qmd", {
@@ -3434,7 +3763,14 @@ test_that("docs/manuscripts/authoring/_embeds-qmd.qmd", {
 })
 
 test_that("docs/manuscripts/authoring/_equations.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/manuscripts/authoring/_equations.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/manuscripts/authoring/_figures.qmd", {
@@ -3482,7 +3818,14 @@ test_that("docs/manuscripts/authoring/_front-matter.qmd", {
 })
 
 test_that("docs/manuscripts/authoring/_inline-computations.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/manuscripts/authoring/_inline-computations.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/manuscripts/authoring/_markdown.qmd", {
@@ -3508,7 +3851,14 @@ test_that("docs/manuscripts/authoring/_overview.qmd", {
 })
 
 test_that("docs/manuscripts/authoring/_setup.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/manuscripts/authoring/_setup.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/manuscripts/authoring/_structure.qmd", {
@@ -3688,7 +4038,14 @@ test_that("docs/output-formats/_ssg-workflow.qmd", {
 })
 
 test_that("docs/output-formats/all-formats.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/all-formats.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/output-formats/docusaurus.qmd", {
@@ -3703,11 +4060,25 @@ test_that("docs/output-formats/docusaurus.qmd", {
 })
 
 test_that("docs/output-formats/examples/gt-temps.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/examples/gt-temps.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/output-formats/examples/pandas-temps.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/examples/pandas-temps.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/output-formats/gfm.qmd", {
@@ -3744,11 +4115,25 @@ test_that("docs/output-formats/html-basics.qmd", {
 })
 
 test_that("docs/output-formats/html-code.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/html-code.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/output-formats/html-lightbox-figures.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/html-lightbox-figures.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/output-formats/html-multi-format.qmd", {
@@ -3763,7 +4148,14 @@ test_that("docs/output-formats/html-multi-format.qmd", {
 })
 
 test_that("docs/output-formats/html-publishing.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/html-publishing.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/output-formats/html-themes-more.qmd", {
@@ -3789,7 +4181,14 @@ test_that("docs/output-formats/html-themes.qmd", {
 })
 
 test_that("docs/output-formats/hugo.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/hugo.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/output-formats/ms-word-templates.qmd", {
@@ -3815,7 +4214,14 @@ test_that("docs/output-formats/ms-word.qmd", {
 })
 
 test_that("docs/output-formats/page-layout.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/page-layout.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/output-formats/pdf-basics.qmd", {
@@ -3852,7 +4258,14 @@ test_that("docs/output-formats/typst-custom.qmd", {
 })
 
 test_that("docs/output-formats/typst.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/typst.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/prerelease/_highlights-prerelease.qmd", {
@@ -4010,7 +4423,14 @@ test_that("docs/prerelease/1.4/_highlights.qmd", {
 })
 
 test_that("docs/prerelease/1.4/ast.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/prerelease/1.4/ast.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/prerelease/1.4/crossref.qmd", {
@@ -4223,7 +4643,14 @@ test_that("docs/presentations/revealjs/advanced.qmd", {
 })
 
 test_that("docs/presentations/revealjs/demo/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/presentations/revealjs/demo/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/presentations/revealjs/demo/mini/absolute.qmd", {
@@ -4513,7 +4940,14 @@ test_that("docs/presentations/revealjs/examples/incremental-pause.qmd", {
 })
 
 test_that("docs/presentations/revealjs/examples/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/presentations/revealjs/examples/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/presentations/revealjs/examples/line-highlighting-1.qmd", {
@@ -4638,7 +5072,14 @@ test_that("docs/presentations/revealjs/examples/tabset.qmd", {
 })
 
 test_that("docs/presentations/revealjs/index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/presentations/revealjs/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/presentations/revealjs/presenting.qmd", {
@@ -4763,7 +5204,14 @@ test_that("docs/publishing/ci.qmd", {
 })
 
 test_that("docs/publishing/confluence.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/publishing/confluence.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/publishing/github-pages.qmd", {
@@ -4778,7 +5226,14 @@ test_that("docs/publishing/github-pages.qmd", {
 })
 
 test_that("docs/publishing/hugging-face.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/publishing/hugging-face.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/publishing/index.qmd", {
@@ -5673,7 +6128,14 @@ test_that("docs/websites/website-basics.qmd", {
 })
 
 test_that("docs/websites/website-blog.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/websites/website-blog.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/websites/website-drafts.qmd", {
@@ -5754,7 +6216,14 @@ test_that("docs/websites/website-tools.qmd", {
 })
 
 test_that("index.qmd", {
-  skip("Known failure: pampa qmd writer round-trip (see q2-issues.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("license.qmd", {

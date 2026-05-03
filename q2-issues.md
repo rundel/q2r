@@ -2,137 +2,15 @@
 
 Each reprex uses the `pampa` CLI (`cargo run --bin pampa --` or a built `pampa` binary on the path).
 
----
-
-## Issue 4: QMD writer normalizes list markers, breaking source-fidelity round-trips
-
-**Summary**
-
-The QMD writer always emits `*` as the bullet-list marker regardless of the source's marker character (`-`, `+`, or `*`), and collapses any wider marker indent down to a single space. Ordered-list markers are preserved (`.` vs `)`) but gain an extra space after the marker (`1. ` → `1.  `). Each rewrite changes the tree-sitter `list_marker_*` node kind and/or text, so round-tripping a document with non-`*` bullets or non-default indentation does not produce structurally equivalent output. This affects ~482 of ~568 quarto-web fixtures in q2r's `pampa_to_qmd` ts round-trip suite.
-
-**Reprex**
-
-```console
-$ printf -- '- alpha\n- beta\n' | pampa -t qmd
-* alpha
-* beta
-
-$ printf '+ alpha\n+ beta\n' | pampa -t qmd
-* alpha
-* beta
-
-$ printf '*   alpha\n*   beta\n' | pampa -t qmd
-* alpha
-* beta
-
-$ printf '1. alpha\n2. beta\n' | pampa -t qmd
-1.  alpha
-2.  beta
-```
-
-The corresponding `pampa -t native` output is identical for all three bullet inputs (a single `BulletList` containing two `Plain [Str ...]` items), so the writer has no way to recover the original marker — the marker shape is dropped at parse time.
-
-**Expected**
-
-The Pandoc AST should retain enough information for the writer to reproduce the source marker, or — failing that — the writer should not silently change marker shapes during a no-op round-trip. For ordered lists, the writer should emit `1. ` (single space) when that's what the source had.
-
-**Pointer**
-
-The bullet-marker emission path is in `crates/pampa/src/writers/qmd.rs` (`write_bullet_list` / `write_list_item`). The drop happens earlier — in the QMD reader's bullet-list construction (`crates/pampa/src/readers/qmd.rs`), which discards the marker character because pandoc's `BulletList` shape has no slot for it. To fix the round-trip cleanly the AST would need a side-channel for marker shape, or the writer would need to consult the original source text via `SourceContext`. The single-space ordered-marker indent is a simpler writer-side bug.
-
----
-
-## Issue 5: QMD writer normalizes YAML scalar quoting in front matter
-
-**Summary**
-
-The YAML metadata block is re-emitted by walking the parsed metadata map rather than passing the source bytes through verbatim. As a side effect, scalar quoting is normalized: quoted strings whose contents do not require quoting lose their quotes, and unquoted URL-like strings gain quotes. This changes the `pampa_block_metadata` text, breaking source-fidelity round-trips even though the parsed metadata is semantically identical.
-
-**Reprex**
-
-```console
-$ printf -- '---\ntitle: "Finley Malloc"\ndescription: "A short bio."\n---\n' | pampa -t qmd
----
-title: Finley Malloc
-description: A short bio.
----
-
-$ printf -- '---\nabout:\n  links:\n    - href: https://example.com\n---\n\n# hi\n' | pampa -t qmd
----
-about:
-  links:
-    - href: "https://example.com"
----
-
-# hi
-```
-
-**Expected**
-
-The writer should preserve the source's YAML scalar quoting style. Easiest path: emit the YAML block verbatim from the original `SourceContext` rather than reserializing it. (If reserialization is required for some reason, match yq/pandoc behavior of preserving the original style annotations.)
-
-**Pointer**
-
-`crates/pampa/src/writers/qmd.rs` — wherever metadata blocks are emitted. The reader at `crates/pampa/src/readers/qmd.rs` already keeps the metadata raw text; the writer just needs to use it.
-
----
-
-## Issue 6: QMD writer over-escapes `|` in plain text outside tables
-
-**Summary**
-
-The writer emits `\|` for any literal pipe character in inline text, including text that is not inside a table cell. This adds a backslash that wasn't in the source and changes the parsed leaf text.
-
-**Reprex**
-
-```console
-$ printf 'Wengo Analytics | Head Data Scientist | April 2018 - present\n' | pampa -t qmd
-Wengo Analytics \| Head Data Scientist \| April 2018 - present
-```
-
-`$` and `\` (line break) are correctly escaped only when context demands it — only `|` is unconditionally escaped.
-
-**Expected**
-
-The writer should only escape `|` when emitting inside a pipe-table cell; in paragraph / heading / blockquote contexts it should emit a bare `|`.
-
-**Pointer**
-
-The escape rule lives in `crates/pampa/src/writers/qmd.rs` (likely the inline `Str` writer). It needs context awareness — pipe-table writer should request escaping; everything else should not.
-
----
-
-## Issue 7: QMD writer normalizes code-fence width to the minimum required
-
-**Summary**
-
-A 4-backtick fence whose body does not contain a 3-backtick run is rewritten as a 3-backtick fence. This changes the leaf text of `fenced_code_block_delimiter` and (more seriously) breaks nested fences when the inner fence width is no longer strictly less than the outer fence's width.
-
-**Reprex**
-
-```console
-$ printf -- '````markdown\nno inner backticks\n````\n' | pampa -t qmd
-```markdown
-no inner backticks
-```
-
-$ printf -- '````markdown\n```python\nnested\n```\n````\n' | pampa -t qmd
-````markdown
-```python
-nested
-```
-````
-```
-
-The first case loses a backtick on each delimiter when none was needed; the second case correctly keeps four because the inner ` ``` ` requires it.
-
-**Expected**
-
-Preserve the source's fence width. A wider-than-needed fence is a stylistic choice (often used to host nested fences in tutorials), and demoting it can break embedded examples whose own fences then collide with the outer delimiter.
-
-**Pointer**
-
-`write_code_block` in `crates/pampa/src/writers/qmd.rs`. The fence width is computed from content; it should be max(source-width, content-required-width).
+> **Status note (2026-05-03):** earlier drafts of this file included Issues 4–7,
+> covering QMD writer normalization of list markers, YAML scalar quoting, plain-text
+> pipe escapes, and code-fence width. Those were only observable as ts_ast equality
+> failures in q2r's `pampa_to_qmd(ts_tree)` round-trip suite. After determining that
+> pampa's QMD writer operates on the pd_ast (which intentionally drops marker shape,
+> fence width, scalar style, etc.), the ts-suite was retired — pandoc-style surface
+> normalization is the documented behavior of an AST-based writer, not a bug. The
+> remaining issues below produce output that does not re-parse to the same construct
+> (writer bugs) or that fails to parse at all (parser bugs).
 
 ---
 
@@ -219,7 +97,7 @@ Either (a) preserve the grid-table form when the input was a grid table, or (b) 
 
 **Pointer**
 
-`write_table` in `crates/pampa/src/writers/qmd.rs`. The current path appears to interleave row-separator lines with cell-text lines that have been Str-escaped (so `|` becomes `\|`); it never produces a valid grid- or pipe-table. Likely the same code path Issue 6 escapes through — the writer wraps each row's text rather than building proper cell delimiters.
+`write_table` in `crates/pampa/src/writers/qmd.rs`. The current path appears to interleave row-separator lines with cell-text lines that have been Str-escaped (so `|` becomes `\|`); it never produces a valid grid- or pipe-table.
 
 ---
 
@@ -227,7 +105,7 @@ Either (a) preserve the grid-table form when the input was a grid table, or (b) 
 
 **Summary**
 
-A grid table cell containing a fenced code block (the standard Quarto pattern for showing OS-specific terminal commands side-by-side) fails to parse. Pampa emits a generic "Parse error" pointing at the backticks. This affects 17 of the ~568 quarto-web fixtures, accounting for ~120 of the 241 initial-parse-error sites in the test suite — the dominant source of files that have to be skipped before round-trip even starts.
+A grid table cell containing a fenced code block (the standard Quarto pattern for showing OS-specific terminal commands side-by-side) fails to parse. Pampa emits a generic "Parse error" pointing at the backticks. Across the quarto-web fixture set this is the dominant cause of generic "Parse error" diagnostics — currently 38 of 568 fixtures emit at least one generic "Parse error" and a substantial fraction of those trace to grid-table cells holding fenced code.
 
 **Reprex**
 
