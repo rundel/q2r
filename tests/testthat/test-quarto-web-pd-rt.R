@@ -1584,6 +1584,17 @@ test_that("docs/blog/posts/2026-04-14-chrome-headless-shell/index.qmd", {
   expect_pd_ast_equal(pd2, pd)
 })
 
+test_that("docs/blog/posts/2026-05-05-quarto-2-parsing/index.qmd", {
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2026-05-05-quarto-2-parsing/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
+})
+
 test_that("docs/books/_book-vs-website-key.qmd", {
   skip_if_no_quarto_web()
   text = quarto_web_read("docs/books/_book-vs-website-key.qmd")
