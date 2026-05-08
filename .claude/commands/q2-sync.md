@@ -22,8 +22,8 @@ If the diff shows that something outside these four crates has a downstream effe
 ## Phase 1: Set up
 
 1. Read the current pinned rev from `src/rust/Cargo.toml`. There are four `rev = '...'` lines and they should all match. If they don't, stop and surface the mismatch.
-2. Locate the q2 repo at `../q2` (sibling of this project). If it isn't there, ask the user where it lives.
-3. In `../q2`, run `git fetch --all --tags`. Do not check out, reset, or modify the working tree.
+2. Locate the q2 repo at `q2/` (inside this project; gitignored). If it isn't there, ask the user where it lives.
+3. In `q2/`, run `git fetch --all --tags`. Do not check out, reset, or modify the working tree.
 4. Resolve the target rev to a SHA. Default: `origin/main`.
 5. If target SHA equals the current pinned SHA, report "already up to date" and exit.
 

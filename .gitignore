@@ -2,4 +2,5 @@ src/rust/vendor
 src/Makevars
 src/Makevars.win
 tools
-pampa_qmd_writer-todo.md
+q2
+notes/
