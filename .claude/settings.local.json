@@ -16,7 +16,11 @@
       "Bash(git -C /Users/rundel/Desktop/Projects/q2r checkout -- src/rust/Cargo.toml src/rust/Cargo.lock)",
       "Read(//Users/rundel/.claude/**)",
       "Read(//Users/rundel/.claude/commands/**)",
-      "Skill(q2-sync)"
+      "Skill(q2-sync)",
+      "Bash(./target/debug/pampa -t qmd)",
+      "Bash(cargo update *)",
+      "Bash(echo \"EXIT=$?\")",
+      "Bash(git -C tests/fixtures/quarto-web log --oneline -5)"
     ]
   }
 }

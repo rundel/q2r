@@ -109,25 +109,44 @@ Confirms the package loads, the basic parse path works, and diagnostic formattin
 
 ## Phase 6: Tests
 
-Run the round-trip suites first (canonical correctness check for ts_ast and pd_ast handling), then the full suite. **Always raise the failure cap** — the summary reporter truncates at 10 by default in non-interactive mode, which makes the failure count meaningless:
+Run the full suite **once**. **Always raise the failure cap** — the summary reporter truncates at 10 by default in non-interactive mode, which makes the failure count meaningless. Redirect to a temp file:
 
 ```
-Rscript -e 'options(testthat.summary.max_reports = Inf); devtools::test(filter = "quarto-web", reporter = "summary")'
-Rscript -e 'options(testthat.summary.max_reports = Inf); devtools::test(reporter = "summary")'
+Rscript -e 'options(testthat.summary.max_reports = Inf); devtools::test(reporter = "summary")' > /tmp/q2r-test.log 2>&1
 ```
 
-Redirect to a temp file and grep the count rather than printing the whole log inline.
+Do not re-run the suite on the same revision. The only acceptable reason to re-run is a critical failure that makes the results unusable (e.g., the suite crashed before reaching most tests, output got truncated/corrupted). Iteratively re-running narrower filters or the full suite to "confirm" things wastes time.
 
-Report the failure tally and group failures by failure mode (e.g., "12 tests fail with `pd ast mismatch: trailing blank line in raw block`", "3 tests fail with re-parse error in `<small>{=html}` context"). Do not run a pre-bump comparison sweep — that doubles the work and the user can request it explicitly if the failure list is hard to interpret.
+Group failures by failure mode (e.g., "12 tests fail with `pd ast mismatch: trailing blank line in raw block`", "3 tests fail with re-parse error in `<small>{=html}` context"). Do not run a pre-bump comparison sweep — `q2-sync-notes.md` (see below) carries that history.
+
+### Update `q2-sync-notes.md`
+
+`q2-sync-notes.md` is an untracked file at the project root (gitignored) that tracks failure state across syncs so regressions are detectable by diff.
+
+- If the file is missing, create it with just the current sync's results — no historical context to compare against.
+- If it exists, read it first. Compare the prior failure list against the current one and call out:
+  - **New failures** (regression candidates from this bump)
+  - **Resolved failures** (fixtures that now pass)
+  - **Unchanged failures** (existing baseline)
+
+Append a new dated section to the top of the file. Each section should contain:
+
+- Header: `## <YYYY-MM-DD>: <old-short-sha> → <new-short-sha>`
+- Total failure count
+- Failure-mode groups with counts
+- Per-fixture failure list (path + line ref + one-line failure-mode tag), sorted alphabetically, so future diffs are stable
+- Diff vs. the prior section: New / Resolved / Unchanged counts (omit on the first run)
+
+Keep the file terse — it's a state log, not a narrative. When older sections become uninformative (more than ~5 syncs back, or older than the current pinned rev minus a few), they can be pruned, but do not prune in the same run that added the new section.
 
 For each failure-mode group decide whether it is:
 
-- An absorption gap (we missed updating something on our side): fix it.
+- An absorption gap (we missed updating something on our side): fix it, then re-run only the failing test files (not the full suite) to verify.
 - A genuine upstream behavior change (snapshots / golden output need to move): get explicit user sign-off before updating snapshots.
 
-If grammar-gap cleanup was on the table in Phase 3 and the user approved it, this is the place to rip out the corresponding `@text` paths in `ts_ast_to_r.rs` and the matching handlers in `R/ts-ast-to-qmd.R`, then re-run round-trips to confirm functional equivalence still holds.
+If grammar-gap cleanup was on the table in Phase 3 and the user approved it, this is the place to rip out the corresponding `@text` paths in `ts_ast_to_r.rs` and the matching handlers in `R/ts-ast-to-qmd.R`, then re-run only the round-trip files to confirm functional equivalence still holds.
 
-CHECKPOINT 3: present the test results, grouped by failure mode. If anything is failing or any snapshot moved, get sign-off before continuing.
+CHECKPOINT 3: present the test results (grouped by failure mode, with the New/Resolved/Unchanged diff vs. the prior `q2-sync-notes.md` entry). If anything is failing or any snapshot moved, get sign-off before continuing.
 
 ## Phase 7: Wrap up
 
