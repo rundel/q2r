@@ -15,25 +15,25 @@ path = 'document.rs'
 
 [dependencies]
 extendr-api = '0.9.0'
-tree-sitter = '0.25.10'
+tree-sitter = '0.26'
 hashlink = '0.11'
 
 [dependencies.pampa]
 git = 'https://github.com/quarto-dev/q2'
-rev = '132c13c89741d073fbc207ea611c82fd2ed8762c'
+rev = '5e86cbef0d67b7e4dc2debb85042dfe320bb958d'
 default-features = false
 
 [dependencies.tree-sitter-qmd]
 git = 'https://github.com/quarto-dev/q2'
-rev = '132c13c89741d073fbc207ea611c82fd2ed8762c'
+rev = '5e86cbef0d67b7e4dc2debb85042dfe320bb958d'
 
 [dependencies.quarto-source-map]
 git = 'https://github.com/quarto-dev/q2'
-rev = '132c13c89741d073fbc207ea611c82fd2ed8762c'
+rev = '5e86cbef0d67b7e4dc2debb85042dfe320bb958d'
 
 [dependencies.quarto-error-reporting]
 git = 'https://github.com/quarto-dev/q2'
-rev = '132c13c89741d073fbc207ea611c82fd2ed8762c'
+rev = '5e86cbef0d67b7e4dc2debb85042dfe320bb958d'
 
 [profile.release]
 lto = true
