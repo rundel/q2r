@@ -84,6 +84,18 @@ Top-level [`tools/config.R`](tools/config.R) and [`tools/msrv.R`](tools/msrv.R) 
 
 - R: use `=` for assignment, `pkg::fn` over imports, minimize single-line comments.
 - Rust: standard rustfmt; no decorative comments.
+- Commit messages: one sentence, no body, no `Co-Authored-By` or other self-attribution trailers.
+
+## Filing q2 issues
+
+Draft upstream q2 bug reports to `notes/<short-name>_issue.md`. Format:
+
+- H1 with a one-line declarative summary of the bug. Sentence case. No "Title:" prefix, no headers like "Body" or "Reproduction" inside the file.
+- One short paragraph stating what is wrong and the observable consequence. No "Expected:" footer; the reprex output is the expectation.
+- A single four-backtick fenced block holding the reproduction. Inside it, run the pampa CLI three ways: reader-only (`cargo run --bin pampa --`), writer-only (`cargo run --bin pampa -- -t qmd`), and the round trip (the writer piped back into the reader). Show each `$ <cmd>` immediately followed by its output, separated by blank lines.
+- Build the input via `printf -- '...'` from the smallest possible bytes that exhibit the bug so the command is self-contained.
+- After the reprex, list 1-3 in-the-wild occurrences in the `tests/fixtures/quarto-web/` submodule as GitHub permalinks. Use `https://github.com/quarto-dev/quarto-web/blob/<submodule-HEAD-sha>/<path>#L<line>` so the line numbers stay valid as upstream evolves. Get the SHA with `git -C tests/fixtures/quarto-web rev-parse HEAD`.
+- No bolding, no decorative prose. Target under 20 lines (excluding the in-the-wild list).
 
 ## Known risks
 
