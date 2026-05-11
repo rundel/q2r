@@ -30,5 +30,5 @@ its \verb{@diagnostics} slot. If pampa fails to produce a Pandoc AST the
 returned object has an empty \verb{@blocks}; the diagnostics explain why.
 }
 \description{
-Parse QMD input with pampa and return the Pandoc AST
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }

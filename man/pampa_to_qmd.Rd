@@ -15,6 +15,9 @@ A single string with the rendered QMD. Diagnostics (if any)
 are attached as \code{attr(result, "diagnostics")}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 Testing helper that invokes \verb{pampa::writers::qmd::write} and returns
 the resulting QMD text. Accepts:
 \itemize{
@@ -26,7 +29,6 @@ R -> ts_ast -> text -> Pandoc -> qmd pipeline;
 \item a \code{\link{pandoc}} object or tagged-list AST - reconstructed directly into
 pampa's \code{Pandoc} value and written out (skips the ts -> Pandoc step).
 }
-}
-\details{
+
 Intended for comparing against the R-side \code{to_qmd()} implementations.
 }

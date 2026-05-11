@@ -3,6 +3,8 @@ NULL
 
 #' Render a tree-sitter AST back to QMD text
 #'
+#' `r lifecycle::badge("experimental")`
+#'
 #' Walks a [`ts_tree`] or [`ts_node`] and emits QMD source text by
 #' dispatching on node kind. Aims for functional equivalence: the
 #' output must re-parse to a structurally equal `ts_ast`. Where a

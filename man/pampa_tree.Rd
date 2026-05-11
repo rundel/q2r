@@ -13,6 +13,9 @@ pampa_tree(input)
 A character vector of lines.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 Test helper that returns the \code{print_whole_tree} lines pampa emits
 when run with \code{-v}. Use \code{\link[=pampa_parse_ts]{pampa_parse_ts()}} for a structured AST.
 }

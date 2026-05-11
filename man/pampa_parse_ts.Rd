@@ -28,5 +28,5 @@ its \verb{@diagnostics} slot. Tree-sitter parsing itself never fails;
 the diagnostics surface higher-level pampa errors.
 }
 \description{
-Parse QMD input with tree-sitter and return the tree-sitter AST
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }

@@ -25,6 +25,8 @@ pampa_diagnostics_from_raw = function(raw, text, filename) {
 
 #' Parse QMD input with pampa and return the Pandoc AST
 #'
+#' `r lifecycle::badge("experimental")`
+#'
 #' @param input Either a single string (treated as a file path if it
 #'   does not contain newlines and `file.exists()` returns TRUE, else as
 #'   raw text) or a [`ts_tree`] object. For a `ts_tree`, the tree is
@@ -57,6 +59,8 @@ pampa_parse_pd = function(input, quiet = FALSE, prune_errors = TRUE) {
 
 #' Parse QMD input with tree-sitter and return the tree-sitter AST
 #'
+#' `r lifecycle::badge("experimental")`
+#'
 #' @param input A single string. Treated as a file path if it does not
 #'   contain newlines and `file.exists()` returns TRUE; otherwise
 #'   treated as raw text.
@@ -86,6 +90,8 @@ pampa_parse_ts = function(input, quiet = FALSE, prune_errors = TRUE) {
 
 #' Dump pampa's raw tree-sitter tree for QMD input
 #'
+#' `r lifecycle::badge("experimental")`
+#'
 #' Test helper that returns the `print_whole_tree` lines pampa emits
 #' when run with `-v`. Use [`pampa_parse_ts()`] for a structured AST.
 #'
@@ -98,6 +104,8 @@ pampa_tree = function(input) {
 }
 
 #' Render QMD through pampa's own QMD writer
+#'
+#' `r lifecycle::badge("experimental")`
 #'
 #' Testing helper that invokes `pampa::writers::qmd::write` and returns
 #' the resulting QMD text. Accepts:
@@ -165,6 +173,8 @@ pampa_to_qmd = function(input) {
 }
 
 #' Render QMD input to Pandoc native AST text
+#'
+#' `r lifecycle::badge("experimental")`
 #'
 #' Test helper that returns pampa's native-format rendering of the
 #' parsed document.

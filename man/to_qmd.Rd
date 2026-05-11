@@ -13,6 +13,9 @@ to_qmd(x, ...)
 A single string.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 Walks a \code{\link{ts_tree}} or \code{\link{ts_node}} and emits QMD source text by
 dispatching on node kind. Aims for functional equivalence: the
 output must re-parse to a structurally equal \code{ts_ast}. Where a
