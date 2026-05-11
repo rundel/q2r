@@ -1595,6 +1595,17 @@ test_that("docs/blog/posts/2026-05-05-quarto-2-parsing/index.qmd", {
   expect_ts_ast_equal(ts2, ts)
 })
 
+test_that("docs/blog/posts/2026-05-07-new-blog-home/index.qmd", {
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2026-05-07-new-blog-home/index.qmd")
+  ts = pampa_parse_ts(text, quiet = TRUE)
+  if (has_error_diagnostics(ts)) skip("initial parse produced error diagnostics")
+  rendered = to_qmd(ts)
+  ts2 = pampa_parse_ts(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
+})
+
 test_that("docs/books/_book-vs-website-key.qmd", {
   skip_if_no_quarto_web()
   text = quarto_web_read("docs/books/_book-vs-website-key.qmd")
