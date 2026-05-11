@@ -140,12 +140,10 @@ bad = pampa_parse_pd(
   "# Heading {.cls bad}
 
 See [my page](https://example.com/some path) for details.
-",
-  quiet = TRUE
+"
 )
-bad@diagnostics
-#> [[1]]
-#> Error: Parse error
+#> Error:
+#> ! Error: Parse error
 #>    ╭─[ <text>:1:17 ]
 #>    │
 #>  1 │ # Heading {.cls bad}
@@ -153,7 +151,6 @@ bad@diagnostics
 #>    │                  ╰─── unexpected character or token here
 #> ───╯
 #> 
-#> [[2]]
 #> Error: [Q-2-33] Spaces in link targets
 #>    ╭─[ <text>:3:40 ]
 #>    │
