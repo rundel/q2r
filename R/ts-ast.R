@@ -137,6 +137,23 @@ ts_collect_node = function(x, env, position = FALSE, text = TRUE) {
   pandoc_tree_add(env, ts_format_label(x, position = position, text = text), child_ids)
 }
 
+#' Print a tree-sitter AST
+#'
+#' Renders a [`ts_tree`] or [`ts_node`] as an indented tree.
+#'
+#' @param x A [`ts_tree`] or [`ts_node`].
+#' @param position If `TRUE`, include each node's `(row, column)` byte
+#'   range in the label. Defaults to `FALSE`.
+#' @param text If `TRUE` (the default), include the source-text snippet
+#'   for leaf nodes that carry one.
+#' @param color For `ts_tree`, whether to use ANSI colour when printing
+#'   attached diagnostics. Defaults to whether the terminal supports it.
+#' @param ... Unused; present for S3/S7 compatibility.
+#' @return `x`, invisibly.
+#' @name print.ts_tree
+#' @aliases print.ts_node
+NULL
+
 S7::method(print, ts_node) = function(x, position = FALSE, text = TRUE, ...) {
   env = pandoc_tree_env()
   root = ts_collect_node(x, env, position = position, text = text)
