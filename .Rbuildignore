@@ -8,3 +8,4 @@
 ^src/Makevars\.win$
 ^tools$
 ^q2$
+^README\.qmd$
