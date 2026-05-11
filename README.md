@@ -13,8 +13,8 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 `q2r` is an exploratory R package that wraps the
 [`pampa`](https://github.com/quarto-dev/q2) Rust crate to expose
 Quarto’s QMD parser to R. It parses QMD text or files and returns either
-the tree-sitter concrete syntax tree or the Pandoc AST, together with
-any parse diagnostics.
+the tree-sitter AST or the Pandoc AST, together with any parse
+diagnostics.
 
 ## Installation
 
@@ -85,34 +85,34 @@ pd
 ts = pampa_parse_ts(qmd)
 ts
 #> ts_tree language=qmd
-#> └─document (0, 0) - (7, 0)
-#>   ├─metadata (0, 0) - (3, 0) "---\ntitle: Example\n---\n"
-#>   ├─section (3, 0) - (4, 0) "\n"
-#>   └─section (4, 0) - (7, 0)
-#>     ├─atx_heading (4, 0) - (5, 0)
-#>     │ ├─atx_h1_marker (4, 0) - (4, 1) "#"
-#>     │ └─pandoc_str (4, 2) - (4, 9) "Heading"
-#>     └─pandoc_paragraph (6, 0) - (7, 0)
-#>       ├─pandoc_str (6, 0) - (6, 4) "Some"
-#>       ├─pandoc_emph (6, 4) - (6, 17)
-#>       │ ├─emphasis_delimiter (6, 4) - (6, 6) " *"
-#>       │ ├─pandoc_str (6, 6) - (6, 16) "emphasized"
-#>       │ └─emphasis_delimiter (6, 16) - (6, 17) "*"
-#>       ├─pandoc_space (6, 17) - (6, 18) " "
-#>       ├─pandoc_str (6, 18) - (6, 22) "text"
-#>       ├─pandoc_space (6, 22) - (6, 23) " "
-#>       ├─pandoc_str (6, 23) - (6, 27) "with"
-#>       ├─pandoc_space (6, 27) - (6, 28) " "
-#>       ├─pandoc_str (6, 28) - (6, 29) "a"
-#>       ├─pandoc_space (6, 29) - (6, 30) " "
-#>       ├─pandoc_span (6, 30) - (6, 57)
-#>       │ ├─"[" (6, 30) - (6, 31) "["
-#>       │ ├─content (6, 31) - (6, 35)
-#>       │ │ └─pandoc_str (6, 31) - (6, 35) "link"
-#>       │ └─target (6, 35) - (6, 57)
-#>       │   ├─url (6, 37) - (6, 56) "https://example.com"
-#>       │   └─")" (6, 56) - (6, 57) ")"
-#>       └─pandoc_str (6, 57) - (6, 58) "."
+#> └─document
+#>   ├─metadata "---\ntitle: Example\n---\n"
+#>   ├─section "\n"
+#>   └─section
+#>     ├─atx_heading
+#>     │ ├─atx_h1_marker "#"
+#>     │ └─pandoc_str "Heading"
+#>     └─pandoc_paragraph
+#>       ├─pandoc_str "Some"
+#>       ├─pandoc_emph
+#>       │ ├─emphasis_delimiter " *"
+#>       │ ├─pandoc_str "emphasized"
+#>       │ └─emphasis_delimiter "*"
+#>       ├─pandoc_space " "
+#>       ├─pandoc_str "text"
+#>       ├─pandoc_space " "
+#>       ├─pandoc_str "with"
+#>       ├─pandoc_space " "
+#>       ├─pandoc_str "a"
+#>       ├─pandoc_space " "
+#>       ├─pandoc_span
+#>       │ ├─"[" "["
+#>       │ ├─content
+#>       │ │ └─pandoc_str "link"
+#>       │ └─target
+#>       │   ├─url "https://example.com"
+#>       │   └─")" ")"
+#>       └─pandoc_str "."
 ```
 
 ### Rendering back to QMD

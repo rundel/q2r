@@ -21,8 +21,8 @@ devtools::load_all(quiet = TRUE)
 
 `q2r` is an exploratory R package that wraps the [`pampa`](https://github.com/quarto-dev/q2)
 Rust crate to expose Quarto's QMD parser to R. It parses QMD text or files and
-returns either the tree-sitter concrete syntax tree or the Pandoc AST, together
-with any parse diagnostics.
+returns either the tree-sitter AST or the Pandoc AST, together with any parse
+diagnostics.
 
 ## Installation
 
