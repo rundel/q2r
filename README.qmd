@@ -94,8 +94,9 @@ diagnostics as R errors and warning-kind diagnostics as R warnings; pass
 
 ```{r}
 bad = pampa_parse_pd(
-  "::: {.callout-note
-unterminated
+  "# Heading {.cls bad}
+
+See [my page](https://example.com/some path) for details.
 ",
   quiet = TRUE
 )

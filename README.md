@@ -137,19 +137,29 @@ them directly.
 
 ``` r
 bad = pampa_parse_pd(
-  "::: {.callout-note
-unterminated
+  "# Heading {.cls bad}
+
+See [my page](https://example.com/some path) for details.
 ",
   quiet = TRUE
 )
 bad@diagnostics
 #> [[1]]
 #> Error: Parse error
-#>    ╭─[ <text>:2:1 ]
+#>    ╭─[ <text>:1:17 ]
 #>    │
-#>  2 │ unterminated
-#>    │ ──────┬─────  
-#>    │       ╰─────── unexpected character or token here
+#>  1 │ # Heading {.cls bad}
+#>    │                 ─┬─  
+#>    │                  ╰─── unexpected character or token here
+#> ───╯
+#> 
+#> [[2]]
+#> Error: [Q-2-33] Spaces in link targets
+#>    ╭─[ <text>:3:40 ]
+#>    │
+#>  3 │ See [my page](https://example.com/some path) for details.
+#>    │                                        ──┬─  
+#>    │                                          ╰─── Link targets cannot contain spaces. Replace spaces with %20.
 #> ───╯
 ```
 
