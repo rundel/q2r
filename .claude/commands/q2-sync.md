@@ -117,11 +117,11 @@ Rscript -e 'options(testthat.summary.max_reports = Inf); devtools::test(reporter
 
 Do not re-run the suite on the same revision. The only acceptable reason to re-run is a critical failure that makes the results unusable (e.g., the suite crashed before reaching most tests, output got truncated/corrupted). Iteratively re-running narrower filters or the full suite to "confirm" things wastes time.
 
-Group failures by failure mode (e.g., "12 tests fail with `pd ast mismatch: trailing blank line in raw block`", "3 tests fail with re-parse error in `<small>{=html}` context"). Do not run a pre-bump comparison sweep — `q2-sync-notes.md` (see below) carries that history.
+Group failures by failure mode (e.g., "12 tests fail with `pd ast mismatch: trailing blank line in raw block`", "3 tests fail with re-parse error in `<small>{=html}` context"). Do not run a pre-bump comparison sweep — `notes/q2-sync-notes.md` (see below) carries that history.
 
-### Update `q2-sync-notes.md`
+### Update `notes/q2-sync-notes.md`
 
-`q2-sync-notes.md` is an untracked file at the project root (gitignored) that tracks failure state across syncs so regressions are detectable by diff.
+`notes/q2-sync-notes.md` is an untracked file under the gitignored `notes/` folder that tracks failure state across syncs so regressions are detectable by diff.
 
 - If the file is missing, create it with just the current sync's results — no historical context to compare against.
 - If it exists, read it first. Compare the prior failure list against the current one and call out:
@@ -146,7 +146,7 @@ For each failure-mode group decide whether it is:
 
 If grammar-gap cleanup was on the table in Phase 3 and the user approved it, this is the place to rip out the corresponding `@text` paths in `ts_ast_to_r.rs` and the matching handlers in `R/ts-ast-to-qmd.R`, then re-run only the round-trip files to confirm functional equivalence still holds.
 
-CHECKPOINT 3: present the test results (grouped by failure mode, with the New/Resolved/Unchanged diff vs. the prior `q2-sync-notes.md` entry). If anything is failing or any snapshot moved, get sign-off before continuing.
+CHECKPOINT 3: present the test results (grouped by failure mode, with the New/Resolved/Unchanged diff vs. the prior `notes/q2-sync-notes.md` entry). If anything is failing or any snapshot moved, get sign-off before continuing.
 
 ## Phase 7: Wrap up
 

@@ -28,7 +28,7 @@ R package that wraps the `pampa` Rust crate from [quarto-dev/q2](https://github.
 - [R/pd-ast-to-qmd.R](R/pd-ast-to-qmd.R) is the pd_ast counterpart: it defines `to_qmd()` methods for the `pandoc` S7 hierarchy (`pandoc`, `pandoc_block`, `pandoc_inline`, and every concrete leaf). This is an R-side QMD renderer used for testing parity with pampa's writer; production rendering of a `pandoc` object via `pampa_to_qmd()` goes through `pampa_write_qmd_ast_impl` instead.
 - [R/from-rust.R](R/from-rust.R) and [R/to-rust.R](R/to-rust.R) convert between the tagged-list shape that crosses the extendr boundary and the S7 `pandoc` hierarchy. `pandoc_from_list` / `pandoc_to_list` are the top-level entry points used by `pampa_parse_pd()` and `pampa_to_qmd(pandoc_obj)` respectively.
 - The `pandoc` S7 hierarchy itself is defined across [pd-ast-pandoc.R](R/pd-ast-pandoc.R), [pd-ast-block.R](R/pd-ast-block.R), [pd-ast-inline.R](R/pd-ast-inline.R), [pd-ast-support.R](R/pd-ast-support.R) (helper types: `pandoc_attr`, `pandoc_target`, `pandoc_caption`, citations, table cells, etc.), and [pd-ast-print.R](R/pd-ast-print.R) (S7 `print`/`format` methods).
-- [R/tests.R](R/tests.R) holds the three `gen_*_rt_test` factories (`gen_ts_rt_test`, `gen_pd_rt_test`, `gen_pampa_pd_rt_test`) and the (currently empty) `QUARTO_WEB_SKIP` skip-map that `helper-quarto-web.R` uses to (re)generate the sweep test files. Per-fixture skip lists for known upstream-pampa failures have been removed: those tests now actually fail (rather than skip) so that the suite reflects current upstream state. Tests that hit an initial parse error still skip themselves inline via `if (has_error_diagnostics(...)) skip(...)`. Upstream pampa issues are tracked in the top-level [q2-issues.md](q2-issues.md) file. Note: there is no `pampa_to_qmd(ts_tree)` round-trip suite — pampa's QMD writer only consumes pd_ast, so the ts variant would just be `to_qmd(ts) → pampa_parse + pampa_pd_rt` glued together and is covered by those two suites separately.
+- [R/tests.R](R/tests.R) holds the three `gen_*_rt_test` factories (`gen_ts_rt_test`, `gen_pd_rt_test`, `gen_pampa_pd_rt_test`) and the (currently empty) `QUARTO_WEB_SKIP` skip-map that `helper-quarto-web.R` uses to (re)generate the sweep test files. Per-fixture skip lists for known upstream-pampa failures have been removed: those tests now actually fail (rather than skip) so that the suite reflects current upstream state. Tests that hit an initial parse error still skip themselves inline via `if (has_error_diagnostics(...)) skip(...)`. Upstream pampa issues are tracked in [notes/issues.md](notes/issues.md). Note: there is no `pampa_to_qmd(ts_tree)` round-trip suite — pampa's QMD writer only consumes pd_ast, so the ts variant would just be `to_qmd(ts) → pampa_parse + pampa_pd_rt` glued together and is covered by those two suites separately.
 
 ## Toolchain
 
@@ -85,6 +85,10 @@ Top-level [`tools/config.R`](tools/config.R) and [`tools/msrv.R`](tools/msrv.R) 
 - R: use `=` for assignment, `pkg::fn` over imports, minimize single-line comments.
 - Rust: standard rustfmt; no decorative comments.
 - Commit messages: one sentence, no body, no `Co-Authored-By` or other self-attribution trailers.
+
+## Notes folder
+
+All ad-hoc notes, drafts, state logs, and upstream-bug write-ups live under `notes/` (gitignored). This includes upstream issue drafts (`notes/<short-name>_issue.md`), the sync-failure log (`notes/q2-sync-notes.md`), and the running upstream issue list (`notes/issues.md`). Do not put these at the project root or under `q2/`.
 
 ## Filing q2 issues
 

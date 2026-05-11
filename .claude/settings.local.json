@@ -20,7 +20,12 @@
       "Bash(./target/debug/pampa -t qmd)",
       "Bash(cargo update *)",
       "Bash(echo \"EXIT=$?\")",
-      "Bash(git -C tests/fixtures/quarto-web log --oneline -5)"
+      "Bash(git -C tests/fixtures/quarto-web log --oneline -5)",
+      "Bash(./target/debug/pampa --)",
+      "Bash(mv q2-sync-notes.md notes/q2-sync-notes.md)",
+      "Bash(mv issues.md notes/issues.md)",
+      "Bash(Rscript tools/rt/rt-fails.R)",
+      "Bash(echo \"started PID=$!\")"
     ]
   }
 }
