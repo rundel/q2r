@@ -136,7 +136,12 @@ as R warnings; pass `quiet = TRUE` to suppress signalling and inspect
 them directly.
 
 ``` r
-bad = pampa_parse_pd("::: {.callout-note\nunterminated\n", quiet = TRUE)
+bad = pampa_parse_pd(
+  "::: {.callout-note
+unterminated
+",
+  quiet = TRUE
+)
 bad@diagnostics
 #> [[1]]
 #> Error: Parse error
