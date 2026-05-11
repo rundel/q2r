@@ -110,8 +110,7 @@ ts_format_position = function(range) {
   )
 }
 
-ts_format_label = function(x) {
-  pos = pandoc_style_pos(ts_format_position(x@range))
+ts_format_label = function(x, position = FALSE, text = TRUE) {
   kind = if (x@is_named) {
     pandoc_style_kind(x@kind)
   } else {
@@ -120,30 +119,38 @@ ts_format_label = function(x) {
   field = if (!is.null(x@field_name)) {
     paste0(pandoc_style_field(paste0(x@field_name, ":")), " ")
   } else ""
+  pos = if (position) {
+    paste0(" ", pandoc_style_pos(ts_format_position(x@range)))
+  } else ""
   is_leaf = length(x@children@content) == 0L
-  text_snip = if (is_leaf && !is.null(x@text) && nzchar(x@text)) {
+  text_snip = if (text && is_leaf && !is.null(x@text) && nzchar(x@text)) {
     paste0(" ", pandoc_quote(x@text))
   } else ""
-  sprintf("%s%s %s%s", field, kind, pos, text_snip)
+  sprintf("%s%s%s%s", field, kind, pos, text_snip)
 }
 
-ts_collect_node = function(x, env) {
-  child_ids = vapply(x@children@content, ts_collect_node, character(1L), env = env)
-  pandoc_tree_add(env, ts_format_label(x), child_ids)
+ts_collect_node = function(x, env, position = FALSE, text = TRUE) {
+  child_ids = vapply(
+    x@children@content, ts_collect_node, character(1L),
+    env = env, position = position, text = text
+  )
+  pandoc_tree_add(env, ts_format_label(x, position = position, text = text), child_ids)
 }
 
-S7::method(print, ts_node) = function(x, ...) {
+S7::method(print, ts_node) = function(x, position = FALSE, text = TRUE, ...) {
   env = pandoc_tree_env()
-  root = ts_collect_node(x, env)
+  root = ts_collect_node(x, env, position = position, text = text)
   pandoc_render_tree(root, env)
   invisible(x)
 }
 
 S7::method(print, ts_tree) = function(x,
+                                       position = FALSE,
+                                       text = TRUE,
                                        color = cli::num_ansi_colors() > 1L,
                                        ...) {
   env = pandoc_tree_env()
-  root_child = ts_collect_node(x@root, env)
+  root_child = ts_collect_node(x@root, env, position = position, text = text)
   root = pandoc_tree_add(
     env,
     paste0(
