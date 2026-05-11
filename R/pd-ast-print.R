@@ -362,6 +362,21 @@ pandoc_render_forest = function(child_ids, env) {
   for (id in child_ids) pandoc_render_tree(id, env)
 }
 
+#' Print a Pandoc AST
+#'
+#' Renders a [`pandoc`] document or any individual [`pandoc_node`]
+#' (block or inline) as an indented tree.
+#'
+#' @param x A [`pandoc`], [`pandoc_node`], [`pandoc_blocks`], or
+#'   [`pandoc_inlines`] object.
+#' @param color For `pandoc`, whether to use ANSI colour when printing
+#'   attached diagnostics. Defaults to whether the terminal supports it.
+#' @param ... Unused; present for S3/S7 compatibility.
+#' @return `x`, invisibly.
+#' @name print.pandoc
+#' @aliases print.pandoc_node print.pandoc_blocks print.pandoc_inlines
+NULL
+
 S7::method(print, pandoc_node) = function(x, ...) {
   env = pandoc_tree_env()
   root = pandoc_collect_node(x, env)
