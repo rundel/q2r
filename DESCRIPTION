@@ -16,6 +16,7 @@ Depends:
     R (>= 4.2)
 Imports:
     cli,
+    lifecycle,
     S7,
     stringr
 Suggests:
