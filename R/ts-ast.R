@@ -137,6 +137,24 @@ ts_collect_node = function(x, env, position = FALSE, text = TRUE) {
   pandoc_tree_add(env, ts_format_label(x, position = position, text = text), child_ids)
 }
 
+ts_tree_lines = function(x, position = FALSE, text = TRUE) {
+  env = pandoc_tree_env()
+  root = if (S7::S7_inherits(x, ts_tree)) {
+    root_child = ts_collect_node(x@root, env, position = position, text = text)
+    pandoc_tree_add(
+      env,
+      paste0(
+        pandoc_style_kind("ts_tree"), " ",
+        pandoc_field("language"), x@language
+      ),
+      root_child
+    )
+  } else {
+    ts_collect_node(x, env, position = position, text = text)
+  }
+  as.character(cli::tree(pandoc_tree_df(env), root = root))
+}
+
 #' Print a tree-sitter AST
 #'
 #' Renders a [`ts_tree`] or [`ts_node`] as an indented tree.
@@ -155,9 +173,7 @@ ts_collect_node = function(x, env, position = FALSE, text = TRUE) {
 NULL
 
 S7::method(print, ts_node) = function(x, position = FALSE, text = TRUE, ...) {
-  env = pandoc_tree_env()
-  root = ts_collect_node(x, env, position = position, text = text)
-  pandoc_render_tree(root, env)
+  cat(ts_tree_lines(x, position = position, text = text), sep = "\n")
   invisible(x)
 }
 
@@ -166,17 +182,7 @@ S7::method(print, ts_tree) = function(x,
                                        text = TRUE,
                                        color = cli::num_ansi_colors() > 1L,
                                        ...) {
-  env = pandoc_tree_env()
-  root_child = ts_collect_node(x@root, env, position = position, text = text)
-  root = pandoc_tree_add(
-    env,
-    paste0(
-      pandoc_style_kind("ts_tree"), " ",
-      pandoc_field("language"), x@language
-    ),
-    root_child
-  )
-  pandoc_render_tree(root, env)
+  cat(ts_tree_lines(x, position = position, text = text), sep = "\n")
   if (length(x@diagnostics)) {
     cat("\n-- diagnostics --\n")
     for (d in x@diagnostics) print(d, color = color)

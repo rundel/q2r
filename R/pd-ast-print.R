@@ -218,6 +218,40 @@ S7::method(pandoc_format_label, pandoc_definition_item) = function(x) {
   pandoc_style_kind("definition_item")
 }
 
+S7::method(pandoc_format_label, pandoc_caption) = function(x) {
+  pandoc_style_kind("caption")
+}
+
+S7::method(pandoc_format_label, pandoc_table_head) = function(x) {
+  paste0(pandoc_style_kind("table_head"), pandoc_format_attr(x@attr))
+}
+
+S7::method(pandoc_format_label, pandoc_table_body) = function(x) {
+  rhc = if (x@row_head_columns != 0L) {
+    paste0(" ", pandoc_field("row_head_columns"), x@row_head_columns)
+  } else ""
+  paste0(pandoc_style_kind("table_body"), rhc, pandoc_format_attr(x@attr))
+}
+
+S7::method(pandoc_format_label, pandoc_table_foot) = function(x) {
+  paste0(pandoc_style_kind("table_foot"), pandoc_format_attr(x@attr))
+}
+
+S7::method(pandoc_format_label, pandoc_row) = function(x) {
+  paste0(pandoc_style_kind("row"), pandoc_format_attr(x@attr))
+}
+
+S7::method(pandoc_format_label, pandoc_cell) = function(x) {
+  span = if (x@row_span != 1L || x@col_span != 1L) {
+    paste0(" ", pandoc_field("row_span"), x@row_span,
+           " ", pandoc_field("col_span"), x@col_span)
+  } else ""
+  align = if (!identical(x@alignment, "Default")) {
+    paste0(" ", pandoc_field("alignment"), x@alignment)
+  } else ""
+  paste0(pandoc_style_kind("cell"), align, span, pandoc_format_attr(x@attr))
+}
+
 children_content = function(x) list(content = x@content)
 
 S7::method(pandoc_children, pandoc_plain)                        = children_content
@@ -287,6 +321,24 @@ S7::method(pandoc_children, pandoc_definition_item) = function(x) {
 S7::method(pandoc_children, pandoc_citation) = function(x) {
   list(prefix = x@prefix, suffix = x@suffix)
 }
+
+S7::method(pandoc_children, pandoc_table_head) = function(x) {
+  list(rows = x@rows)
+}
+
+S7::method(pandoc_children, pandoc_table_body) = function(x) {
+  list(head_rows = x@head_rows, body_rows = x@body_rows)
+}
+
+S7::method(pandoc_children, pandoc_table_foot) = function(x) {
+  list(rows = x@rows)
+}
+
+S7::method(pandoc_children, pandoc_row) = function(x) {
+  list(cells = x@cells)
+}
+
+S7::method(pandoc_children, pandoc_cell) = children_content
 
 pandoc_tree_env = function() {
   env = new.env(parent = emptyenv())
@@ -362,6 +414,26 @@ pandoc_render_forest = function(child_ids, env) {
   for (id in child_ids) pandoc_render_tree(id, env)
 }
 
+pandoc_tree_lines = function(x) {
+  env = pandoc_tree_env()
+  root = if (S7::S7_inherits(x, pandoc)) {
+    child_ids = character()
+    if (!identical(x@meta@kind, "map") || length(x@meta@value) > 0L) {
+      child_ids = c(child_ids, pandoc_tree_add(
+        env,
+        paste0(pandoc_style_kind("meta"), ": ", x@meta@kind)
+      ))
+    }
+    for (block in x@blocks@content) {
+      child_ids = c(child_ids, pandoc_collect_node(block, env))
+    }
+    pandoc_tree_add(env, pandoc_style_kind("pandoc"), child_ids)
+  } else {
+    pandoc_collect_node(x, env)
+  }
+  as.character(cli::tree(pandoc_tree_df(env), root = root))
+}
+
 #' Print a Pandoc AST
 #'
 #' Renders a [`pandoc`] document or any individual [`pandoc_node`]
@@ -378,28 +450,14 @@ pandoc_render_forest = function(child_ids, env) {
 NULL
 
 S7::method(print, pandoc_node) = function(x, ...) {
-  env = pandoc_tree_env()
-  root = pandoc_collect_node(x, env)
-  pandoc_render_tree(root, env)
+  cat(pandoc_tree_lines(x), sep = "\n")
   invisible(x)
 }
 
 S7::method(print, pandoc) = function(x,
                                       color = cli::num_ansi_colors() > 1L,
                                       ...) {
-  env = pandoc_tree_env()
-  child_ids = character()
-  if (!identical(x@meta@kind, "map") || length(x@meta@value) > 0L) {
-    child_ids = c(child_ids, pandoc_tree_add(
-      env,
-      paste0(pandoc_style_kind("meta"), ": ", x@meta@kind)
-    ))
-  }
-  for (block in x@blocks@content) {
-    child_ids = c(child_ids, pandoc_collect_node(block, env))
-  }
-  root = pandoc_tree_add(env, pandoc_style_kind("pandoc"), child_ids)
-  pandoc_render_tree(root, env)
+  cat(pandoc_tree_lines(x), sep = "\n")
   if (length(x@diagnostics)) {
     cat("\n-- diagnostics --\n")
     for (d in x@diagnostics) print(d, color = color)

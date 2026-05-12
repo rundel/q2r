@@ -50,15 +50,42 @@ expect_no_error_diagnostics = function(actual) {
   invisible(actual)
 }
 
+number_ast_lines = function(lines) {
+  w = max(2L, nchar(as.character(length(lines))))
+  sprintf(paste0("%", w, "d │ %s"), seq_along(lines), lines)
+}
+
+diff_ast_lines = function(act_lines, exp_lines, x_arg, y_arg) {
+  if (identical(act_lines, exp_lines)) return(character())
+  old = options(width = max(getOption("width"), 200L))
+  on.exit(options(old), add = TRUE)
+  d = diffobj::diffChr(
+    number_ast_lines(act_lines),
+    number_ast_lines(exp_lines),
+    mode = "sidebyside",
+    format = if (cli::num_ansi_colors() > 1L) "ansi8" else "raw",
+    line.limit = 30L,
+    tar.banner = x_arg,
+    cur.banner = y_arg
+  )
+  as.character(d)
+}
+
 expect_ts_ast_equal = function(actual, expected) {
   act_lab = testthat::quasi_label(rlang::enquo(actual),   arg = "actual")
   exp_lab = testthat::quasi_label(rlang::enquo(expected), arg = "expected")
-  act = q2r:::ts_tree_to_list(actual)
-  exp = q2r:::ts_tree_to_list(expected)
-  diff = waldo::compare(act, exp, x_arg = act_lab$lab, y_arg = exp_lab$lab, max_diffs = 20)
+  old = options(cli.unicode = TRUE)
+  on.exit(options(old), add = TRUE)
+  act_lines = q2r:::ts_tree_lines(actual)
+  exp_lines = q2r:::ts_tree_lines(expected)
+  diff = diff_ast_lines(act_lines, exp_lines, act_lab$lab, exp_lab$lab)
   testthat::expect(
     length(diff) == 0,
-    paste0("ts ast mismatch:\n", paste(diff, collapse = "\n\n"))
+    sprintf(
+      "ts ast mismatch (actual: %d lines, expected: %d lines):\n%s",
+      length(act_lines), length(exp_lines),
+      paste(diff, collapse = "\n")
+    )
   )
   invisible(actual)
 }
@@ -66,12 +93,18 @@ expect_ts_ast_equal = function(actual, expected) {
 expect_pd_ast_equal = function(actual, expected) {
   act_lab = testthat::quasi_label(rlang::enquo(actual),   arg = "actual")
   exp_lab = testthat::quasi_label(rlang::enquo(expected), arg = "expected")
-  act = q2r:::pandoc_to_list(actual)
-  exp = q2r:::pandoc_to_list(expected)
-  diff = waldo::compare(act, exp, x_arg = act_lab$lab, y_arg = exp_lab$lab, max_diffs = 20)
+  old = options(cli.unicode = TRUE)
+  on.exit(options(old), add = TRUE)
+  act_lines = q2r:::pandoc_tree_lines(actual)
+  exp_lines = q2r:::pandoc_tree_lines(expected)
+  diff = diff_ast_lines(act_lines, exp_lines, act_lab$lab, exp_lab$lab)
   testthat::expect(
     length(diff) == 0,
-    paste0("pd ast mismatch:\n", paste(diff, collapse = "\n\n"))
+    sprintf(
+      "pd ast mismatch (actual: %d lines, expected: %d lines):\n%s",
+      length(act_lines), length(exp_lines),
+      paste(diff, collapse = "\n")
+    )
   )
   invisible(actual)
 }
