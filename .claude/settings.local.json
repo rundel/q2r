@@ -28,7 +28,8 @@
       "Bash(echo \"started PID=$!\")",
       "Bash(git -C /Users/rundel/Desktop/Projects/q2r/q2 diff --stat 5240608c..eca286b9 -- Cargo.toml 'crates/*/Cargo.toml')",
       "Bash(/usr/bin/git *)",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(printf -- '> $$\\\\n> p\\(x\\)\\\\n> $$\\\\n')"
     ]
   }
 }
