@@ -9,3 +9,7 @@
 ^tools$
 ^q2$
 ^README\.qmd$
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.positai$
+^\.claude$
