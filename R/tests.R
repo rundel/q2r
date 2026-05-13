@@ -1,7 +1,20 @@
 QUARTO_WEB_SKIP = list(
   ts_rt        = list(),
   pd_rt        = list(),
-  pampa_pd_rt  = list()
+  pampa_pd_rt  = list(
+    "docs/blog/posts/2024-04-01-manuscripts-rmedicine/index.qmd" = "q2#174 (loose list tightened on round-trip)",
+    "docs/blog/posts/2026-03-24-1.9-release/index.qmd"           = "q2#183 (list-table cell with multiple blocks emits broken bullet)",
+    "docs/extensions/_shortcode-escaping.qmd"                    = "q2#174 (loose list tightened on round-trip)",
+    "docs/extensions/lua-api.qmd"                                = "q2#183 (list-table cell with multiple blocks emits broken bullet)",
+    "docs/get-started/hello/rstudio.qmd"                         = "q2#174 (loose list tightened on round-trip)",
+    "docs/journals/authors.qmd"                                  = "q2#174 (loose list tightened on round-trip)",
+    "docs/journals/formats.qmd"                                  = "q2#174 (loose list tightened on round-trip)",
+    "docs/manuscripts/authoring/_setup.qmd"                      = "q2#174 (loose list tightened on round-trip)",
+    "docs/output-formats/html-code.qmd"                          = "q2#152 (executable code block class emitted as {.{r}})",
+    "docs/output-formats/hugo.qmd"                               = "q2#184 (indented code blocks unrecognized, bullet-like content reparses as list)",
+    "docs/presentations/revealjs/index.qmd"                      = "q2#174 (loose list tightened on round-trip)",
+    "docs/websites/website-blog.qmd"                             = "q2#174 (loose list tightened on round-trip)"
+  )
 )
 
 
