@@ -107,7 +107,31 @@ Rscript -e 'devtools::load_all(); print(q2r::pampa_parse("# hi"))'
 
 Confirms the package loads, the basic parse path works, and diagnostic formatting still rounds through Rust without crashing.
 
-## Phase 6: Tests
+## Phase 6: Reconcile expected-failure skip map (pre-test)
+
+`R/tests.R` defines `QUARTO_WEB_SKIP`, a per-suite map keyed by quarto-web relative path. Each entry's reason has the form `"q2#NNN (short description)"`, marking a fixture as expected-failure pending the named upstream issue. Before running the suite, reconcile this map against current q2 issue state so a closed upstream issue stops hiding its fixtures.
+
+1. Extract all `q2#NNN` references currently in the skip map:
+
+   ```
+   grep -oE 'q2#[0-9]+' R/tests.R | sort -u
+   ```
+
+2. Query each issue's state in one batch:
+
+   ```
+   gh issue list --repo quarto-dev/q2 --state all --limit 500 --json number,state,title
+   ```
+
+   Cross-reference the numbers from step 1 against the result. Note any whose `state` is `CLOSED`.
+
+3. For each closed issue, identify the skip-map entries referencing it (`grep -n "q2#NNN" R/tests.R`) and report them to the user before editing.
+
+4. With user go-ahead, remove those entries from `QUARTO_WEB_SKIP` in a single Edit. The auto-regeneration in `helper-quarto-web.R` will pick this up via the `R/tests.R` mtime change when Phase 7 runs the suite — no manual regeneration needed.
+
+5. If nothing closed, say so and continue.
+
+## Phase 7: Tests
 
 Run the full suite **once**. **Always raise the failure cap** — the summary reporter truncates at 10 by default in non-interactive mode, which makes the failure count meaningless. Redirect to a temp file:
 
@@ -143,12 +167,25 @@ For each failure-mode group decide whether it is:
 
 - An absorption gap (we missed updating something on our side): fix it, then re-run only the failing test files (not the full suite) to verify.
 - A genuine upstream behavior change (snapshots / golden output need to move): get explicit user sign-off before updating snapshots.
+- An upstream bug we should defer behind a skip — handled by the next step.
 
 If grammar-gap cleanup was on the table in Phase 3 and the user approved it, this is the place to rip out the corresponding `@text` paths in `ts_ast_to_r.rs` and the matching handlers in `R/ts-ast-to-qmd.R`, then re-run only the round-trip files to confirm functional equivalence still holds.
 
-CHECKPOINT 3: present the test results (grouped by failure mode, with the New/Resolved/Unchanged diff vs. the prior `notes/q2-sync-notes.md` entry). If anything is failing or any snapshot moved, get sign-off before continuing.
+### Classify new failures against open q2 issues
 
-## Phase 7: Wrap up
+For each new failure that the user wants deferred (i.e. it isn't an absorption gap and isn't a snapshot move):
+
+1. Try to match the failure mode + repro to an open q2 issue:
+   - Search by keyword: `gh issue list --repo quarto-dev/q2 --state open --search "<short failure-mode phrase>" --limit 20 --json number,title`
+   - Also scan filed drafts under `notes/done/*.md` — they often capture exactly the failure mode and may already cite the upstream number in their text.
+2. If a match is found, add an entry to the relevant suite map in `QUARTO_WEB_SKIP` (usually `pampa_pd_rt`) tagged `"q2#NNN (short description)"`. After all entries are added, re-run the affected suite once via `--filter` to confirm the new skips fire cleanly.
+3. If no match is found, surface the failure to the user. Decide together: file a new q2 issue (drafts in `notes/done/` are good starting material), tag the skip preemptively with the new number, or leave the test failing until an issue exists.
+
+Pre-test removals from Phase 6 also feed into this step. If a previously-skipped fixture reappears as a failure here (i.e. the upstream issue closed without the underlying behavior actually being fixed), surface it to the user — the upstream issue likely needs to be re-opened, or a follow-up filed.
+
+CHECKPOINT 3: present the test results (grouped by failure mode, with the New/Resolved/Unchanged diff vs. the prior `notes/q2-sync-notes.md` entry, and the list of skip-map edits — both removals from Phase 6 and additions from this step). If anything is failing or any snapshot moved, get sign-off before continuing.
+
+## Phase 8: Wrap up
 
 Summarize:
 
