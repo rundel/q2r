@@ -129,30 +129,54 @@ ts_format_label = function(x, position = FALSE, text = TRUE) {
   sprintf("%s%s%s%s", field, kind, pos, text_snip)
 }
 
-ts_collect_node = function(x, env, position = FALSE, text = TRUE) {
-  child_ids = vapply(
-    x@children@content, ts_collect_node, character(1L),
-    env = env, position = position, text = text
+ts_emit_node = function(buf, x, prefix_self, prefix_kids, position, text) {
+  pandoc_tree_buf_push(
+    buf,
+    paste0(prefix_self, ts_format_label(x, position = position, text = text))
   )
-  pandoc_tree_add(env, ts_format_label(x, position = position, text = text), child_ids)
+  kids = x@children@content
+  nk = length(kids)
+  if (nk == 0L) return()
+  chars = buf$chars
+  for (i in seq_len(nk)) {
+    last = i == nk
+    branch = if (last) chars$ell else chars$tee
+    cont   = if (last) chars$blk else chars$vbar
+    ts_emit_node(
+      buf, kids[[i]],
+      prefix_self = paste0(prefix_kids, branch),
+      prefix_kids = paste0(prefix_kids, cont),
+      position = position, text = text
+    )
+  }
 }
 
 ts_tree_lines = function(x, position = FALSE, text = TRUE) {
-  env = pandoc_tree_env()
-  root = if (S7::S7_inherits(x, ts_tree)) {
-    root_child = ts_collect_node(x@root, env, position = position, text = text)
-    pandoc_tree_add(
-      env,
-      paste0(
-        pandoc_style_kind("ts_tree"), " ",
-        pandoc_field("language"), x@language
-      ),
-      root_child
+  withr::local_options(cli.num_colors = cli::num_ansi_colors())
+  buf = pandoc_tree_buf()
+
+  if (S7::S7_inherits(x, ts_tree)) {
+    root_label = paste0(
+      pandoc_style_kind("ts_tree"), " ",
+      pandoc_field("language"), x@language
+    )
+    pandoc_tree_buf_push(buf, root_label)
+    chars = buf$chars
+    ts_emit_node(
+      buf, x@root,
+      prefix_self = chars$ell,
+      prefix_kids = chars$blk,
+      position = position, text = text
     )
   } else {
-    ts_collect_node(x, env, position = position, text = text)
+    ts_emit_node(
+      buf, x,
+      prefix_self = "", prefix_kids = "",
+      position = position, text = text
+    )
   }
-  as.character(cli::tree(pandoc_tree_df(env), root = root))
+
+  pandoc_tree_buf_lines(buf)
 }
 
 #' Print a tree-sitter AST

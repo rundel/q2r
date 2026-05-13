@@ -57,8 +57,7 @@ number_ast_lines = function(lines) {
 
 diff_ast_lines = function(act_lines, exp_lines, x_arg, y_arg) {
   if (identical(act_lines, exp_lines)) return(character())
-  old = options(width = max(getOption("width"), 200L))
-  on.exit(options(old), add = TRUE)
+  withr::local_options(width = max(getOption("width"), 200L))
   d = diffobj::diffChr(
     number_ast_lines(act_lines),
     number_ast_lines(exp_lines),
@@ -74,8 +73,11 @@ diff_ast_lines = function(act_lines, exp_lines, x_arg, y_arg) {
 expect_ts_ast_equal = function(actual, expected) {
   act_lab = testthat::quasi_label(rlang::enquo(actual),   arg = "actual")
   exp_lab = testthat::quasi_label(rlang::enquo(expected), arg = "expected")
-  old = options(cli.unicode = TRUE)
-  on.exit(options(old), add = TRUE)
+  if (identical(q2r:::ts_tree_to_list(actual), q2r:::ts_tree_to_list(expected))) {
+    testthat::expect(TRUE, "ok")
+    return(invisible(actual))
+  }
+  withr::local_options(cli.unicode = TRUE)
   act_lines = q2r:::ts_tree_lines(actual)
   exp_lines = q2r:::ts_tree_lines(expected)
   diff = diff_ast_lines(act_lines, exp_lines, act_lab$lab, exp_lab$lab)
@@ -93,8 +95,11 @@ expect_ts_ast_equal = function(actual, expected) {
 expect_pd_ast_equal = function(actual, expected) {
   act_lab = testthat::quasi_label(rlang::enquo(actual),   arg = "actual")
   exp_lab = testthat::quasi_label(rlang::enquo(expected), arg = "expected")
-  old = options(cli.unicode = TRUE)
-  on.exit(options(old), add = TRUE)
+  if (identical(q2r:::pandoc_to_list(actual), q2r:::pandoc_to_list(expected))) {
+    testthat::expect(TRUE, "ok")
+    return(invisible(actual))
+  }
+  withr::local_options(cli.unicode = TRUE)
   act_lines = q2r:::pandoc_tree_lines(actual)
   exp_lines = q2r:::pandoc_tree_lines(expected)
   diff = diff_ast_lines(act_lines, exp_lines, act_lab$lab, exp_lab$lab)

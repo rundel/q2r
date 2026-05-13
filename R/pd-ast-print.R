@@ -36,7 +36,8 @@ pandoc_truncate = function(text,
                            side = getOption("q2r.print_trunc_side", "right")) {
   if (length(text) == 0L) return("")
   side = match.arg(side, c("right", "left", "center"))
-  s = encodeString(paste(text, collapse = " "))
+  s = encodeString(if (length(text) > 1L) paste(text, collapse = " ") else text)
+  if (nchar(s) <= n) return(s)
   stringr::str_trunc(s, width = n, side = side, ellipsis = "…")
 }
 
@@ -340,98 +341,145 @@ S7::method(pandoc_children, pandoc_row) = function(x) {
 
 S7::method(pandoc_children, pandoc_cell) = children_content
 
-pandoc_tree_env = function() {
-  env = new.env(parent = emptyenv())
-  env$counter = 0L
-  env$ids = character()
-  env$labels = character()
-  env$children = list()
-  env
-}
-
-pandoc_tree_add = function(env, label, children = character()) {
-  env$counter = env$counter + 1L
-  id = paste0("n", env$counter)
-  env$ids = c(env$ids, id)
-  env$labels = c(env$labels, label)
-  env$children[[length(env$children) + 1L]] = children
-  id
-}
-
-pandoc_tree_df = function(env) {
-  data.frame(
-    id = env$ids,
-    children = I(env$children),
-    label = env$labels,
-    stringsAsFactors = FALSE
-  )
-}
-
-pandoc_collect_node = function(x, env) {
-  kids = pandoc_children(x)
-  names_kids = names(kids)
-  if (is.null(names_kids)) names_kids = rep("", length(kids))
-  single = length(kids) == 1L
-
-  child_ids = character()
-  for (i in seq_along(kids)) {
-    label_i = if (single) "" else names_kids[[i]]
-    child_ids = c(child_ids, pandoc_collect_child(kids[[i]], label_i, env))
+pandoc_tree_chars = function() {
+  if (isTRUE(cli::is_utf8_output())) {
+    list(tee = "├─", ell = "└─", vbar = "│ ", blk = "  ")
+  } else {
+    list(tee = "+-", ell = "\\-", vbar = "| ", blk = "  ")
   }
-
-  pandoc_tree_add(env, pandoc_format_label(x), child_ids)
 }
 
-pandoc_collect_child = function(child, label, env) {
-  if (is.null(child)) return(character())
+pandoc_tree_buf = function() {
+  e = new.env(parent = emptyenv())
+  e$v = vector("list", 256L)
+  e$n = 0L
+  e$chars = pandoc_tree_chars()
+  e
+}
+
+pandoc_tree_buf_push = function(buf, line) {
+  buf$n = buf$n + 1L
+  if (buf$n > length(buf$v)) length(buf$v) = length(buf$v) * 2L
+  buf$v[[buf$n]] = line
+  invisible()
+}
+
+pandoc_tree_buf_lines = function(buf) {
+  if (buf$n == 0L) character(0L) else unlist(buf$v[seq_len(buf$n)], use.names = FALSE)
+}
+
+pandoc_flatten_child = function(child, label) {
+  if (is.null(child)) return(list())
 
   if (S7::S7_inherits(child, pandoc_blocks) || S7::S7_inherits(child, pandoc_inlines)) {
-    if (length(child@content) == 0L) return(character())
-    item_ids = unlist(lapply(child@content, pandoc_collect_node, env = env))
+    content = child@content
+    if (length(content) == 0L) return(list())
     if (nzchar(label)) {
-      return(pandoc_tree_add(env, pandoc_style_field(paste0(label, ":")), item_ids))
+      return(list(list(kind = "group", label = label, items = content)))
     }
-    return(item_ids)
+    return(lapply(content, function(n) list(kind = "node", node = n)))
   }
 
   if (is.list(child) && !S7::S7_inherits(child, pandoc_node)) {
-    if (length(child) == 0L) return(character())
-    item_ids = unlist(lapply(child, pandoc_collect_child, label = "", env = env))
-    if (nzchar(label)) {
-      return(pandoc_tree_add(env, pandoc_style_field(paste0(label, ":")), item_ids))
+    if (length(child) == 0L) return(list())
+    inner = list()
+    for (sub in child) {
+      sub_entries = pandoc_flatten_child(sub, "")
+      if (length(sub_entries)) inner = c(inner, sub_entries)
     }
-    return(item_ids)
+    if (nzchar(label)) {
+      items = lapply(inner, function(e) e$node)
+      return(list(list(kind = "group", label = label, items = items)))
+    }
+    return(inner)
   }
 
-  pandoc_collect_node(child, env)
+  list(list(kind = "node", node = child))
 }
 
-pandoc_render_tree = function(root_id, env) {
-  cat(cli::tree(pandoc_tree_df(env), root = root_id), sep = "\n")
+pandoc_child_entries = function(node) {
+  kids = pandoc_children(node)
+  nk = length(kids)
+  if (nk == 0L) return(list())
+  nlist = names(kids)
+  if (is.null(nlist)) nlist = rep("", nk)
+  single = nk == 1L
+  out = list()
+  for (i in seq_len(nk)) {
+    label_i = if (single) "" else nlist[[i]]
+    sub = pandoc_flatten_child(kids[[i]], label_i)
+    if (length(sub)) out = c(out, sub)
+  }
+  out
 }
 
-pandoc_render_forest = function(child_ids, env) {
-  for (id in child_ids) pandoc_render_tree(id, env)
+pandoc_emit_node = function(buf, x, prefix_self, prefix_kids) {
+  pandoc_tree_buf_push(buf, paste0(prefix_self, pandoc_format_label(x)))
+  entries = pandoc_child_entries(x)
+  if (length(entries)) pandoc_emit_entries(buf, entries, prefix_kids)
+}
+
+pandoc_emit_entries = function(buf, entries, prefix_kids) {
+  ne = length(entries)
+  if (ne == 0L) return()
+  chars = buf$chars
+  for (i in seq_len(ne)) {
+    e = entries[[i]]
+    last = i == ne
+    branch = if (last) chars$ell else chars$tee
+    cont   = if (last) chars$blk else chars$vbar
+    if (e$kind == "node") {
+      pandoc_emit_node(
+        buf, e$node,
+        prefix_self = paste0(prefix_kids, branch),
+        prefix_kids = paste0(prefix_kids, cont)
+      )
+    } else if (e$kind == "leaf") {
+      pandoc_tree_buf_push(buf, paste0(prefix_kids, branch, e$label))
+    } else {
+      pandoc_tree_buf_push(
+        buf,
+        paste0(prefix_kids, branch, pandoc_style_field(paste0(e$label, ":")))
+      )
+      sub_prefix = paste0(prefix_kids, cont)
+      items = e$items
+      m = length(items)
+      for (j in seq_len(m)) {
+        lst = j == m
+        br = if (lst) chars$ell else chars$tee
+        co = if (lst) chars$blk else chars$vbar
+        pandoc_emit_node(
+          buf, items[[j]],
+          prefix_self = paste0(sub_prefix, br),
+          prefix_kids = paste0(sub_prefix, co)
+        )
+      }
+    }
+  }
 }
 
 pandoc_tree_lines = function(x) {
-  env = pandoc_tree_env()
-  root = if (S7::S7_inherits(x, pandoc)) {
-    child_ids = character()
+  withr::local_options(cli.num_colors = cli::num_ansi_colors())
+  buf = pandoc_tree_buf()
+
+  if (S7::S7_inherits(x, pandoc)) {
+    pandoc_tree_buf_push(buf, pandoc_style_kind("pandoc"))
+    entries = list()
     if (!identical(x@meta@kind, "map") || length(x@meta@value) > 0L) {
-      child_ids = c(child_ids, pandoc_tree_add(
-        env,
-        paste0(pandoc_style_kind("meta"), ": ", x@meta@kind)
-      ))
+      entries[[length(entries) + 1L]] = list(
+        kind = "leaf",
+        label = paste0(pandoc_style_kind("meta"), ": ", x@meta@kind)
+      )
     }
     for (block in x@blocks@content) {
-      child_ids = c(child_ids, pandoc_collect_node(block, env))
+      entries[[length(entries) + 1L]] = list(kind = "node", node = block)
     }
-    pandoc_tree_add(env, pandoc_style_kind("pandoc"), child_ids)
+    if (length(entries)) pandoc_emit_entries(buf, entries, "")
   } else {
-    pandoc_collect_node(x, env)
+    pandoc_emit_node(buf, x, prefix_self = "", prefix_kids = "")
   }
-  as.character(cli::tree(pandoc_tree_df(env), root = root))
+
+  pandoc_tree_buf_lines(buf)
 }
 
 #' Print a Pandoc AST
@@ -465,16 +513,21 @@ S7::method(print, pandoc) = function(x,
   invisible(x)
 }
 
+pandoc_print_forest = function(content) {
+  withr::local_options(cli.num_colors = cli::num_ansi_colors())
+  for (node in content) {
+    buf = pandoc_tree_buf()
+    pandoc_emit_node(buf, node, prefix_self = "", prefix_kids = "")
+    cat(pandoc_tree_buf_lines(buf), sep = "\n")
+  }
+}
+
 S7::method(print, pandoc_blocks) = function(x, ...) {
-  env = pandoc_tree_env()
-  ids = vapply(x@content, pandoc_collect_node, character(1L), env = env)
-  pandoc_render_forest(ids, env)
+  pandoc_print_forest(x@content)
   invisible(x)
 }
 
 S7::method(print, pandoc_inlines) = function(x, ...) {
-  env = pandoc_tree_env()
-  ids = vapply(x@content, pandoc_collect_node, character(1L), env = env)
-  pandoc_render_forest(ids, env)
+  pandoc_print_forest(x@content)
   invisible(x)
 }

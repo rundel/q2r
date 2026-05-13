@@ -18,7 +18,8 @@ Imports:
     cli,
     lifecycle,
     S7,
-    stringr
+    stringr,
+    withr
 Suggests:
     rlang,
     testthat (>= 3.0.0),
