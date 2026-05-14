@@ -5,6 +5,7 @@ tools
 q2
 notes/
 .positai
+.claude/settings.local.json
 inst/doc
 vignettes/*.html
 vignettes/*.R
