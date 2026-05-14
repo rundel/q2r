@@ -5,3 +5,6 @@ tools
 q2
 notes/
 .positai
+inst/doc
+vignettes/*.html
+vignettes/*.R

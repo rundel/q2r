@@ -1,0 +1,164 @@
+---
+title: "Selecting and rewriting AST nodes"
+format: html
+vignette: >
+  %\VignetteIndexEntry{Selecting and rewriting AST nodes}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+#| include: false
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+q2r exposes two ASTs for a QMD document: the high-level [`pandoc`] S7
+hierarchy and the [`ts_tree`] tree-sitter concrete syntax tree. The
+`select_*` / `map_nodes` / `*_nodes` API lets you query and rewrite
+either one with the same vocabulary.
+
+```{r}
+library(q2r)
+
+src = "
+# Intro
+
+Some **bold** prose with a [link](https://example.com).
+
+::: callout-note
+## Watch out
+
+A callout with its own *emphasised* heading.
+:::
+
+## Conclusion
+
+Final words.
+"
+
+doc = pampa_parse_pd(src)
+```
+
+## Selecting
+
+Predicates are unquoted R expressions evaluated against each candidate
+node with a node-aware data mask. The mask exposes node slots
+(`level`, `url`, `text`, `kind`, ...) and a small set of helpers
+(`is()`, `has_class()`, `has_id()`, `has_attr()`, `is_leaf()`).
+
+```{r}
+select_nodes(doc, is(pandoc_header))
+```
+
+`is()` honours S7 inheritance, so `is(pandoc_block)` matches every
+block kind:
+
+```{r}
+length(select_nodes(doc, is(pandoc_block)))
+```
+
+Bare slot access lets you filter on properties without writing
+accessors yourself:
+
+```{r}
+select_nodes(doc, is(pandoc_header) & level == 2L)
+```
+
+`has_class()` reads `@attr@classes`:
+
+```{r}
+select_nodes(doc, is(pandoc_div) & has_class("callout-note"))
+```
+
+## Chaining
+
+The selection verbs accept a list of nodes, so a pipe chain narrows
+without nesting:
+
+```{r}
+doc |>
+  select_nodes(is(pandoc_div) & has_class("callout-note")) |>
+  select_descendants(is(pandoc_header))
+```
+
+`select_descendants()` excludes the root(s) of its input;
+`select_children()` only inspects direct children.
+
+## Rewriting
+
+`map_nodes()` rewrites every match in place. `.f` may return a single
+node (replace), a list of nodes (splice into the parent's child
+list), or `NULL` (delete). The walker traverses bottom-up, matching
+Pandoc Lua filters' default.
+
+Promote every level-2 heading to level 1:
+
+```{r}
+out = map_nodes(
+  doc,
+  is(pandoc_header) & level == 2L,
+  .f = \(h) pandoc_header(level = 1L, attr = h@attr, content = h@content)
+)
+
+purrr::map_int(select_nodes(out, is(pandoc_header)), \(h) h@level)
+```
+
+Strip bold by splicing each `pandoc_strong`'s content up into the
+parent:
+
+```{r}
+out = map_nodes(doc, is(pandoc_strong), .f = ~ .x@content@content)
+length(select_nodes(out, is(pandoc_strong)))
+```
+
+## Structural edits
+
+`insert_before()` / `insert_after()` add siblings around each match;
+`delete_nodes()` removes them; `replace_nodes()` swaps them out for a
+constant value.
+
+```{r}
+banner = pandoc_paragraph(
+  content = pandoc_inlines(list(pandoc_str(text = "[banner]")))
+)
+
+doc |>
+  insert_before(is(pandoc_header) & level == 1L, .what = banner) |>
+  select_children(is(pandoc_paragraph) | is(pandoc_header))
+```
+
+## The tree-sitter side
+
+Every verb above works on a [`ts_tree`] too. The mask exposes the
+ts-specific slots (`kind`, `is_named`, `field_name`, `text`):
+
+```{r}
+ts = pampa_parse_ts(src)
+
+select_nodes(ts, kind == "atx_heading")
+```
+
+For full structural pattern matching, captures, and predicates
+(`#eq?`, `#match?`, ...) there's a [`ts_query()`] escape hatch that
+runs a tree-sitter `.scm` query directly:
+
+```{r}
+matches = ts_query(ts, "(atx_heading) @h")
+length(matches)
+matches[[1]]$h
+```
+
+## Round-trips
+
+Rewriting produces a new AST of the same class as the input, so the
+result feeds straight back into the renderer:
+
+```{r}
+out = doc |>
+  map_nodes(
+    is(pandoc_header) & level == 1L,
+    .f = \(h) pandoc_header(level = 2L, attr = h@attr, content = h@content)
+  )
+
+cat(pampa_to_qmd(out))
+```

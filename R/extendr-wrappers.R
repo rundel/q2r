@@ -69,4 +69,12 @@ pampa_write_qmd_ast_impl <- function(r_ast) .Call(wrap__pampa_write_qmd_ast_impl
 #' @export
 pampa_diag_format_impl <- function(kind, code, title, problem, details, hints, location, source_text, source_filename, hyperlinks) .Call(wrap__pampa_diag_format_impl, kind, code, title, problem, details, hints, location, source_text, source_filename, hyperlinks)
 
+#' Run a tree-sitter `.scm` query against QMD source.
+#'
+#' Returns `list(matches = list(...), error = NULL)` on success, or
+#' `list(matches = NULL, error = "<compile error>")` if the query
+#' string fails to compile against the tree-sitter-qmd grammar.
+#' @export
+ts_query_impl <- function(text, query_text) .Call(wrap__ts_query_impl, text, query_text)
+
 # nolint end

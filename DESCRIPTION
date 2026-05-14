@@ -17,13 +17,16 @@ Depends:
 Imports:
     cli,
     lifecycle,
+    purrr,
+    rlang,
     S7,
     stringr,
     withr
 Suggests:
-    rlang,
+    quarto,
     testthat (>= 3.0.0),
     waldo
+VignetteBuilder: quarto
 Config/testthat/edition: 3
 Collate:
     'diagnostic.R'
@@ -36,10 +39,15 @@ Collate:
     'from-rust.R'
     'to-rust.R'
     'pampa.R'
+    'select.R'
+    'pandoc-modify-children.R'
     'pd-ast-print.R'
     'ts-ast-to-qmd.R'
     'pd-ast-to-qmd.R'
     'q2r-package.R'
+    'select-pd.R'
+    'select-ts.R'
     'tests.R'
+    'ts-query.R'
     'zzz.R'
 Config/roxygen2/version: 8.0.0

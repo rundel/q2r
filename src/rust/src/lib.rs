@@ -6,6 +6,7 @@ mod diag_to_r;
 mod pd_ast_to_r;
 mod r_to_pd_ast;
 mod ts_ast_to_r;
+mod ts_query;
 
 fn diags_to_list<I>(diags: I, ctx: &quarto_source_map::SourceContext) -> List
 where
@@ -186,6 +187,17 @@ fn pampa_write_qmd_ast_impl(r_ast: Robj) -> List {
     }
 }
 
+/// Run a tree-sitter `.scm` query against QMD source.
+///
+/// Returns `list(matches = list(...), error = NULL)` on success, or
+/// `list(matches = NULL, error = "<compile error>")` if the query
+/// string fails to compile against the tree-sitter-qmd grammar.
+/// @export
+#[extendr]
+fn ts_query_impl(text: &str, query_text: &str) -> List {
+    ts_query::run_ts_query(text, query_text)
+}
+
 /// Pretty-print a diagnostic by reconstructing it from its slot values.
 ///
 /// Accepts the structured fields carried by a `pampa_diagnostic` S7
@@ -231,4 +243,5 @@ extendr_module! {
     fn pampa_write_qmd_text_impl;
     fn pampa_write_qmd_ast_impl;
     fn pampa_diag_format_impl;
+    fn ts_query_impl;
 }

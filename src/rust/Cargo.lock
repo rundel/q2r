@@ -1919,6 +1919,7 @@ dependencies = [
  "pampa",
  "quarto-error-reporting",
  "quarto-source-map",
+ "streaming-iterator",
  "tree-sitter",
  "tree-sitter-qmd",
 ]

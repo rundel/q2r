@@ -94,6 +94,13 @@ fn children_to_r(cursor: &mut TreeCursor, src: &[u8]) -> Robj {
     List::from_values(out).into()
 }
 
+/// Serialize the node a cursor is positioned at into the tagged-list
+/// shape consumed by `ts_node_from_list()`. Re-exposes the private
+/// `node_to_r` helper for use by `ts_query.rs`.
+pub fn node_to_r_at(cursor: &mut TreeCursor, src: &[u8]) -> Robj {
+    node_to_r(cursor, src)
+}
+
 pub fn parse_ts_ast_to_r(src: &[u8]) -> Robj {
     let mut parser = MarkdownParser::default();
     parser
