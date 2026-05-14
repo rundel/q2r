@@ -127,6 +127,204 @@ doc |>
   select_children(is(pandoc_paragraph) | is(pandoc_header))
 ```
 
+## Type-keyed dispatch with `ast_filter()`
+
+`map_nodes()` is most natural for single-type rewrites driven by a
+predicate. When you want to rewrite *several* node types in a single
+pass, `ast_filter()` accepts a table of handlers keyed by S7 class.
+This is the q2r analogue of a Pandoc Lua filter
+(`{ Header = function(el) ... end, Strong = ... }`).
+
+```{r}
+out = doc |> ast_filter(
+  pandoc_strong = \(el) pandoc_small_caps(content = el@content),
+  pandoc_header = \(el) {
+    if (el@level == 1L) {
+      pandoc_header(level = 2L, attr = el@attr, content = el@content)
+    } else el
+  }
+)
+
+cat(pampa_to_qmd(out))
+```
+
+Handlers honour the same return-value contract as `map_nodes()`: return
+a node to replace, a list of nodes to splice, `NULL` to delete, or the
+input to no-op.
+
+Dispatch respects S7 inheritance, so an abstract-class handler acts as
+a catch-all (first-match-wins, so put specific types before general
+ones):
+
+```{r}
+visits = c()
+invisible(doc |> ast_filter(
+  pandoc_header = \(el) { visits <<- c(visits, "header"); el },
+  pandoc_block  = \(el) { visits <<- c(visits, "block");  el }
+))
+table(visits)
+```
+
+## Top-down traversal and skipping subtrees
+
+Pass `.order = "pre"` to visit parents before children. From a pre-order
+handler, return `ast_skip(x)` to install `x` at that position without
+descending into its children. This mirrors Pandoc Lua filters'
+`traverse = 'topdown'` plus `return el, false`.
+
+```{r}
+# Strip ALL formatting inside callout divs, leaving the rest of the
+# document alone.
+out = doc |> ast_filter(
+  .order = "pre",
+  pandoc_div = \(d) {
+    if (has_class(d, "callout-note")) {
+      flattened = pandoc_div(
+        attr    = d@attr,
+        content = as_blocks(ast_text(d))
+      )
+      ast_skip(flattened)
+    } else d
+  }
+)
+
+cat(pampa_to_qmd(out))
+```
+
+Without `ast_skip()`, the walker would still descend into the rewritten
+div's content; the skip is what makes "this whole subtree is now done"
+explicit.
+
+## List-level filters
+
+Two special handler names dispatch on entire inline/block sequences
+after their contents have been rewritten:
+
+- `pandoc_inlines = \(xs) ...` runs once per `pandoc_inlines` wrapper.
+- `pandoc_blocks = \(xs) ...` is the equivalent for `pandoc_blocks`.
+
+These are essential for context-aware transforms that single-element
+handlers cannot express (merging adjacent runs, dropping siblings based
+on neighbours, etc.).
+
+```{r}
+# Drop any paragraph whose plain-text form contains "Final".
+out = doc |> ast_filter(pandoc_blocks = \(xs) {
+  keep = !purrr::map_lgl(xs@content, \(b) {
+    S7::S7_inherits(b, pandoc_paragraph) &&
+      grepl("Final", ast_text(b), fixed = TRUE)
+  })
+  pandoc_blocks(xs@content[keep])
+})
+
+select_children(out, is(pandoc_paragraph)) |>
+  purrr::map_chr(ast_text)
+```
+
+List-level and element-level handlers compose in a single pass:
+
+```{r}
+out = doc |> ast_filter(
+  pandoc_strong  = \(el) pandoc_small_caps(content = el@content),
+  pandoc_inlines = \(xs) {
+    # Append a marker whenever a paragraph ends up containing small caps.
+    has_smallcaps = any(purrr::map_lgl(xs@content, S7::S7_inherits, pandoc_small_caps))
+    if (has_smallcaps) {
+      pandoc_inlines(c(xs@content, list(pandoc_str(text = "[!]"))))
+    } else xs
+  }
+)
+
+# the marker landed in the paragraph that had bold:
+purrr::map_chr(select_children(out, is(pandoc_paragraph)), ast_text)
+```
+
+## Flattening to plain text with `ast_text()`
+
+`ast_text()` recursively concatenates the textual content of any
+subtree, dropping all formatting. It is the q2r analogue of
+`pandoc.utils.stringify()` and is handy for matching on document
+content without walking the AST yourself.
+
+```{r}
+ast_text(doc)
+```
+
+It works on any node, not just the root:
+
+```{r}
+doc |>
+  select_first(is(pandoc_div) & has_class("callout-note")) |>
+  ast_text()
+```
+
+A common pattern: pick out matches by predicate, then summarise:
+
+```{r}
+doc |>
+  select_nodes(is(pandoc_header)) |>
+  purrr::map_chr(ast_text)
+```
+
+## Editing attributes
+
+The `@attr` slot carries id, classes, and key/value attributes for the
+nodes that have one (headers, divs, code, links, spans, ...). q2r ships
+immutable getters/setters that read like Lua's direct field access
+(`el.classes`, `el.identifier`) but return a new node:
+
+- `has_class(x, cls)` / `add_class(x, cls)` / `remove_class(x, cls)`
+- `get_id(x)` / `set_id(x, id)`
+- `get_attr(x, key)` / `set_attr(x, key, value)` / `remove_attr(x, key)`
+
+```{r}
+out = doc |> ast_filter(pandoc_header = \(h) {
+  h |> add_class("section") |> set_attr("data-level", as.character(h@level))
+})
+
+out |> select_nodes(is(pandoc_header)) |> purrr::map(\(h) h@attr)
+```
+
+Nodes without an `@attr` slot degrade gracefully for predicates
+(`has_class(pandoc_str(...), "x")` returns `FALSE`) but error on
+setters with a clear message.
+
+## Constructing content quickly
+
+Pandoc constructors are strictly typed, so even a simple emphasised
+phrase requires a few layers of wrapping. `as_inlines()` and
+`as_blocks()` accept strings (whitespace is converted to spaces,
+newlines to soft breaks), single nodes, lists, or existing wrappers,
+and produce the canonical wrapper type. Use them inside an
+`ast_filter()` handler to keep the body terse.
+
+```{r}
+# Append a "[Edited]" tag to every paragraph.
+out = doc |> ast_filter(pandoc_paragraph = \(p) {
+  pandoc_paragraph(content = as_inlines(c(
+    p@content@content,
+    list(pandoc_space(), pandoc_str(text = "[Edited]"))
+  )))
+})
+
+select_children(out, is(pandoc_paragraph)) |>
+  purrr::map_chr(ast_text)
+```
+
+`as_blocks()` makes the multi-paragraph case equally short:
+
+```{r}
+note = as_blocks(c(
+  "First paragraph of an appended note.",
+  "Second paragraph with more detail."
+))
+
+doc |>
+  insert_after(is(pandoc_header) & level == 1L, .what = note@content) |>
+  pampa_to_qmd() |>
+  cat()
+```
+
 ## The tree-sitter side
 
 Every verb above works on a [`ts_tree`] too. The mask exposes the
