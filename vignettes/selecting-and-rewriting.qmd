@@ -289,6 +289,179 @@ Nodes without an `@attr` slot degrade gracefully for predicates
 (`has_class(pandoc_str(...), "x")` returns `FALSE`) but error on
 setters with a clear message.
 
+## Recipes: porting Pandoc / Quarto Lua filters
+
+The verbs above are general purpose, but most Lua filters in the wild
+follow a handful of recognisable shapes. The recipes below pair the
+Lua original with its q2r translation so the mapping is obvious.
+
+A note on output formats first: Pandoc and Quarto Lua filters run as a
+stage of the render pipeline, so the output target is known and
+exposed via `FORMAT` / `quarto.doc.isFormat()`. q2r is a parsing and
+rewriting library, not a pipeline, and `ast_filter()` does not know
+what (if anything) the caller will do next with the AST. Document
+metadata is still available on `doc@meta`, but the *target* is not;
+filters that branch on it (Quarto's `fancy-text`, `kbd`, `color-box`,
+...) therefore become parameterised functions whose caller picks the
+branch up front. The recipes below all describe target-agnostic
+rewrites.
+
+### Open external links in a new tab
+
+A staple of HTML-rendering Lua filters. The Pandoc version sets two
+attributes on every `Link` whose target is an absolute URL:
+
+``` lua
+function Link(l)
+  if l.target:match('^https?://') then
+    l.attributes['target'] = '_blank'
+    l.attributes['rel']    = 'noopener'
+  end
+  return l
+end
+```
+
+The q2r translation is a single `ast_filter` handler keyed on
+`pandoc_link`, using `set_attr()` immutably:
+
+```{r}
+out = doc |> ast_filter(
+  pandoc_link = \(l) {
+    if (!grepl("^https?://", l@url)) return(l)
+    l |>
+      set_attr("target", "_blank") |>
+      set_attr("rel", "noopener")
+  }
+)
+
+out |>
+  select_nodes(is(pandoc_link)) |>
+  purrr::map(\(l) l@attr@attributes)
+```
+
+### Auto-anchor headings
+
+A common Pandoc recipe that wraps each heading's content in a link
+pointing at its own id, so readers can grab a permalink by clicking
+the heading:
+
+``` lua
+function Header(h)
+  if h.identifier == '' then return h end
+  local link = pandoc.Link(h.content, '#' .. h.identifier)
+  return pandoc.Header(h.level, link, h.attr)
+end
+```
+
+pampa applies pandoc's auto-identifier rules during parsing, so the
+headings in `doc` already have ids; the translation reads them with
+`get_id()` and rebuilds the inline content with `as_inlines()`:
+
+```{r}
+out = doc |> ast_filter(
+  pandoc_header = \(h) {
+    id = get_id(h)
+    if (!nzchar(id)) return(h)
+    link = pandoc_link(
+      content = h@content,
+      url     = paste0("#", id)
+    )
+    pandoc_header(
+      level   = h@level,
+      attr    = h@attr,
+      content = as_inlines(link)
+    )
+  }
+)
+
+cat(pampa_to_qmd(out))
+```
+
+### Force every callout to "caution"
+
+Straight from the Quarto docs: rewrite the class of every callout
+`Div` so the whole document renders as caution callouts.
+
+``` lua
+function Div(d)
+  for i, c in ipairs(d.classes) do
+    if c:match('^callout%-') then
+      d.classes[i] = 'callout-caution'
+    end
+  end
+  return d
+end
+```
+
+`remove_class()` accepts a vector, so the entire callout-prefixed
+sublist can be dropped in one call before adding the replacement:
+
+```{r}
+out = doc |> ast_filter(
+  pandoc_div = \(d) {
+    callout = purrr::keep(
+      d@attr@classes,
+      \(c) startsWith(c, "callout-")
+    )
+    if (!length(callout)) return(d)
+    d |>
+      remove_class(callout) |>
+      add_class("callout-caution")
+  }
+)
+
+out |>
+  select_nodes(is(pandoc_div)) |>
+  purrr::map(\(d) d@attr@classes)
+```
+
+### Count words
+
+A read-only traversal: count every `Str` that contains a
+non-punctuation character. The Lua version accumulates into a
+file-level local because Lua filters return one element at a time
+and have no first-class way to fold across calls.
+
+``` lua
+local n = 0
+function Str(s)
+  if s.text:match('%P') then n = n + 1 end
+end
+function Pandoc(_) print(n .. ' words') end
+```
+
+In R the natural shape is just `select_nodes()` + `map_lgl()` +
+`sum()` -- no accumulator, no side effects:
+
+```{r}
+doc |>
+  select_nodes(is(pandoc_str)) |>
+  purrr::map_lgl(\(s) grepl("[^[:punct:][:space:]]", s@text)) |>
+  sum()
+```
+
+### Extract a link inventory
+
+When the goal is to *collect* rather than to rewrite, `select_nodes()`
+plus `purrr` is usually shorter than an `ast_filter` handler with a
+side-effecting accumulator:
+
+``` lua
+local links = {}
+function Link(l)
+  links[#links + 1] = { text = pandoc.utils.stringify(l), url = l.target }
+end
+```
+
+```{r}
+links = select_nodes(doc, is(pandoc_link))
+
+data.frame(
+  text = purrr::map_chr(links, ast_text),
+  url  = purrr::map_chr(links, \(l) l@url)
+)
+```
+
 ## Constructing content quickly
 
 Pandoc constructors are strictly typed, so even a simple emphasised
