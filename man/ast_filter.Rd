@@ -11,6 +11,11 @@ ast_filter(x, ...)
 
 \item{...}{Named functions, where each name is an exported S7 class
 (e.g. \code{pandoc_strong}, \code{pandoc_header}, \code{pandoc_block}).}
+
+\item{.order}{Traversal direction: \code{"post"} (default, children
+rewritten before parent's handler runs) or \code{"pre"} (parent's
+handler runs first; wrap the return value with \code{\link[=ast_skip]{ast_skip()}} to
+skip descent).}
 }
 \value{
 A rewritten value of the same outer shape as \code{x}.
@@ -32,8 +37,25 @@ match a node, the first listed in \code{...} wins, so put more specific
 classes (e.g. \code{pandoc_header}) before more general ones
 (\code{pandoc_block}).
 
-Traversal is post-order: a parent's handler sees its children after
-they have been rewritten. This matches Pandoc Lua filters' default.
+Traversal is post-order by default: a parent's handler sees its
+children after they have been rewritten. This matches Pandoc Lua
+filters' default. Pass \code{.order = "pre"} for a top-down walk in which
+a parent's handler runs first; from a pre-order handler, return
+\code{\link[=ast_skip]{ast_skip()}} to use the (possibly modified) node as-is without
+descending into its children. This mirrors Lua filters'
+\code{traverse = 'topdown'} plus \verb{return el, false}.
+
+Two special handler names trigger list-level dispatch on entire
+inline/block sequences (Lua's \code{Inlines} / \code{Blocks} filters):
+\itemize{
+\item \verb{pandoc_inlines = \\(xs) ...} is called once per \code{\link{pandoc_inlines}}
+wrapper after its contents have been rewritten. Return a
+\code{pandoc_inlines} (or a \code{list} of inlines, or \code{NULL} for empty).
+\item \verb{pandoc_blocks = \\(xs) ...} is the equivalent for \code{\link{pandoc_blocks}}.
+These are useful for sliding-window / context-aware transforms that
+cannot be expressed at single-element level (e.g. merging adjacent
+runs, dropping siblings based on neighbours).
+}
 }
 \examples{
 \dontrun{

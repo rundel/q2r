@@ -29,12 +29,14 @@ Suggests:
 VignetteBuilder: quarto
 Config/testthat/edition: 3
 Collate:
-    'diagnostic.R'
-    'ts-ast.R'
     'pd-ast-support.R'
     'pd-ast-inline.R'
     'pd-ast-block.R'
+    'diagnostic.R'
     'pd-ast-pandoc.R'
+    'ast-attr.R'
+    'ast-construct.R'
+    'ts-ast.R'
     'select.R'
     'pandoc-modify-children.R'
     'pd-ast-print.R'
