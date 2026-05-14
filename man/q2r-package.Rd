@@ -28,6 +28,15 @@ inserted.}
 }
 }
 
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/rundel/q2r}
+  \item \url{https://rundel.github.io/q2r/}
+  \item Report bugs at \url{https://github.com/rundel/q2r/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Colin Rundel \email{cr173@duke.edu}
 
