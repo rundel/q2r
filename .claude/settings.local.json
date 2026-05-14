@@ -29,7 +29,14 @@
       "Bash(git -C /Users/rundel/Desktop/Projects/q2r/q2 diff --stat 5240608c..eca286b9 -- Cargo.toml 'crates/*/Cargo.toml')",
       "Bash(/usr/bin/git *)",
       "Bash(git *)",
-      "Bash(printf -- '> $$\\\\n> p\\(x\\)\\\\n> $$\\\\n')"
+      "Bash(printf -- '> $$\\\\n> p\\(x\\)\\\\n> $$\\\\n')",
+      "Bash(NOT_CRAN=true Rscript -e ' *)",
+      "WebSearch",
+      "WebFetch(domain:scorreia.com)",
+      "WebFetch(domain:pandoc.org)",
+      "WebFetch(domain:tree-sitter.github.io)",
+      "WebFetch(domain:semgrep.dev)",
+      "WebFetch(domain:ast-grep.github.io)"
     ]
   }
 }
