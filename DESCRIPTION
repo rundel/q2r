@@ -8,6 +8,8 @@ Description: Exploratory R bindings to the pampa Rust crate from the
     tree-sitter concrete syntax tree, parse diagnostics, and the Pandoc
     AST in native format.
 License: MIT + file LICENSE
+URL: https://github.com/rundel/q2r, https://rundel.github.io/q2r/
+BugReports: https://github.com/rundel/q2r/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Config/rextendr/version: 0.5.0
