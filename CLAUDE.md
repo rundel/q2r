@@ -90,14 +90,19 @@ Top-level [`tools/config.R`](tools/config.R) and [`tools/msrv.R`](tools/msrv.R) 
 
 All ad-hoc notes, drafts, state logs, and upstream-bug write-ups live under `notes/` (gitignored). This includes upstream issue drafts (`notes/<short-name>_issue.md`), the sync-failure log (`notes/q2-sync-notes.md`), and the running upstream issue list (`notes/issues.md`). Do not put these at the project root or under `q2/`.
 
+`notes/done/` holds issue drafts that have been **filed upstream** (a q2 issue number now exists), regardless of whether they have since been resolved. The skip reason in [R/tests.R](R/tests.R) is the authoritative source of truth for whether a given upstream issue is still affecting q2r tests — when an issue closes, drop its entries from `QUARTO_WEB_SKIP` and verify the previously-skipped fixtures pass, but leave the corresponding note in `notes/done/` as a historical record.
+
 ## Filing q2 issues
 
 Draft upstream q2 bug reports to `notes/<short-name>_issue.md`. Format:
 
+- Before running any pampa CLI command in `q2/` for a reprex, verify that `git -C q2 rev-parse HEAD` matches the `rev = '...'` value pinned in [src/rust/Cargo.toml](src/rust/Cargo.toml). The local `q2/` checkout is independent of the cargo-fetched build cache, and a stale checkout will produce CLI output that disagrees with the behavior q2r actually sees — silently leading to misdiagnosed bug reports. If they differ, `git -C q2 checkout <pinned-rev>` (and `git -C q2 rev-parse HEAD` again) before capturing any output for the reprex.
 - H1 with a one-line declarative summary of the bug. Sentence case. No "Title:" prefix, no headers like "Body" or "Reproduction" inside the file.
 - One short paragraph stating what is wrong and the observable consequence. No "Expected:" footer; the reprex output is the expectation.
 - A single four-backtick fenced block holding the reproduction. Inside it, run the pampa CLI three ways: reader-only (`cargo run --bin pampa --`), writer-only (`cargo run --bin pampa -- -t qmd`), and the round trip (the writer piped back into the reader). Show each `$ <cmd>` immediately followed by its output, separated by blank lines.
-- Build the input via `printf -- '...'` from the smallest possible bytes that exhibit the bug so the command is self-contained.
+- Build the input via `printf -- '...'` from the smallest possible bytes that exhibit the bug and pipe it directly into pampa (`printf -- '...' | cargo run --bin pampa -- 2>&1`). Do not write to a temp file — pampa reads from stdin when no filename arg is given, which keeps each command self-contained and avoids stale-fixture pitfalls.
+- Do not pass `--quiet` to `cargo run` in reprex commands, and always append `2>&1` so pampa's diagnostics (which go to stderr) land in the captured output. Reprexes that only capture stdout silently drop the error and make the bug look like it isn't reproducing.
+- When the printf input spans multiple lines, lead the reprex with a bare `$ printf -- '...'` followed by its expanded output so a reader can see the source bytes before the pampa commands run on them.
 - After the reprex, list 1-3 in-the-wild occurrences in the `tests/fixtures/quarto-web/` submodule as GitHub permalinks. Use `https://github.com/quarto-dev/quarto-web/blob/<submodule-HEAD-sha>/<path>#L<line>` so the line numbers stay valid as upstream evolves. Get the SHA with `git -C tests/fixtures/quarto-web rev-parse HEAD`.
 - No bolding, no decorative prose. Target under 20 lines (excluding the in-the-wild list).
 

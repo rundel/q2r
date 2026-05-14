@@ -2,17 +2,21 @@ QUARTO_WEB_SKIP = list(
   ts_rt        = list(),
   pd_rt        = list(),
   pampa_pd_rt  = list(
+    "docs/authoring/diagrams.qmd"                                = "q2#196 (reader rejects 4-space-indented list-item continuations as parse errors)",
     "docs/blog/posts/2024-04-01-manuscripts-rmedicine/index.qmd" = "q2#174 (loose list tightened on round-trip)",
-    "docs/blog/posts/2026-03-24-1.9-release/index.qmd"           = "q2#183 (list-table cell with multiple blocks emits broken bullet)",
     "docs/extensions/_shortcode-escaping.qmd"                    = "q2#174 (loose list tightened on round-trip)",
-    "docs/extensions/lua-api.qmd"                                = "q2#183 (list-table cell with multiple blocks emits broken bullet)",
+    "docs/extensions/engine.qmd"                                 = "q2#196 (reader rejects 4-space-indented list-item continuations as parse errors)",
+    "docs/extensions/lua-api.qmd"                                = "q2#195 (empty bullet-list items not round-tripped; writer's `- []` for an empty cell re-parses to [Plain []])",
     "docs/get-started/hello/rstudio.qmd"                         = "q2#174 (loose list tightened on round-trip)",
     "docs/journals/authors.qmd"                                  = "q2#174 (loose list tightened on round-trip)",
     "docs/journals/formats.qmd"                                  = "q2#174 (loose list tightened on round-trip)",
     "docs/manuscripts/authoring/_setup.qmd"                      = "q2#174 (loose list tightened on round-trip)",
     "docs/output-formats/html-code.qmd"                          = "q2#152 (executable code block class emitted as {.{r}})",
-    "docs/output-formats/hugo.qmd"                               = "q2#184 (indented code blocks unrecognized, bullet-like content reparses as list)",
+    "docs/output-formats/pdf-basics.qmd"                         = "q2#196 (reader rejects 4-space-indented list-item continuations as parse errors)",
     "docs/presentations/revealjs/index.qmd"                      = "q2#174 (loose list tightened on round-trip)",
+    "docs/publishing/netlify.qmd"                                = "q2#196 (reader rejects 4-space-indented list-item continuations as parse errors)",
+    "docs/publishing/quarto-pub.qmd"                             = "q2#196 (reader rejects 4-space-indented list-item continuations as parse errors)",
+    "docs/publishing/rstudio-connect.qmd"                        = "q2#196 (reader rejects 4-space-indented list-item continuations as parse errors)",
     "docs/websites/website-blog.qmd"                             = "q2#174 (loose list tightened on round-trip)"
   )
 )

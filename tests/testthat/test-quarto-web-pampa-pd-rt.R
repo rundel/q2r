@@ -881,14 +881,7 @@ test_that("docs/authoring/cross-references.qmd", {
 })
 
 test_that("docs/authoring/diagrams.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/authoring/diagrams.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
-  rendered = pampa_to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#196 (reader rejects 4-space-indented list-item continuations as parse errors)")
 })
 
 test_that("docs/authoring/figures.qmd", {
@@ -1534,7 +1527,14 @@ test_that("docs/blog/posts/2026-03-05-pdf-accessibility-and-standards/index.qmd"
 })
 
 test_that("docs/blog/posts/2026-03-24-1.9-release/index.qmd", {
-  skip("Known failure: q2#183 (list-table cell with multiple blocks emits broken bullet)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2026-03-24-1.9-release/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2026-03-31-typst-books-and-more/index.qmd", {
@@ -2708,14 +2708,7 @@ test_that("docs/extensions/distributing.qmd", {
 })
 
 test_that("docs/extensions/engine.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/extensions/engine.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
-  rendered = pampa_to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#196 (reader rejects 4-space-indented list-item continuations as parse errors)")
 })
 
 test_that("docs/extensions/filters.qmd", {
@@ -2796,7 +2789,7 @@ test_that("docs/extensions/listing-revealjs.qmd", {
 })
 
 test_that("docs/extensions/lua-api.qmd", {
-  skip("Known failure: q2#183 (list-table cell with multiple blocks emits broken bullet)")
+  skip("Known failure: q2#195 (empty bullet-list items not round-tripped; writer's `- []` for an empty cell re-parses to [Plain []])")
 })
 
 test_that("docs/extensions/lua.qmd", {
@@ -4140,7 +4133,14 @@ test_that("docs/output-formats/html-themes.qmd", {
 })
 
 test_that("docs/output-formats/hugo.qmd", {
-  skip("Known failure: q2#184 (indented code blocks unrecognized, bullet-like content reparses as list)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/hugo.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/output-formats/ms-word-templates.qmd", {
@@ -4177,14 +4177,7 @@ test_that("docs/output-formats/page-layout.qmd", {
 })
 
 test_that("docs/output-formats/pdf-basics.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/output-formats/pdf-basics.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
-  rendered = pampa_to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#196 (reader rejects 4-space-indented list-item continuations as parse errors)")
 })
 
 test_that("docs/output-formats/pdf-engine.qmd", {
@@ -5193,14 +5186,7 @@ test_that("docs/publishing/index.qmd", {
 })
 
 test_that("docs/publishing/netlify.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/publishing/netlify.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
-  rendered = pampa_to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#196 (reader rejects 4-space-indented list-item continuations as parse errors)")
 })
 
 test_that("docs/publishing/other.qmd", {
@@ -5237,25 +5223,11 @@ test_that("docs/publishing/posit-connect-cloud.qmd", {
 })
 
 test_that("docs/publishing/quarto-pub.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/publishing/quarto-pub.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
-  rendered = pampa_to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#196 (reader rejects 4-space-indented list-item continuations as parse errors)")
 })
 
 test_that("docs/publishing/rstudio-connect.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/publishing/rstudio-connect.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  if (has_error_diagnostics(pd)) skip("initial parse produced error diagnostics")
-  rendered = pampa_to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#196 (reader rejects 4-space-indented list-item continuations as parse errors)")
 })
 
 test_that("docs/reference/cells/cells-jupyter.qmd", {
