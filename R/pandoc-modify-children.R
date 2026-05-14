@@ -32,11 +32,11 @@ pd_rewrite_blocks_content = function(wrapper, .f) {
 }
 
 pd_rewrite_list_of_blocks = function(items, .f) {
-  purrr::map(items, pd_rewrite_blocks_content, .f = .f)
+  purrr::map(items, function(w) pd_rewrite_blocks_content(w, .f))
 }
 
 pd_rewrite_list_of_inlines = function(items, .f) {
-  purrr::map(items, pd_rewrite_inlines_content, .f = .f)
+  purrr::map(items, function(w) pd_rewrite_inlines_content(w, .f))
 }
 
 
