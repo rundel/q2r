@@ -63,7 +63,7 @@ Top-level [`tools/config.R`](tools/config.R) and [`tools/msrv.R`](tools/msrv.R) 
 - Pulled via a Cargo git dependency on the whole `quarto-dev/q2` repo, pinned by `rev`. See [src/rust/Cargo.toml](src/rust/Cargo.toml).
 - A whole-repo git dep is required because `pampa` has ~15 workspace-local `path = "../quarto-*"` sibling crates; vendoring or depending on `pampa` alone does not resolve.
 - Current pinned commit: `5e86cbef0d67b7e4dc2debb85042dfe320bb958d`. Bumps are deliberate: update the `rev` **and** regenerate `Cargo.lock`. All four q2 deps (`pampa`, `tree-sitter-qmd`, `quarto-source-map`, `quarto-error-reporting`) must be bumped together.
-- `default-features = false` on `pampa` drops `terminal-support`, `json-filter`, `lua-filter`, `template-fs`. None of these are needed for library-style parsing; disabling keeps builds lean and avoids Lua / subprocess linkage.
+- `default-features = false` on `pampa` drops `terminal-support`, `json-filter`, `lua-filter`, `template-fs`, and (since q2#192) transitively the new `filters` feature these activate. Dropping `filters` removes `quarto-system-runtime` and its v8/deno_core transitive deps from the link graph — important for the R-package shared-library build on Linux, where v8 linkage is problematic. None of these features are needed for library-style parsing; disabling keeps builds lean and avoids Lua / subprocess linkage.
 - `quarto-source-map` is a direct dep because we construct a `SourceContext` ourselves on the `Err` branch of `qmd::read` (the reader only returns a context on `Ok`) and on every `pampa_diag_format_impl` call.
 - `quarto-error-reporting` is a direct dep because we need `TextRenderOptions` (hyperlink toggle) and to `Deserialize`/reconstruct `DiagnosticMessage` values.
 

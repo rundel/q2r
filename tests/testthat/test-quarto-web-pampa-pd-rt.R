@@ -877,7 +877,7 @@ test_that("docs/authoring/contents.qmd", {
 })
 
 test_that("docs/authoring/create-citeable-articles.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2#TBD-footnote-indent-continuation (footnote-continuation 4-space indent triggers Q-2-35; structurally analogous to q2#196 but for footnotes)")
 })
 
 test_that("docs/authoring/cross-reference-options.qmd", {
@@ -921,7 +921,15 @@ test_that("docs/authoring/cross-references.qmd", {
 })
 
 test_that("docs/authoring/diagrams.qmd", {
-  skip("Known failure: q2#196 (round-trip rendering re-emits indented continuation that the reader then rejects)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/diagrams.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/authoring/figures.qmd", {
@@ -2825,11 +2833,19 @@ test_that("docs/extensions/distributing.qmd", {
 })
 
 test_that("docs/extensions/engine.qmd", {
-  skip("Known failure: q2#196 (round-trip rendering re-emits indented continuation that the reader then rejects)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/extensions/engine.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/extensions/filters.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/extensions/formats.qmd", {
@@ -2905,7 +2921,15 @@ test_that("docs/extensions/listing-revealjs.qmd", {
 })
 
 test_that("docs/extensions/lua-api.qmd", {
-  skip("Known failure: q2#195 (empty bullet-list items not round-tripped; writer's `- []` for an empty cell re-parses to [Plain []])")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/extensions/lua-api.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/extensions/lua.qmd", {
@@ -3389,7 +3413,7 @@ test_that("docs/interactive/index.qmd", {
 })
 
 test_that("docs/interactive/layout.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/interactive/ojs/_reactivity.qmd", {
@@ -3561,15 +3585,15 @@ test_that("docs/interactive/ojs/index.qmd", {
 })
 
 test_that("docs/interactive/ojs/libraries.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/interactive/ojs/ojs-cells.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/interactive/ojs/shiny.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/interactive/shiny/_examples/covid19-bicartogram/covid19-bicartogram.qmd", {
@@ -3621,11 +3645,11 @@ test_that("docs/interactive/shiny/_examples/old-faithful/shiny-old-faithful.qmd"
 })
 
 test_that("docs/interactive/shiny/execution.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/interactive/shiny/index.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/interactive/shiny/resources.qmd", {
@@ -3989,7 +4013,7 @@ test_that("docs/manuscripts/authoring/vscode.qmd", {
 })
 
 test_that("docs/manuscripts/components.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/manuscripts/index.qmd", {
@@ -4129,7 +4153,7 @@ test_that("docs/output-formats/html-basics.qmd", {
 })
 
 test_that("docs/output-formats/html-code.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/output-formats/html-lightbox-figures.qmd", {
@@ -4169,7 +4193,7 @@ test_that("docs/output-formats/html-publishing.qmd", {
 })
 
 test_that("docs/output-formats/html-themes-more.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/output-formats/html-themes.qmd", {
@@ -4185,11 +4209,11 @@ test_that("docs/output-formats/html-themes.qmd", {
 })
 
 test_that("docs/output-formats/hugo.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/output-formats/ms-word-templates.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/output-formats/ms-word.qmd", {
@@ -4217,7 +4241,15 @@ test_that("docs/output-formats/page-layout.qmd", {
 })
 
 test_that("docs/output-formats/pdf-basics.qmd", {
-  skip("Known failure: q2#196 (round-trip rendering re-emits indented continuation that the reader then rejects)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/pdf-basics.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/output-formats/pdf-engine.qmd", {
@@ -5269,7 +5301,15 @@ test_that("docs/publishing/index.qmd", {
 })
 
 test_that("docs/publishing/netlify.qmd", {
-  skip("Known failure: q2#196 (round-trip rendering re-emits indented continuation that the reader then rejects)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/publishing/netlify.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/publishing/other.qmd", {
@@ -5309,11 +5349,27 @@ test_that("docs/publishing/posit-connect-cloud.qmd", {
 })
 
 test_that("docs/publishing/quarto-pub.qmd", {
-  skip("Known failure: q2#196 (round-trip rendering re-emits indented continuation that the reader then rejects)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/publishing/quarto-pub.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/publishing/rstudio-connect.qmd", {
-  skip("Known failure: q2#196 (round-trip rendering re-emits indented continuation that the reader then rejects)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/publishing/rstudio-connect.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/reference/cells/cells-jupyter.qmd", {

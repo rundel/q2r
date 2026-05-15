@@ -877,7 +877,7 @@ test_that("docs/authoring/contents.qmd", {
 })
 
 test_that("docs/authoring/create-citeable-articles.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2#TBD-footnote-indent-continuation (footnote-continuation 4-space indent triggers Q-2-35; structurally analogous to q2#196 but for footnotes)")
 })
 
 test_that("docs/authoring/cross-reference-options.qmd", {
@@ -2861,7 +2861,7 @@ test_that("docs/extensions/engine.qmd", {
 })
 
 test_that("docs/extensions/filters.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/extensions/formats.qmd", {
@@ -3437,7 +3437,7 @@ test_that("docs/interactive/index.qmd", {
 })
 
 test_that("docs/interactive/layout.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/interactive/ojs/_reactivity.qmd", {
@@ -3609,15 +3609,15 @@ test_that("docs/interactive/ojs/index.qmd", {
 })
 
 test_that("docs/interactive/ojs/libraries.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/interactive/ojs/ojs-cells.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/interactive/ojs/shiny.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/interactive/shiny/_examples/covid19-bicartogram/covid19-bicartogram.qmd", {
@@ -3669,11 +3669,11 @@ test_that("docs/interactive/shiny/_examples/old-faithful/shiny-old-faithful.qmd"
 })
 
 test_that("docs/interactive/shiny/execution.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/interactive/shiny/index.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/interactive/shiny/resources.qmd", {
@@ -4061,7 +4061,7 @@ test_that("docs/manuscripts/authoring/vscode.qmd", {
 })
 
 test_that("docs/manuscripts/components.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/manuscripts/index.qmd", {
@@ -4201,7 +4201,7 @@ test_that("docs/output-formats/html-basics.qmd", {
 })
 
 test_that("docs/output-formats/html-code.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/output-formats/html-lightbox-figures.qmd", {
@@ -4241,7 +4241,7 @@ test_that("docs/output-formats/html-publishing.qmd", {
 })
 
 test_that("docs/output-formats/html-themes-more.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/output-formats/html-themes.qmd", {
@@ -4257,11 +4257,11 @@ test_that("docs/output-formats/html-themes.qmd", {
 })
 
 test_that("docs/output-formats/hugo.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/output-formats/ms-word-templates.qmd", {
-  skip("Known failure: q2#196 (reader rejects 4-space-indented blocks as parse errors)")
+  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
 })
 
 test_that("docs/output-formats/ms-word.qmd", {
