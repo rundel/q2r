@@ -1497,7 +1497,15 @@ test_that("docs/blog/posts/2024-11-25-1.6-release/index.qmd", {
 })
 
 test_that("docs/blog/posts/2024-12-04-websites-workshop/index.qmd", {
-  skip("Known failure: q2#201-related (pampa qmd writer downconverts curly `’` apostrophe to straight `'` without escape, triggering Q-2-10 on re-parse)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2024-12-04-websites-workshop/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2024-12-12-includes-meta/index.qmd", {
@@ -5389,7 +5397,7 @@ test_that("docs/projects/binder.qmd", {
 })
 
 test_that("docs/projects/code-execution.qmd", {
-  skip("Known failure: q2#201 (pampa qmd writer emits raw `'` for escaped `\\'`, breaking re-parse)")
+  skip("Known failure: q2#TBD-apostrophe-after-code-span (q2#201 fix is partial: writer does not escape `'` at the start of a Str when the preceding inline is a Code span ending in alphanumeric)")
 })
 
 test_that("docs/projects/environment.qmd", {
@@ -6433,7 +6441,7 @@ test_that("docs/websites/website-blog.qmd", {
 })
 
 test_that("docs/websites/website-drafts.qmd", {
-  skip("Known failure: q2#201 (pampa qmd writer emits raw `'` for escaped `\\'`, breaking re-parse)")
+  skip("Known failure: q2#TBD-apostrophe-after-code-span (q2#201 fix is partial: writer does not escape `'` at the start of a Str when the preceding inline is a Code span ending in alphanumeric)")
 })
 
 test_that("docs/websites/website-listings-custom.qmd", {
@@ -6481,7 +6489,15 @@ test_that("docs/websites/website-search.qmd", {
 })
 
 test_that("docs/websites/website-tools.qmd", {
-  skip("Known failure: q2#201 (pampa qmd writer emits raw `'` for escaped `\\'`, breaking re-parse)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/websites/website-tools.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = pampa_to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("index.qmd", {

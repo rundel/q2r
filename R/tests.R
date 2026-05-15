@@ -65,7 +65,6 @@ QUARTO_WEB_SKIP = list(
     "docs/authoring/markdown-basics.qmd"                           = "q2#156 (grid-table cells with ``` code fence trigger parse error)",
     "docs/authoring/tables.qmd"                                    = "q2#156 (grid-table cells with ``` code fence trigger parse error)",
     "docs/blog/posts/2024-04-01-manuscripts-rmedicine/index.qmd"   = "q2#174 (loose list tightened on round-trip)",
-    "docs/blog/posts/2024-12-04-websites-workshop/index.qmd"       = "q2#201-related (pampa qmd writer downconverts curly `’` apostrophe to straight `'` without escape, triggering Q-2-10 on re-parse)",
     "docs/blog/posts/2025-10-20-quarto-wizard-1-0-0/index.qmd"     = "q2#TBD-multiline-image-attr-list (multi-line image attribute lists rejected; see notes/multiline_image_attr_list_issue.md)",
     "docs/blog/posts/2025-11-24-conf-talk-videos/index.qmd"        = "q2#156 (grid-table cells with ``` code fence trigger parse error)",
     "docs/computations/caching.qmd"                                = "q2#156 (grid-table cells with ``` code fence trigger parse error)",
@@ -87,7 +86,7 @@ QUARTO_WEB_SKIP = list(
     "docs/manuscripts/authoring/_setup.qmd"                        = "q2#174 (loose list tightened on round-trip)",
     "docs/presentations/revealjs/index.qmd"                        = "q2#174 (loose list tightened on round-trip)",
     "docs/presentations/revealjs/presenting.qmd"                   = "q2#156 (grid-table cells with ``` code fence trigger parse error)",
-    "docs/projects/code-execution.qmd"                             = "q2#201 (pampa qmd writer emits raw `'` for escaped `\\'`, breaking re-parse)",
+    "docs/projects/code-execution.qmd"                             = "q2#TBD-apostrophe-after-code-span (q2#201 fix is partial: writer does not escape `'` at the start of a Str when the preceding inline is a Code span ending in alphanumeric)",
     "docs/projects/quarto-projects.qmd"                            = "q2#156 (grid-table cells with ``` code fence trigger parse error)",
     "docs/projects/virtual-environments.qmd"                       = "q2#156 (grid-table cells with ``` code fence trigger parse error)",
     "docs/publishing/github-pages.qmd"                             = "q2#156 (grid-table cells with ``` code fence trigger parse error)",
@@ -96,10 +95,9 @@ QUARTO_WEB_SKIP = list(
     "docs/tools/jupyter-lab.qmd"                                   = "q2#156 (grid-table cells with ``` code fence trigger parse error)",
     "docs/visual-editor/options.qmd"                               = "q2#TBD-kbd-shortcode-backslash (kbd shortcode rejects `\\\\` in param values; misleading Q-2-34 diagnostic)",
     "docs/websites/website-blog.qmd"                               = "q2#174 (loose list tightened on round-trip)",
-    "docs/websites/website-drafts.qmd"                             = "q2#201 (pampa qmd writer emits raw `'` for escaped `\\'`, breaking re-parse)",
+    "docs/websites/website-drafts.qmd"                             = "q2#TBD-apostrophe-after-code-span (q2#201 fix is partial: writer does not escape `'` at the start of a Str when the preceding inline is a Code span ending in alphanumeric)",
     "docs/websites/website-listings.qmd"                           = "q2#156 (grid-table cells with ``` code fence trigger parse error)",
-    "docs/websites/website-navigation.qmd"                         = "q2#TBD-div-close-after-pipe-table + q2#TBD-quoted-underscore (two distinct parser bugs; see notes/div_close_after_pipe_table_issue.md and notes/quoted_underscore_word_issue.md)",
-    "docs/websites/website-tools.qmd"                              = "q2#201 (pampa qmd writer emits raw `'` for escaped `\\'`, breaking re-parse)"
+    "docs/websites/website-navigation.qmd"                         = "q2#TBD-div-close-after-pipe-table + q2#TBD-quoted-underscore (two distinct parser bugs; see notes/div_close_after_pipe_table_issue.md and notes/quoted_underscore_word_issue.md)"
   )
 )
 
