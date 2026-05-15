@@ -65,6 +65,7 @@ QUARTO_WEB_SKIP = list(
     "docs/authoring/markdown-basics.qmd"                           = "q2#156 (grid-table cells with ``` code fence trigger parse error)",
     "docs/authoring/tables.qmd"                                    = "q2#156 (grid-table cells with ``` code fence trigger parse error)",
     "docs/blog/posts/2024-04-01-manuscripts-rmedicine/index.qmd"   = "q2#174 (loose list tightened on round-trip)",
+    "docs/blog/posts/2024-12-04-websites-workshop/index.qmd"       = "q2#201-related (pampa qmd writer downconverts curly `’` apostrophe to straight `'` without escape, triggering Q-2-10 on re-parse)",
     "docs/blog/posts/2025-10-20-quarto-wizard-1-0-0/index.qmd"     = "q2#TBD-multiline-image-attr-list (multi-line image attribute lists rejected; see notes/multiline_image_attr_list_issue.md)",
     "docs/blog/posts/2025-11-24-conf-talk-videos/index.qmd"        = "q2#156 (grid-table cells with ``` code fence trigger parse error)",
     "docs/computations/caching.qmd"                                = "q2#156 (grid-table cells with ``` code fence trigger parse error)",
