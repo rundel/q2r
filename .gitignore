@@ -2,7 +2,6 @@ src/rust/vendor
 src/Makevars
 src/Makevars.win
 tools
-q2
 notes/
 .positai
 .claude/settings.local.json

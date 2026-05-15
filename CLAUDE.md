@@ -6,7 +6,7 @@ R package that wraps the `pampa` Rust crate from [quarto-dev/q2](https://github.
 
 ### Rust
 
-- [src/rust/src/lib.rs](src/rust/src/lib.rs) exposes seven `#[extendr]` functions; all parser entry points call [`pampa::readers::qmd::read`](q2/crates/pampa/src/readers/qmd.rs) and convert each `DiagnosticMessage` into a structured R list via `diag_to_r::diag_to_r`. No pretty-printed diagnostic text is produced at parse time.
+- [src/rust/src/lib.rs](src/rust/src/lib.rs) exposes seven `#[extendr]` functions; all parser entry points call [`pampa::readers::qmd::read`](../q2/crates/pampa/src/readers/qmd.rs) and convert each `DiagnosticMessage` into a structured R list via `diag_to_r::diag_to_r`. No pretty-printed diagnostic text is produced at parse time.
   - `pampa_parse_pd_impl(text, filename, prune_errors)` returns `list(pd_ast, diagnostics)`. `pd_ast` is the tagged nested list produced by `pd_ast_to_r::pandoc_to_r` (or `NULL` on error).
   - `pampa_parse_ts_impl(text, filename, prune_errors)` returns `list(ts_ast, diagnostics)`. `ts_ast` is built directly via `ts_ast_to_r::parse_ts_ast_to_r` (tree-sitter parsing never fails); diagnostics are still produced by running `qmd::read` and discarding the Pandoc result.
   - `pampa_tree_impl(text, filename)` is the only entry point that uses `qmd::read`'s `output_stream` argument as a non-sink — passes a `Vec<u8>` to capture the `print_whole_tree` dump that `pampa -v` normally sends to stderr. Returns it as `Vec<String>`.
@@ -59,6 +59,7 @@ Top-level [`tools/config.R`](tools/config.R) and [`tools/msrv.R`](tools/msrv.R) 
 
 ## Pampa dependency
 
+- A local working copy of `quarto-dev/q2` lives at `../q2/` (sibling of this project, not embedded). It is the canonical location for `/q2-sync` work and for capturing reprex output via the `pampa` CLI. Cargo fetches its own copy independently — see below — so the local checkout is a developer convenience, not a build dependency.
 - Pulled via a Cargo git dependency on the whole `quarto-dev/q2` repo, pinned by `rev`. See [src/rust/Cargo.toml](src/rust/Cargo.toml).
 - A whole-repo git dep is required because `pampa` has ~15 workspace-local `path = "../quarto-*"` sibling crates; vendoring or depending on `pampa` alone does not resolve.
 - Current pinned commit: `5e86cbef0d67b7e4dc2debb85042dfe320bb958d`. Bumps are deliberate: update the `rev` **and** regenerate `Cargo.lock`. All four q2 deps (`pampa`, `tree-sitter-qmd`, `quarto-source-map`, `quarto-error-reporting`) must be bumped together.
@@ -70,7 +71,7 @@ Top-level [`tools/config.R`](tools/config.R) and [`tools/msrv.R`](tools/msrv.R) 
 
 - `to_qmd()` aims for **functional equivalence**: the output must re-parse to a `ts_ast` equal to the original (same kind tree and same `@text` slots). The correctness check used by the round-trip tests is `expect_ts_ast_equal(ts2, ts)` after `to_qmd(ts) -> pampa_parse_ts(...)`. Wrapper nodes that have a grammar gap (children don't cover the full byte range) preserve the gap by falling back to verbatim `@text`; this is how blank lines, indentation, and other inter-element whitespace stay byte-identical across the round trip.
 - `to_qmd()` is the sole text-reconstruction path for `ts_ast`. There is no byte-exact reconstruction helper by design: pampa re-parses any text we feed back to it, so functional equivalence is sufficient. Paths like [`pampa_parse_pd(ts_tree)`](R/pampa.R) and [`pampa_to_qmd(ts_tree)`](R/pampa.R) route through `to_qmd()` for this reason.
-- Per-kind handlers live in `ts_kind_handlers` in [R/ts-ast-to-qmd.R](R/ts-ast-to-qmd.R) and are derived empirically + by consulting [grammar.js](q2/crates/tree-sitter-qmd/tree-sitter-markdown/grammar.js). Extending to a new kind: run a few parses, observe how that kind's children map to source bytes, and add a handler. When adjusting a handler, verify the round-trip property holds.
+- Per-kind handlers live in `ts_kind_handlers` in [R/ts-ast-to-qmd.R](R/ts-ast-to-qmd.R) and are derived empirically + by consulting [grammar.js](../q2/crates/tree-sitter-qmd/tree-sitter-markdown/grammar.js). Extending to a new kind: run a few parses, observe how that kind's children map to source bytes, and add a handler. When adjusting a handler, verify the round-trip property holds.
 - `@text` on non-leaves is the escape hatch for grammar gaps and is **the only place** handlers read `@text` directly. Handlers that use it: `pandoc_math`, `pandoc_display_math`, `code_fence_content`. Treat any other use of `@text` as a bug — all other kinds must emit by walking children, because `@text` is `NULL` on them. If upstream tree-sitter-qmd promotes those anonymous regexes to named nodes, these three fallbacks (and the corresponding Rust exporter logic in [ts_ast_to_r.rs](src/rust/src/ts_ast_to_r.rs)) can be removed.
 
 ## Diagnostic rendering contract
@@ -88,7 +89,7 @@ Top-level [`tools/config.R`](tools/config.R) and [`tools/msrv.R`](tools/msrv.R) 
 
 ## Notes folder
 
-All ad-hoc notes, drafts, state logs, and upstream-bug write-ups live under `notes/` (gitignored). This includes upstream issue drafts (`notes/<short-name>_issue.md`), the sync-failure log (`notes/q2-sync-notes.md`), and the running upstream issue list (`notes/issues.md`). Do not put these at the project root or under `q2/`.
+All ad-hoc notes, drafts, state logs, and upstream-bug write-ups live under `notes/` (gitignored). This includes upstream issue drafts (`notes/<short-name>_issue.md`), the sync-failure log (`notes/q2-sync-notes.md`), and the running upstream issue list (`notes/issues.md`). Do not put these at the project root or under `../q2/`.
 
 `notes/done/` holds issue drafts that have been **filed upstream** (a q2 issue number now exists), regardless of whether they have since been resolved. The skip reason in [R/tests.R](R/tests.R) is the authoritative source of truth for whether a given upstream issue is still affecting q2r tests — when an issue closes, drop its entries from `QUARTO_WEB_SKIP` and verify the previously-skipped fixtures pass, but leave the corresponding note in `notes/done/` as a historical record.
 
@@ -96,7 +97,7 @@ All ad-hoc notes, drafts, state logs, and upstream-bug write-ups live under `not
 
 Draft upstream q2 bug reports to `notes/<short-name>_issue.md`. Format:
 
-- Before running any pampa CLI command in `q2/` for a reprex, verify that `git -C q2 rev-parse HEAD` matches the `rev = '...'` value pinned in [src/rust/Cargo.toml](src/rust/Cargo.toml). The local `q2/` checkout is independent of the cargo-fetched build cache, and a stale checkout will produce CLI output that disagrees with the behavior q2r actually sees — silently leading to misdiagnosed bug reports. If they differ, `git -C q2 checkout <pinned-rev>` (and `git -C q2 rev-parse HEAD` again) before capturing any output for the reprex.
+- Before running any pampa CLI command in `../q2/` for a reprex, verify that `git -C ../q2 rev-parse HEAD` matches the `rev = '...'` value pinned in [src/rust/Cargo.toml](src/rust/Cargo.toml). The local `../q2/` checkout is independent of the cargo-fetched build cache, and a stale checkout will produce CLI output that disagrees with the behavior q2r actually sees — silently leading to misdiagnosed bug reports. If they differ, `git -C ../q2 checkout <pinned-rev>` (and `git -C ../q2 rev-parse HEAD` again) before capturing any output for the reprex.
 - H1 with a one-line declarative summary of the bug. Sentence case. No "Title:" prefix, no headers like "Body" or "Reproduction" inside the file.
 - One short paragraph stating what is wrong and the observable consequence. No "Expected:" footer; the reprex output is the expectation.
 - A single four-backtick fenced block holding the reproduction. Inside it, run the pampa CLI three ways: reader-only (`cargo run --bin pampa --`), writer-only (`cargo run --bin pampa -- -t qmd`), and the round trip (the writer piped back into the reader). Show each `$ <cmd>` immediately followed by its output, separated by blank lines.

@@ -6,8 +6,7 @@
 ^src/rust/target$
 ^src/Makevars$
 ^src/Makevars\.win$
-^tools$
-^q2$
+^tools/rt$
 ^README\.qmd$
 ^.*\.Rproj$
 ^\.Rproj\.user$

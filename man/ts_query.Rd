@@ -12,8 +12,8 @@ then re-parses), a single string treated as text/file path (per
 \code{\link[=pampa_parse_ts]{pampa_parse_ts()}}'s rules), or raw text.}
 
 \item{query_text}{A tree-sitter query string (S-expression form).
-See \verb{q2/crates/tree-sitter-qmd/tree-sitter-markdown/queries/} for
-live examples.}
+See \url{https://github.com/quarto-dev/q2/tree/main/crates/tree-sitter-qmd/tree-sitter-markdown/queries/}
+for live examples.}
 }
 \value{
 A list with one element per match. Each match is itself a

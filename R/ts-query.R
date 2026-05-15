@@ -18,8 +18,8 @@ NULL
 #'   then re-parses), a single string treated as text/file path (per
 #'   [`pampa_parse_ts()`]'s rules), or raw text.
 #' @param query_text A tree-sitter query string (S-expression form).
-#'   See `q2/crates/tree-sitter-qmd/tree-sitter-markdown/queries/` for
-#'   live examples.
+#'   See <https://github.com/quarto-dev/q2/tree/main/crates/tree-sitter-qmd/tree-sitter-markdown/queries/>
+#'   for live examples.
 #' @return A list with one element per match. Each match is itself a
 #'   named list whose names are the capture identifiers in `query_text`
 #'   and whose values are [`ts_node`] objects. Returns `list()` when no
