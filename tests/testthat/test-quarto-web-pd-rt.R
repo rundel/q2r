@@ -277,7 +277,7 @@ test_that("_tools/screenshots/examples/quarto-demo/basics-jupyter.qmd", {
 })
 
 test_that("_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd", {
-  skip("Known failure: q2#TBD-misc-parse (one-off parser edge cases; see notes/parser_misc_edge_cases_notes.md)")
+  skip("Known failure: q2#TBD-pre-html-block (`<pre>...</pre>` not recognized as HTML block; see notes/pre_html_block_issue.md)")
 })
 
 test_that("_tools/screenshots/examples/quarto-demo/layout-jupyter.qmd", {
@@ -317,7 +317,15 @@ test_that("about.qmd", {
 })
 
 test_that("bug-reports.qmd", {
-  skip("Known failure: q2#TBD-inline-span-triple-backtick (inline code span wrapping ` ```{lang} ` rejected)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("bug-reports.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/_require-1.3.qmd", {
@@ -345,7 +353,7 @@ test_that("docs/_require-1.4.qmd", {
 })
 
 test_that("docs/advanced/environment-vars.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/advanced/html/external-sources.qmd", {
@@ -877,7 +885,7 @@ test_that("docs/authoring/contents.qmd", {
 })
 
 test_that("docs/authoring/create-citeable-articles.qmd", {
-  skip("Known failure: q2#TBD-footnote-indent-continuation (footnote-continuation 4-space indent triggers Q-2-35; structurally analogous to q2#196 but for footnotes)")
+  skip("Known failure: q2r#TBD-to_qmd-fenced-note (R-side to_qmd writer renders `::: ^N` note divs as `[^N]:` indented continuation, which re-parses as Q-2-35 indented code block; pampa writer is fine)")
 })
 
 test_that("docs/authoring/cross-reference-options.qmd", {
@@ -917,7 +925,15 @@ test_that("docs/authoring/cross-references-divs.qmd", {
 })
 
 test_that("docs/authoring/cross-references.qmd", {
-  skip("Known failure: q2#TBD-misc-parse (one-off parser edge cases; see notes/parser_misc_edge_cases_notes.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/cross-references.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/authoring/diagrams.qmd", {
@@ -993,7 +1009,7 @@ test_that("docs/authoring/lipsum.qmd", {
 })
 
 test_that("docs/authoring/markdown-basics.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/authoring/notebook-embed.qmd", {
@@ -1045,7 +1061,7 @@ test_that("docs/authoring/shortcodes.qmd", {
 })
 
 test_that("docs/authoring/tables.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/authoring/title-blocks.qmd", {
@@ -1277,11 +1293,27 @@ test_that("docs/blog/posts/2023-12-05-asa-traveling-courses/index.qmd", {
 })
 
 test_that("docs/blog/posts/2023-12-07-quarto-dashboards-demo/index.qmd", {
-  skip("Known failure: q2#TBD-misc-parse (one-off parser edge cases; see notes/parser_misc_edge_cases_notes.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2023-12-07-quarto-dashboards-demo/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2024-01-24-1.4-release/index.qmd", {
-  skip("Known failure: q2#TBD-misc-parse (one-off parser edge cases; see notes/parser_misc_edge_cases_notes.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2024-01-24-1.4-release/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2024-03-26-hugging-face/index.qmd", {
@@ -1465,7 +1497,15 @@ test_that("docs/blog/posts/2024-11-25-1.6-release/index.qmd", {
 })
 
 test_that("docs/blog/posts/2024-12-04-websites-workshop/index.qmd", {
-  skip("Known failure: q2#TBD-underscore-prefix-emphasis (Q-2-5 on _filename.ext identifiers)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/posts/2024-12-04-websites-workshop/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/posts/2024-12-12-includes-meta/index.qmd", {
@@ -1553,7 +1593,7 @@ test_that("docs/blog/posts/2025-10-13-1.8-release/index.qmd", {
 })
 
 test_that("docs/blog/posts/2025-10-20-quarto-wizard-1-0-0/index.qmd", {
-  skip("Known failure: q2#TBD-misc-parse (one-off parser edge cases; see notes/parser_misc_edge_cases_notes.md)")
+  skip("Known failure: q2#TBD-multiline-image-attr-list (multi-line image attribute lists rejected; see notes/multiline_image_attr_list_issue.md)")
 })
 
 test_that("docs/blog/posts/2025-10-27-conf-workshops-materials/index.qmd", {
@@ -1569,7 +1609,7 @@ test_that("docs/blog/posts/2025-10-27-conf-workshops-materials/index.qmd", {
 })
 
 test_that("docs/blog/posts/2025-11-24-conf-talk-videos/index.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/blog/posts/2026-03-05-pdf-accessibility-and-standards/index.qmd", {
@@ -1981,7 +2021,7 @@ test_that("docs/cli/use.qmd", {
 })
 
 test_that("docs/computations/caching.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/computations/execution-options.qmd", {
@@ -2009,7 +2049,7 @@ test_that("docs/computations/inline-code.qmd", {
 })
 
 test_that("docs/computations/julia.qmd", {
-  skip("Known failure: q2#TBD-apostrophe-quote-close (Q-2-9/Q-2-10 on possessive apostrophes)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/computations/ojs.qmd", {
@@ -2049,7 +2089,15 @@ test_that("docs/computations/python.qmd", {
 })
 
 test_that("docs/computations/r.qmd", {
-  skip("Known failure: q2#TBD-misc-parse (one-off parser edge cases; see notes/parser_misc_edge_cases_notes.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/computations/r.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/computations/render-scripts.qmd", {
@@ -2281,7 +2329,15 @@ test_that("docs/dashboards/_examples/navigation.qmd", {
 })
 
 test_that("docs/dashboards/_examples/penguins-obervable.qmd", {
-  skip("Known failure: q2#TBD-misc-parse (one-off parser edge cases; see notes/parser_misc_edge_cases_notes.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/dashboards/_examples/penguins-obervable.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/dashboards/_examples/python-wide.qmd", {
@@ -2861,7 +2917,15 @@ test_that("docs/extensions/engine.qmd", {
 })
 
 test_that("docs/extensions/filters.qmd", {
-  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/extensions/filters.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/extensions/formats.qmd", {
@@ -2949,7 +3013,7 @@ test_that("docs/extensions/lua-api.qmd", {
 })
 
 test_that("docs/extensions/lua.qmd", {
-  skip("Known failure: q2#TBD-attr-key-before-class (Q-2-3 fires on {key='v' .class} attribute ordering)")
+  skip("Known failure: q2r#TBD-to_qmd-brace-escape (R-side to_qmd writer drops `\\{`/`\\}` escapes in line blocks; pampa writer is fine)")
 })
 
 test_that("docs/extensions/managing.qmd", {
@@ -2989,7 +3053,15 @@ test_that("docs/extensions/nbfilter.qmd", {
 })
 
 test_that("docs/extensions/project-types.qmd", {
-  skip("Known failure: q2#TBD-misc-parse (one-off parser edge cases; see notes/parser_misc_edge_cases_notes.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/extensions/project-types.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/extensions/revealjs.qmd", {
@@ -3101,7 +3173,7 @@ test_that("docs/get-started/authoring/index.qmd", {
 })
 
 test_that("docs/get-started/authoring/jupyter.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/get-started/authoring/neovim.qmd", {
@@ -3129,7 +3201,7 @@ test_that("docs/get-started/authoring/positron.qmd", {
 })
 
 test_that("docs/get-started/authoring/rstudio.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/get-started/authoring/text-editor.qmd", {
@@ -3253,7 +3325,7 @@ test_that("docs/get-started/computations/index.qmd", {
 })
 
 test_that("docs/get-started/computations/jupyter.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/get-started/computations/neovim.qmd", {
@@ -3269,7 +3341,7 @@ test_that("docs/get-started/computations/neovim.qmd", {
 })
 
 test_that("docs/get-started/computations/positron.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/get-started/computations/rstudio.qmd", {
@@ -3297,7 +3369,7 @@ test_that("docs/get-started/computations/text-editor.qmd", {
 })
 
 test_that("docs/get-started/computations/vscode.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/get-started/hello/_hello.qmd", {
@@ -3349,11 +3421,11 @@ test_that("docs/get-started/hello/index.qmd", {
 })
 
 test_that("docs/get-started/hello/jupyter.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/get-started/hello/neovim.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/get-started/hello/positron.qmd", {
@@ -3393,11 +3465,11 @@ test_that("docs/get-started/hello/rstudio/_hello.qmd", {
 })
 
 test_that("docs/get-started/hello/text-editor.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/get-started/hello/vscode.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/get-started/index.qmd", {
@@ -3437,7 +3509,15 @@ test_that("docs/interactive/index.qmd", {
 })
 
 test_that("docs/interactive/layout.qmd", {
-  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/interactive/layout.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/interactive/ojs/_reactivity.qmd", {
@@ -3609,15 +3689,39 @@ test_that("docs/interactive/ojs/index.qmd", {
 })
 
 test_that("docs/interactive/ojs/libraries.qmd", {
-  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/interactive/ojs/libraries.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/interactive/ojs/ojs-cells.qmd", {
-  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/interactive/ojs/ojs-cells.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/interactive/ojs/shiny.qmd", {
-  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/interactive/ojs/shiny.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/interactive/shiny/_examples/covid19-bicartogram/covid19-bicartogram.qmd", {
@@ -3669,11 +3773,27 @@ test_that("docs/interactive/shiny/_examples/old-faithful/shiny-old-faithful.qmd"
 })
 
 test_that("docs/interactive/shiny/execution.qmd", {
-  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/interactive/shiny/execution.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/interactive/shiny/index.qmd", {
-  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/interactive/shiny/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/interactive/shiny/resources.qmd", {
@@ -3809,7 +3929,15 @@ test_that("docs/manuscripts/authoring/_authoring-content.qmd", {
 })
 
 test_that("docs/manuscripts/authoring/_citations.qmd", {
-  skip("Known failure: q2#TBD-attr-key-before-class (Q-2-3 fires on {key='v' .class} attribute ordering)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/manuscripts/authoring/_citations.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/manuscripts/authoring/_cross-refs.qmd", {
@@ -3957,7 +4085,15 @@ test_that("docs/manuscripts/authoring/_setup.qmd", {
 })
 
 test_that("docs/manuscripts/authoring/_structure.qmd", {
-  skip("Known failure: q2#TBD-inline-span-triple-backtick (inline code span wrapping ` ```{lang} ` rejected)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/manuscripts/authoring/_structure.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/manuscripts/authoring/_tables.qmd", {
@@ -3973,7 +4109,15 @@ test_that("docs/manuscripts/authoring/_tables.qmd", {
 })
 
 test_that("docs/manuscripts/authoring/_visual-editor.qmd", {
-  skip("Known failure: q2#TBD-attr-key-before-class (Q-2-3 fires on {key='v' .class} attribute ordering)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/manuscripts/authoring/_visual-editor.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/manuscripts/authoring/_workflow-ipynb.qmd", {
@@ -4061,11 +4205,27 @@ test_that("docs/manuscripts/authoring/vscode.qmd", {
 })
 
 test_that("docs/manuscripts/components.qmd", {
-  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/manuscripts/components.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/manuscripts/index.qmd", {
-  skip("Known failure: q2#TBD-attr-key-before-class (Q-2-3 fires on {key='v' .class} attribute ordering)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/manuscripts/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/manuscripts/next-steps.qmd", {
@@ -4201,7 +4361,15 @@ test_that("docs/output-formats/html-basics.qmd", {
 })
 
 test_that("docs/output-formats/html-code.qmd", {
-  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/html-code.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/output-formats/html-lightbox-figures.qmd", {
@@ -4241,7 +4409,15 @@ test_that("docs/output-formats/html-publishing.qmd", {
 })
 
 test_that("docs/output-formats/html-themes-more.qmd", {
-  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/html-themes-more.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/output-formats/html-themes.qmd", {
@@ -4257,11 +4433,27 @@ test_that("docs/output-formats/html-themes.qmd", {
 })
 
 test_that("docs/output-formats/hugo.qmd", {
-  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/hugo.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/output-formats/ms-word-templates.qmd", {
-  skip("Known failure: q2-design-indented-blocks (quarto-web doc uses 4-space-indented examples that Quarto Markdown rejects; not a q2 bug)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/ms-word-templates.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/output-formats/ms-word.qmd", {
@@ -4313,7 +4505,15 @@ test_that("docs/output-formats/pdf-engine.qmd", {
 })
 
 test_that("docs/output-formats/typst-custom.qmd", {
-  skip("Known failure: q2#TBD-misc-parse (one-off parser edge cases; see notes/parser_misc_edge_cases_notes.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/typst-custom.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/output-formats/typst.qmd", {
@@ -5217,7 +5417,7 @@ test_that("docs/presentations/revealjs/index.qmd", {
 })
 
 test_that("docs/presentations/revealjs/presenting.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/presentations/revealjs/themes.qmd", {
@@ -5245,7 +5445,15 @@ test_that("docs/projects/binder.qmd", {
 })
 
 test_that("docs/projects/code-execution.qmd", {
-  skip("Known failure: q2#TBD-apostrophe-quote-close (Q-2-9/Q-2-10 on possessive apostrophes)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/projects/code-execution.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/projects/environment.qmd", {
@@ -5273,7 +5481,7 @@ test_that("docs/projects/profiles.qmd", {
 })
 
 test_that("docs/projects/quarto-projects.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/projects/scripts.qmd", {
@@ -5289,7 +5497,7 @@ test_that("docs/projects/scripts.qmd", {
 })
 
 test_that("docs/projects/virtual-environments.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/publishing/_confluence_examples/confluence-demo.qmd", {
@@ -5329,7 +5537,7 @@ test_that("docs/publishing/confluence.qmd", {
 })
 
 test_that("docs/publishing/github-pages.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/publishing/hugging-face.qmd", {
@@ -6065,15 +6273,15 @@ test_that("docs/tools/_examples/python.qmd", {
 })
 
 test_that("docs/tools/_jupyter-lab-extension-install.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/tools/jupyter-lab-extension.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/tools/jupyter-lab.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/tools/neovim.qmd", {
@@ -6245,11 +6453,19 @@ test_that("docs/visual-editor/markdown.qmd", {
 })
 
 test_that("docs/visual-editor/options.qmd", {
-  skip("Known failure: q2#TBD-misc-parse (one-off parser edge cases; see notes/parser_misc_edge_cases_notes.md)")
+  skip("Known failure: q2#TBD-kbd-shortcode-backslash (kbd shortcode rejects `\\\\` in param values; misleading Q-2-34 diagnostic)")
 })
 
 test_that("docs/visual-editor/technical.qmd", {
-  skip("Known failure: q2#TBD-inline-span-triple-backtick (inline code span wrapping ` ```{lang} ` rejected)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/visual-editor/technical.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/websites/website-about.qmd", {
@@ -6289,15 +6505,31 @@ test_that("docs/websites/website-blog.qmd", {
 })
 
 test_that("docs/websites/website-drafts.qmd", {
-  skip("Known failure: q2#TBD-apostrophe-quote-close (Q-2-9/Q-2-10 on possessive apostrophes)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/websites/website-drafts.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/websites/website-listings-custom.qmd", {
-  skip("Known failure: q2#TBD-misc-parse (one-off parser edge cases; see notes/parser_misc_edge_cases_notes.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/websites/website-listings-custom.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/websites/website-listings.qmd", {
-  skip("Known failure: q2#TBD-table-cell-grid-backticks (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
 })
 
 test_that("docs/websites/website-llms.qmd", {
@@ -6313,7 +6545,7 @@ test_that("docs/websites/website-llms.qmd", {
 })
 
 test_that("docs/websites/website-navigation.qmd", {
-  skip("Known failure: q2#TBD-misc-parse (one-off parser edge cases; see notes/parser_misc_edge_cases_notes.md)")
+  skip("Known failure: q2#TBD-div-close-after-pipe-table + q2#TBD-quoted-underscore (two distinct parser bugs; see notes/div_close_after_pipe_table_issue.md and notes/quoted_underscore_word_issue.md)")
 })
 
 test_that("docs/websites/website-search.qmd", {
@@ -6329,7 +6561,15 @@ test_that("docs/websites/website-search.qmd", {
 })
 
 test_that("docs/websites/website-tools.qmd", {
-  skip("Known failure: q2#TBD-apostrophe-quote-close (Q-2-9/Q-2-10 on possessive apostrophes)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/websites/website-tools.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("index.qmd", {

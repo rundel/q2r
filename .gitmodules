@@ -1,3 +1,4 @@
 [submodule "tests/fixtures/quarto-web"]
 	path = tests/fixtures/quarto-web
 	url = https://github.com/quarto-dev/quarto-web.git
+	ignore = dirty
