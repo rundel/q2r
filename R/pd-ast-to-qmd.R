@@ -398,7 +398,8 @@ S7::method(to_qmd, pandoc_note_definition_para) = function(x) {
 
 S7::method(to_qmd, pandoc_note_definition_fenced_block) = function(x) {
   inner = to_qmd(x@content)
-  paste0(pandoc_indent_lines(inner, paste0("[^", x@id, "]: "), "    "), "\n")
+  if (nchar(inner) > 0L && !endsWith(inner, "\n")) inner = paste0(inner, "\n")
+  paste0("::: ^", x@id, "\n", inner, ":::\n")
 }
 
 pandoc_figure_single_image = function(x) {

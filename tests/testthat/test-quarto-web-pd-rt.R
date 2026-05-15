@@ -885,7 +885,15 @@ test_that("docs/authoring/contents.qmd", {
 })
 
 test_that("docs/authoring/create-citeable-articles.qmd", {
-  skip("Known failure: q2r#TBD-to_qmd-fenced-note (R-side to_qmd writer renders `::: ^N` note divs as `[^N]:` indented continuation, which re-parses as Q-2-35 indented code block; pampa writer is fine)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/create-citeable-articles.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/authoring/cross-reference-options.qmd", {

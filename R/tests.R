@@ -32,7 +32,6 @@ QUARTO_WEB_SKIP = list(
   pd_rt = list(
     "_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd" = "q2#TBD-pre-html-block (`<pre>...</pre>` not recognized as HTML block; see notes/pre_html_block_issue.md)",
     "docs/advanced/environment-vars.qmd"                           = "q2#156 (grid-table cells with ``` code fence trigger parse error)",
-    "docs/authoring/create-citeable-articles.qmd"                  = "q2r#TBD-to_qmd-fenced-note (R-side to_qmd writer renders `::: ^N` note divs as `[^N]:` indented continuation, which re-parses as Q-2-35 indented code block; pampa writer is fine)",
     "docs/authoring/markdown-basics.qmd"                           = "q2#156 (grid-table cells with ``` code fence trigger parse error)",
     "docs/authoring/tables.qmd"                                    = "q2#156 (grid-table cells with ``` code fence trigger parse error)",
     "docs/blog/posts/2025-10-20-quarto-wizard-1-0-0/index.qmd"     = "q2#TBD-multiline-image-attr-list (multi-line image attribute lists rejected; see notes/multiline_image_attr_list_issue.md)",
