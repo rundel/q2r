@@ -134,7 +134,7 @@ ts_kind_handlers = list(
   pandoc_image = ts_text_or(),
   target       = ts_text_or(NULL),
 
-  attribute_specifier  = ts_concat,
+  attribute_specifier  = ts_text_or(),
   commonmark_specifier = ts_text_or(),
   language_specifier   = ts_text_or(),
   key_value_specifier  = ts_concat,

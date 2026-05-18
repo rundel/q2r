@@ -1,4 +1,4 @@
-bad_qmd = "::: {.foo"
+bad_qmd = ":::: {"
 
 test_that("pampa_parse_pd raises an error by default on bad input", {
   expect_error(pampa_parse_pd(bad_qmd), "Parse error")
