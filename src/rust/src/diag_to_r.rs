@@ -18,6 +18,7 @@ fn detail_kind_str(k: DetailKind) -> &'static str {
         DetailKind::Error => "error",
         DetailKind::Info => "info",
         DetailKind::Note => "note",
+        DetailKind::Faded => "faded",
     }
 }
 
@@ -34,6 +35,7 @@ fn parse_detail_kind(s: &str) -> DetailKind {
     match s {
         "info" => DetailKind::Info,
         "note" => DetailKind::Note,
+        "faded" => DetailKind::Faded,
         _ => DetailKind::Error,
     }
 }

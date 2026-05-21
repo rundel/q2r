@@ -178,6 +178,7 @@ ts_kind_handlers = list(
   pandoc_display_math = ts_text_or(NULL),
   pandoc_div          = ts_text_or(NULL),
   pipe_table          = ts_text_or(NULL),
+  grid_table          = ts_text_or(NULL),
   caption             = ts_text_or(NULL),
   shortcode           = ts_text_or(NULL),
   inline_ref_def      = ts_text_or(NULL)

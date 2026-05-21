@@ -353,7 +353,7 @@ test_that("docs/_require-1.4.qmd", {
 })
 
 test_that("docs/advanced/environment-vars.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/advanced/html/external-sources.qmd", {
@@ -773,27 +773,11 @@ test_that("docs/authoring/appendices.qmd", {
 })
 
 test_that("docs/authoring/article-layout.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/authoring/article-layout.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/authoring/brand.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/authoring/brand.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/authoring/callouts.qmd", {
@@ -809,15 +793,7 @@ test_that("docs/authoring/callouts.qmd", {
 })
 
 test_that("docs/authoring/citations.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/authoring/citations.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/authoring/code-annotation-example/revealjs.qmd", {
@@ -869,15 +845,7 @@ test_that("docs/authoring/contents.qmd", {
 })
 
 test_that("docs/authoring/create-citeable-articles.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/authoring/create-citeable-articles.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/authoring/cross-reference-options.qmd", {
@@ -953,15 +921,7 @@ test_that("docs/authoring/figures.qmd", {
 })
 
 test_that("docs/authoring/front-matter.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/authoring/front-matter.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/authoring/includes.qmd", {
@@ -1001,7 +961,7 @@ test_that("docs/authoring/lipsum.qmd", {
 })
 
 test_that("docs/authoring/markdown-basics.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/authoring/notebook-embed.qmd", {
@@ -1053,7 +1013,7 @@ test_that("docs/authoring/shortcodes.qmd", {
 })
 
 test_that("docs/authoring/tables.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/authoring/title-blocks.qmd", {
@@ -1273,15 +1233,7 @@ test_that("docs/blog/posts/2023-05-22-quarto-for-academics/index.qmd", {
 })
 
 test_that("docs/blog/posts/2023-12-05-asa-traveling-courses/index.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/blog/posts/2023-12-05-asa-traveling-courses/index.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/blog/posts/2023-12-07-quarto-dashboards-demo/index.qmd", {
@@ -1577,7 +1529,7 @@ test_that("docs/blog/posts/2025-10-27-conf-workshops-materials/index.qmd", {
 })
 
 test_that("docs/blog/posts/2025-11-24-conf-talk-videos/index.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/blog/posts/2026-03-05-pdf-accessibility-and-standards/index.qmd", {
@@ -1973,19 +1925,11 @@ test_that("docs/cli/use.qmd", {
 })
 
 test_that("docs/computations/caching.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/computations/execution-options.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/computations/execution-options.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/computations/inline-code.qmd", {
@@ -2001,7 +1945,7 @@ test_that("docs/computations/inline-code.qmd", {
 })
 
 test_that("docs/computations/julia.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/computations/ojs.qmd", {
@@ -3033,15 +2977,7 @@ test_that("docs/faq/index.qmd", {
 })
 
 test_that("docs/faq/rmarkdown.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/faq/rmarkdown.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/gallery/index.qmd", {
@@ -3093,7 +3029,7 @@ test_that("docs/get-started/authoring/index.qmd", {
 })
 
 test_that("docs/get-started/authoring/jupyter.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/get-started/authoring/neovim.qmd", {
@@ -3121,7 +3057,7 @@ test_that("docs/get-started/authoring/positron.qmd", {
 })
 
 test_that("docs/get-started/authoring/rstudio.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/get-started/authoring/text-editor.qmd", {
@@ -3245,7 +3181,7 @@ test_that("docs/get-started/computations/index.qmd", {
 })
 
 test_that("docs/get-started/computations/jupyter.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/get-started/computations/neovim.qmd", {
@@ -3261,7 +3197,7 @@ test_that("docs/get-started/computations/neovim.qmd", {
 })
 
 test_that("docs/get-started/computations/positron.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/get-started/computations/rstudio.qmd", {
@@ -3289,7 +3225,7 @@ test_that("docs/get-started/computations/text-editor.qmd", {
 })
 
 test_that("docs/get-started/computations/vscode.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/get-started/hello/_hello.qmd", {
@@ -3341,11 +3277,11 @@ test_that("docs/get-started/hello/index.qmd", {
 })
 
 test_that("docs/get-started/hello/jupyter.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/get-started/hello/neovim.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/get-started/hello/positron.qmd", {
@@ -3369,11 +3305,11 @@ test_that("docs/get-started/hello/rstudio/_hello.qmd", {
 })
 
 test_that("docs/get-started/hello/text-editor.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/get-started/hello/vscode.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/get-started/index.qmd", {
@@ -4101,15 +4037,7 @@ test_that("docs/manuscripts/index.qmd", {
 })
 
 test_that("docs/manuscripts/next-steps.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/manuscripts/next-steps.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/manuscripts/publishing.qmd", {
@@ -4221,15 +4149,7 @@ test_that("docs/output-formats/html-accessibility.qmd", {
 })
 
 test_that("docs/output-formats/html-basics.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/output-formats/html-basics.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/output-formats/html-code.qmd", {
@@ -4293,15 +4213,7 @@ test_that("docs/output-formats/html-themes-more.qmd", {
 })
 
 test_that("docs/output-formats/html-themes.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/output-formats/html-themes.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/output-formats/hugo.qmd", {
@@ -5273,19 +5185,11 @@ test_that("docs/presentations/revealjs/index.qmd", {
 })
 
 test_that("docs/presentations/revealjs/presenting.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/presentations/revealjs/themes.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/presentations/revealjs/themes.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/projects/binder.qmd", {
@@ -5329,7 +5233,7 @@ test_that("docs/projects/profiles.qmd", {
 })
 
 test_that("docs/projects/quarto-projects.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/projects/scripts.qmd", {
@@ -5345,7 +5249,7 @@ test_that("docs/projects/scripts.qmd", {
 })
 
 test_that("docs/projects/virtual-environments.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/publishing/_confluence_examples/confluence-demo.qmd", {
@@ -5385,7 +5289,7 @@ test_that("docs/publishing/confluence.qmd", {
 })
 
 test_that("docs/publishing/github-pages.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/publishing/hugging-face.qmd", {
@@ -5655,6 +5559,18 @@ test_that("docs/reference/formats/html.qmd", {
 test_that("docs/reference/formats/icml.qmd", {
   skip_if_no_quarto_web()
   text = quarto_web_read("docs/reference/formats/icml.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
+})
+
+test_that("docs/reference/formats/index.qmd", {
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/reference/formats/index.qmd")
   pd = pampa_parse_pd(text, quiet = TRUE)
   expect_no_error_diagnostics(pd)
   if (has_error_diagnostics(pd)) return(invisible())
@@ -6048,9 +5964,33 @@ test_that("docs/reference/metadata/crossref.qmd", {
   expect_pd_ast_equal(pd2, pd)
 })
 
+test_that("docs/reference/metadata/index.qmd", {
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/reference/metadata/index.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
+})
+
 test_that("docs/reference/projects/books.qmd", {
   skip_if_no_quarto_web()
   text = quarto_web_read("docs/reference/projects/books.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
+})
+
+test_that("docs/reference/projects/index.qmd", {
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/reference/projects/index.qmd")
   pd = pampa_parse_pd(text, quiet = TRUE)
   expect_no_error_diagnostics(pd)
   if (has_error_diagnostics(pd)) return(invisible())
@@ -6121,15 +6061,15 @@ test_that("docs/tools/_examples/python.qmd", {
 })
 
 test_that("docs/tools/_jupyter-lab-extension-install.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/tools/jupyter-lab-extension.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/tools/jupyter-lab.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/tools/neovim.qmd", {
@@ -6353,7 +6293,7 @@ test_that("docs/websites/website-listings-custom.qmd", {
 })
 
 test_that("docs/websites/website-listings.qmd", {
-  skip("Known failure: q2#156 (grid-table cells with ``` code fence trigger parse error)")
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/websites/website-llms.qmd", {
@@ -6373,27 +6313,11 @@ test_that("docs/websites/website-navigation.qmd", {
 })
 
 test_that("docs/websites/website-search.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/websites/website-search.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("docs/websites/website-tools.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/websites/website-tools.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
 })
 
 test_that("index.qmd", {
