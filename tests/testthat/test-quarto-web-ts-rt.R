@@ -2949,7 +2949,15 @@ test_that("docs/extensions/lua-api.qmd", {
 })
 
 test_that("docs/extensions/lua.qmd", {
-  skip("Known failure: q2r#TBD-to_qmd-brace-escape (R-side to_qmd writer drops `\\{`/`\\}` escapes in line blocks; pampa writer is fine)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/extensions/lua.qmd")
+  ts = pampa_parse_ts(text, quiet = TRUE)
+  expect_no_error_diagnostics(ts)
+  if (has_error_diagnostics(ts)) return(invisible())
+  rendered = to_qmd(ts)
+  ts2 = pampa_parse_ts(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
 })
 
 test_that("docs/extensions/managing.qmd", {

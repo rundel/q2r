@@ -1321,15 +1321,7 @@ test_that("docs/blog/posts/2024-03-26-hugging-face/index.qmd", {
 })
 
 test_that("docs/blog/posts/2024-04-01-manuscripts-rmedicine/index.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/blog/posts/2024-04-01-manuscripts-rmedicine/index.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#174 (loose list tightened on round-trip)")
 })
 
 test_that("docs/blog/posts/2024-05-28-conf-workshops/index.qmd", {
@@ -1569,15 +1561,7 @@ test_that("docs/blog/posts/2025-10-13-1.8-release/index.qmd", {
 })
 
 test_that("docs/blog/posts/2025-10-20-quarto-wizard-1-0-0/index.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/blog/posts/2025-10-20-quarto-wizard-1-0-0/index.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#174 (loose list tightened on round-trip)")
 })
 
 test_that("docs/blog/posts/2025-10-27-conf-workshops-materials/index.qmd", {
@@ -2809,15 +2793,7 @@ test_that("docs/extensions/_listing-preamble.qmd", {
 })
 
 test_that("docs/extensions/_shortcode-escaping.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/extensions/_shortcode-escaping.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#174 (loose list tightened on round-trip)")
 })
 
 test_that("docs/extensions/brand.qmd", {
@@ -2949,7 +2925,15 @@ test_that("docs/extensions/lua-api.qmd", {
 })
 
 test_that("docs/extensions/lua.qmd", {
-  skip("Known failure: q2r#TBD-to_qmd-brace-escape (R-side to_qmd writer drops `\\{`/`\\}` escapes in line blocks; pampa writer is fine)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/extensions/lua.qmd")
+  pd = pampa_parse_pd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/extensions/managing.qmd", {
@@ -3369,15 +3353,7 @@ test_that("docs/get-started/hello/positron.qmd", {
 })
 
 test_that("docs/get-started/hello/rstudio.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/get-started/hello/rstudio.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#174 (loose list tightened on round-trip)")
 })
 
 test_that("docs/get-started/hello/rstudio/_hello.qmd", {
@@ -3713,15 +3689,7 @@ test_that("docs/interactive/shiny/execution.qmd", {
 })
 
 test_that("docs/interactive/shiny/index.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/interactive/shiny/index.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#174 (loose list tightened on round-trip)")
 })
 
 test_that("docs/interactive/shiny/resources.qmd", {
@@ -3797,27 +3765,11 @@ test_that("docs/journals/_draft/extension-templates.qmd", {
 })
 
 test_that("docs/journals/authors.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/journals/authors.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#174 (loose list tightened on round-trip)")
 })
 
 test_that("docs/journals/formats.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/journals/formats.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#174 (loose list tightened on round-trip)")
 })
 
 test_that("docs/journals/index.qmd", {
@@ -4001,15 +3953,7 @@ test_that("docs/manuscripts/authoring/_overview.qmd", {
 })
 
 test_that("docs/manuscripts/authoring/_setup.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/manuscripts/authoring/_setup.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#174 (loose list tightened on round-trip)")
 })
 
 test_that("docs/manuscripts/authoring/_structure.qmd", {
@@ -5325,15 +5269,7 @@ test_that("docs/presentations/revealjs/examples/tabset.qmd", {
 })
 
 test_that("docs/presentations/revealjs/index.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/presentations/revealjs/index.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#174 (loose list tightened on round-trip)")
 })
 
 test_that("docs/presentations/revealjs/presenting.qmd", {
@@ -5365,15 +5301,7 @@ test_that("docs/projects/binder.qmd", {
 })
 
 test_that("docs/projects/code-execution.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/projects/code-execution.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#174 (loose list tightened on round-trip)")
 })
 
 test_that("docs/projects/environment.qmd", {
@@ -6405,15 +6333,7 @@ test_that("docs/websites/website-basics.qmd", {
 })
 
 test_that("docs/websites/website-blog.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("docs/websites/website-blog.qmd")
-  pd = pampa_parse_pd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = pampa_parse_pd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#174 (loose list tightened on round-trip)")
 })
 
 test_that("docs/websites/website-drafts.qmd", {

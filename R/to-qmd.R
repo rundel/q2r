@@ -1,25 +1,62 @@
-#' @include ts-ast.R
+#' @include ts-ast.R pd-ast-pandoc.R to-rust.R
 NULL
 
-#' Render a tree-sitter AST back to QMD text
+#' Render an R-side AST back to QMD text
 #'
 #' `r lifecycle::badge("experimental")`
 #'
-#' Walks a [`ts_tree`] or [`ts_node`] and emits QMD source text by
-#' dispatching on node kind. Aims for functional equivalence: the
-#' output must re-parse to a structurally equal `ts_ast`. Where a
-#' parent node carries `@text` for grammar gaps (whitespace its
-#' children don't model), that text is preserved verbatim, so blank
-#' lines and other inter-element whitespace round-trip faithfully.
+#' `to_qmd()` is the single entry point for turning an R-held AST back
+#' into QMD source text. Two top-level methods are defined:
 #'
-#' @param x A [`ts_tree`] or [`ts_node`].
-#' @return A single string.
+#' * `to_qmd(pandoc)` rebuilds pampa's `Pandoc` value in Rust from the
+#'   tagged-list shape produced by [`pandoc_to_list()`] and runs
+#'   `pampa::writers::qmd::write` on it. Pampa is the sole source of
+#'   truth for QMD writing.
+#' * `to_qmd(ts_tree)` recovers source bytes by walking the tree-sitter
+#'   AST and falling back to each node's `@text` slot where children
+#'   don't cover all of the parent's bytes (grammar gaps). This is
+#'   byte-recovery, not "writing" - a tree-sitter AST already represents
+#'   source bytes, and pampa exposes no public `ts_ast -> Pandoc`
+#'   conversion that we could invoke independently of its reader.
+#'
+#' Only top-level dispatch is currently supported. There is no method
+#' for individual blocks, inlines, or `ts_node` subtrees (TODO: restore
+#' sub-tree dispatch by wrapping a fragment in a minimal `pandoc` and
+#' routing through pampa).
+#'
+#' @param x A [`pandoc`] or [`ts_tree`] object.
+#' @return A single string with the rendered QMD.
 #' @export
 to_qmd = S7::new_generic("to_qmd", "x")
 
-S7::method(to_qmd, ts_tree) = function(x) to_qmd(x@root)
+S7::method(to_qmd, pandoc) = function(x) {
+  raw = pampa_write_qmd_ast_impl(pandoc_to_list(x))
+  if (is.null(raw$text)) {
+    msg = if (length(raw$error)) {
+      paste0("to_qmd(): pampa's QMD writer failed: ", raw$error)
+    } else {
+      "to_qmd(): pampa's QMD writer failed; see attached diagnostics"
+    }
+    diagnostics = pampa_diagnostics_from_raw(raw, "", "<ast>")
+    stop(structure(
+      class = c("to_qmd_error", "error", "condition"),
+      list(
+        message     = msg,
+        call        = sys.call(-1L),
+        diagnostics = diagnostics,
+        error       = raw$error
+      )
+    ))
+  }
+  result = raw$text
+  diagnostics = pampa_diagnostics_from_raw(raw, "", "<ast>")
+  if (length(diagnostics)) attr(result, "diagnostics") = diagnostics
+  result
+}
 
-S7::method(to_qmd, ts_node) = function(x) {
+S7::method(to_qmd, ts_tree) = function(x) to_qmd_ts_node(x@root)
+
+to_qmd_ts_node = function(x) {
   if (length(x@children@content) == 0L) {
     return(if (is.null(x@text)) "" else x@text)
   }
@@ -35,16 +72,13 @@ S7::method(to_qmd, ts_node) = function(x) {
 }
 
 ts_children_qmd = function(x) {
-  vapply(x@children@content, to_qmd, character(1L))
+  vapply(x@children@content, to_qmd_ts_node, character(1L))
 }
 
 ts_concat = function(x) paste0(ts_children_qmd(x), collapse = "")
 
 ts_concat_nl = function(x) paste0(ts_concat(x), "\n")
 
-# Handler factory: use @text when set (grammar-gap fallback), otherwise
-# delegate to `fallback`. When `fallback = NULL`, @text is required and
-# its absence is an error.
 ts_text_or = function(fallback = ts_concat) {
   if (is.null(fallback)) {
     function(x) {

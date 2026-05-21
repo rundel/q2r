@@ -14,10 +14,9 @@ expect_roundtrip = function(src, info = NULL) {
   )
 }
 
-test_that("to_qmd dispatches on ts_tree and ts_node", {
+test_that("to_qmd dispatches on ts_tree", {
   res = pampa_parse_ts("# Hi\n")
-  expect_identical(to_qmd(res),       "# Hi\n")
-  expect_identical(to_qmd(res@root),  "# Hi\n")
+  expect_identical(to_qmd(res), "# Hi\n")
 })
 
 test_that("to_qmd round-trips headings and paragraphs", {
@@ -62,7 +61,7 @@ test_that("to_qmd reconstructs grammar-gap kinds via @text", {
   expect_roundtrip("```{r}\nx <- 1\nplot(x)\n```\n")
 })
 
-test_that("to_qmd warns on unknown kinds and concatenates children", {
+test_that("ts byte-walker warns on unknown kinds and concatenates children", {
   fake = ts_node(
     kind = "__not_a_real_kind__",
     children = ts_nodes(list(
@@ -72,6 +71,6 @@ test_that("to_qmd warns on unknown kinds and concatenates children", {
               children = ts_nodes(list()))
     ))
   )
-  expect_warning(out <- to_qmd(fake), "__not_a_real_kind__")
+  expect_warning(out <- q2r:::to_qmd_ts_node(fake), "__not_a_real_kind__")
   expect_identical(out, "ab")
 })

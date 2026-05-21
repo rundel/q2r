@@ -49,11 +49,10 @@ Collate:
     'from-rust.R'
     'to-rust.R'
     'pampa.R'
-    'ts-ast-to-qmd.R'
-    'pd-ast-to-qmd.R'
     'q2r-package.R'
     'select-ts.R'
     'tests.R'
+    'to-qmd.R'
     'ts-query.R'
     'zzz.R'
 Config/roxygen2/version: 8.0.0

@@ -30,13 +30,13 @@ ast_kinds = function(pd) {
   collect(pd)
 }
 
-expect_apostrophe_roundtrip = function(prefix, writer) {
+expect_apostrophe_roundtrip = function(prefix) {
   src = mk_src(prefix)
   pd  = pampa_parse_pd(src, quiet = TRUE)
   errs = vapply(pd@diagnostics, function(d) d@kind == "error", logical(1L))
   expect_false(any(errs), info = paste0("initial parse of ", deparse(src)))
 
-  out = writer(pd)
+  out = to_qmd(pd)
   pd2 = tryCatch(pampa_parse_pd(out, quiet = TRUE), error = function(e) e)
   expect_true(S7::S7_inherits(pd2, pandoc),
               info = paste0("re-parse of writer output ", deparse(out)))
@@ -51,20 +51,15 @@ for (nm in names(inline_close_variants)) {
   local({
     label  = nm
     prefix = inline_close_variants[[label]]
-
-    test_that(paste0("pampa writer round-trips apostrophe after ", label, " close"), {
-      expect_apostrophe_roundtrip(prefix, pampa_to_qmd)
-    })
-
-    test_that(paste0("R-side to_qmd writer round-trips apostrophe after ", label, " close"), {
-      expect_apostrophe_roundtrip(prefix, to_qmd)
+    test_that(paste0("to_qmd round-trips apostrophe after ", label, " close"), {
+      expect_apostrophe_roundtrip(prefix)
     })
   })
 }
 
-test_that("pampa writer emits backslash-escaped apostrophe after a strong-close", {
+test_that("to_qmd(pandoc) emits backslash-escaped apostrophe after a strong-close", {
   src = mk_src("**bold**")
-  out = pampa_to_qmd(pampa_parse_pd(src, quiet = TRUE))
+  out = to_qmd(pampa_parse_pd(src, quiet = TRUE))
   expect_true(grepl(paste0(bslash, apos, "s"), out, fixed = TRUE),
               info = paste0("output: ", deparse(out)))
 })

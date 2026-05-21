@@ -7,11 +7,10 @@
 pampa_parse_pd(input, quiet = FALSE, prune_errors = TRUE)
 }
 \arguments{
-\item{input}{Either a single string (treated as a file path if it
-does not contain newlines and \code{file.exists()} returns TRUE, else as
-raw text) or a \code{\link{ts_tree}} object. For a \code{ts_tree}, the tree is
-rendered to QMD via \code{\link[=to_qmd]{to_qmd()}} and re-parsed; this exercises the
-full ts -> Pandoc pipeline on an R-held AST.}
+\item{input}{A single string. Treated as a file path if it does not
+contain newlines and \code{file.exists()} returns TRUE; otherwise
+treated as raw text. To parse an R-held \code{\link{ts_tree}} as Pandoc,
+render it first with \code{\link[=to_qmd]{to_qmd()}} and feed the result back in.}
 
 \item{quiet}{If \code{FALSE} (the default) any error-kind diagnostics are
 raised as R errors (after attaching diagnostics to the result),

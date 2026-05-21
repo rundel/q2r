@@ -152,9 +152,8 @@ maybe_regenerate_quarto_web_tests = function() {
   mtime_paths = c(fixture_paths, source_deps)
 
   variants = list(
-    list(target = "test-quarto-web-ts-rt.R",       fn = "gen_ts_rt_test",       id = "ts_rt"),
-    list(target = "test-quarto-web-pd-rt.R",       fn = "gen_pd_rt_test",       id = "pd_rt"),
-    list(target = "test-quarto-web-pampa-pd-rt.R", fn = "gen_pampa_pd_rt_test", id = "pampa_pd_rt")
+    list(target = "test-quarto-web-ts-rt.R", fn = "gen_ts_rt_test", id = "ts_rt"),
+    list(target = "test-quarto-web-pd-rt.R", fn = "gen_pd_rt_test", id = "pd_rt")
   )
 
   for (v in variants) {
