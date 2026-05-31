@@ -1,17 +1,45 @@
 #' @include from-rust.R to-rust.R diagnostic.R pd-ast-pandoc.R ts-ast.R
 NULL
 
+# Read a file's exact bytes, preserving the trailing newline, any trailing
+# blank lines, and CRLF that `readLines()` + `paste()` would silently drop.
+# Quarto sources are UTF-8; the caller's `validUTF8()` guard rejects anything
+# that is not.
+read_file_bytes = function(path) {
+  raw = readBin(path, what = "raw", n = file.info(path)$size)
+  text = rawToChar(raw)
+  Encoding(text) = "UTF-8"
+  text
+}
+
 pampa_read_input = function(input) {
   stopifnot(is.character(input), length(input) == 1L, !is.na(input))
+  if (Encoding(input) == "bytes") {
+    stop(
+      "`input` has \"bytes\" encoding, which cannot be translated to UTF-8. ",
+      "Declare its source encoding first (e.g. `Encoding(x) <- \"UTF-8\"` or ",
+      "\"latin1\"), then retry.",
+      call. = FALSE
+    )
+  }
   is_text = grepl("\n", input, fixed = TRUE)
-  if (!is_text && file.exists(input) && !dir.exists(input)) {
+  res = if (!is_text && file.exists(input) && !dir.exists(input)) {
     list(
-      text     = paste(readLines(input, warn = FALSE), collapse = "\n"),
+      text     = read_file_bytes(input),
       filename = basename(input)
     )
   } else {
     list(text = input, filename = "<text>")
   }
+  res$text = enc2utf8(res$text)
+  if (!validUTF8(res$text)) {
+    stop(
+      "`input` is not valid UTF-8 after translation; pampa requires UTF-8 ",
+      "source. Check the encoding of the file or string.",
+      call. = FALSE
+    )
+  }
+  res
 }
 
 pampa_diagnostics_from_raw = function(raw, text, filename) {

@@ -11,7 +11,7 @@ NULL
 #' conversion to S7 `pandoc` objects, or `NULL` if parsing failed) and
 #' `diagnostics` (list of structured diagnostic records that can be
 #' rendered via `pampa_diag_format_impl`).
-#' @export
+#' @noRd
 pampa_parse_pd_impl <- function(text, filename, prune_errors) .Call(wrap__pampa_parse_pd_impl, text, filename, prune_errors)
 
 #' Parse QMD text with tree-sitter and return the tree-sitter AST.
@@ -20,7 +20,7 @@ pampa_parse_pd_impl <- function(text, filename, prune_errors) .Call(wrap__pampa_
 #' tagged list) and `diagnostics` (list of structured diagnostic records
 #' from pampa's QMD reader). The tree-sitter AST itself never fails to
 #' produce; `diagnostics` surfaces higher-level pampa parse errors.
-#' @export
+#' @noRd
 pampa_parse_ts_impl <- function(text, filename, prune_errors) .Call(wrap__pampa_parse_ts_impl, text, filename, prune_errors)
 
 #' Capture pampa's tree-sitter debug dump for QMD text.
@@ -28,7 +28,7 @@ pampa_parse_ts_impl <- function(text, filename, prune_errors) .Call(wrap__pampa_
 #' Returns the lines of the `print_whole_tree` output that pampa emits
 #' to stderr when run with `-v`. Primarily a testing helper for
 #' cross-checking the structured `ts_ast` against pampa's own view.
-#' @export
+#' @noRd
 pampa_tree_impl <- function(text, filename) .Call(wrap__pampa_tree_impl, text, filename)
 
 #' Render QMD text to Pandoc's native AST format.
@@ -36,7 +36,7 @@ pampa_tree_impl <- function(text, filename) .Call(wrap__pampa_tree_impl, text, f
 #' Returns the lines of `pampa::writers::native::write` applied to the
 #' parsed Pandoc document, or an empty vector if parsing failed.
 #' Primarily a testing helper.
-#' @export
+#' @noRd
 pampa_native_impl <- function(text, filename) .Call(wrap__pampa_native_impl, text, filename)
 
 #' Render QMD input through pampa's own QMD writer (text/file path).
@@ -45,7 +45,7 @@ pampa_native_impl <- function(text, filename) .Call(wrap__pampa_native_impl, tex
 #' AST back out using `pampa::writers::qmd::write`. Primarily a testing
 #' helper for comparing against the R-side `to_qmd()` implementations.
 #' Returns a list with `text` (the rendered QMD) and `diagnostics`.
-#' @export
+#' @noRd
 pampa_write_qmd_text_impl <- function(text, filename) .Call(wrap__pampa_write_qmd_text_impl, text, filename)
 
 #' Render an R-constructed Pandoc AST through pampa's QMD writer.
@@ -55,7 +55,7 @@ pampa_write_qmd_text_impl <- function(text, filename) .Call(wrap__pampa_write_qm
 #' and writes it out via `pampa::writers::qmd::write`. Returns a list
 #' with `text` (rendered QMD, or `NULL` on error) and `diagnostics`
 #' (any writer diagnostics; empty on success).
-#' @export
+#' @noRd
 pampa_write_qmd_ast_impl <- function(r_ast) .Call(wrap__pampa_write_qmd_ast_impl, r_ast)
 
 #' Pretty-print a diagnostic by reconstructing it from its slot values.
@@ -66,7 +66,7 @@ pampa_write_qmd_ast_impl <- function(r_ast) .Call(wrap__pampa_write_qmd_ast_impl
 #' a flag controlling OSC 8 terminal hyperlinks. Returns the ariadne
 #' rendering (which includes ANSI colour codes); callers that want
 #' colourless output should strip ANSI afterward.
-#' @export
+#' @noRd
 pampa_diag_format_impl <- function(kind, code, title, problem, details, hints, location, source_text, source_filename, hyperlinks) .Call(wrap__pampa_diag_format_impl, kind, code, title, problem, details, hints, location, source_text, source_filename, hyperlinks)
 
 #' Run a tree-sitter `.scm` query against QMD source.
@@ -74,7 +74,7 @@ pampa_diag_format_impl <- function(kind, code, title, problem, details, hints, l
 #' Returns `list(matches = list(...), error = NULL)` on success, or
 #' `list(matches = NULL, error = "<compile error>")` if the query
 #' string fails to compile against the tree-sitter-qmd grammar.
-#' @export
+#' @noRd
 ts_query_impl <- function(text, query_text) .Call(wrap__ts_query_impl, text, query_text)
 
 # nolint end

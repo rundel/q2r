@@ -42,7 +42,7 @@ fn fallback_source_context(text: &str, filename: &str) -> quarto_source_map::Sou
 /// conversion to S7 `pandoc` objects, or `NULL` if parsing failed) and
 /// `diagnostics` (list of structured diagnostic records that can be
 /// rendered via `pampa_diag_format_impl`).
-/// @export
+/// @noRd
 #[extendr]
 fn pampa_parse_pd_impl(text: &str, filename: &str, prune_errors: bool) -> List {
     let mut sink = std::io::sink();
@@ -67,7 +67,7 @@ fn pampa_parse_pd_impl(text: &str, filename: &str, prune_errors: bool) -> List {
 /// tagged list) and `diagnostics` (list of structured diagnostic records
 /// from pampa's QMD reader). The tree-sitter AST itself never fails to
 /// produce; `diagnostics` surfaces higher-level pampa parse errors.
-/// @export
+/// @noRd
 #[extendr]
 fn pampa_parse_ts_impl(text: &str, filename: &str, prune_errors: bool) -> List {
     let ts_ast = ts_ast_to_r::parse_ts_ast_to_r(text.as_bytes());
@@ -88,7 +88,7 @@ fn pampa_parse_ts_impl(text: &str, filename: &str, prune_errors: bool) -> List {
 /// Returns the lines of the `print_whole_tree` output that pampa emits
 /// to stderr when run with `-v`. Primarily a testing helper for
 /// cross-checking the structured `ts_ast` against pampa's own view.
-/// @export
+/// @noRd
 #[extendr]
 fn pampa_tree_impl(text: &str, filename: &str) -> Vec<String> {
     let mut tree_buf: Vec<u8> = Vec::new();
@@ -104,7 +104,7 @@ fn pampa_tree_impl(text: &str, filename: &str) -> Vec<String> {
 /// Returns the lines of `pampa::writers::native::write` applied to the
 /// parsed Pandoc document, or an empty vector if parsing failed.
 /// Primarily a testing helper.
-/// @export
+/// @noRd
 #[extendr]
 fn pampa_native_impl(text: &str, filename: &str) -> Vec<String> {
     let mut sink = std::io::sink();
@@ -130,7 +130,7 @@ fn pampa_native_impl(text: &str, filename: &str) -> Vec<String> {
 /// AST back out using `pampa::writers::qmd::write`. Primarily a testing
 /// helper for comparing against the R-side `to_qmd()` implementations.
 /// Returns a list with `text` (the rendered QMD) and `diagnostics`.
-/// @export
+/// @noRd
 #[extendr]
 fn pampa_write_qmd_text_impl(text: &str, filename: &str) -> List {
     let mut sink = std::io::sink();
@@ -164,7 +164,7 @@ fn pampa_write_qmd_text_impl(text: &str, filename: &str) -> List {
 /// and writes it out via `pampa::writers::qmd::write`. Returns a list
 /// with `text` (rendered QMD, or `NULL` on error) and `diagnostics`
 /// (any writer diagnostics; empty on success).
-/// @export
+/// @noRd
 #[extendr]
 fn pampa_write_qmd_ast_impl(r_ast: Robj) -> List {
     let pandoc = match r_to_pd_ast::pandoc_from_r(&r_ast) {
@@ -192,7 +192,7 @@ fn pampa_write_qmd_ast_impl(r_ast: Robj) -> List {
 /// Returns `list(matches = list(...), error = NULL)` on success, or
 /// `list(matches = NULL, error = "<compile error>")` if the query
 /// string fails to compile against the tree-sitter-qmd grammar.
-/// @export
+/// @noRd
 #[extendr]
 fn ts_query_impl(text: &str, query_text: &str) -> List {
     ts_query::run_ts_query(text, query_text)
@@ -206,7 +206,7 @@ fn ts_query_impl(text: &str, query_text: &str) -> List {
 /// a flag controlling OSC 8 terminal hyperlinks. Returns the ariadne
 /// rendering (which includes ANSI colour codes); callers that want
 /// colourless output should strip ANSI afterward.
-/// @export
+/// @noRd
 #[extendr]
 fn pampa_diag_format_impl(
     kind: &str,
