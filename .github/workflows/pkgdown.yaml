@@ -51,6 +51,9 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4.8.0
         with:
-          clean: false
+          # clean: true so renamed/removed topics don't linger as orphan pages on
+          # gh-pages. q2r is a single-version site; if versioned (dev/release) docs
+          # are ever added, revert to clean: false (or set clean-exclude).
+          clean: true
           branch: gh-pages
           folder: docs
