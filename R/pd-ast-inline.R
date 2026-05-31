@@ -1,12 +1,31 @@
 #' @include pd-ast-support.R
 NULL
 
-#' Literal string
+#' Inline constructors
 #'
-#' A `pandoc_str` is a maximal run of non-whitespace characters: Pandoc
+#' Constructors for the concrete Pandoc inline node classes. Each returns an
+#' S7 object extending [pandoc_inline]. See [pandoc_node] for the abstract
+#' hierarchy and [pandoc_block_constructors] for the block-level nodes.
+#'
+#' @section Notes:
+#' `pandoc_str()` holds a maximal run of non-whitespace characters: Pandoc
 #' represents spaces as [pandoc_space] and line breaks as [pandoc_soft_break]
 #' / [pandoc_line_break]. Embedding ASCII whitespace in `@text` would emit
 #' literal whitespace that re-parses into separate inlines, so it is rejected.
+#'
+#' `pandoc_shortcode()` carries `positional_args` and `keyword_args` as lists
+#' of arg records. Each arg record is a list with `kind` ∈ `"string"`,
+#' `"number"`, `"boolean"`, `"shortcode"`, `"kv"`, `"kv_group"`.
+#' `string`/`number`/`boolean` carry a `value`; `shortcode` carries a nested
+#' `pandoc_shortcode` in `value`; `kv` carries `key` (character) and `value`
+#' (another arg record); `kv_group` carries `value` as a list of `kv` records
+#' (used for positional KeyValue bundles).
+#'
+#' @name pandoc_inline_constructors
+#' @seealso [pandoc_block_constructors], [pandoc_node], [pandoc_support_types]
+NULL
+
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_str = S7::new_class(
   "pandoc_str",
@@ -24,7 +43,7 @@ pandoc_str = S7::new_class(
   }
 )
 
-#' Emphasized text
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_emph = S7::new_class(
   "pandoc_emph",
@@ -33,7 +52,7 @@ pandoc_emph = S7::new_class(
   properties = list(content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))))
 )
 
-#' Underlined text
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_underline = S7::new_class(
   "pandoc_underline",
@@ -42,7 +61,7 @@ pandoc_underline = S7::new_class(
   properties = list(content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))))
 )
 
-#' Strong text
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_strong = S7::new_class(
   "pandoc_strong",
@@ -51,7 +70,7 @@ pandoc_strong = S7::new_class(
   properties = list(content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))))
 )
 
-#' Struck-through text
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_strikeout = S7::new_class(
   "pandoc_strikeout",
@@ -60,7 +79,7 @@ pandoc_strikeout = S7::new_class(
   properties = list(content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))))
 )
 
-#' Superscript
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_superscript = S7::new_class(
   "pandoc_superscript",
@@ -69,7 +88,7 @@ pandoc_superscript = S7::new_class(
   properties = list(content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))))
 )
 
-#' Subscript
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_subscript = S7::new_class(
   "pandoc_subscript",
@@ -78,7 +97,7 @@ pandoc_subscript = S7::new_class(
   properties = list(content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))))
 )
 
-#' Small caps
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_small_caps = S7::new_class(
   "pandoc_small_caps",
@@ -87,7 +106,7 @@ pandoc_small_caps = S7::new_class(
   properties = list(content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))))
 )
 
-#' Quoted text
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_quoted = S7::new_class(
   "pandoc_quoted",
@@ -104,7 +123,7 @@ pandoc_quoted = S7::new_class(
   }
 )
 
-#' Citation reference
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_cite = S7::new_class(
   "pandoc_cite",
@@ -120,7 +139,7 @@ pandoc_cite = S7::new_class(
   }
 )
 
-#' Inline code
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_code = S7::new_class(
   "pandoc_code",
@@ -132,19 +151,19 @@ pandoc_code = S7::new_class(
   )
 )
 
-#' Space
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_space = S7::new_class("pandoc_space", package = "q2r", parent = pandoc_inline)
 
-#' Soft line break
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_soft_break = S7::new_class("pandoc_soft_break", package = "q2r", parent = pandoc_inline)
 
-#' Hard line break
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_line_break = S7::new_class("pandoc_line_break", package = "q2r", parent = pandoc_inline)
 
-#' Math
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_math = S7::new_class(
   "pandoc_math",
@@ -161,7 +180,7 @@ pandoc_math = S7::new_class(
   }
 )
 
-#' Raw inline
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_raw_inline = S7::new_class(
   "pandoc_raw_inline",
@@ -173,7 +192,7 @@ pandoc_raw_inline = S7::new_class(
   )
 )
 
-#' Link
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_link = S7::new_class(
   "pandoc_link",
@@ -187,7 +206,7 @@ pandoc_link = S7::new_class(
   )
 )
 
-#' Image
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_image = S7::new_class(
   "pandoc_image",
@@ -201,7 +220,7 @@ pandoc_image = S7::new_class(
   )
 )
 
-#' Footnote
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_note = S7::new_class(
   "pandoc_note",
@@ -210,7 +229,7 @@ pandoc_note = S7::new_class(
   properties = list(content = S7::new_property(pandoc_blocks, default = quote(pandoc_blocks(list()))))
 )
 
-#' Inline span
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_span = S7::new_class(
   "pandoc_span",
@@ -222,16 +241,7 @@ pandoc_span = S7::new_class(
   )
 )
 
-#' Shortcode
-#'
-#' `positional_args` and `keyword_args` are lists of arg records. Each arg
-#' record is a list with `kind` ∈ `"string"`, `"number"`, `"boolean"`,
-#' `"shortcode"`, `"kv"`, `"kv_group"`. `string`/`number`/`boolean` carry a
-#' `value`; `shortcode` carries a nested `pandoc_shortcode` in `value`; `kv`
-#' carries `key` (character) and `value` (another arg record); `kv_group`
-#' carries `value` as a list of `kv` records (used for positional KeyValue
-#' bundles).
-#'
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_shortcode = S7::new_class(
   "pandoc_shortcode",
@@ -245,7 +255,7 @@ pandoc_shortcode = S7::new_class(
   )
 )
 
-#' Note reference
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_note_reference = S7::new_class(
   "pandoc_note_reference",
@@ -254,7 +264,7 @@ pandoc_note_reference = S7::new_class(
   properties = list(id = S7::new_property(S7::class_character, default = ""))
 )
 
-#' Standalone attribute inline
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_attr_inline = S7::new_class(
   "pandoc_attr_inline",
@@ -263,7 +273,7 @@ pandoc_attr_inline = S7::new_class(
   properties = list(attr = S7::new_property(pandoc_attr, default = quote(pandoc_attr())))
 )
 
-#' CriticMarkup: insertion
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_insert = S7::new_class(
   "pandoc_insert",
@@ -275,7 +285,7 @@ pandoc_insert = S7::new_class(
   )
 )
 
-#' CriticMarkup: deletion
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_delete = S7::new_class(
   "pandoc_delete",
@@ -287,7 +297,7 @@ pandoc_delete = S7::new_class(
   )
 )
 
-#' CriticMarkup: highlight
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_highlight = S7::new_class(
   "pandoc_highlight",
@@ -299,7 +309,7 @@ pandoc_highlight = S7::new_class(
   )
 )
 
-#' CriticMarkup: comment
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_edit_comment = S7::new_class(
   "pandoc_edit_comment",
@@ -311,7 +321,7 @@ pandoc_edit_comment = S7::new_class(
   )
 )
 
-#' Custom inline node (Quarto extensions)
+#' @rdname pandoc_inline_constructors
 #' @export
 pandoc_custom_inline = S7::new_class(
   "pandoc_custom_inline",

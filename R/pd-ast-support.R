@@ -1,5 +1,19 @@
-#' Source location
+#' Pandoc AST support types
 #'
+#' Helper value types that appear inside concrete block and inline nodes:
+#' source locations, attributes, ordered-list attributes, citations,
+#' captions, definition-list items, and table cells/rows/columns. Each
+#' returns a plain S7 object (these are not [pandoc_node] subclasses).
+#'
+#' @section Notes:
+#' For [pandoc_caption], `short` is either `NULL` or a [pandoc_inlines] and
+#' `long` is a [pandoc_blocks].
+#'
+#' @name pandoc_support_types
+#' @seealso [pandoc_node], [pandoc_block_constructors], [pandoc_inline_constructors]
+NULL
+
+#' @rdname pandoc_support_types
 #' @export
 pandoc_source_info = S7::new_class(
   "pandoc_source_info",
@@ -49,8 +63,7 @@ pandoc_inline = S7::new_class(
   abstract = TRUE
 )
 
-#' Pandoc attributes
-#'
+#' @rdname pandoc_support_types
 #' @export
 pandoc_attr = S7::new_class(
   "pandoc_attr",
@@ -116,8 +129,7 @@ pandoc_meta_value = S7::new_class(
 #' @export
 pandoc_config_value = pandoc_meta_value
 
-#' Ordered list attributes
-#'
+#' @rdname pandoc_support_types
 #' @export
 pandoc_list_attributes = S7::new_class(
   "pandoc_list_attributes",
@@ -129,8 +141,7 @@ pandoc_list_attributes = S7::new_class(
   )
 )
 
-#' Citation
-#'
+#' @rdname pandoc_support_types
 #' @export
 pandoc_citation = S7::new_class(
   "pandoc_citation",
@@ -145,10 +156,7 @@ pandoc_citation = S7::new_class(
   )
 )
 
-#' Caption (short + long)
-#'
-#' `short` is either `NULL` or a `pandoc_inlines`; `long` is a `pandoc_blocks`.
-#'
+#' @rdname pandoc_support_types
 #' @export
 pandoc_caption = S7::new_class(
   "pandoc_caption",
@@ -164,8 +172,7 @@ pandoc_caption = S7::new_class(
   }
 )
 
-#' Definition-list item
-#'
+#' @rdname pandoc_support_types
 #' @export
 pandoc_definition_item = S7::new_class(
   "pandoc_definition_item",
@@ -180,8 +187,7 @@ pandoc_definition_item = S7::new_class(
   }
 )
 
-#' Table column alignment and width
-#'
+#' @rdname pandoc_support_types
 #' @export
 pandoc_col_spec = S7::new_class(
   "pandoc_col_spec",
@@ -192,8 +198,7 @@ pandoc_col_spec = S7::new_class(
   )
 )
 
-#' Table cell
-#'
+#' @rdname pandoc_support_types
 #' @export
 pandoc_cell = S7::new_class(
   "pandoc_cell",
@@ -207,8 +212,7 @@ pandoc_cell = S7::new_class(
   )
 )
 
-#' Table row
-#'
+#' @rdname pandoc_support_types
 #' @export
 pandoc_row = S7::new_class(
   "pandoc_row",

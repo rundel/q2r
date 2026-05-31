@@ -39,18 +39,22 @@ reference:
     contents:
     - pampa_diagnostic
 
-  - title: Querying the AST
+  - title: Querying and rewriting the AST
     desc: >
-      tidyselect-style verbs for locating nodes by predicate. Works
-      on both the Pandoc S7 AST and the tree-sitter AST. Predicates
-      are unquoted expressions evaluated against a per-node data mask
-      that exposes slot names and helpers (`is()`, `has_class()`,
-      `has_id()`, `has_attr()`, `is_leaf()`, ...).
+      A predicate-driven query/rewrite vocabulary shared across both
+      the Pandoc S7 AST and the tree-sitter AST.
+
+  - subtitle: Locating nodes
+    desc: >
+      tidyselect-style verbs for locating nodes by predicate.
+      Predicates are unquoted expressions evaluated against a per-node
+      data mask that exposes slot names and helpers (`is()`,
+      `has_class()`, `has_id()`, `has_attr()`, `is_leaf()`, ...).
     contents:
     - select_nodes
     - walk_nodes
 
-  - title: Rewriting the AST
+  - subtitle: Mutating nodes
     desc: >
       Predicate-driven mutation verbs. Each return value is a node, a
       list of nodes (splice), or `NULL` (delete). The walker is
@@ -63,7 +67,7 @@ reference:
     - insert_before
     - insert_after
 
-  - title: Filter-table rewriting (Lua-filter-style)
+  - subtitle: Filter-table rewriting (Lua-filter-style)
     desc: >
       `ast_filter()` rewrites multiple node types in one pass using a
       table of S7-class-keyed handlers, with optional top-down
@@ -87,7 +91,6 @@ reference:
     - set_id
     - get_attr
     - set_attr
-    - remove_attr
 
   - title: Constructing content
     desc: >
@@ -105,97 +108,49 @@ reference:
     contents:
     - ts_query
 
-  - title: Pandoc AST — root and abstract classes
+  - title: Pandoc AST
     desc: >
-      The S7 class hierarchy. `pandoc` is the document root,
-      `pandoc_node` the common ancestor for every concrete node, and
-      `pandoc_block` / `pandoc_inline` the abstract block/inline
-      parents. `pandoc_blocks` / `pandoc_inlines` are the strict-typed
-      list wrappers used in content slots. `print.pandoc` documents
-      the tree display and its `position` / `ascii` knobs.
+      The S7 class hierarchy returned by `parse_qmd()` (the default
+      `ast = "pd"`) and accepted by `to_qmd()`.
+
+  - subtitle: Root and abstract classes
+    desc: >
+      `pandoc` is the document root and `pandoc_node` the common
+      ancestor for every concrete node (with the abstract
+      `pandoc_block` / `pandoc_inline` parents). `pandoc_blocks` /
+      `pandoc_inlines` are the strict-typed list wrappers used in
+      content slots. `pandoc_children` / `pandoc_format_label` are the
+      generics behind the tree display, which `print.pandoc` documents.
     contents:
     - pandoc
     - pandoc_node
-    - pandoc_block
-    - pandoc_inline
     - pandoc_blocks
-    - pandoc_inlines
     - pandoc_children
+    - pandoc_format_label
     - print.pandoc
 
-  - title: Pandoc AST — block constructors
+  - subtitle: Block constructors
+    desc: >
+      Constructors for the concrete block-level node classes, collected
+      on a single page (one alias and usage entry per constructor).
     contents:
-    - pandoc_plain
-    - pandoc_paragraph
-    - pandoc_header
-    - pandoc_block_quote
-    - pandoc_div
-    - pandoc_code_block
-    - pandoc_raw_block
-    - pandoc_ordered_list
-    - pandoc_bullet_list
-    - pandoc_line_block
-    - pandoc_definition_list
-    - pandoc_definition_item
-    - pandoc_figure
-    - pandoc_horizontal_rule
-    - pandoc_caption_block
-    - pandoc_block_metadata
-    - pandoc_note_definition_para
-    - pandoc_note_definition_fenced_block
-    - pandoc_custom_block
+    - pandoc_block_constructors
 
-  - title: Pandoc AST — inline constructors
+  - subtitle: Inline constructors
+    desc: >
+      Constructors for the concrete inline node classes, collected on a
+      single page (one alias and usage entry per constructor).
     contents:
-    - pandoc_str
-    - pandoc_space
-    - pandoc_soft_break
-    - pandoc_line_break
-    - pandoc_emph
-    - pandoc_underline
-    - pandoc_strong
-    - pandoc_strikeout
-    - pandoc_superscript
-    - pandoc_subscript
-    - pandoc_small_caps
-    - pandoc_quoted
-    - pandoc_cite
-    - pandoc_code
-    - pandoc_math
-    - pandoc_raw_inline
-    - pandoc_link
-    - pandoc_image
-    - pandoc_note
-    - pandoc_span
-    - pandoc_shortcode
-    - pandoc_insert
-    - pandoc_delete
-    - pandoc_highlight
-    - pandoc_edit_comment
-    - pandoc_note_reference
-    - pandoc_attr_inline
-    - pandoc_custom_inline
+    - pandoc_inline_constructors
 
-  - title: Pandoc AST — support types
+  - subtitle: Support types
     desc: >
       Helper types that appear inside concrete nodes: attributes,
       table substructures, citations, captions, metadata.
     contents:
-    - pandoc_attr
-    - pandoc_caption
-    - pandoc_citation
-    - pandoc_table
+    - pandoc_support_types
     - pandoc_table_head
-    - pandoc_table_body
-    - pandoc_table_foot
-    - pandoc_row
-    - pandoc_cell
-    - pandoc_col_spec
-    - pandoc_list_attributes
-    - pandoc_format_label
     - pandoc_meta_value
-    - pandoc_config_value
-    - pandoc_source_info
 
   - title: Tree-sitter AST
     desc: >

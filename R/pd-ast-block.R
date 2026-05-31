@@ -1,7 +1,17 @@
 #' @include pd-ast-support.R
 NULL
 
-#' Plain block
+#' Block constructors
+#'
+#' Constructors for the concrete Pandoc block-level node classes. Each returns
+#' an S7 object extending [pandoc_block]. See [pandoc_node] for the abstract
+#' hierarchy and [pandoc_inline_constructors] for the inline nodes.
+#'
+#' @name pandoc_block_constructors
+#' @seealso [pandoc_inline_constructors], [pandoc_node], [pandoc_support_types]
+NULL
+
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_plain = S7::new_class(
   "pandoc_plain",
@@ -12,7 +22,7 @@ pandoc_plain = S7::new_class(
   )
 )
 
-#' Paragraph
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_paragraph = S7::new_class(
   "pandoc_paragraph",
@@ -23,7 +33,7 @@ pandoc_paragraph = S7::new_class(
   )
 )
 
-#' Line block
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_line_block = S7::new_class(
   "pandoc_line_block",
@@ -36,7 +46,7 @@ pandoc_line_block = S7::new_class(
   }
 )
 
-#' Code block
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_code_block = S7::new_class(
   "pandoc_code_block",
@@ -48,7 +58,7 @@ pandoc_code_block = S7::new_class(
   )
 )
 
-#' Raw block
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_raw_block = S7::new_class(
   "pandoc_raw_block",
@@ -60,7 +70,7 @@ pandoc_raw_block = S7::new_class(
   )
 )
 
-#' Block quote
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_block_quote = S7::new_class(
   "pandoc_block_quote",
@@ -71,7 +81,7 @@ pandoc_block_quote = S7::new_class(
   )
 )
 
-#' Ordered list
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_ordered_list = S7::new_class(
   "pandoc_ordered_list",
@@ -87,7 +97,7 @@ pandoc_ordered_list = S7::new_class(
   }
 )
 
-#' Bullet list
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_bullet_list = S7::new_class(
   "pandoc_bullet_list",
@@ -100,7 +110,7 @@ pandoc_bullet_list = S7::new_class(
   }
 )
 
-#' Definition list
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_definition_list = S7::new_class(
   "pandoc_definition_list",
@@ -113,7 +123,7 @@ pandoc_definition_list = S7::new_class(
   }
 )
 
-#' Header
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_header = S7::new_class(
   "pandoc_header",
@@ -126,7 +136,7 @@ pandoc_header = S7::new_class(
   )
 )
 
-#' Horizontal rule
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_horizontal_rule = S7::new_class(
   "pandoc_horizontal_rule",
@@ -134,7 +144,7 @@ pandoc_horizontal_rule = S7::new_class(
   parent = pandoc_block
 )
 
-#' Figure
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_figure = S7::new_class(
   "pandoc_figure",
@@ -147,7 +157,7 @@ pandoc_figure = S7::new_class(
   )
 )
 
-#' Div
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_div = S7::new_class(
   "pandoc_div",
@@ -159,7 +169,7 @@ pandoc_div = S7::new_class(
   )
 )
 
-#' Table
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_table = S7::new_class(
   "pandoc_table",
@@ -175,7 +185,7 @@ pandoc_table = S7::new_class(
   )
 )
 
-#' Block metadata
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_block_metadata = S7::new_class(
   "pandoc_block_metadata",
@@ -186,7 +196,7 @@ pandoc_block_metadata = S7::new_class(
   )
 )
 
-#' Note definition (paragraph form)
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_note_definition_para = S7::new_class(
   "pandoc_note_definition_para",
@@ -198,7 +208,7 @@ pandoc_note_definition_para = S7::new_class(
   )
 )
 
-#' Note definition (fenced block form)
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_note_definition_fenced_block = S7::new_class(
   "pandoc_note_definition_fenced_block",
@@ -210,7 +220,7 @@ pandoc_note_definition_fenced_block = S7::new_class(
   )
 )
 
-#' Caption block (orphan caption)
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_caption_block = S7::new_class(
   "pandoc_caption_block",
@@ -221,7 +231,7 @@ pandoc_caption_block = S7::new_class(
   )
 )
 
-#' Custom block node (Quarto extensions: callouts, tabsets, ...)
+#' @rdname pandoc_block_constructors
 #' @export
 pandoc_custom_block = S7::new_class(
   "pandoc_custom_block",
