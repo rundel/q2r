@@ -1,9 +1,9 @@
-pandoc: 3.9.0.2
+pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   selecting-and-rewriting: selecting-and-rewriting.html
-last_built: 2026-05-31T01:47Z
+last_built: 2026-05-31T04:15Z
 urls:
   reference: https://rundel.github.io/q2r/reference
   article: https://rundel.github.io/q2r/articles

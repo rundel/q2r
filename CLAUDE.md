@@ -2,14 +2,13 @@
 
 R package that wraps the `pampa` Rust crate from
 [quarto-dev/q2](https://github.com/quarto-dev/q2) to expose Quarto’s QMD
-parser to R. Exploratory. The two main entry points are
-[`pampa_parse_pd()`](https://rundel.github.io/q2r/R/pampa.R) (returns an
-S7 [`pandoc`](https://rundel.github.io/q2r/R/pd-ast-pandoc.R) object —
-the parsed Pandoc AST) and
-[`pampa_parse_ts()`](https://rundel.github.io/q2r/R/pampa.R) (returns an
-S7 [`ts_tree`](https://rundel.github.io/q2r/R/ts-ast.R) — the
-tree-sitter AST). Both accept text or a file path and attach any parse
-[`pampa_diagnostic`](https://rundel.github.io/q2r/R/diagnostic.R)
+parser to R. Exploratory. The single entry point is
+[`pampa_parse()`](https://rundel.github.io/q2r/R/pampa.R), which returns
+either an S7 [`pandoc`](https://rundel.github.io/q2r/R/pd-ast-pandoc.R)
+object (the parsed Pandoc AST; the default `ast = "pd"`) or an S7
+[`ts_tree`](https://rundel.github.io/q2r/R/ts-ast.R) (the tree-sitter
+AST; `ast = "ts"`). It accepts text or a file path and attaches any
+parse [`pampa_diagnostic`](https://rundel.github.io/q2r/R/diagnostic.R)
 records to the returned object’s `@diagnostics` slot. Helpers:
 [`to_qmd()`](https://rundel.github.io/q2r/R/to-qmd.R) renders an R-held
 AST back to QMD (pandoc → pampa writer; ts → byte-walk over `@text`),
@@ -115,31 +114,32 @@ pampa’s `-v` tree dump.
 
 - [R/pampa.R](https://rundel.github.io/q2r/R/pampa.R) wraps the extendr
   bindings with
-  [`pampa_parse_pd()`](https://rundel.github.io/q2r/reference/pampa_parse_pd.md),
-  [`pampa_parse_ts()`](https://rundel.github.io/q2r/reference/pampa_parse_ts.md),
+  [`pampa_parse()`](https://rundel.github.io/q2r/reference/pampa_parse.md)
+  (its `ast` argument, `"pd"` default or `"ts"`, selects the Pandoc or
+  tree-sitter AST and dispatches to the matching `*_impl` binding),
   [`pampa_tree()`](https://rundel.github.io/q2r/reference/pampa_tree.md),
   [`pampa_native()`](https://rundel.github.io/q2r/reference/pampa_native.md).
   Input heuristic (in `pampa_read_input`): string contains `\n` ⇒ text;
   else `file.exists() && !dir.exists()` ⇒ file; else text. The original
   `text` and `filename` are threaded into every `pampa_diagnostic` so
-  each diagnostic is self-contained for later rendering. Both parsers
-  accept `quiet` (suppress signaling) and `prune_errors` (matches pampa
+  each diagnostic is self-contained for later rendering.
+  [`pampa_parse()`](https://rundel.github.io/q2r/reference/pampa_parse.md)
+  accepts `quiet` (suppress signaling) and `prune_errors` (matches pampa
   CLI: dedupe parser-error diagnostics by tree-sitter `ERROR` node,
   keeping the earliest).
 - [R/diagnostic.R](https://rundel.github.io/q2r/R/diagnostic.R) defines
   the `pampa_diagnostic` S7 class plus `pampa_signal_diagnostics()` (the
-  function `pampa_parse_*` calls to raise R warnings/errors when
-  `quiet = FALSE`). Slots mirror the Rust list plus `source_text` /
-  `source_filename`. `format(x, color = ...)` and
-  `print(x, color = ...)` call back into Rust via
-  `pampa_diag_format_impl`; when `color = FALSE`, remaining ANSI is
-  stripped with
+  function
+  [`pampa_parse()`](https://rundel.github.io/q2r/reference/pampa_parse.md)
+  calls to raise R warnings/errors when `quiet = FALSE`). Slots mirror
+  the Rust list plus `source_text` / `source_filename`.
+  `format(x, color = ...)` and `print(x, color = ...)` call back into
+  Rust via `pampa_diag_format_impl`; when `color = FALSE`, remaining
+  ANSI is stripped with
   [`cli::ansi_strip()`](https://cli.r-lib.org/reference/ansi_strip.html).
-  `color` is **only** a display-time argument — neither
-  [`pampa_parse_pd()`](https://rundel.github.io/q2r/reference/pampa_parse_pd.md)
-  nor
-  [`pampa_parse_ts()`](https://rundel.github.io/q2r/reference/pampa_parse_ts.md)
-  has a `color` parameter.
+  `color` is **only** a display-time argument;
+  [`pampa_parse()`](https://rundel.github.io/q2r/reference/pampa_parse.md)
+  has no `color` parameter.
 - Diagnostics ride on the parsed object’s `@diagnostics` slot
   (`pandoc@diagnostics`, `ts_tree@diagnostics`). There is no longer a
   wrapper `pampa_result` class.
@@ -166,7 +166,7 @@ pampa’s `-v` tree dump.
   between the tagged-list shape that crosses the extendr boundary and
   the S7 `pandoc` hierarchy. `pandoc_from_list` / `pandoc_to_list` are
   the top-level entry points used by
-  [`pampa_parse_pd()`](https://rundel.github.io/q2r/reference/pampa_parse_pd.md)
+  [`pampa_parse()`](https://rundel.github.io/q2r/reference/pampa_parse.md)
   and `to_qmd(pandoc)` respectively.
 - The `pandoc` S7 hierarchy itself is defined across
   [pd-ast-pandoc.R](https://rundel.github.io/q2r/R/pd-ast-pandoc.R),
@@ -243,29 +243,24 @@ are S7 generics so the same call works on either representation.
   via `SystemRequirements`).
 - Bridge: `extendr` + `rextendr` (matches Posit-authored Rust-backed R
   packages).
-- Rebuild after Rust edits:
-  [`devtools::document()`](https://devtools.r-lib.org/reference/document.html)
-  (recompiles Rust and regenerates `R/extendr-wrappers.R`). Iterate
-  interactively:
-  [`devtools::load_all()`](https://devtools.r-lib.org/reference/load_all.html).
-- Running
-  [`devtools::test()`](https://devtools.r-lib.org/reference/test.html)
-  non-interactively: the `summary` reporter caps at 10 failures by
-  default, which makes counts meaningless. Always raise the cap with
-  `options(testthat.summary.max_reports = Inf)` when running for
-  tally/comparison purposes (the per-reporter `max_fails` / env var /
-  `set_max_fails()` knobs all silently no-op for the summary reporter —
-  `testthat.summary.max_reports` is the only one that works).
+- Rebuild after Rust edits: `devtools::document()` (recompiles Rust and
+  regenerates `R/extendr-wrappers.R`). Iterate interactively:
+  `devtools::load_all()`.
+- Running `devtools::test()` non-interactively: the `summary` reporter
+  caps at 10 failures by default, which makes counts meaningless. Always
+  raise the cap with `options(testthat.summary.max_reports = Inf)` when
+  running for tally/comparison purposes (the per-reporter `max_fails` /
+  env var / `set_max_fails()` knobs all silently no-op for the summary
+  reporter — `testthat.summary.max_reports` is the only one that works).
 
 ## Round-trip iteration tools
 
 The `tools/` directory (gitignored, in `.Rbuildignore`) holds throwaway
 scripts for iterating on the QMD round-trip. All three load the package
-via
-[`devtools::load_all()`](https://devtools.r-lib.org/reference/load_all.html),
-call [`to_qmd()`](https://rundel.github.io/q2r/reference/to_qmd.md)
-(which routes pandoc through pampa’s writer and ts through the
-byte-walk), and run against the `tests/fixtures/quarto-web/` submodule.
+via `devtools::load_all()`, call
+[`to_qmd()`](https://rundel.github.io/q2r/reference/to_qmd.md) (which
+routes pandoc through pampa’s writer and ts through the byte-walk), and
+run against the `tests/fixtures/quarto-web/` submodule.
 
 - [`tools/rt/rt.R`](https://rundel.github.io/q2r/tools/rt/rt.R) —
   round-trip a small named set of files through the pandoc path. Pass
@@ -339,9 +334,9 @@ rename without updating `configure`.
   re-parse to a `ts_ast` equal to the original (same kind tree and same
   `@text` slots). The correctness check used by the round-trip tests is
   `expect_ts_ast_equal(ts2, ts)` after
-  `to_qmd(ts) -> pampa_parse_ts(...)`. Wrapper nodes that have a grammar
-  gap (children don’t cover the full byte range) preserve the gap by
-  falling back to verbatim `@text`; this is how blank lines,
+  `to_qmd(ts) -> pampa_parse(..., ast = "ts")`. Wrapper nodes that have
+  a grammar gap (children don’t cover the full byte range) preserve the
+  gap by falling back to verbatim `@text`; this is how blank lines,
   indentation, and other inter-element whitespace stay byte-identical
   across the round trip.
 - This is byte-recovery, not “writing” — a tree-sitter AST already

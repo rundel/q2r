@@ -58,7 +58,7 @@
 
 
 
-      <small class="dont-index">Source: <a href="https://github.com/rundel/q2r/blob/HEAD/vignettes/selecting-and-rewriting.qmd" class="external-link"><code>vignettes/selecting-and-rewriting.qmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rundel/q2r/blob/main/vignettes/selecting-and-rewriting.qmd" class="external-link"><code>vignettes/selecting-and-rewriting.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
     </div>
 
@@ -88,7 +88,7 @@
 <span><span class="st">Final words.</span></span>
 <span><span class="st">"</span></span>
 <span></span>
-<span><span class="va">doc</span> <span class="op">=</span> <span class="fu"><a href="../reference/pampa_parse_pd.html">pampa_parse_pd</a></span><span class="op">(</span><span class="va">src</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">doc</span> <span class="op">=</span> <span class="fu"><a href="../reference/pampa_parse.html">pampa_parse</a></span><span class="op">(</span><span class="va">src</span><span class="op">)</span></span></code></pre></div>
 </div>
 <section class="level2"><h2 id="selecting">Selecting<a class="anchor" aria-label="anchor" href="#selecting"></a>
 </h2>
@@ -255,7 +255,7 @@
 <span>  <span class="op">}</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rundel.github.io/q2r/reference/pampa_to_qmd.html">pampa_to_qmd</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="../reference/to_qmd.html">to_qmd</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ## Intro</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Some [bold]{.smallcaps} prose with a [link](https://example.com).</span></span>
@@ -306,7 +306,7 @@
 <span>  <span class="op">}</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rundel.github.io/q2r/reference/pampa_to_qmd.html">pampa_to_qmd</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="../reference/to_qmd.html">to_qmd</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # Intro</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Some **bold** prose with a [link](https://example.com).</span></span>
@@ -495,7 +495,7 @@
 <span>  <span class="op">}</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rundel.github.io/q2r/reference/pampa_to_qmd.html">pampa_to_qmd</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="../reference/to_qmd.html">to_qmd</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # [Intro](#intro) {#intro}</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Some **bold** prose with a [link](https://example.com).</span></span>
@@ -608,7 +608,7 @@
 <span></span>
 <span><span class="va">doc</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/select_nodes.html">insert_after</a></span><span class="op">(</span><span class="fu">is</span><span class="op">(</span><span class="va">pandoc_header</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">level</span> <span class="op">==</span> <span class="fl">1L</span>, .what <span class="op">=</span> <span class="va">note</span><span class="op">@</span><span class="va">content</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rundel.github.io/q2r/reference/pampa_to_qmd.html">pampa_to_qmd</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/to_qmd.html">to_qmd</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # Intro</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -635,7 +635,7 @@
 <p>Every verb above works on a [<code>ts_tree</code>] too. The mask exposes the ts-specific slots (<code>kind</code>, <code>is_named</code>, <code>field_name</code>, <code>text</code>):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ts</span> <span class="op">=</span> <span class="fu"><a href="../reference/pampa_parse_ts.html">pampa_parse_ts</a></span><span class="op">(</span><span class="va">src</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ts</span> <span class="op">=</span> <span class="fu"><a href="../reference/pampa_parse.html">pampa_parse</a></span><span class="op">(</span><span class="va">src</span>, ast <span class="op">=</span> <span class="st">"ts"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/select_nodes.html">select_nodes</a></span><span class="op">(</span><span class="va">ts</span>, <span class="va">kind</span> <span class="op">==</span> <span class="st">"atx_heading"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>
@@ -678,7 +678,7 @@
 <span>    .f <span class="op">=</span> \<span class="op">(</span><span class="va">h</span><span class="op">)</span> <span class="fu"><a href="../reference/pandoc_header.html">pandoc_header</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">2L</span>, attr <span class="op">=</span> <span class="va">h</span><span class="op">@</span><span class="va">attr</span>, content <span class="op">=</span> <span class="va">h</span><span class="op">@</span><span class="va">content</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rundel.github.io/q2r/reference/pampa_to_qmd.html">pampa_to_qmd</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="../reference/to_qmd.html">to_qmd</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ## Intro</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Some **bold** prose with a [link](https://example.com).</span></span>

@@ -7,7 +7,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/rundel/q2r/blob/HEAD/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/rundel/q2r/blob/main/DESCRIPTION)
 
 Rundel C (2026). *q2r: R Interface to the pampa Quarto Parser*. R
 package version 0.0.0.9000, <https://github.com/rundel/q2r>.

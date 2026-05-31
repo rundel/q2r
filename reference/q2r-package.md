@@ -2,9 +2,7 @@
 
 Exploratory R bindings to the `pampa` Rust crate from the quarto-dev/q2
 project. See
-[`pampa_parse_pd()`](https://rundel.github.io/q2r/reference/pampa_parse_pd.md)
-and
-[`pampa_parse_ts()`](https://rundel.github.io/q2r/reference/pampa_parse_ts.md).
+[`pampa_parse()`](https://rundel.github.io/q2r/reference/pampa_parse.md).
 
 ## Package options
 

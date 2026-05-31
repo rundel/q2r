@@ -97,7 +97,7 @@ Nodes without an `@attr` slot are handled defensively: predicates return
 
 ``` r
 if (FALSE) { # \dontrun{
-doc = pampa_parse_pd("# title {.unnumbered}\n")
+doc = pampa_parse("# title {.unnumbered}\n")
 doc |> map_nodes(is(pandoc_header), .f = function(h) {
   h |> add_class("highlight") |> set_id("intro")
 })

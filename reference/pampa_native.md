@@ -13,7 +13,7 @@ pampa_native(input)
 - input:
 
   A single string, handled like
-  [`pampa_parse_pd()`](https://rundel.github.io/q2r/reference/pampa_parse_pd.md).
+  [`pampa_parse()`](https://rundel.github.io/q2r/reference/pampa_parse.md).
 
 ## Value
 

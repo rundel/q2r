@@ -26,7 +26,7 @@ A single character string.
 
 Recursively concatenates the textual content of a pandoc AST, dropping
 all formatting. The output of a
-[`pampa_parse_pd()`](https://rundel.github.io/q2r/reference/pampa_parse_pd.md)
+[`pampa_parse()`](https://rundel.github.io/q2r/reference/pampa_parse.md)
 result fed back through `ast_text()` is roughly what readers would see
 if the document were rendered as a flat string.
 
@@ -77,7 +77,7 @@ Container rules:
 
 ``` r
 if (FALSE) { # \dontrun{
-doc = pampa_parse_pd("# Hello *world*\n\nSecond paragraph.\n")
+doc = pampa_parse("# Hello *world*\n\nSecond paragraph.\n")
 ast_text(doc)
 # "Hello world\n\nSecond paragraph."
 } # }

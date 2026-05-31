@@ -46,17 +46,10 @@
 
       <dl><dt>
 
-          <code><a href="pampa_parse_pd.html">pampa_parse_pd()</a></code>
+          <code><a href="pampa_parse.html">pampa_parse()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
-        <dd>Parse QMD input with pampa and return the Pandoc AST</dd>
-
-        <dt>
-
-          <code><a href="pampa_parse_ts.html">pampa_parse_ts()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Parse QMD input with tree-sitter and return the tree-sitter AST</dd>
+        <dd>Parse QMD input with pampa</dd>
 
         <dt>
 
@@ -691,7 +684,7 @@
       </dl></div><div class="section level2">
       <h2 id="tree-sitter-ast">Tree-sitter AST<a class="anchor" aria-label="anchor" href="#tree-sitter-ast"></a></h2>
 
-      <div class="section-desc"><p>S7 classes for the tree-sitter concrete syntax tree returned by <code><a href="../reference/pampa_parse_ts.html">pampa_parse_ts()</a></code>. The tree is structurally faithful to the source bytes; use it when <code><a href="../reference/to_qmd.html">to_qmd()</a></code> round-trip equivalence matters. <code>print.ts_tree</code> documents the tree display and its <code>position</code> / <code>ascii</code> knobs.</p></div>
+      <div class="section-desc"><p>S7 classes for the tree-sitter concrete syntax tree returned by <code>pampa_parse(ast = "ts")</code>. The tree is structurally faithful to the source bytes; use it when <code><a href="../reference/to_qmd.html">to_qmd()</a></code> round-trip equivalence matters. <code>print.ts_tree</code> documents the tree display and its <code>position</code> / <code>ascii</code> knobs.</p></div>
 
       <dl></dl></div><div class="section level2">
 

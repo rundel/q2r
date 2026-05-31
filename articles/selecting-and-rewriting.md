@@ -25,7 +25,7 @@ A callout with its own *emphasised* heading.
 Final words.
 "
 
-doc = pampa_parse_pd(src)
+doc = pampa_parse(src)
 ```
 
 ## Selecting
@@ -240,7 +240,7 @@ out = doc |> ast_filter(
   }
 )
 
-cat(pampa_to_qmd(out))
+cat(to_qmd(out))
 #> ## Intro
 #> 
 #> Some [bold]{.smallcaps} prose with a [link](https://example.com).
@@ -303,7 +303,7 @@ out = doc |> ast_filter(
   }
 )
 
-cat(pampa_to_qmd(out))
+cat(to_qmd(out))
 #> # Intro
 #> 
 #> Some **bold** prose with a [link](https://example.com).
@@ -547,7 +547,7 @@ out = doc |> ast_filter(
   }
 )
 
-cat(pampa_to_qmd(out))
+cat(to_qmd(out))
 #> # [Intro](#intro) {#intro}
 #> 
 #> Some **bold** prose with a [link](https://example.com).
@@ -703,7 +703,7 @@ note = as_blocks(c(
 
 doc |>
   insert_after(is(pandoc_header) & level == 1L, .what = note@content) |>
-  pampa_to_qmd() |>
+  to_qmd() |>
   cat()
 #> # Intro
 #> 
@@ -733,7 +733,7 @@ ts-specific slots (`kind`, `is_named`, `field_name`, `text`):
 
 ``` r
 
-ts = pampa_parse_ts(src)
+ts = pampa_parse(src, ast = "ts")
 
 select_nodes(ts, kind == "atx_heading")
 #> [[1]]
@@ -784,7 +784,7 @@ out = doc |>
     .f = \(h) pandoc_header(level = 2L, attr = h@attr, content = h@content)
   )
 
-cat(pampa_to_qmd(out))
+cat(to_qmd(out))
 #> ## Intro
 #> 
 #> Some **bold** prose with a [link](https://example.com).
