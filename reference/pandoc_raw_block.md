@@ -4,4 +4,6 @@ Raw block
 
 ## Usage
 
-    pandoc_raw_block(source_info = <object>, format = "", text = "")
+``` r
+pandoc_raw_block(source_info = pandoc_source_info(), format = "", text = "")
+```

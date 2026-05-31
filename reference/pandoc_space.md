@@ -4,4 +4,6 @@ Space
 
 ## Usage
 
-    pandoc_space(source_info = <object>)
+``` r
+pandoc_space(source_info = pandoc_source_info())
+```

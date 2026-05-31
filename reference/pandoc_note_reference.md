@@ -4,4 +4,6 @@ Note reference
 
 ## Usage
 
-    pandoc_note_reference(source_info = <object>, id = "")
+``` r
+pandoc_note_reference(source_info = pandoc_source_info(), id = "")
+```

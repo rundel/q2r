@@ -302,11 +302,11 @@ common ancestor for every concrete node, and `pandoc_block` /
 slots. `print.pandoc` documents the tree display and its `position` /
 `ascii` knobs.
 
-- [`pandoc`](https://rundel.github.io/q2r/reference/pandoc.md) :
+- [`pandoc()`](https://rundel.github.io/q2r/reference/pandoc.md) :
   Top-level Pandoc document
-- [`pandoc_node`](https://rundel.github.io/q2r/reference/pandoc_node.md)
-  [`pandoc_block`](https://rundel.github.io/q2r/reference/pandoc_node.md)
-  [`pandoc_inline`](https://rundel.github.io/q2r/reference/pandoc_node.md)
+- [`pandoc_node()`](https://rundel.github.io/q2r/reference/pandoc_node.md)
+  [`pandoc_block()`](https://rundel.github.io/q2r/reference/pandoc_node.md)
+  [`pandoc_inline()`](https://rundel.github.io/q2r/reference/pandoc_node.md)
   : Virtual parent classes
 - [`pandoc_blocks()`](https://rundel.github.io/q2r/reference/pandoc_blocks.md)
   [`pandoc_inlines()`](https://rundel.github.io/q2r/reference/pandoc_blocks.md)
@@ -321,102 +321,102 @@ slots. `print.pandoc` documents the tree display and its `position` /
 
 ## Pandoc AST — block constructors
 
-- [`pandoc_plain`](https://rundel.github.io/q2r/reference/pandoc_plain.md)
+- [`pandoc_plain()`](https://rundel.github.io/q2r/reference/pandoc_plain.md)
   : Plain block
-- [`pandoc_paragraph`](https://rundel.github.io/q2r/reference/pandoc_paragraph.md)
+- [`pandoc_paragraph()`](https://rundel.github.io/q2r/reference/pandoc_paragraph.md)
   : Paragraph
-- [`pandoc_header`](https://rundel.github.io/q2r/reference/pandoc_header.md)
+- [`pandoc_header()`](https://rundel.github.io/q2r/reference/pandoc_header.md)
   : Header
-- [`pandoc_block_quote`](https://rundel.github.io/q2r/reference/pandoc_block_quote.md)
+- [`pandoc_block_quote()`](https://rundel.github.io/q2r/reference/pandoc_block_quote.md)
   : Block quote
-- [`pandoc_div`](https://rundel.github.io/q2r/reference/pandoc_div.md) :
-  Div
-- [`pandoc_code_block`](https://rundel.github.io/q2r/reference/pandoc_code_block.md)
+- [`pandoc_div()`](https://rundel.github.io/q2r/reference/pandoc_div.md)
+  : Div
+- [`pandoc_code_block()`](https://rundel.github.io/q2r/reference/pandoc_code_block.md)
   : Code block
-- [`pandoc_raw_block`](https://rundel.github.io/q2r/reference/pandoc_raw_block.md)
+- [`pandoc_raw_block()`](https://rundel.github.io/q2r/reference/pandoc_raw_block.md)
   : Raw block
-- [`pandoc_ordered_list`](https://rundel.github.io/q2r/reference/pandoc_ordered_list.md)
+- [`pandoc_ordered_list()`](https://rundel.github.io/q2r/reference/pandoc_ordered_list.md)
   : Ordered list
-- [`pandoc_bullet_list`](https://rundel.github.io/q2r/reference/pandoc_bullet_list.md)
+- [`pandoc_bullet_list()`](https://rundel.github.io/q2r/reference/pandoc_bullet_list.md)
   : Bullet list
-- [`pandoc_line_block`](https://rundel.github.io/q2r/reference/pandoc_line_block.md)
+- [`pandoc_line_block()`](https://rundel.github.io/q2r/reference/pandoc_line_block.md)
   : Line block
-- [`pandoc_definition_list`](https://rundel.github.io/q2r/reference/pandoc_definition_list.md)
+- [`pandoc_definition_list()`](https://rundel.github.io/q2r/reference/pandoc_definition_list.md)
   : Definition list
-- [`pandoc_definition_item`](https://rundel.github.io/q2r/reference/pandoc_definition_item.md)
+- [`pandoc_definition_item()`](https://rundel.github.io/q2r/reference/pandoc_definition_item.md)
   : Definition-list item
-- [`pandoc_figure`](https://rundel.github.io/q2r/reference/pandoc_figure.md)
+- [`pandoc_figure()`](https://rundel.github.io/q2r/reference/pandoc_figure.md)
   : Figure
-- [`pandoc_horizontal_rule`](https://rundel.github.io/q2r/reference/pandoc_horizontal_rule.md)
+- [`pandoc_horizontal_rule()`](https://rundel.github.io/q2r/reference/pandoc_horizontal_rule.md)
   : Horizontal rule
-- [`pandoc_caption_block`](https://rundel.github.io/q2r/reference/pandoc_caption_block.md)
+- [`pandoc_caption_block()`](https://rundel.github.io/q2r/reference/pandoc_caption_block.md)
   : Caption block (orphan caption)
-- [`pandoc_block_metadata`](https://rundel.github.io/q2r/reference/pandoc_block_metadata.md)
+- [`pandoc_block_metadata()`](https://rundel.github.io/q2r/reference/pandoc_block_metadata.md)
   : Block metadata
-- [`pandoc_note_definition_para`](https://rundel.github.io/q2r/reference/pandoc_note_definition_para.md)
+- [`pandoc_note_definition_para()`](https://rundel.github.io/q2r/reference/pandoc_note_definition_para.md)
   : Note definition (paragraph form)
-- [`pandoc_note_definition_fenced_block`](https://rundel.github.io/q2r/reference/pandoc_note_definition_fenced_block.md)
+- [`pandoc_note_definition_fenced_block()`](https://rundel.github.io/q2r/reference/pandoc_note_definition_fenced_block.md)
   : Note definition (fenced block form)
-- [`pandoc_custom_block`](https://rundel.github.io/q2r/reference/pandoc_custom_block.md)
+- [`pandoc_custom_block()`](https://rundel.github.io/q2r/reference/pandoc_custom_block.md)
   : Custom block node (Quarto extensions: callouts, tabsets, ...)
 
 ## Pandoc AST — inline constructors
 
-- [`pandoc_str`](https://rundel.github.io/q2r/reference/pandoc_str.md) :
-  Literal string
-- [`pandoc_space`](https://rundel.github.io/q2r/reference/pandoc_space.md)
+- [`pandoc_str()`](https://rundel.github.io/q2r/reference/pandoc_str.md)
+  : Literal string
+- [`pandoc_space()`](https://rundel.github.io/q2r/reference/pandoc_space.md)
   : Space
-- [`pandoc_soft_break`](https://rundel.github.io/q2r/reference/pandoc_soft_break.md)
+- [`pandoc_soft_break()`](https://rundel.github.io/q2r/reference/pandoc_soft_break.md)
   : Soft line break
-- [`pandoc_line_break`](https://rundel.github.io/q2r/reference/pandoc_line_break.md)
+- [`pandoc_line_break()`](https://rundel.github.io/q2r/reference/pandoc_line_break.md)
   : Hard line break
-- [`pandoc_emph`](https://rundel.github.io/q2r/reference/pandoc_emph.md)
+- [`pandoc_emph()`](https://rundel.github.io/q2r/reference/pandoc_emph.md)
   : Emphasized text
-- [`pandoc_underline`](https://rundel.github.io/q2r/reference/pandoc_underline.md)
+- [`pandoc_underline()`](https://rundel.github.io/q2r/reference/pandoc_underline.md)
   : Underlined text
-- [`pandoc_strong`](https://rundel.github.io/q2r/reference/pandoc_strong.md)
+- [`pandoc_strong()`](https://rundel.github.io/q2r/reference/pandoc_strong.md)
   : Strong text
-- [`pandoc_strikeout`](https://rundel.github.io/q2r/reference/pandoc_strikeout.md)
+- [`pandoc_strikeout()`](https://rundel.github.io/q2r/reference/pandoc_strikeout.md)
   : Struck-through text
-- [`pandoc_superscript`](https://rundel.github.io/q2r/reference/pandoc_superscript.md)
+- [`pandoc_superscript()`](https://rundel.github.io/q2r/reference/pandoc_superscript.md)
   : Superscript
-- [`pandoc_subscript`](https://rundel.github.io/q2r/reference/pandoc_subscript.md)
+- [`pandoc_subscript()`](https://rundel.github.io/q2r/reference/pandoc_subscript.md)
   : Subscript
-- [`pandoc_small_caps`](https://rundel.github.io/q2r/reference/pandoc_small_caps.md)
+- [`pandoc_small_caps()`](https://rundel.github.io/q2r/reference/pandoc_small_caps.md)
   : Small caps
-- [`pandoc_quoted`](https://rundel.github.io/q2r/reference/pandoc_quoted.md)
+- [`pandoc_quoted()`](https://rundel.github.io/q2r/reference/pandoc_quoted.md)
   : Quoted text
-- [`pandoc_cite`](https://rundel.github.io/q2r/reference/pandoc_cite.md)
+- [`pandoc_cite()`](https://rundel.github.io/q2r/reference/pandoc_cite.md)
   : Citation reference
-- [`pandoc_code`](https://rundel.github.io/q2r/reference/pandoc_code.md)
+- [`pandoc_code()`](https://rundel.github.io/q2r/reference/pandoc_code.md)
   : Inline code
-- [`pandoc_math`](https://rundel.github.io/q2r/reference/pandoc_math.md)
+- [`pandoc_math()`](https://rundel.github.io/q2r/reference/pandoc_math.md)
   : Math
-- [`pandoc_raw_inline`](https://rundel.github.io/q2r/reference/pandoc_raw_inline.md)
+- [`pandoc_raw_inline()`](https://rundel.github.io/q2r/reference/pandoc_raw_inline.md)
   : Raw inline
-- [`pandoc_link`](https://rundel.github.io/q2r/reference/pandoc_link.md)
+- [`pandoc_link()`](https://rundel.github.io/q2r/reference/pandoc_link.md)
   : Link
-- [`pandoc_image`](https://rundel.github.io/q2r/reference/pandoc_image.md)
+- [`pandoc_image()`](https://rundel.github.io/q2r/reference/pandoc_image.md)
   : Image
-- [`pandoc_note`](https://rundel.github.io/q2r/reference/pandoc_note.md)
+- [`pandoc_note()`](https://rundel.github.io/q2r/reference/pandoc_note.md)
   : Footnote
-- [`pandoc_span`](https://rundel.github.io/q2r/reference/pandoc_span.md)
+- [`pandoc_span()`](https://rundel.github.io/q2r/reference/pandoc_span.md)
   : Inline span
-- [`pandoc_shortcode`](https://rundel.github.io/q2r/reference/pandoc_shortcode.md)
+- [`pandoc_shortcode()`](https://rundel.github.io/q2r/reference/pandoc_shortcode.md)
   : Shortcode
-- [`pandoc_insert`](https://rundel.github.io/q2r/reference/pandoc_insert.md)
+- [`pandoc_insert()`](https://rundel.github.io/q2r/reference/pandoc_insert.md)
   : CriticMarkup: insertion
-- [`pandoc_delete`](https://rundel.github.io/q2r/reference/pandoc_delete.md)
+- [`pandoc_delete()`](https://rundel.github.io/q2r/reference/pandoc_delete.md)
   : CriticMarkup: deletion
-- [`pandoc_highlight`](https://rundel.github.io/q2r/reference/pandoc_highlight.md)
+- [`pandoc_highlight()`](https://rundel.github.io/q2r/reference/pandoc_highlight.md)
   : CriticMarkup: highlight
-- [`pandoc_edit_comment`](https://rundel.github.io/q2r/reference/pandoc_edit_comment.md)
+- [`pandoc_edit_comment()`](https://rundel.github.io/q2r/reference/pandoc_edit_comment.md)
   : CriticMarkup: comment
-- [`pandoc_note_reference`](https://rundel.github.io/q2r/reference/pandoc_note_reference.md)
+- [`pandoc_note_reference()`](https://rundel.github.io/q2r/reference/pandoc_note_reference.md)
   : Note reference
-- [`pandoc_attr_inline`](https://rundel.github.io/q2r/reference/pandoc_attr_inline.md)
+- [`pandoc_attr_inline()`](https://rundel.github.io/q2r/reference/pandoc_attr_inline.md)
   : Standalone attribute inline
-- [`pandoc_custom_inline`](https://rundel.github.io/q2r/reference/pandoc_custom_inline.md)
+- [`pandoc_custom_inline()`](https://rundel.github.io/q2r/reference/pandoc_custom_inline.md)
   : Custom inline node (Quarto extensions)
 
 ## Pandoc AST — support types
@@ -426,19 +426,19 @@ substructures, citations, captions, metadata.
 
 - [`pandoc_attr()`](https://rundel.github.io/q2r/reference/pandoc_attr.md)
   : Pandoc attributes
-- [`pandoc_caption`](https://rundel.github.io/q2r/reference/pandoc_caption.md)
+- [`pandoc_caption()`](https://rundel.github.io/q2r/reference/pandoc_caption.md)
   : Caption (short + long)
-- [`pandoc_citation`](https://rundel.github.io/q2r/reference/pandoc_citation.md)
+- [`pandoc_citation()`](https://rundel.github.io/q2r/reference/pandoc_citation.md)
   : Citation
-- [`pandoc_table`](https://rundel.github.io/q2r/reference/pandoc_table.md)
+- [`pandoc_table()`](https://rundel.github.io/q2r/reference/pandoc_table.md)
   : Table
-- [`pandoc_table_head`](https://rundel.github.io/q2r/reference/pandoc_table_head.md)
-  [`pandoc_table_body`](https://rundel.github.io/q2r/reference/pandoc_table_head.md)
-  [`pandoc_table_foot`](https://rundel.github.io/q2r/reference/pandoc_table_head.md)
+- [`pandoc_table_head()`](https://rundel.github.io/q2r/reference/pandoc_table_head.md)
+  [`pandoc_table_body()`](https://rundel.github.io/q2r/reference/pandoc_table_head.md)
+  [`pandoc_table_foot()`](https://rundel.github.io/q2r/reference/pandoc_table_head.md)
   : Table head / body / foot
-- [`pandoc_row`](https://rundel.github.io/q2r/reference/pandoc_row.md) :
-  Table row
-- [`pandoc_cell`](https://rundel.github.io/q2r/reference/pandoc_cell.md)
+- [`pandoc_row()`](https://rundel.github.io/q2r/reference/pandoc_row.md)
+  : Table row
+- [`pandoc_cell()`](https://rundel.github.io/q2r/reference/pandoc_cell.md)
   : Table cell
 - [`pandoc_col_spec()`](https://rundel.github.io/q2r/reference/pandoc_col_spec.md)
   : Table column alignment and width
@@ -461,11 +461,11 @@ The tree is structurally faithful to the source bytes; use it when
 round-trip equivalence matters. `print.ts_tree` documents the tree
 display and its `position` / `ascii` knobs.
 
-- [`ts_point`](https://rundel.github.io/q2r/reference/ts_point.md)
-  [`ts_range`](https://rundel.github.io/q2r/reference/ts_point.md)
-  [`ts_nodes`](https://rundel.github.io/q2r/reference/ts_point.md)
-  [`ts_node`](https://rundel.github.io/q2r/reference/ts_point.md)
-  [`ts_tree`](https://rundel.github.io/q2r/reference/ts_point.md) :
+- [`ts_point()`](https://rundel.github.io/q2r/reference/ts_point.md)
+  [`ts_range()`](https://rundel.github.io/q2r/reference/ts_point.md)
+  [`ts_nodes()`](https://rundel.github.io/q2r/reference/ts_point.md)
+  [`ts_node()`](https://rundel.github.io/q2r/reference/ts_point.md)
+  [`ts_tree()`](https://rundel.github.io/q2r/reference/ts_point.md) :
   Tree-sitter AST classes
 - [`print.ts_tree`](https://rundel.github.io/q2r/reference/print.ts_tree.md)
   [`print.ts_node`](https://rundel.github.io/q2r/reference/print.ts_tree.md)

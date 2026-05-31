@@ -4,4 +4,10 @@ Top-level Pandoc document
 
 ## Usage
 
-    pandoc(meta = <object>, blocks = <object>, diagnostics = list())
+``` r
+pandoc(
+  meta = pandoc_meta_value(),
+  blocks = pandoc_blocks(list()),
+  diagnostics = list()
+)
+```

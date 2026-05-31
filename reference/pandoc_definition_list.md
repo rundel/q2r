@@ -4,4 +4,6 @@ Definition list
 
 ## Usage
 
-    pandoc_definition_list(source_info = <object>, content = list())
+``` r
+pandoc_definition_list(source_info = pandoc_source_info(), content = list())
+```

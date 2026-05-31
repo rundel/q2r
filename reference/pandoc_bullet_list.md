@@ -4,4 +4,6 @@ Bullet list
 
 ## Usage
 
-    pandoc_bullet_list(source_info = <object>, content = list())
+``` r
+pandoc_bullet_list(source_info = pandoc_source_info(), content = list())
+```

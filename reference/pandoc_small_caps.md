@@ -4,4 +4,9 @@ Small caps
 
 ## Usage
 
-    pandoc_small_caps(source_info = <object>, content = <object>)
+``` r
+pandoc_small_caps(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
+```

@@ -4,4 +4,6 @@ Definition-list item
 
 ## Usage
 
-    pandoc_definition_item(term = <object>, defs = list())
+``` r
+pandoc_definition_item(term = pandoc_inlines(list()), defs = list())
+```

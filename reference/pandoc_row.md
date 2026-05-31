@@ -4,4 +4,6 @@ Table row
 
 ## Usage
 
-    pandoc_row(attr = <object>, cells = list())
+``` r
+pandoc_row(attr = pandoc_attr(), cells = list())
+```

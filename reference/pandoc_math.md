@@ -4,4 +4,10 @@ Math
 
 ## Usage
 
-    pandoc_math(source_info = <object>, math_type = "inline", text = "")
+``` r
+pandoc_math(
+  source_info = pandoc_source_info(),
+  math_type = "inline",
+  text = ""
+)
+```

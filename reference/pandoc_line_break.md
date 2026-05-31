@@ -4,4 +4,6 @@ Hard line break
 
 ## Usage
 
-    pandoc_line_break(source_info = <object>)
+``` r
+pandoc_line_break(source_info = pandoc_source_info())
+```

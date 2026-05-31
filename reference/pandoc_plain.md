@@ -4,4 +4,9 @@ Plain block
 
 ## Usage
 
-    pandoc_plain(source_info = <object>, content = <object>)
+``` r
+pandoc_plain(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
+```

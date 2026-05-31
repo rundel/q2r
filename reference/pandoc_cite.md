@@ -4,4 +4,10 @@ Citation reference
 
 ## Usage
 
-    pandoc_cite(source_info = <object>, citations = list(), content = <object>)
+``` r
+pandoc_cite(
+  source_info = pandoc_source_info(),
+  citations = list(),
+  content = pandoc_inlines(list())
+)
+```

@@ -4,4 +4,9 @@ Superscript
 
 ## Usage
 
-    pandoc_superscript(source_info = <object>, content = <object>)
+``` r
+pandoc_superscript(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
+```

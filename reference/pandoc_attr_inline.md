@@ -4,4 +4,6 @@ Standalone attribute inline
 
 ## Usage
 
-    pandoc_attr_inline(source_info = <object>, attr = <object>)
+``` r
+pandoc_attr_inline(source_info = pandoc_source_info(), attr = pandoc_attr())
+```

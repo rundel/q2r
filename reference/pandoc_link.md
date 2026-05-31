@@ -4,10 +4,12 @@ Link
 
 ## Usage
 
-    pandoc_link(
-      source_info = <object>,
-      attr = <object>,
-      content = <object>,
-      url = "",
-      title = ""
-    )
+``` r
+pandoc_link(
+  source_info = pandoc_source_info(),
+  attr = pandoc_attr(),
+  content = pandoc_inlines(list()),
+  url = "",
+  title = ""
+)
+```

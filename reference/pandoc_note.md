@@ -4,4 +4,9 @@ Footnote
 
 ## Usage
 
-    pandoc_note(source_info = <object>, content = <object>)
+``` r
+pandoc_note(
+  source_info = pandoc_source_info(),
+  content = pandoc_blocks(list())
+)
+```

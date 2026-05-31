@@ -4,4 +4,9 @@ Underlined text
 
 ## Usage
 
-    pandoc_underline(source_info = <object>, content = <object>)
+``` r
+pandoc_underline(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
+```

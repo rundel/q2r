@@ -4,4 +4,9 @@ Block metadata
 
 ## Usage
 
-    pandoc_block_metadata(source_info = <object>, meta = <object>)
+``` r
+pandoc_block_metadata(
+  source_info = pandoc_source_info(),
+  meta = pandoc_meta_value()
+)
+```

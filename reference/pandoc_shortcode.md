@@ -10,10 +10,12 @@ positional KeyValue bundles).
 
 ## Usage
 
-    pandoc_shortcode(
-      source_info = <object>,
-      name = "",
-      is_escaped = FALSE,
-      positional_args = list(),
-      keyword_args = list()
-    )
+``` r
+pandoc_shortcode(
+  source_info = pandoc_source_info(),
+  name = "",
+  is_escaped = FALSE,
+  positional_args = list(),
+  keyword_args = list()
+)
+```

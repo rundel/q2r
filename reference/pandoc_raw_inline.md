@@ -4,4 +4,6 @@ Raw inline
 
 ## Usage
 
-    pandoc_raw_inline(source_info = <object>, format = "", text = "")
+``` r
+pandoc_raw_inline(source_info = pandoc_source_info(), format = "", text = "")
+```

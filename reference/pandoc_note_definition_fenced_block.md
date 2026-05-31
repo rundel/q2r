@@ -4,8 +4,10 @@ Note definition (fenced block form)
 
 ## Usage
 
-    pandoc_note_definition_fenced_block(
-      source_info = <object>,
-      id = "",
-      content = <object>
-    )
+``` r
+pandoc_note_definition_fenced_block(
+  source_info = pandoc_source_info(),
+  id = "",
+  content = pandoc_blocks(list())
+)
+```

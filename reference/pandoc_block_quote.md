@@ -4,4 +4,9 @@ Block quote
 
 ## Usage
 
-    pandoc_block_quote(source_info = <object>, content = <object>)
+``` r
+pandoc_block_quote(
+  source_info = pandoc_source_info(),
+  content = pandoc_blocks(list())
+)
+```

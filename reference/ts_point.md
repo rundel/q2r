@@ -7,24 +7,26 @@ class with a `kind` string property is used.
 
 ## Usage
 
-    ts_point(row = NA_integer_, column = NA_integer_)
+``` r
+ts_point(row = NA_integer_, column = NA_integer_)
 
-    ts_range(
-      start_byte = NA_integer_,
-      end_byte = NA_integer_,
-      start_point = <object>,
-      end_point = <object>
-    )
+ts_range(
+  start_byte = NA_integer_,
+  end_byte = NA_integer_,
+  start_point = ts_point(),
+  end_point = ts_point()
+)
 
-    ts_nodes(content = list())
+ts_nodes(content = list())
 
-    ts_node(
-      kind = "",
-      is_named = TRUE,
-      field_name = NULL,
-      range = <object>,
-      text = NULL,
-      children = <object>
-    )
+ts_node(
+  kind = "",
+  is_named = TRUE,
+  field_name = NULL,
+  range = ts_range(),
+  text = NULL,
+  children = ts_nodes(list())
+)
 
-    ts_tree(root = <object>, language = "qmd", diagnostics = list())
+ts_tree(root = ts_node(), language = "qmd", diagnostics = list())
+```

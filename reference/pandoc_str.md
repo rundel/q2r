@@ -12,4 +12,6 @@ re-parses into separate inlines, so it is rejected.
 
 ## Usage
 
-    pandoc_str(source_info = <object>, text = "")
+``` r
+pandoc_str(source_info = pandoc_source_info(), text = "")
+```

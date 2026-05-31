@@ -4,4 +4,10 @@ Inline span
 
 ## Usage
 
-    pandoc_span(source_info = <object>, attr = <object>, content = <object>)
+``` r
+pandoc_span(
+  source_info = pandoc_source_info(),
+  attr = pandoc_attr(),
+  content = pandoc_inlines(list())
+)
+```

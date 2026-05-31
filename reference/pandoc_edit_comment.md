@@ -4,8 +4,10 @@ CriticMarkup: comment
 
 ## Usage
 
-    pandoc_edit_comment(
-      source_info = <object>,
-      attr = <object>,
-      content = <object>
-    )
+``` r
+pandoc_edit_comment(
+  source_info = pandoc_source_info(),
+  attr = pandoc_attr(),
+  content = pandoc_inlines(list())
+)
+```

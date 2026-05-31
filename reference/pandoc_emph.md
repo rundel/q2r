@@ -4,4 +4,9 @@ Emphasized text
 
 ## Usage
 
-    pandoc_emph(source_info = <object>, content = <object>)
+``` r
+pandoc_emph(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
+```

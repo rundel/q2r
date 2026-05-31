@@ -4,4 +4,9 @@ Strong text
 
 ## Usage
 
-    pandoc_strong(source_info = <object>, content = <object>)
+``` r
+pandoc_strong(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
+```

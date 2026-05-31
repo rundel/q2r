@@ -4,4 +4,9 @@ Paragraph
 
 ## Usage
 
-    pandoc_paragraph(source_info = <object>, content = <object>)
+``` r
+pandoc_paragraph(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
+```

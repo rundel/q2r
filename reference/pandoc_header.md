@@ -4,9 +4,11 @@ Header
 
 ## Usage
 
-    pandoc_header(
-      source_info = <object>,
-      level = 1L,
-      attr = <object>,
-      content = <object>
-    )
+``` r
+pandoc_header(
+  source_info = pandoc_source_info(),
+  level = 1L,
+  attr = pandoc_attr(),
+  content = pandoc_inlines(list())
+)
+```

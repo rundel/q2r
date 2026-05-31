@@ -4,4 +4,6 @@ Horizontal rule
 
 ## Usage
 
-    pandoc_horizontal_rule(source_info = <object>)
+``` r
+pandoc_horizontal_rule(source_info = pandoc_source_info())
+```

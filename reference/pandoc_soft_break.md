@@ -4,4 +4,6 @@ Soft line break
 
 ## Usage
 
-    pandoc_soft_break(source_info = <object>)
+``` r
+pandoc_soft_break(source_info = pandoc_source_info())
+```

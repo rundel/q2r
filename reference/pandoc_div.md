@@ -4,4 +4,10 @@ Div
 
 ## Usage
 
-    pandoc_div(source_info = <object>, attr = <object>, content = <object>)
+``` r
+pandoc_div(
+  source_info = pandoc_source_info(),
+  attr = pandoc_attr(),
+  content = pandoc_blocks(list())
+)
+```

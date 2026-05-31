@@ -4,13 +4,15 @@ Table head / body / foot
 
 ## Usage
 
-    pandoc_table_head(attr = <object>, rows = list())
+``` r
+pandoc_table_head(attr = pandoc_attr(), rows = list())
 
-    pandoc_table_body(
-      attr = <object>,
-      row_head_columns = 0L,
-      head_rows = list(),
-      body_rows = list()
-    )
+pandoc_table_body(
+  attr = pandoc_attr(),
+  row_head_columns = 0L,
+  head_rows = list(),
+  body_rows = list()
+)
 
-    pandoc_table_foot(attr = <object>, rows = list())
+pandoc_table_foot(attr = pandoc_attr(), rows = list())
+```

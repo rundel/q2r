@@ -4,4 +4,9 @@ Subscript
 
 ## Usage
 
-    pandoc_subscript(source_info = <object>, content = <object>)
+``` r
+pandoc_subscript(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
+```

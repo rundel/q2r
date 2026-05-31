@@ -5,4 +5,6 @@
 
 ## Usage
 
-    pandoc_caption(short = NULL, long = <object>)
+``` r
+pandoc_caption(short = NULL, long = pandoc_blocks(list()))
+```

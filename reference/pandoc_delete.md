@@ -4,4 +4,10 @@ CriticMarkup: deletion
 
 ## Usage
 
-    pandoc_delete(source_info = <object>, attr = <object>, content = <object>)
+``` r
+pandoc_delete(
+  source_info = pandoc_source_info(),
+  attr = pandoc_attr(),
+  content = pandoc_inlines(list())
+)
+```

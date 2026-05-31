@@ -4,4 +4,9 @@ Caption block (orphan caption)
 
 ## Usage
 
-    pandoc_caption_block(source_info = <object>, content = <object>)
+``` r
+pandoc_caption_block(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
+```

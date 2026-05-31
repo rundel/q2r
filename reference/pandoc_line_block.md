@@ -4,4 +4,6 @@ Line block
 
 ## Usage
 
-    pandoc_line_block(source_info = <object>, content = list())
+``` r
+pandoc_line_block(source_info = pandoc_source_info(), content = list())
+```

@@ -4,8 +4,10 @@ Note definition (paragraph form)
 
 ## Usage
 
-    pandoc_note_definition_para(
-      source_info = <object>,
-      id = "",
-      content = <object>
-    )
+``` r
+pandoc_note_definition_para(
+  source_info = pandoc_source_info(),
+  id = "",
+  content = pandoc_inlines(list())
+)
+```
