@@ -5,6 +5,15 @@ test_that("pandoc_str carries text and inherits from pandoc_inline", {
   expect_true(S7::S7_inherits(s, pandoc_node))
 })
 
+test_that("pandoc_str rejects embedded ASCII whitespace", {
+  expect_silent(pandoc_str(text = "word"))
+  expect_silent(pandoc_str(text = ""))
+  expect_silent(pandoc_str(text = paste0("a", intToUtf8(0x00A0), "b")))  # nbsp is not ASCII whitespace
+  expect_error(pandoc_str(text = "a b"), "must not contain spaces")
+  expect_error(pandoc_str(text = "line1\nline2"), "must not contain")
+  expect_error(pandoc_str(text = "a\tb"), "must not contain")
+})
+
 test_that("leaf inlines (space, soft_break, line_break) construct without args", {
   expect_true(S7::S7_inherits(pandoc_space(), pandoc_inline))
   expect_true(S7::S7_inherits(pandoc_soft_break(), pandoc_inline))

@@ -155,7 +155,7 @@ test_that("q2r.print_trunc_side selects the ellipsis position", {
 })
 
 test_that("q2r.print_trunc_side rejects unknown sides", {
-  s = pandoc_str(text = "hello world")
+  s = pandoc_str(text = "helloworld")
   withr::with_options(list(q2r.print_trunc_side = "bogus"), {
     expect_error(capture_tree(s), "should be one of")
   })

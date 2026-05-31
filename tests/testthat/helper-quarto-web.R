@@ -16,7 +16,10 @@ skip_if_no_quarto_web = function() {
 quarto_web_files = function() {
   root = quarto_web_root()
   files = list.files(root, pattern = "\\.qmd$", recursive = TRUE, full.names = TRUE)
-  substr(files, nchar(root) + 2L, nchar(files))
+  rel = substr(files, nchar(root) + 2L, nchar(files))
+  # `list.files()` orders by the active LC_COLLATE, so the generated sweep
+  # files would churn across locales (C vs UTF-8). Force byte order.
+  sort(rel, method = "radix")
 }
 
 quarto_web_read = function(rel) {
