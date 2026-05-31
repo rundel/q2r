@@ -78,11 +78,12 @@ ts
 
 ### Rendering back to QMD
 
-`pampa_to_qmd()` renders a parsed AST (or text / file path) back to QMD source
-via pampa's writer.
+`to_qmd()` renders a parsed AST (a `pandoc` or `ts_tree` object) back to QMD
+source. A `pandoc` object is written by pampa's QMD writer; a `ts_tree` is
+recovered from its source bytes.
 
 ```{r}
-cat(pampa_to_qmd(pd))
+cat(to_qmd(pd))
 ```
 
 ### Diagnostics
