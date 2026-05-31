@@ -2,12 +2,26 @@
 NULL
 
 #' Literal string
+#'
+#' A `pandoc_str` is a maximal run of non-whitespace characters: Pandoc
+#' represents spaces as [pandoc_space] and line breaks as [pandoc_soft_break]
+#' / [pandoc_line_break]. Embedding ASCII whitespace in `@text` would emit
+#' literal whitespace that re-parses into separate inlines, so it is rejected.
 #' @export
 pandoc_str = S7::new_class(
   "pandoc_str",
   package = "q2r",
   parent = pandoc_inline,
-  properties = list(text = S7::new_property(S7::class_character, default = ""))
+  properties = list(text = S7::new_property(S7::class_character, default = "")),
+  validator = function(self) {
+    if (length(self@text) == 1L && grepl("[ \t\r\n]", self@text)) {
+      paste0(
+        "@text must not contain spaces, tabs, or line breaks (use ",
+        "pandoc_space / pandoc_soft_break between words); got ",
+        encodeString(self@text, quote = "\"")
+      )
+    }
+  }
 )
 
 #' Emphasized text

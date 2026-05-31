@@ -71,10 +71,33 @@ inline_to_list = function(x) {
     tag             = "Shortcode",
     name            = x@name,
     is_escaped      = isTRUE(x@is_escaped),
-    positional_args = x@positional_args,
-    keyword_args    = x@keyword_args
+    positional_args = lapply(x@positional_args, shortcode_arg_to_list),
+    keyword_args    = lapply(x@keyword_args, shortcode_arg_to_list)
   ))
+  if (S7::S7_inherits(x, pandoc_custom_inline)) {
+    stop("to_qmd(): pandoc_custom_inline is not yet supported by the QMD ",
+         "writer (pampa cannot render CustomInline back to QMD)", call. = FALSE)
+  }
   stop("to-rust: unhandled inline class '", pandoc_class_name(x), "'")
+}
+
+# Inverse of `shortcode_arg_from_list` (from-rust.R): re-serialize a stored
+# shortcode-argument record into the tagged-list wire shape Rust's
+# `shortcode_arg_from_r` expects. A nested `shortcode` arg holds an S7
+# `pandoc_shortcode` that must be re-emitted as a tagged `Shortcode` inline,
+# and `kv` / `kv_group` recurse; without this the nested S7 object reaches
+# Rust verbatim and the writer fails.
+shortcode_arg_to_list = function(a) {
+  kind = a$kind %||% "string"
+  if (kind == "shortcode") {
+    list(kind = "shortcode", value = inline_to_list(a$value))
+  } else if (kind == "kv") {
+    list(kind = "kv", key = a$key %||% "", value = shortcode_arg_to_list(a$value))
+  } else if (kind == "kv_group") {
+    list(kind = "kv_group", value = lapply(a$value %||% list(), shortcode_arg_to_list))
+  } else {
+    list(kind = kind, value = a$value)
+  }
 }
 
 block_to_list = function(x) {
@@ -128,6 +151,14 @@ block_to_list = function(x) {
     tag = "CaptionBlock", content = inlines_to_list(x@content)
   ))
   if (S7::S7_inherits(x, pandoc_table)) return(table_to_list(x))
+  if (S7::S7_inherits(x, pandoc_block_metadata)) {
+    stop("to_qmd(): pandoc_block_metadata is not yet supported by the QMD ",
+         "writer (pampa cannot render BlockMetadata back to QMD)", call. = FALSE)
+  }
+  if (S7::S7_inherits(x, pandoc_custom_block)) {
+    stop("to_qmd(): pandoc_custom_block is not yet supported by the QMD ",
+         "writer (pampa cannot render CustomBlock back to QMD)", call. = FALSE)
+  }
   stop("to-rust: unhandled block class '", pandoc_class_name(x), "'")
 }
 

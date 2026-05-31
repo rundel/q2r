@@ -7,5 +7,8 @@
 pandoc_str(source_info = <object>, text = "")
 }
 \description{
-Literal string
+A \code{pandoc_str} is a maximal run of non-whitespace characters: Pandoc
+represents spaces as \link{pandoc_space} and line breaks as \link{pandoc_soft_break}
+/ \link{pandoc_line_break}. Embedding ASCII whitespace in \verb{@text} would emit
+literal whitespace that re-parses into separate inlines, so it is rejected.
 }

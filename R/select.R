@@ -345,8 +345,23 @@ ast_eval_predicates = function(quos, node, mask, kind) {
     select_state$kind = prev_kind
   }, add = TRUE)
   for (q in quos) {
-    res = tryCatch(rlang::eval_tidy(q, mask),
-                   error = function(e) FALSE)
+    res = tryCatch(
+      rlang::eval_tidy(q, mask),
+      # A predicate that errors is treated as no-match (so a slot only some
+      # node types carry does not abort the whole query), but the error is
+      # surfaced once per unique message so genuine mistakes - a mistyped
+      # helper, an unknown slot, a bad regex - do not fail silently.
+      error = function(e) {
+        rlang::warn(
+          paste0("select predicate errored and was treated as no-match: ",
+                 conditionMessage(e)),
+          class = "q2r_predicate_error",
+          .frequency = "once",
+          .frequency_id = paste0("q2r-pred-", conditionMessage(e))
+        )
+        FALSE
+      }
+    )
     if (!isTRUE(res)) return(FALSE)
   }
   TRUE
