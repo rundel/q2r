@@ -145,7 +145,7 @@ out = doc |> ast_filter(
   }
 )
 
-cat(pampa_to_qmd(out))
+cat(to_qmd(out))
 ```
 
 Handlers honour the same return-value contract as `map_nodes()`: return
@@ -188,7 +188,7 @@ out = doc |> ast_filter(
   }
 )
 
-cat(pampa_to_qmd(out))
+cat(to_qmd(out))
 ```
 
 Without `ast_skip()`, the walker would still descend into the rewritten
@@ -374,7 +374,7 @@ out = doc |> ast_filter(
   }
 )
 
-cat(pampa_to_qmd(out))
+cat(to_qmd(out))
 ```
 
 ### Force every callout to "caution"
@@ -494,7 +494,7 @@ note = as_blocks(c(
 
 doc |>
   insert_after(is(pandoc_header) & level == 1L, .what = note@content) |>
-  pampa_to_qmd() |>
+  to_qmd() |>
   cat()
 ```
 
@@ -531,5 +531,5 @@ out = doc |>
     .f = \(h) pandoc_header(level = 2L, attr = h@attr, content = h@content)
   )
 
-cat(pampa_to_qmd(out))
+cat(to_qmd(out))
 ```
