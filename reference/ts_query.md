@@ -17,7 +17,7 @@ ts_query(input, query_text)
   (re-renders to QMD via
   [`to_qmd()`](https://rundel.github.io/q2r/reference/to_qmd.md) then
   re-parses), a single string treated as text/file path (per
-  [`pampa_parse()`](https://rundel.github.io/q2r/reference/pampa_parse.md)'s
+  [`parse_qmd()`](https://rundel.github.io/q2r/reference/parse_qmd.md)'s
   rules), or raw text.
 
 - query_text:
@@ -51,7 +51,7 @@ you need full structural pattern matching, captures, or predicates
 
 ``` r
 if (FALSE) { # \dontrun{
-ts = pampa_parse("# Heading\n\nbody\n", ast = "ts")
+ts = parse_qmd("# Heading\n\nbody\n", ast = "ts")
 ts_query(ts, "(atx_heading) @h")
 } # }
 ```

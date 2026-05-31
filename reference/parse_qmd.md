@@ -5,7 +5,7 @@
 ## Usage
 
 ``` r
-pampa_parse(input, ast = c("pd", "ts"), quiet = FALSE, prune_errors = TRUE)
+parse_qmd(input, ast = c("pd", "ts"), quiet = FALSE, prune_errors = TRUE)
 ```
 
 ## Arguments

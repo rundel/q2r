@@ -83,7 +83,7 @@ stringifying a subtree.
 
 ``` r
 if (FALSE) { # \dontrun{
-doc = pampa_parse("# Hello\n\n**bold** and *italic*\n")
+doc = parse_qmd("# Hello\n\n**bold** and *italic*\n")
 doc |> ast_filter(
   pandoc_strong = \(el) pandoc_small_caps(el@content),
   pandoc_header = \(el) {

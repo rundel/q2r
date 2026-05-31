@@ -3,26 +3,22 @@
 R package that wraps the `pampa` Rust crate from
 [quarto-dev/q2](https://github.com/quarto-dev/q2) to expose Quarto’s QMD
 parser to R. Exploratory. The single entry point is
-[`pampa_parse()`](https://rundel.github.io/q2r/R/pampa.R), which returns
+[`parse_qmd()`](https://rundel.github.io/q2r/R/pampa.R), which returns
 either an S7 [`pandoc`](https://rundel.github.io/q2r/R/pd-ast-pandoc.R)
 object (the parsed Pandoc AST; the default `ast = "pd"`) or an S7
 [`ts_tree`](https://rundel.github.io/q2r/R/ts-ast.R) (the tree-sitter
 AST; `ast = "ts"`). It accepts text or a file path and attaches any
 parse [`pampa_diagnostic`](https://rundel.github.io/q2r/R/diagnostic.R)
-records to the returned object’s `@diagnostics` slot. Helpers:
+records to the returned object’s `@diagnostics` slot. Helper:
 [`to_qmd()`](https://rundel.github.io/q2r/R/to-qmd.R) renders an R-held
-AST back to QMD (pandoc → pampa writer; ts → byte-walk over `@text`),
-[`pampa_native()`](https://rundel.github.io/q2r/R/pampa.R) emits
-Pandoc’s native AST format,
-[`pampa_tree()`](https://rundel.github.io/q2r/R/pampa.R) captures
-pampa’s `-v` tree dump.
+AST back to QMD (pandoc → pampa writer; ts → byte-walk over `@text`).
 
 ## Architecture
 
 ### Rust
 
 - [src/rust/src/lib.rs](https://rundel.github.io/q2r/src/rust/src/lib.rs)
-  exposes eight `#[extendr]` functions (internal bindings, tagged
+  exposes six `#[extendr]` functions (internal bindings, tagged
   `/// @noRd` so they are **not** R-exported; the R layer in
   [R/pampa.R](https://rundel.github.io/q2r/R/pampa.R),
   [R/to-qmd.R](https://rundel.github.io/q2r/R/to-qmd.R),
@@ -41,13 +37,6 @@ pampa’s `-v` tree dump.
     `ts_ast_to_r::parse_ts_ast_to_r` (tree-sitter parsing never fails);
     diagnostics are still produced by running `qmd::read` and discarding
     the Pandoc result.
-  - `pampa_tree_impl(text, filename)` is the only entry point that uses
-    `qmd::read`’s `output_stream` argument as a non-sink — passes a
-    `Vec<u8>` to capture the `print_whole_tree` dump that `pampa -v`
-    normally sends to stderr. Returns it as `Vec<String>`.
-  - `pampa_native_impl(text, filename)` runs `qmd::read` then
-    `pampa::writers::native::write` and returns the lines. Testing
-    helper.
   - `pampa_write_qmd_text_impl(text, filename)` and
     `pampa_write_qmd_ast_impl(r_ast)` invoke
     `pampa::writers::qmd::write` from text input or from an
@@ -114,23 +103,21 @@ pampa’s `-v` tree dump.
 
 - [R/pampa.R](https://rundel.github.io/q2r/R/pampa.R) wraps the extendr
   bindings with
-  [`pampa_parse()`](https://rundel.github.io/q2r/reference/pampa_parse.md)
+  [`parse_qmd()`](https://rundel.github.io/q2r/reference/parse_qmd.md)
   (its `ast` argument, `"pd"` default or `"ts"`, selects the Pandoc or
-  tree-sitter AST and dispatches to the matching `*_impl` binding),
-  [`pampa_tree()`](https://rundel.github.io/q2r/reference/pampa_tree.md),
-  [`pampa_native()`](https://rundel.github.io/q2r/reference/pampa_native.md).
+  tree-sitter AST and dispatches to the matching `*_impl` binding).
   Input heuristic (in `pampa_read_input`): string contains `\n` ⇒ text;
   else `file.exists() && !dir.exists()` ⇒ file; else text. The original
   `text` and `filename` are threaded into every `pampa_diagnostic` so
   each diagnostic is self-contained for later rendering.
-  [`pampa_parse()`](https://rundel.github.io/q2r/reference/pampa_parse.md)
+  [`parse_qmd()`](https://rundel.github.io/q2r/reference/parse_qmd.md)
   accepts `quiet` (suppress signaling) and `prune_errors` (matches pampa
   CLI: dedupe parser-error diagnostics by tree-sitter `ERROR` node,
   keeping the earliest).
 - [R/diagnostic.R](https://rundel.github.io/q2r/R/diagnostic.R) defines
   the `pampa_diagnostic` S7 class plus `pampa_signal_diagnostics()` (the
   function
-  [`pampa_parse()`](https://rundel.github.io/q2r/reference/pampa_parse.md)
+  [`parse_qmd()`](https://rundel.github.io/q2r/reference/parse_qmd.md)
   calls to raise R warnings/errors when `quiet = FALSE`). Slots mirror
   the Rust list plus `source_text` / `source_filename`.
   `format(x, color = ...)` and `print(x, color = ...)` call back into
@@ -138,7 +125,7 @@ pampa’s `-v` tree dump.
   ANSI is stripped with
   [`cli::ansi_strip()`](https://cli.r-lib.org/reference/ansi_strip.html).
   `color` is **only** a display-time argument;
-  [`pampa_parse()`](https://rundel.github.io/q2r/reference/pampa_parse.md)
+  [`parse_qmd()`](https://rundel.github.io/q2r/reference/parse_qmd.md)
   has no `color` parameter.
 - Diagnostics ride on the parsed object’s `@diagnostics` slot
   (`pandoc@diagnostics`, `ts_tree@diagnostics`). There is no longer a
@@ -166,7 +153,7 @@ pampa’s `-v` tree dump.
   between the tagged-list shape that crosses the extendr boundary and
   the S7 `pandoc` hierarchy. `pandoc_from_list` / `pandoc_to_list` are
   the top-level entry points used by
-  [`pampa_parse()`](https://rundel.github.io/q2r/reference/pampa_parse.md)
+  [`parse_qmd()`](https://rundel.github.io/q2r/reference/parse_qmd.md)
   and `to_qmd(pandoc)` respectively.
 - The `pandoc` S7 hierarchy itself is defined across
   [pd-ast-pandoc.R](https://rundel.github.io/q2r/R/pd-ast-pandoc.R),
@@ -334,8 +321,8 @@ rename without updating `configure`.
   re-parse to a `ts_ast` equal to the original (same kind tree and same
   `@text` slots). The correctness check used by the round-trip tests is
   `expect_ts_ast_equal(ts2, ts)` after
-  `to_qmd(ts) -> pampa_parse(..., ast = "ts")`. Wrapper nodes that have
-  a grammar gap (children don’t cover the full byte range) preserve the
+  `to_qmd(ts) -> parse_qmd(..., ast = "ts")`. Wrapper nodes that have a
+  grammar gap (children don’t cover the full byte range) preserve the
   gap by falling back to verbatim `@text`; this is how blank lines,
   indentation, and other inter-element whitespace stay byte-identical
   across the round trip.

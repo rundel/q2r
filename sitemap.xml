@@ -13,9 +13,6 @@
 <url><loc>https://rundel.github.io/q2r/reference/ast_text.html</loc></url>
 <url><loc>https://rundel.github.io/q2r/reference/index.html</loc></url>
 <url><loc>https://rundel.github.io/q2r/reference/pampa_diagnostic.html</loc></url>
-<url><loc>https://rundel.github.io/q2r/reference/pampa_native.html</loc></url>
-<url><loc>https://rundel.github.io/q2r/reference/pampa_parse.html</loc></url>
-<url><loc>https://rundel.github.io/q2r/reference/pampa_tree.html</loc></url>
 <url><loc>https://rundel.github.io/q2r/reference/pandoc.html</loc></url>
 <url><loc>https://rundel.github.io/q2r/reference/pandoc_attr.html</loc></url>
 <url><loc>https://rundel.github.io/q2r/reference/pandoc_attr_inline.html</loc></url>
@@ -79,6 +76,7 @@
 <url><loc>https://rundel.github.io/q2r/reference/pandoc_table.html</loc></url>
 <url><loc>https://rundel.github.io/q2r/reference/pandoc_table_head.html</loc></url>
 <url><loc>https://rundel.github.io/q2r/reference/pandoc_underline.html</loc></url>
+<url><loc>https://rundel.github.io/q2r/reference/parse_qmd.html</loc></url>
 <url><loc>https://rundel.github.io/q2r/reference/print.pandoc.html</loc></url>
 <url><loc>https://rundel.github.io/q2r/reference/print.ts_tree.html</loc></url>
 <url><loc>https://rundel.github.io/q2r/reference/q2r-package.html</loc></url>

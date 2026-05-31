@@ -25,7 +25,7 @@ workspace (~40 crates) via cargo; subsequent builds use the cargo cache.
 ## Usage
 
 The single entry point is
-[`pampa_parse()`](https://rundel.github.io/q2r/reference/pampa_parse.md).
+[`parse_qmd()`](https://rundel.github.io/q2r/reference/parse_qmd.md).
 With `ast = "pd"` (the default) it returns a `pandoc` S7 object holding
 the Pandoc AST; with `ast = "ts"` it returns a `ts_tree` S7 object
 holding the tree-sitter concrete syntax tree. It accepts either a file
@@ -53,7 +53,7 @@ Some *emphasized* text with a [link](https://example.com).
 
 ``` r
 
-pd = pampa_parse(qmd)
+pd = parse_qmd(qmd)
 pd
 #> pandoc
 #> ├─header level=1 (#heading)
@@ -79,7 +79,7 @@ pd
 
 ``` r
 
-ts = pampa_parse(qmd, ast = "ts")
+ts = parse_qmd(qmd, ast = "ts")
 ts
 #> ts_tree language=qmd
 #> └─document
@@ -131,14 +131,14 @@ cat(to_qmd(pd))
 
 Parse errors and warnings are returned as structured `pampa_diagnostic`
 objects attached to the parsed result. By default
-[`pampa_parse()`](https://rundel.github.io/q2r/reference/pampa_parse.md)
+[`parse_qmd()`](https://rundel.github.io/q2r/reference/parse_qmd.md)
 signals error-kind diagnostics as R errors and warning-kind diagnostics
 as R warnings; pass `quiet = TRUE` to suppress signalling and inspect
 them directly.
 
 ``` r
 
-bad = pampa_parse(
+bad = parse_qmd(
   "# Heading {.cls bad}
 
 See [my page](https://example.com/some path) for details.

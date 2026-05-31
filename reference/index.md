@@ -5,12 +5,8 @@
 Convert between QMD text/files and q2r’s two AST representations, and
 render an AST back to QMD source.
 
-- [`pampa_parse()`](https://rundel.github.io/q2r/reference/pampa_parse.md)
+- [`parse_qmd()`](https://rundel.github.io/q2r/reference/parse_qmd.md)
   **\[experimental\]** : Parse QMD input with pampa
-- [`pampa_native()`](https://rundel.github.io/q2r/reference/pampa_native.md)
-  **\[experimental\]** : Render QMD input to Pandoc native AST text
-- [`pampa_tree()`](https://rundel.github.io/q2r/reference/pampa_tree.md)
-  **\[experimental\]** : Dump pampa's raw tree-sitter tree for QMD input
 - [`to_qmd()`](https://rundel.github.io/q2r/reference/to_qmd.md)
   **\[experimental\]** : Render an R-side AST back to QMD text
 
@@ -282,8 +278,8 @@ substructures, citations, captions, metadata.
 ## Tree-sitter AST
 
 S7 classes for the tree-sitter concrete syntax tree returned by
-`pampa_parse(ast = "ts")`. The tree is structurally faithful to the
-source bytes; use it when
+`parse_qmd(ast = "ts")`. The tree is structurally faithful to the source
+bytes; use it when
 [`to_qmd()`](https://rundel.github.io/q2r/reference/to_qmd.md)
 round-trip equivalence matters. `print.ts_tree` documents the tree
 display and its `position` / `ascii` knobs.

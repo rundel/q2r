@@ -25,7 +25,7 @@ A callout with its own *emphasised* heading.
 Final words.
 "
 
-doc = pampa_parse(src)
+doc = parse_qmd(src)
 ```
 
 ## Selecting
@@ -733,7 +733,7 @@ ts-specific slots (`kind`, `is_named`, `field_name`, `text`):
 
 ``` r
 
-ts = pampa_parse(src, ast = "ts")
+ts = parse_qmd(src, ast = "ts")
 
 select_nodes(ts, kind == "atx_heading")
 #> [[1]]

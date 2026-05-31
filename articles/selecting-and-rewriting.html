@@ -88,7 +88,7 @@
 <span><span class="st">Final words.</span></span>
 <span><span class="st">"</span></span>
 <span></span>
-<span><span class="va">doc</span> <span class="op">=</span> <span class="fu"><a href="../reference/pampa_parse.html">pampa_parse</a></span><span class="op">(</span><span class="va">src</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">doc</span> <span class="op">=</span> <span class="fu"><a href="../reference/parse_qmd.html">parse_qmd</a></span><span class="op">(</span><span class="va">src</span><span class="op">)</span></span></code></pre></div>
 </div>
 <section class="level2"><h2 id="selecting">Selecting<a class="anchor" aria-label="anchor" href="#selecting"></a>
 </h2>
@@ -635,7 +635,7 @@
 <p>Every verb above works on a [<code>ts_tree</code>] too. The mask exposes the ts-specific slots (<code>kind</code>, <code>is_named</code>, <code>field_name</code>, <code>text</code>):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ts</span> <span class="op">=</span> <span class="fu"><a href="../reference/pampa_parse.html">pampa_parse</a></span><span class="op">(</span><span class="va">src</span>, ast <span class="op">=</span> <span class="st">"ts"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ts</span> <span class="op">=</span> <span class="fu"><a href="../reference/parse_qmd.html">parse_qmd</a></span><span class="op">(</span><span class="va">src</span>, ast <span class="op">=</span> <span class="st">"ts"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/select_nodes.html">select_nodes</a></span><span class="op">(</span><span class="va">ts</span>, <span class="va">kind</span> <span class="op">==</span> <span class="st">"atx_heading"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>
