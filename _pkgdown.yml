@@ -31,7 +31,6 @@ reference:
     contents:
     - pampa_parse_pd
     - pampa_parse_ts
-    - pampa_to_qmd
     - pampa_native
     - pampa_tree
     - to_qmd
@@ -215,22 +214,6 @@ reference:
     - ts_point
     - ts_range
     - print.ts_tree
-
-  - title: internal
-    desc: >
-      Low-level extendr bindings to the Rust crate, exposed for
-      completeness. Most callers should use the higher-level wrappers
-      (`pampa_parse_pd()`, `pampa_parse_ts()`, `pampa_to_qmd()`,
-      `ts_query()`) instead.
-    contents:
-    - pampa_parse_pd_impl
-    - pampa_parse_ts_impl
-    - pampa_write_qmd_text_impl
-    - pampa_write_qmd_ast_impl
-    - pampa_native_impl
-    - pampa_tree_impl
-    - pampa_diag_format_impl
-    - ts_query_impl
 
 footer:
   structure:
