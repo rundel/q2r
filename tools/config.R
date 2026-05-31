@@ -4,36 +4,15 @@
 # check the packages MSRV first
 source("tools/msrv.R")
 
-# check DEBUG and NOT_CRAN environment variables
+# check the DEBUG environment variable
 env_debug <- Sys.getenv("DEBUG")
-env_not_cran <- Sys.getenv("NOT_CRAN")
-
-# check if the vendored zip file exists
-vendor_exists <- file.exists("src/rust/vendor.tar.xz")
-
-is_not_cran <- env_not_cran != ""
 is_debug <- env_debug != ""
 
 if (is_debug) {
-  # if we have DEBUG then we set not cran to true
-  # CRAN is always release build
-  is_not_cran <- TRUE
   message("Creating DEBUG build.")
 }
 
-if (!is_not_cran) {
-  message("Building for CRAN.")
-}
-
-# we set cran flags only if NOT_CRAN is empty and if
-# the vendored crates are present.
-.cran_flags <- ifelse(
-  !is_not_cran && vendor_exists,
-  "-j 2 --offline",
-  ""
-)
-
-# when DEBUG env var is present we use `--debug` build
+# when DEBUG env var is present we use a `--debug` build
 .profile <- ifelse(is_debug, "", "--release")
 .clean_targets <- ifelse(is_debug, "", "$(TARGET_DIR)")
 
@@ -97,8 +76,7 @@ if (file.exists(mv_ofp)) {
 mv_txt <- readLines(mv_fp)
 
 # replace placeholder values
-new_txt <- gsub("@CRAN_FLAGS@", .cran_flags, mv_txt) |>
-  gsub("@PROFILE@", .profile, x = _) |>
+new_txt <- gsub("@PROFILE@", .profile, mv_txt) |>
   gsub("@CLEAN_TARGET@", .clean_targets, x = _) |>
   gsub("@LIBDIR@", .libdir, x = _) |>
   gsub("@TARGET@", .target, x = _) |>
