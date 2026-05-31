@@ -74,9 +74,14 @@
         </dt>
         <dd>Parse diagnostic produced by the pampa parser</dd>
       </dl></div><div class="section level2">
-      <h2 id="querying-the-ast">Querying the AST<a class="anchor" aria-label="anchor" href="#querying-the-ast"></a></h2>
+      <h2 id="querying-and-rewriting-the-ast">Querying and rewriting the AST<a class="anchor" aria-label="anchor" href="#querying-and-rewriting-the-ast"></a></h2>
 
-      <div class="section-desc"><p>tidyselect-style verbs for locating nodes by predicate. Works on both the Pandoc S7 AST and the tree-sitter AST. Predicates are unquoted expressions evaluated against a per-node data mask that exposes slot names and helpers (<code>is()</code>, <code><a href="../reference/ast_attr.html">has_class()</a></code>, <code>has_id()</code>, <code>has_attr()</code>, <code>is_leaf()</code>, …).</p></div>
+      <div class="section-desc"><p>A predicate-driven query/rewrite vocabulary shared across both the Pandoc S7 AST and the tree-sitter AST.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+      <h3 id="locating-nodes">Locating nodes<a class="anchor" aria-label="anchor" href="#locating-nodes"></a></h3>
+      <div class="section-desc"><p>tidyselect-style verbs for locating nodes by predicate. Predicates are unquoted expressions evaluated against a per-node data mask that exposes slot names and helpers (<code>is()</code>, <code><a href="../reference/ast_attr.html">has_class()</a></code>, <code>has_id()</code>, <code>has_attr()</code>, <code>is_leaf()</code>, …).</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -90,8 +95,8 @@
         </dt>
         <dd>Select, filter, and rewrite nodes in a Pandoc or tree-sitter AST</dd>
       </dl></div><div class="section level2">
-      <h2 id="rewriting-the-ast">Rewriting the AST<a class="anchor" aria-label="anchor" href="#rewriting-the-ast"></a></h2>
 
+      <h3 id="mutating-nodes">Mutating nodes<a class="anchor" aria-label="anchor" href="#mutating-nodes"></a></h3>
       <div class="section-desc"><p>Predicate-driven mutation verbs. Each return value is a node, a list of nodes (splice), or <code>NULL</code> (delete). The walker is post-order, matching Pandoc Lua filters’ default.</p></div>
 
       <dl></dl></div><div class="section level2">
@@ -106,8 +111,8 @@
         </dt>
         <dd>Select, filter, and rewrite nodes in a Pandoc or tree-sitter AST</dd>
       </dl></div><div class="section level2">
-      <h2 id="filter-table-rewriting-lua-filter-style-">Filter-table rewriting (Lua-filter-style)<a class="anchor" aria-label="anchor" href="#filter-table-rewriting-lua-filter-style-"></a></h2>
 
+      <h3 id="filter-table-rewriting-lua-filter-style-">Filter-table rewriting (Lua-filter-style)<a class="anchor" aria-label="anchor" href="#filter-table-rewriting-lua-filter-style-"></a></h3>
       <div class="section-desc"><p><code><a href="../reference/ast_filter.html">ast_filter()</a></code> rewrites multiple node types in one pass using a table of S7-class-keyed handlers, with optional top-down traversal and list-level dispatch on <code>pandoc_inlines</code> / <code>pandoc_blocks</code>. <code><a href="../reference/ast_text.html">ast_text()</a></code> flattens a subtree to plain text.</p></div>
 
       <dl></dl></div><div class="section level2">
@@ -184,9 +189,14 @@
         </dt>
         <dd>Run a tree-sitter <code>.scm</code> query against QMD source</dd>
       </dl></div><div class="section level2">
-      <h2 id="pandoc-ast-root-and-abstract-classes">Pandoc AST — root and abstract classes<a class="anchor" aria-label="anchor" href="#pandoc-ast-root-and-abstract-classes"></a></h2>
+      <h2 id="pandoc-ast">Pandoc AST<a class="anchor" aria-label="anchor" href="#pandoc-ast"></a></h2>
 
-      <div class="section-desc"><p>The S7 class hierarchy. <code>pandoc</code> is the document root, <code>pandoc_node</code> the common ancestor for every concrete node, and <code>pandoc_block</code> / <code>pandoc_inline</code> the abstract block/inline parents. <code>pandoc_blocks</code> / <code>pandoc_inlines</code> are the strict-typed list wrappers used in content slots. <code>print.pandoc</code> documents the tree display and its <code>position</code> / <code>ascii</code> knobs.</p></div>
+      <div class="section-desc"><p>The S7 class hierarchy returned by <code><a href="../reference/parse_qmd.html">parse_qmd()</a></code> (the default <code>ast = "pd"</code>) and accepted by <code><a href="../reference/to_qmd.html">to_qmd()</a></code>.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+      <h3 id="root-and-abstract-classes">Root and abstract classes<a class="anchor" aria-label="anchor" href="#root-and-abstract-classes"></a></h3>
+      <div class="section-desc"><p><code>pandoc</code> is the document root and <code>pandoc_node</code> the common ancestor for every concrete node (with the abstract <code>pandoc_block</code> / <code>pandoc_inline</code> parents). <code>pandoc_blocks</code> / <code>pandoc_inlines</code> are the strict-typed list wrappers used in content slots. <code>pandoc_children</code> / <code>pandoc_format_label</code> are the generics behind the tree display, which <code>print.pandoc</code> documents.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -223,14 +233,21 @@
 
         <dt>
 
+          <code><a href="pandoc_format_label.html">pandoc_format_label()</a></code>
+
+        </dt>
+        <dd>Label a pandoc AST node for tree display</dd>
+
+        <dt>
+
           <code><a href="print.pandoc.html">print.pandoc</a></code> <code><a href="print.pandoc.html">print.pandoc_node</a></code> <code><a href="print.pandoc.html">print.pandoc_blocks</a></code> <code><a href="print.pandoc.html">print.pandoc_inlines</a></code>
 
         </dt>
         <dd>Print a Pandoc AST</dd>
       </dl></div><div class="section level2">
-      <h2 id="pandoc-ast-block-constructors">Pandoc AST — block constructors<a class="anchor" aria-label="anchor" href="#pandoc-ast-block-constructors"></a></h2>
 
-
+      <h3 id="block-constructors">Block constructors<a class="anchor" aria-label="anchor" href="#block-constructors"></a></h3>
+      <div class="section-desc"><p>Constructors for the concrete block-level node classes, collected on a single page (one alias and usage entry per constructor).</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -239,140 +256,14 @@
 
       <dl><dt>
 
-          <code><a href="pandoc_plain.html">pandoc_plain()</a></code>
+          <code><a href="pandoc_block_constructors.html">pandoc_plain()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_paragraph()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_line_block()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_code_block()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_raw_block()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_block_quote()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_ordered_list()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_bullet_list()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_definition_list()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_header()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_horizontal_rule()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_figure()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_div()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_table()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_block_metadata()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_note_definition_para()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_note_definition_fenced_block()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_caption_block()</a></code> <code><a href="pandoc_block_constructors.html">pandoc_custom_block()</a></code>
 
         </dt>
-        <dd>Plain block</dd>
-
-        <dt>
-
-          <code><a href="pandoc_paragraph.html">pandoc_paragraph()</a></code>
-
-        </dt>
-        <dd>Paragraph</dd>
-
-        <dt>
-
-          <code><a href="pandoc_header.html">pandoc_header()</a></code>
-
-        </dt>
-        <dd>Header</dd>
-
-        <dt>
-
-          <code><a href="pandoc_block_quote.html">pandoc_block_quote()</a></code>
-
-        </dt>
-        <dd>Block quote</dd>
-
-        <dt>
-
-          <code><a href="pandoc_div.html">pandoc_div()</a></code>
-
-        </dt>
-        <dd>Div</dd>
-
-        <dt>
-
-          <code><a href="pandoc_code_block.html">pandoc_code_block()</a></code>
-
-        </dt>
-        <dd>Code block</dd>
-
-        <dt>
-
-          <code><a href="pandoc_raw_block.html">pandoc_raw_block()</a></code>
-
-        </dt>
-        <dd>Raw block</dd>
-
-        <dt>
-
-          <code><a href="pandoc_ordered_list.html">pandoc_ordered_list()</a></code>
-
-        </dt>
-        <dd>Ordered list</dd>
-
-        <dt>
-
-          <code><a href="pandoc_bullet_list.html">pandoc_bullet_list()</a></code>
-
-        </dt>
-        <dd>Bullet list</dd>
-
-        <dt>
-
-          <code><a href="pandoc_line_block.html">pandoc_line_block()</a></code>
-
-        </dt>
-        <dd>Line block</dd>
-
-        <dt>
-
-          <code><a href="pandoc_definition_list.html">pandoc_definition_list()</a></code>
-
-        </dt>
-        <dd>Definition list</dd>
-
-        <dt>
-
-          <code><a href="pandoc_definition_item.html">pandoc_definition_item()</a></code>
-
-        </dt>
-        <dd>Definition-list item</dd>
-
-        <dt>
-
-          <code><a href="pandoc_figure.html">pandoc_figure()</a></code>
-
-        </dt>
-        <dd>Figure</dd>
-
-        <dt>
-
-          <code><a href="pandoc_horizontal_rule.html">pandoc_horizontal_rule()</a></code>
-
-        </dt>
-        <dd>Horizontal rule</dd>
-
-        <dt>
-
-          <code><a href="pandoc_caption_block.html">pandoc_caption_block()</a></code>
-
-        </dt>
-        <dd>Caption block (orphan caption)</dd>
-
-        <dt>
-
-          <code><a href="pandoc_block_metadata.html">pandoc_block_metadata()</a></code>
-
-        </dt>
-        <dd>Block metadata</dd>
-
-        <dt>
-
-          <code><a href="pandoc_note_definition_para.html">pandoc_note_definition_para()</a></code>
-
-        </dt>
-        <dd>Note definition (paragraph form)</dd>
-
-        <dt>
-
-          <code><a href="pandoc_note_definition_fenced_block.html">pandoc_note_definition_fenced_block()</a></code>
-
-        </dt>
-        <dd>Note definition (fenced block form)</dd>
-
-        <dt>
-
-          <code><a href="pandoc_custom_block.html">pandoc_custom_block()</a></code>
-
-        </dt>
-        <dd>Custom block node (Quarto extensions: callouts, tabsets, ...)</dd>
+        <dd>Block constructors</dd>
       </dl></div><div class="section level2">
-      <h2 id="pandoc-ast-inline-constructors">Pandoc AST — inline constructors<a class="anchor" aria-label="anchor" href="#pandoc-ast-inline-constructors"></a></h2>
 
-
+      <h3 id="inline-constructors">Inline constructors<a class="anchor" aria-label="anchor" href="#inline-constructors"></a></h3>
+      <div class="section-desc"><p>Constructors for the concrete inline node classes, collected on a single page (one alias and usage entry per constructor).</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -381,202 +272,13 @@
 
       <dl><dt>
 
-          <code><a href="pandoc_str.html">pandoc_str()</a></code>
+          <code><a href="pandoc_inline_constructors.html">pandoc_str()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_emph()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_underline()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_strong()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_strikeout()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_superscript()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_subscript()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_small_caps()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_quoted()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_cite()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_code()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_space()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_soft_break()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_line_break()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_math()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_raw_inline()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_link()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_image()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_note()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_span()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_shortcode()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_note_reference()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_attr_inline()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_insert()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_delete()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_highlight()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_edit_comment()</a></code> <code><a href="pandoc_inline_constructors.html">pandoc_custom_inline()</a></code>
 
         </dt>
-        <dd>Literal string</dd>
-
-        <dt>
-
-          <code><a href="pandoc_space.html">pandoc_space()</a></code>
-
-        </dt>
-        <dd>Space</dd>
-
-        <dt>
-
-          <code><a href="pandoc_soft_break.html">pandoc_soft_break()</a></code>
-
-        </dt>
-        <dd>Soft line break</dd>
-
-        <dt>
-
-          <code><a href="pandoc_line_break.html">pandoc_line_break()</a></code>
-
-        </dt>
-        <dd>Hard line break</dd>
-
-        <dt>
-
-          <code><a href="pandoc_emph.html">pandoc_emph()</a></code>
-
-        </dt>
-        <dd>Emphasized text</dd>
-
-        <dt>
-
-          <code><a href="pandoc_underline.html">pandoc_underline()</a></code>
-
-        </dt>
-        <dd>Underlined text</dd>
-
-        <dt>
-
-          <code><a href="pandoc_strong.html">pandoc_strong()</a></code>
-
-        </dt>
-        <dd>Strong text</dd>
-
-        <dt>
-
-          <code><a href="pandoc_strikeout.html">pandoc_strikeout()</a></code>
-
-        </dt>
-        <dd>Struck-through text</dd>
-
-        <dt>
-
-          <code><a href="pandoc_superscript.html">pandoc_superscript()</a></code>
-
-        </dt>
-        <dd>Superscript</dd>
-
-        <dt>
-
-          <code><a href="pandoc_subscript.html">pandoc_subscript()</a></code>
-
-        </dt>
-        <dd>Subscript</dd>
-
-        <dt>
-
-          <code><a href="pandoc_small_caps.html">pandoc_small_caps()</a></code>
-
-        </dt>
-        <dd>Small caps</dd>
-
-        <dt>
-
-          <code><a href="pandoc_quoted.html">pandoc_quoted()</a></code>
-
-        </dt>
-        <dd>Quoted text</dd>
-
-        <dt>
-
-          <code><a href="pandoc_cite.html">pandoc_cite()</a></code>
-
-        </dt>
-        <dd>Citation reference</dd>
-
-        <dt>
-
-          <code><a href="pandoc_code.html">pandoc_code()</a></code>
-
-        </dt>
-        <dd>Inline code</dd>
-
-        <dt>
-
-          <code><a href="pandoc_math.html">pandoc_math()</a></code>
-
-        </dt>
-        <dd>Math</dd>
-
-        <dt>
-
-          <code><a href="pandoc_raw_inline.html">pandoc_raw_inline()</a></code>
-
-        </dt>
-        <dd>Raw inline</dd>
-
-        <dt>
-
-          <code><a href="pandoc_link.html">pandoc_link()</a></code>
-
-        </dt>
-        <dd>Link</dd>
-
-        <dt>
-
-          <code><a href="pandoc_image.html">pandoc_image()</a></code>
-
-        </dt>
-        <dd>Image</dd>
-
-        <dt>
-
-          <code><a href="pandoc_note.html">pandoc_note()</a></code>
-
-        </dt>
-        <dd>Footnote</dd>
-
-        <dt>
-
-          <code><a href="pandoc_span.html">pandoc_span()</a></code>
-
-        </dt>
-        <dd>Inline span</dd>
-
-        <dt>
-
-          <code><a href="pandoc_shortcode.html">pandoc_shortcode()</a></code>
-
-        </dt>
-        <dd>Shortcode</dd>
-
-        <dt>
-
-          <code><a href="pandoc_insert.html">pandoc_insert()</a></code>
-
-        </dt>
-        <dd>CriticMarkup: insertion</dd>
-
-        <dt>
-
-          <code><a href="pandoc_delete.html">pandoc_delete()</a></code>
-
-        </dt>
-        <dd>CriticMarkup: deletion</dd>
-
-        <dt>
-
-          <code><a href="pandoc_highlight.html">pandoc_highlight()</a></code>
-
-        </dt>
-        <dd>CriticMarkup: highlight</dd>
-
-        <dt>
-
-          <code><a href="pandoc_edit_comment.html">pandoc_edit_comment()</a></code>
-
-        </dt>
-        <dd>CriticMarkup: comment</dd>
-
-        <dt>
-
-          <code><a href="pandoc_note_reference.html">pandoc_note_reference()</a></code>
-
-        </dt>
-        <dd>Note reference</dd>
-
-        <dt>
-
-          <code><a href="pandoc_attr_inline.html">pandoc_attr_inline()</a></code>
-
-        </dt>
-        <dd>Standalone attribute inline</dd>
-
-        <dt>
-
-          <code><a href="pandoc_custom_inline.html">pandoc_custom_inline()</a></code>
-
-        </dt>
-        <dd>Custom inline node (Quarto extensions)</dd>
+        <dd>Inline constructors</dd>
       </dl></div><div class="section level2">
-      <h2 id="pandoc-ast-support-types">Pandoc AST — support types<a class="anchor" aria-label="anchor" href="#pandoc-ast-support-types"></a></h2>
 
+      <h3 id="support-types">Support types<a class="anchor" aria-label="anchor" href="#support-types"></a></h3>
       <div class="section-desc"><p>Helper types that appear inside concrete nodes: attributes, table substructures, citations, captions, metadata.</p></div>
 
       <dl></dl></div><div class="section level2">
@@ -586,31 +288,10 @@
 
       <dl><dt>
 
-          <code><a href="pandoc_attr.html">pandoc_attr()</a></code>
+          <code><a href="pandoc_support_types.html">pandoc_source_info()</a></code> <code><a href="pandoc_support_types.html">pandoc_attr()</a></code> <code><a href="pandoc_support_types.html">pandoc_list_attributes()</a></code> <code><a href="pandoc_support_types.html">pandoc_citation()</a></code> <code><a href="pandoc_support_types.html">pandoc_caption()</a></code> <code><a href="pandoc_support_types.html">pandoc_definition_item()</a></code> <code><a href="pandoc_support_types.html">pandoc_col_spec()</a></code> <code><a href="pandoc_support_types.html">pandoc_cell()</a></code> <code><a href="pandoc_support_types.html">pandoc_row()</a></code>
 
         </dt>
-        <dd>Pandoc attributes</dd>
-
-        <dt>
-
-          <code><a href="pandoc_caption.html">pandoc_caption()</a></code>
-
-        </dt>
-        <dd>Caption (short + long)</dd>
-
-        <dt>
-
-          <code><a href="pandoc_citation.html">pandoc_citation()</a></code>
-
-        </dt>
-        <dd>Citation</dd>
-
-        <dt>
-
-          <code><a href="pandoc_table.html">pandoc_table()</a></code>
-
-        </dt>
-        <dd>Table</dd>
+        <dd>Pandoc AST support types</dd>
 
         <dt>
 
@@ -621,52 +302,10 @@
 
         <dt>
 
-          <code><a href="pandoc_row.html">pandoc_row()</a></code>
-
-        </dt>
-        <dd>Table row</dd>
-
-        <dt>
-
-          <code><a href="pandoc_cell.html">pandoc_cell()</a></code>
-
-        </dt>
-        <dd>Table cell</dd>
-
-        <dt>
-
-          <code><a href="pandoc_col_spec.html">pandoc_col_spec()</a></code>
-
-        </dt>
-        <dd>Table column alignment and width</dd>
-
-        <dt>
-
-          <code><a href="pandoc_list_attributes.html">pandoc_list_attributes()</a></code>
-
-        </dt>
-        <dd>Ordered list attributes</dd>
-
-        <dt>
-
-          <code><a href="pandoc_format_label.html">pandoc_format_label()</a></code>
-
-        </dt>
-        <dd>Label a pandoc AST node for tree display</dd>
-
-        <dt>
-
           <code><a href="pandoc_meta_value.html">pandoc_meta_value()</a></code> <code><a href="pandoc_meta_value.html">pandoc_config_value()</a></code>
 
         </dt>
         <dd>Pandoc meta / config value</dd>
-
-        <dt>
-
-          <code><a href="pandoc_source_info.html">pandoc_source_info()</a></code>
-
-        </dt>
-        <dd>Source location</dd>
       </dl></div><div class="section level2">
       <h2 id="tree-sitter-ast">Tree-sitter AST<a class="anchor" aria-label="anchor" href="#tree-sitter-ast"></a></h2>
 

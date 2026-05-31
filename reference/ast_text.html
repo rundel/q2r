@@ -67,17 +67,17 @@ the document were rendered as a flat string.</p>
 <p>Equivalent in spirit to <code>pandoc.utils.stringify()</code> from Pandoc Lua
 filters: handy for matching on document content (titles, captions,
 link labels) without descending the AST manually.</p>
-<p>Leaf rules:</p><ul><li><p><code><a href="pandoc_str.html">pandoc_str</a></code>, <code><a href="pandoc_code.html">pandoc_code</a></code>, <code><a href="pandoc_math.html">pandoc_math</a></code>,
-<code><a href="pandoc_raw_inline.html">pandoc_raw_inline</a></code>, <code><a href="pandoc_raw_block.html">pandoc_raw_block</a></code>,
-<code><a href="pandoc_code_block.html">pandoc_code_block</a></code> emit their <code>@text</code> slot.</p></li>
-<li><p><code><a href="pandoc_space.html">pandoc_space</a></code> and <code><a href="pandoc_soft_break.html">pandoc_soft_break</a></code> emit a single space.</p></li>
-<li><p><code><a href="pandoc_line_break.html">pandoc_line_break</a></code> emits a newline.</p></li>
-<li><p><code><a href="pandoc_horizontal_rule.html">pandoc_horizontal_rule</a></code> emits a newline.</p></li>
-</ul><p>Container rules:</p><ul><li><p>Block containers (<code><a href="pandoc.html">pandoc</a></code>, <code><a href="pandoc_div.html">pandoc_div</a></code>, <code><a href="pandoc_block_quote.html">pandoc_block_quote</a></code>,
+<p>Leaf rules:</p><ul><li><p><code><a href="pandoc_inline_constructors.html">pandoc_str</a></code>, <code><a href="pandoc_inline_constructors.html">pandoc_code</a></code>, <code><a href="pandoc_inline_constructors.html">pandoc_math</a></code>,
+<code><a href="pandoc_inline_constructors.html">pandoc_raw_inline</a></code>, <code><a href="pandoc_block_constructors.html">pandoc_raw_block</a></code>,
+<code><a href="pandoc_block_constructors.html">pandoc_code_block</a></code> emit their <code>@text</code> slot.</p></li>
+<li><p><code><a href="pandoc_inline_constructors.html">pandoc_space</a></code> and <code><a href="pandoc_inline_constructors.html">pandoc_soft_break</a></code> emit a single space.</p></li>
+<li><p><code><a href="pandoc_inline_constructors.html">pandoc_line_break</a></code> emits a newline.</p></li>
+<li><p><code><a href="pandoc_block_constructors.html">pandoc_horizontal_rule</a></code> emits a newline.</p></li>
+</ul><p>Container rules:</p><ul><li><p>Block containers (<code><a href="pandoc.html">pandoc</a></code>, <code><a href="pandoc_block_constructors.html">pandoc_div</a></code>, <code><a href="pandoc_block_constructors.html">pandoc_block_quote</a></code>,
 list types, etc.) join children with two newlines.</p></li>
-<li><p>Inline containers (<code><a href="pandoc_emph.html">pandoc_emph</a></code>, <code><a href="pandoc_strong.html">pandoc_strong</a></code>,
-<code><a href="pandoc_link.html">pandoc_link</a></code>, etc.) concatenate children without separator.</p></li>
-<li><p><code><a href="pandoc_note.html">pandoc_note</a></code> emits its block content (joined with newlines)
+<li><p>Inline containers (<code><a href="pandoc_inline_constructors.html">pandoc_emph</a></code>, <code><a href="pandoc_inline_constructors.html">pandoc_strong</a></code>,
+<code><a href="pandoc_inline_constructors.html">pandoc_link</a></code>, etc.) concatenate children without separator.</p></li>
+<li><p><code><a href="pandoc_inline_constructors.html">pandoc_note</a></code> emits its block content (joined with newlines)
 wrapped in <code>[^...]</code> to flag it; rarely useful in match logic.</p></li>
 </ul></div>
 

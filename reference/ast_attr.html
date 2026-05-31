@@ -90,9 +90,9 @@ Setters return a node of the same class as <code>x</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Concise getters and setters for the <code><a href="pandoc_attr.html">pandoc_attr</a></code> slot found on
-many pandoc node types (<code><a href="pandoc_header.html">pandoc_header</a></code>, <code><a href="pandoc_div.html">pandoc_div</a></code>,
-<code><a href="pandoc_code.html">pandoc_code</a></code>, <code><a href="pandoc_link.html">pandoc_link</a></code>, <code><a href="pandoc_image.html">pandoc_image</a></code>, <code><a href="pandoc_span.html">pandoc_span</a></code>,
+    <p>Concise getters and setters for the <code><a href="pandoc_support_types.html">pandoc_attr</a></code> slot found on
+many pandoc node types (<code><a href="pandoc_block_constructors.html">pandoc_header</a></code>, <code><a href="pandoc_block_constructors.html">pandoc_div</a></code>,
+<code><a href="pandoc_inline_constructors.html">pandoc_code</a></code>, <code><a href="pandoc_inline_constructors.html">pandoc_link</a></code>, <code><a href="pandoc_inline_constructors.html">pandoc_image</a></code>, <code><a href="pandoc_inline_constructors.html">pandoc_span</a></code>,
 etc.). Modelled on Pandoc Lua filters' direct field access
 (<code>el.classes</code>, <code>el.identifier</code>, <code>el.attributes</code>) but using R's
 immutable value semantics: every setter returns a new node, the

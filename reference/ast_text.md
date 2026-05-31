@@ -36,40 +36,40 @@ labels) without descending the AST manually.
 
 Leaf rules:
 
-- [`pandoc_str`](https://rundel.github.io/q2r/reference/pandoc_str.md),
-  [`pandoc_code`](https://rundel.github.io/q2r/reference/pandoc_code.md),
-  [`pandoc_math`](https://rundel.github.io/q2r/reference/pandoc_math.md),
-  [`pandoc_raw_inline`](https://rundel.github.io/q2r/reference/pandoc_raw_inline.md),
-  [`pandoc_raw_block`](https://rundel.github.io/q2r/reference/pandoc_raw_block.md),
-  [`pandoc_code_block`](https://rundel.github.io/q2r/reference/pandoc_code_block.md)
+- [`pandoc_str`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md),
+  [`pandoc_code`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md),
+  [`pandoc_math`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md),
+  [`pandoc_raw_inline`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md),
+  [`pandoc_raw_block`](https://rundel.github.io/q2r/reference/pandoc_block_constructors.md),
+  [`pandoc_code_block`](https://rundel.github.io/q2r/reference/pandoc_block_constructors.md)
   emit their `@text` slot.
 
-- [`pandoc_space`](https://rundel.github.io/q2r/reference/pandoc_space.md)
+- [`pandoc_space`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md)
   and
-  [`pandoc_soft_break`](https://rundel.github.io/q2r/reference/pandoc_soft_break.md)
+  [`pandoc_soft_break`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md)
   emit a single space.
 
-- [`pandoc_line_break`](https://rundel.github.io/q2r/reference/pandoc_line_break.md)
+- [`pandoc_line_break`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md)
   emits a newline.
 
-- [`pandoc_horizontal_rule`](https://rundel.github.io/q2r/reference/pandoc_horizontal_rule.md)
+- [`pandoc_horizontal_rule`](https://rundel.github.io/q2r/reference/pandoc_block_constructors.md)
   emits a newline.
 
 Container rules:
 
 - Block containers
   ([`pandoc`](https://rundel.github.io/q2r/reference/pandoc.md),
-  [`pandoc_div`](https://rundel.github.io/q2r/reference/pandoc_div.md),
-  [`pandoc_block_quote`](https://rundel.github.io/q2r/reference/pandoc_block_quote.md),
+  [`pandoc_div`](https://rundel.github.io/q2r/reference/pandoc_block_constructors.md),
+  [`pandoc_block_quote`](https://rundel.github.io/q2r/reference/pandoc_block_constructors.md),
   list types, etc.) join children with two newlines.
 
 - Inline containers
-  ([`pandoc_emph`](https://rundel.github.io/q2r/reference/pandoc_emph.md),
-  [`pandoc_strong`](https://rundel.github.io/q2r/reference/pandoc_strong.md),
-  [`pandoc_link`](https://rundel.github.io/q2r/reference/pandoc_link.md),
+  ([`pandoc_emph`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md),
+  [`pandoc_strong`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md),
+  [`pandoc_link`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md),
   etc.) concatenate children without separator.
 
-- [`pandoc_note`](https://rundel.github.io/q2r/reference/pandoc_note.md)
+- [`pandoc_note`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md)
   emits its block content (joined with newlines) wrapped in `[^...]` to
   flag it; rarely useful in match logic.
 

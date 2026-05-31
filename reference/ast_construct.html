@@ -68,27 +68,27 @@ and producing the canonical wrapper type. Inspired by Pandoc Lua
 filters, where constructors like <code>pandoc.Para("hi")</code> coerce strings
 to inline sequences automatically.</p>
 <p>For <code>as_inlines()</code>:</p><ul><li><p>A character vector is split on whitespace, producing
-<code><a href="pandoc_str.html">pandoc_str</a></code> runs joined by <code><a href="pandoc_space.html">pandoc_space()</a></code>; embedded
+<code><a href="pandoc_inline_constructors.html">pandoc_str</a></code> runs joined by <code><a href="pandoc_inline_constructors.html">pandoc_space()</a></code>; embedded
 newlines (or multi-element character vectors) become
-<code><a href="pandoc_soft_break.html">pandoc_soft_break()</a></code>.</p></li>
+<code><a href="pandoc_inline_constructors.html">pandoc_soft_break()</a></code>.</p></li>
 <li><p>A single <code><a href="pandoc_node.html">pandoc_inline</a></code> is wrapped in <code><a href="pandoc_blocks.html">pandoc_inlines</a></code>.</p></li>
 <li><p>A list is validated and wrapped.</p></li>
 <li><p>An existing <code><a href="pandoc_blocks.html">pandoc_inlines</a></code> is returned as-is.</p></li>
-</ul><p>For <code>as_blocks()</code>:</p><ul><li><p>A character vector becomes one <code><a href="pandoc_paragraph.html">pandoc_paragraph</a></code> per non-empty
+</ul><p>For <code>as_blocks()</code>:</p><ul><li><p>A character vector becomes one <code><a href="pandoc_block_constructors.html">pandoc_paragraph</a></code> per non-empty
 element (each paragraph's content is <code>as_inlines(line)</code>).</p></li>
 <li><p>A single <code><a href="pandoc_node.html">pandoc_block</a></code> is wrapped in <code><a href="pandoc_blocks.html">pandoc_blocks</a></code>.</p></li>
 <li><p>A list is validated and wrapped.</p></li>
 <li><p>An existing <code><a href="pandoc_blocks.html">pandoc_blocks</a></code> is returned as-is.</p></li>
 </ul><p>These exist as ergonomic shortcuts for use inside <code><a href="ast_filter.html">ast_filter()</a></code>
 handlers and ad-hoc AST construction; the strict-typed constructors
-(<code><a href="pandoc_blocks.html">pandoc_inlines</a></code>, <code><a href="pandoc_blocks.html">pandoc_blocks</a></code>, <code><a href="pandoc_str.html">pandoc_str</a></code>, ...) remain
+(<code><a href="pandoc_blocks.html">pandoc_inlines</a></code>, <code><a href="pandoc_blocks.html">pandoc_blocks</a></code>, <code><a href="pandoc_inline_constructors.html">pandoc_str</a></code>, ...) remain
 the canonical way to build nodes.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="pandoc_emph.html">pandoc_emph</a></span><span class="op">(</span>content <span class="op">=</span> <span class="fu">as_inlines</span><span class="op">(</span><span class="st">"hello world"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="pandoc_inline_constructors.html">pandoc_emph</a></span><span class="op">(</span>content <span class="op">=</span> <span class="fu">as_inlines</span><span class="op">(</span><span class="st">"hello world"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">as_blocks</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"first paragraph"</span>, <span class="st">"second paragraph"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>

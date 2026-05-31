@@ -54,14 +54,14 @@ return a node of the same class as `x`.
 ## Details
 
 Concise getters and setters for the
-[`pandoc_attr`](https://rundel.github.io/q2r/reference/pandoc_attr.md)
+[`pandoc_attr`](https://rundel.github.io/q2r/reference/pandoc_support_types.md)
 slot found on many pandoc node types
-([`pandoc_header`](https://rundel.github.io/q2r/reference/pandoc_header.md),
-[`pandoc_div`](https://rundel.github.io/q2r/reference/pandoc_div.md),
-[`pandoc_code`](https://rundel.github.io/q2r/reference/pandoc_code.md),
-[`pandoc_link`](https://rundel.github.io/q2r/reference/pandoc_link.md),
-[`pandoc_image`](https://rundel.github.io/q2r/reference/pandoc_image.md),
-[`pandoc_span`](https://rundel.github.io/q2r/reference/pandoc_span.md),
+([`pandoc_header`](https://rundel.github.io/q2r/reference/pandoc_block_constructors.md),
+[`pandoc_div`](https://rundel.github.io/q2r/reference/pandoc_block_constructors.md),
+[`pandoc_code`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md),
+[`pandoc_link`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md),
+[`pandoc_image`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md),
+[`pandoc_span`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md),
 etc.). Modelled on Pandoc Lua filters' direct field access
 (`el.classes`, `el.identifier`, `el.attributes`) but using R's immutable
 value semantics: every setter returns a new node, the input is never

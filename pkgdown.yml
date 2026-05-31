@@ -3,7 +3,7 @@ pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   selecting-and-rewriting: selecting-and-rewriting.html
-last_built: 2026-05-31T16:28Z
+last_built: 2026-05-31T17:45Z
 urls:
   reference: https://rundel.github.io/q2r/reference
   article: https://rundel.github.io/q2r/articles

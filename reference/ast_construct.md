@@ -36,11 +36,11 @@ sequences automatically.
 For `as_inlines()`:
 
 - A character vector is split on whitespace, producing
-  [`pandoc_str`](https://rundel.github.io/q2r/reference/pandoc_str.md)
+  [`pandoc_str`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md)
   runs joined by
-  [`pandoc_space()`](https://rundel.github.io/q2r/reference/pandoc_space.md);
+  [`pandoc_space()`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md);
   embedded newlines (or multi-element character vectors) become
-  [`pandoc_soft_break()`](https://rundel.github.io/q2r/reference/pandoc_soft_break.md).
+  [`pandoc_soft_break()`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md).
 
 - A single
   [`pandoc_inline`](https://rundel.github.io/q2r/reference/pandoc_node.md)
@@ -56,7 +56,7 @@ For `as_inlines()`:
 For `as_blocks()`:
 
 - A character vector becomes one
-  [`pandoc_paragraph`](https://rundel.github.io/q2r/reference/pandoc_paragraph.md)
+  [`pandoc_paragraph`](https://rundel.github.io/q2r/reference/pandoc_block_constructors.md)
   per non-empty element (each paragraph's content is
   `as_inlines(line)`).
 
@@ -76,7 +76,7 @@ These exist as ergonomic shortcuts for use inside
 handlers and ad-hoc AST construction; the strict-typed constructors
 ([`pandoc_inlines`](https://rundel.github.io/q2r/reference/pandoc_blocks.md),
 [`pandoc_blocks`](https://rundel.github.io/q2r/reference/pandoc_blocks.md),
-[`pandoc_str`](https://rundel.github.io/q2r/reference/pandoc_str.md),
+[`pandoc_str`](https://rundel.github.io/q2r/reference/pandoc_inline_constructors.md),
 ...) remain the canonical way to build nodes.
 
 ## Examples
