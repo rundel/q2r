@@ -1,36 +1,36 @@
 bad_qmd = ":::: {"
 
-test_that("pampa_parse(ast = 'pd') raises an error by default on bad input", {
-  expect_error(pampa_parse(bad_qmd), "Parse error")
+test_that("parse_qmd(ast = 'pd') raises an error by default on bad input", {
+  expect_error(parse_qmd(bad_qmd), "Parse error")
 })
 
-test_that("pampa_parse(ast = 'ts') raises an error by default on bad input", {
-  expect_error(pampa_parse(bad_qmd, ast = "ts"), "Parse error")
+test_that("parse_qmd(ast = 'ts') raises an error by default on bad input", {
+  expect_error(parse_qmd(bad_qmd, ast = "ts"), "Parse error")
 })
 
-test_that("pampa_parse(ast = 'pd', quiet = TRUE) returns silently with diagnostics attached", {
-  res = expect_no_condition(pampa_parse(bad_qmd, quiet = TRUE))
+test_that("parse_qmd(ast = 'pd', quiet = TRUE) returns silently with diagnostics attached", {
+  res = expect_no_condition(parse_qmd(bad_qmd, quiet = TRUE))
   expect_true(S7::S7_inherits(res, pandoc))
   expect_gt(length(res@diagnostics), 0L)
   expect_true(any(vapply(res@diagnostics, function(d) d@kind == "error", logical(1L))))
 })
 
-test_that("pampa_parse(ast = 'ts', quiet = TRUE) returns silently with diagnostics attached", {
-  res = expect_no_condition(pampa_parse(bad_qmd, quiet = TRUE, ast = "ts"))
+test_that("parse_qmd(ast = 'ts', quiet = TRUE) returns silently with diagnostics attached", {
+  res = expect_no_condition(parse_qmd(bad_qmd, quiet = TRUE, ast = "ts"))
   expect_true(S7::S7_inherits(res, ts_tree))
   expect_gt(length(res@diagnostics), 0L)
   expect_true(any(vapply(res@diagnostics, function(d) d@kind == "error", logical(1L))))
 })
 
 test_that("clean input does not signal a condition under either default", {
-  expect_no_condition(pampa_parse("# hi"))
-  expect_no_condition(pampa_parse("# hi", ast = "ts"))
-  expect_no_condition(pampa_parse("# hi", quiet = TRUE))
-  expect_no_condition(pampa_parse("# hi", quiet = TRUE, ast = "ts"))
+  expect_no_condition(parse_qmd("# hi"))
+  expect_no_condition(parse_qmd("# hi", ast = "ts"))
+  expect_no_condition(parse_qmd("# hi", quiet = TRUE))
+  expect_no_condition(parse_qmd("# hi", quiet = TRUE, ast = "ts"))
 })
 
-test_that("pampa_parse error message includes the rendered diagnostic text", {
-  err = tryCatch(pampa_parse(bad_qmd), error = identity)
+test_that("parse_qmd error message includes the rendered diagnostic text", {
+  err = tryCatch(parse_qmd(bad_qmd), error = identity)
   expect_s3_class(err, "error")
   expect_match(conditionMessage(err), "unexpected character or token", fixed = TRUE)
 })
@@ -151,40 +151,40 @@ test_that("info / note diagnostics next to errors do not appear in the error mes
 
 multi_err_qmd = "{< unknown_shortcode >}\n\n{< another_shortcode >}"
 
-test_that("pampa_parse() coalesces distinct parser errors into a single stop()", {
-  res = pampa_parse(multi_err_qmd, quiet = TRUE)
+test_that("parse_qmd() coalesces distinct parser errors into a single stop()", {
+  res = parse_qmd(multi_err_qmd, quiet = TRUE)
   errs = Filter(function(d) d@kind == "error", res@diagnostics)
   titles = unique(vapply(errs, function(d) d@title, character(1L)))
   skip_if(length(titles) < 2L, "fixture no longer yields >=2 distinct error titles")
 
-  caught = catch_signals(pampa_parse(multi_err_qmd))
+  caught = catch_signals(parse_qmd(multi_err_qmd))
   expect_s3_class(caught$error, "error")
   msg = conditionMessage(caught$error)
   for (t in titles) expect_match(msg, t, fixed = TRUE)
 })
 
-test_that("pampa_parse(quiet = TRUE) preserves all diagnostics when there are several", {
-  res1 = pampa_parse(multi_err_qmd, quiet = TRUE)
-  res2 = pampa_parse(multi_err_qmd, quiet = TRUE)
+test_that("parse_qmd(quiet = TRUE) preserves all diagnostics when there are several", {
+  res1 = parse_qmd(multi_err_qmd, quiet = TRUE)
+  res2 = parse_qmd(multi_err_qmd, quiet = TRUE)
   expect_identical(length(res1@diagnostics), length(res2@diagnostics))
   expect_gte(length(res1@diagnostics), 2L)
 })
 
 test_that("prune_errors = TRUE (default) deduplicates parser-error diagnostics", {
-  pruned   = pampa_parse(bad_qmd, quiet = TRUE)
-  unpruned = pampa_parse(bad_qmd, quiet = TRUE, prune_errors = FALSE)
+  pruned   = parse_qmd(bad_qmd, quiet = TRUE)
+  unpruned = parse_qmd(bad_qmd, quiet = TRUE, prune_errors = FALSE)
   expect_lt(length(pruned@diagnostics), length(unpruned@diagnostics))
   expect_gte(length(pruned@diagnostics), 1L)
 })
 
 test_that("prune_errors = FALSE preserves raw diagnostics for ts parser too", {
-  pruned   = pampa_parse(bad_qmd, quiet = TRUE, ast = "ts")
-  unpruned = pampa_parse(bad_qmd, quiet = TRUE, prune_errors = FALSE, ast = "ts")
+  pruned   = parse_qmd(bad_qmd, quiet = TRUE, ast = "ts")
+  unpruned = parse_qmd(bad_qmd, quiet = TRUE, prune_errors = FALSE, ast = "ts")
   expect_lt(length(pruned@diagnostics), length(unpruned@diagnostics))
 })
 
 test_that("prune_errors keeps distinct errors at separate ERROR nodes", {
-  res = pampa_parse(multi_err_qmd, quiet = TRUE, prune_errors = TRUE)
+  res = parse_qmd(multi_err_qmd, quiet = TRUE, prune_errors = TRUE)
   titles = unique(vapply(res@diagnostics, function(d) d@title, character(1L)))
   expect_gte(length(titles), 2L)
 })

@@ -41,24 +41,24 @@ snapshot_doc = paste(
 
 test_that("print.pandoc renders a representative document (unicode)", {
   testthat::local_reproducible_output(width = 200, unicode = TRUE)
-  pd = pampa_parse(snapshot_doc, quiet = TRUE)
+  pd = parse_qmd(snapshot_doc, quiet = TRUE)
   expect_snapshot(print(pd))
 })
 
 test_that("print.pandoc renders a representative document (ascii)", {
   testthat::local_reproducible_output(width = 200, unicode = FALSE)
-  pd = pampa_parse(snapshot_doc, quiet = TRUE)
+  pd = parse_qmd(snapshot_doc, quiet = TRUE)
   expect_snapshot(print(pd))
 })
 
 test_that("print.ts_tree renders a representative document (unicode)", {
   testthat::local_reproducible_output(width = 200, unicode = TRUE)
-  ts = pampa_parse(snapshot_doc, quiet = TRUE, ast = "ts")
+  ts = parse_qmd(snapshot_doc, quiet = TRUE, ast = "ts")
   expect_snapshot(print(ts))
 })
 
 test_that("print.ts_tree renders a representative document (ascii)", {
   testthat::local_reproducible_output(width = 200, unicode = FALSE)
-  ts = pampa_parse(snapshot_doc, quiet = TRUE, ast = "ts")
+  ts = parse_qmd(snapshot_doc, quiet = TRUE, ast = "ts")
   expect_snapshot(print(ts))
 })

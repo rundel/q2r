@@ -4,9 +4,9 @@ ts_ast_kind_tree = function(n) {
 }
 
 expect_roundtrip = function(src, info = NULL) {
-  res  = pampa_parse(src, ast = "ts")
+  res  = parse_qmd(src, ast = "ts")
   out  = to_qmd(res)
-  res2 = pampa_parse(out, ast = "ts")
+  res2 = parse_qmd(out, ast = "ts")
   expect_identical(
     ts_ast_kind_tree(res2@root),
     ts_ast_kind_tree(res@root),
@@ -15,7 +15,7 @@ expect_roundtrip = function(src, info = NULL) {
 }
 
 test_that("to_qmd dispatches on ts_tree", {
-  res = pampa_parse("# Hi\n", ast = "ts")
+  res = parse_qmd("# Hi\n", ast = "ts")
   expect_identical(to_qmd(res), "# Hi\n")
 })
 
@@ -27,7 +27,7 @@ test_that("to_qmd round-trips headings and paragraphs", {
 })
 
 test_that("to_qmd appends a trailing newline when source lacks one", {
-  res = pampa_parse("# no trailing", ast = "ts")
+  res = parse_qmd("# no trailing", ast = "ts")
   expect_identical(to_qmd(res), "# no trailing\n")
 })
 

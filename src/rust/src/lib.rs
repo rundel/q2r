@@ -1,6 +1,6 @@
 use extendr_api::prelude::*;
 use pampa::readers::qmd;
-use pampa::writers::{native, qmd as qmd_writer};
+use pampa::writers::qmd as qmd_writer;
 
 mod diag_to_r;
 mod pd_ast_to_r;
@@ -81,47 +81,6 @@ fn pampa_parse_ts_impl(text: &str, filename: &str, prune_errors: bool) -> List {
         }
     };
     list!(ts_ast = ts_ast, diagnostics = diag_list)
-}
-
-/// Capture pampa's tree-sitter debug dump for QMD text.
-///
-/// Returns the lines of the `print_whole_tree` output that pampa emits
-/// to stderr when run with `-v`. Primarily a testing helper for
-/// cross-checking the structured `ts_ast` against pampa's own view.
-/// @noRd
-#[extendr]
-fn pampa_tree_impl(text: &str, filename: &str) -> Vec<String> {
-    let mut tree_buf: Vec<u8> = Vec::new();
-    let _ = qmd::read(text.as_bytes(), false, filename, &mut tree_buf, true, None);
-    String::from_utf8_lossy(&tree_buf)
-        .lines()
-        .map(str::to_string)
-        .collect()
-}
-
-/// Render QMD text to Pandoc's native AST format.
-///
-/// Returns the lines of `pampa::writers::native::write` applied to the
-/// parsed Pandoc document, or an empty vector if parsing failed.
-/// Primarily a testing helper.
-/// @noRd
-#[extendr]
-fn pampa_native_impl(text: &str, filename: &str) -> Vec<String> {
-    let mut sink = std::io::sink();
-    let result = qmd::read(text.as_bytes(), false, filename, &mut sink, true, None);
-    match result {
-        Ok((pandoc, ctx, _)) => {
-            let mut nbuf: Vec<u8> = Vec::new();
-            match native::write(&pandoc, &ctx, &mut nbuf) {
-                Ok(()) => String::from_utf8_lossy(&nbuf)
-                    .lines()
-                    .map(str::to_string)
-                    .collect(),
-                Err(_) => Vec::new(),
-            }
-        }
-        Err(_) => Vec::new(),
-    }
 }
 
 /// Render QMD input through pampa's own QMD writer (text/file path).
@@ -238,8 +197,6 @@ extendr_module! {
     mod q2r;
     fn pampa_parse_pd_impl;
     fn pampa_parse_ts_impl;
-    fn pampa_tree_impl;
-    fn pampa_native_impl;
     fn pampa_write_qmd_text_impl;
     fn pampa_write_qmd_ast_impl;
     fn pampa_diag_format_impl;

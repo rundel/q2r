@@ -1,5 +1,5 @@
 test_that("pandoc_inlines handler receives whole inline sequences", {
-  doc = pampa_parse("a *b* c\n")
+  doc = parse_qmd("a *b* c\n")
   seen_count = 0L
   ast_filter(doc, pandoc_inlines = function(xs) {
     seen_count <<- seen_count + 1L
@@ -9,7 +9,7 @@ test_that("pandoc_inlines handler receives whole inline sequences", {
 })
 
 test_that("pandoc_inlines handler can rewrite content", {
-  doc = pampa_parse("hello world\n")
+  doc = parse_qmd("hello world\n")
   out = ast_filter(doc, pandoc_inlines = function(xs) {
     pandoc_inlines(c(list(pandoc_str(text = "PREFIX:")), xs@content))
   })
@@ -20,7 +20,7 @@ test_that("pandoc_inlines handler can rewrite content", {
 })
 
 test_that("pandoc_inlines handler can drop elements (returning a smaller wrapper)", {
-  doc = pampa_parse("a *italic* b\n")
+  doc = parse_qmd("a *italic* b\n")
   out = ast_filter(doc, pandoc_inlines = function(xs) {
     keep = !purrr::map_lgl(xs@content, S7::S7_inherits, pandoc_emph)
     pandoc_inlines(xs@content[keep])
@@ -29,7 +29,7 @@ test_that("pandoc_inlines handler can drop elements (returning a smaller wrapper
 })
 
 test_that("pandoc_blocks handler receives the top-level block sequence", {
-  doc = pampa_parse("para 1\n\npara 2\n")
+  doc = parse_qmd("para 1\n\npara 2\n")
   seen_blocks = NULL
   ast_filter(doc, pandoc_blocks = function(xs) {
     if (is.null(seen_blocks)) seen_blocks <<- length(xs@content)
@@ -39,7 +39,7 @@ test_that("pandoc_blocks handler receives the top-level block sequence", {
 })
 
 test_that("pandoc_blocks handler can drop blocks", {
-  doc = pampa_parse("keep me\n\ndrop me\n\nkeep too\n")
+  doc = parse_qmd("keep me\n\ndrop me\n\nkeep too\n")
   out = ast_filter(doc, pandoc_blocks = function(xs) {
     keep = !purrr::map_lgl(xs@content, function(b) {
       if (!S7::S7_inherits(b, pandoc_paragraph)) return(FALSE)
@@ -53,11 +53,11 @@ test_that("pandoc_blocks handler can drop blocks", {
 })
 
 test_that("pandoc_inlines handler accepts NULL (empty) and list (autowrap)", {
-  doc = pampa_parse("hi\n")
+  doc = parse_qmd("hi\n")
   out_null = ast_filter(doc, pandoc_inlines = function(xs) NULL)
   expect_equal(length(select_first(out_null, is(pandoc_paragraph))@content@content), 0L)
 
-  doc2 = pampa_parse("hi\n")
+  doc2 = parse_qmd("hi\n")
   out_list = ast_filter(doc2, pandoc_inlines = function(xs) {
     list(pandoc_str(text = "X"))
   })
@@ -67,7 +67,7 @@ test_that("pandoc_inlines handler accepts NULL (empty) and list (autowrap)", {
 })
 
 test_that("pandoc_blocks handler rejects non-pandoc_blocks return that is not list/NULL", {
-  doc = pampa_parse("hi\n")
+  doc = parse_qmd("hi\n")
   expect_error(
     ast_filter(doc, pandoc_blocks = function(xs) "not a wrapper"),
     "pandoc_blocks"
@@ -75,7 +75,7 @@ test_that("pandoc_blocks handler rejects non-pandoc_blocks return that is not li
 })
 
 test_that("list-level dispatch composes with element-level dispatch in one pass", {
-  doc = pampa_parse("a *b* c\n")
+  doc = parse_qmd("a *b* c\n")
   out = ast_filter(doc,
     pandoc_emph = function(el) pandoc_strong(content = el@content),
     pandoc_inlines = function(xs) {
@@ -93,7 +93,7 @@ test_that("list-level dispatch composes with element-level dispatch in one pass"
 })
 
 test_that("pandoc_blocks handler also fires inside containers like bullet lists", {
-  doc = pampa_parse("- one\n- two\n")
+  doc = parse_qmd("- one\n- two\n")
   invocations = 0L
   ast_filter(doc, pandoc_blocks = function(xs) {
     invocations <<- invocations + 1L

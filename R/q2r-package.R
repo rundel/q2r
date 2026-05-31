@@ -1,7 +1,7 @@
 #' q2r: R Interface to the pampa Quarto Parser
 #'
 #' Exploratory R bindings to the `pampa` Rust crate from the
-#' quarto-dev/q2 project. See [`pampa_parse()`].
+#' quarto-dev/q2 project. See [`parse_qmd()`].
 #'
 #' @section Package options:
 #' The following [`options()`] tune how `pandoc` / `ts_tree` are

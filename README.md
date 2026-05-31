@@ -33,8 +33,8 @@ workspace (~40 crates) via cargo; subsequent builds use the cargo cache.
 
 ## Usage
 
-The single entry point is `pampa_parse()`. With `ast = "pd"` (the
-default) it returns a `pandoc` S7 object holding the Pandoc AST; with
+The single entry point is `parse_qmd()`. With `ast = "pd"` (the default)
+it returns a `pandoc` S7 object holding the Pandoc AST; with
 `ast = "ts"` it returns a `ts_tree` S7 object holding the tree-sitter
 concrete syntax tree. It accepts either a file path or a string of QMD
 text, and attaches any parse diagnostics to the returned object’s
@@ -58,7 +58,7 @@ Some *emphasized* text with a [link](https://example.com).
 ### Pandoc AST
 
 ``` r
-pd = pampa_parse(qmd)
+pd = parse_qmd(qmd)
 pd
 #> pandoc
 #> ├─header level=1 (#heading)
@@ -83,7 +83,7 @@ pd
 ### Tree-sitter AST
 
 ``` r
-ts = pampa_parse(qmd, ast = "ts")
+ts = parse_qmd(qmd, ast = "ts")
 ts
 #> ts_tree language=qmd
 #> └─document
@@ -132,13 +132,13 @@ cat(to_qmd(pd))
 ### Diagnostics
 
 Parse errors and warnings are returned as structured `pampa_diagnostic`
-objects attached to the parsed result. By default `pampa_parse()`
-signals error-kind diagnostics as R errors and warning-kind diagnostics
-as R warnings; pass `quiet = TRUE` to suppress signalling and inspect
-them directly.
+objects attached to the parsed result. By default `parse_qmd()` signals
+error-kind diagnostics as R errors and warning-kind diagnostics as R
+warnings; pass `quiet = TRUE` to suppress signalling and inspect them
+directly.
 
 ``` r
-bad = pampa_parse(
+bad = parse_qmd(
   "# Heading {.cls bad}
 
 See [my page](https://example.com/some path) for details.

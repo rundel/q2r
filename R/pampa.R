@@ -83,7 +83,7 @@ pampa_diagnostics_from_raw = function(raw, text, filename) {
 #'   returned `pandoc` has an empty `@blocks`; the diagnostics explain
 #'   why. Tree-sitter parsing itself never fails.
 #' @export
-pampa_parse = function(input, ast = c("pd", "ts"), quiet = FALSE, prune_errors = TRUE) {
+parse_qmd = function(input, ast = c("pd", "ts"), quiet = FALSE, prune_errors = TRUE) {
   ast = match.arg(ast)
   src = pampa_read_input(input)
 
@@ -100,34 +100,4 @@ pampa_parse = function(input, ast = c("pd", "ts"), quiet = FALSE, prune_errors =
   out@diagnostics = diagnostics
   pampa_signal_diagnostics(diagnostics, quiet = quiet)
   out
-}
-
-#' Dump pampa's raw tree-sitter tree for QMD input
-#'
-#' `r lifecycle::badge("experimental")`
-#'
-#' Test helper that returns the `print_whole_tree` lines pampa emits
-#' when run with `-v`. Use [`pampa_parse()`] for a structured AST.
-#'
-#' @param input A single string, handled like [`pampa_parse()`].
-#' @return A character vector of lines.
-#' @export
-pampa_tree = function(input) {
-  src = pampa_read_input(input)
-  pampa_tree_impl(src$text, src$filename)
-}
-
-#' Render QMD input to Pandoc native AST text
-#'
-#' `r lifecycle::badge("experimental")`
-#'
-#' Test helper that returns pampa's native-format rendering of the
-#' parsed document.
-#'
-#' @param input A single string, handled like [`pampa_parse()`].
-#' @return A character vector of lines (empty if parsing failed).
-#' @export
-pampa_native = function(input) {
-  src = pampa_read_input(input)
-  pampa_native_impl(src$text, src$filename)
 }

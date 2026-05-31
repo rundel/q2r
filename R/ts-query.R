@@ -16,7 +16,7 @@ NULL
 #'
 #' @param input Either a [`ts_tree`] (re-renders to QMD via [`to_qmd()`]
 #'   then re-parses), a single string treated as text/file path (per
-#'   [`pampa_parse()`]'s rules), or raw text.
+#'   [`parse_qmd()`]'s rules), or raw text.
 #' @param query_text A tree-sitter query string (S-expression form).
 #'   See <https://github.com/quarto-dev/q2/tree/main/crates/tree-sitter-qmd/tree-sitter-markdown/queries/>
 #'   for live examples.
@@ -26,7 +26,7 @@ NULL
 #'   matches are found.
 #' @examples
 #' \dontrun{
-#' ts = pampa_parse("# Heading\n\nbody\n", ast = "ts")
+#' ts = parse_qmd("# Heading\n\nbody\n", ast = "ts")
 #' ts_query(ts, "(atx_heading) @h")
 #' }
 #' @export

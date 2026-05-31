@@ -1,5 +1,5 @@
 test_that("pre-order visits parent before children", {
-  doc = pampa_parse("# H\n\n*emph*\n")
+  doc = parse_qmd("# H\n\n*emph*\n")
   order = character()
   ast_filter(doc, .order = "pre",
     pandoc_header    = function(el) { order <<- c(order, "header"); el },
@@ -13,7 +13,7 @@ test_that("pre-order visits parent before children", {
 })
 
 test_that("post-order visits children before parent", {
-  doc = pampa_parse("# H\n\n*emph*\n")
+  doc = parse_qmd("# H\n\n*emph*\n")
   order = character()
   ast_filter(doc, .order = "post",
     pandoc_paragraph = function(el) { order <<- c(order, "para"); el },
@@ -25,7 +25,7 @@ test_that("post-order visits children before parent", {
 })
 
 test_that("ast_skip prevents descent in pre-order", {
-  doc = pampa_parse("Outer text and **bold inner**.\n\nSibling.\n")
+  doc = parse_qmd("Outer text and **bold inner**.\n\nSibling.\n")
   inner_visited = FALSE
   ast_filter(doc, .order = "pre",
     pandoc_strong = function(el) ast_skip(el),
@@ -38,7 +38,7 @@ test_that("ast_skip prevents descent in pre-order", {
 })
 
 test_that("ast_skip without descent still installs the (possibly modified) node", {
-  doc = pampa_parse("**bold**\n")
+  doc = parse_qmd("**bold**\n")
   out = ast_filter(doc, .order = "pre",
     pandoc_strong = function(el) ast_skip(pandoc_emph(content = el@content))
   )
@@ -47,13 +47,13 @@ test_that("ast_skip without descent still installs the (possibly modified) node"
 })
 
 test_that("pre-order handler returning NULL deletes", {
-  doc = pampa_parse("Keep. **drop**. Keep too.\n")
+  doc = parse_qmd("Keep. **drop**. Keep too.\n")
   out = ast_filter(doc, .order = "pre", pandoc_strong = function(el) NULL)
   expect_length(select_nodes(out, is(pandoc_strong)), 0L)
 })
 
 test_that("pre-order handler returning a list splices and does not re-descend", {
-  doc = pampa_parse("**bold**\n")
+  doc = parse_qmd("**bold**\n")
   visits = 0L
   out = ast_filter(doc, .order = "pre",
     pandoc_strong = function(el) {
@@ -70,7 +70,7 @@ test_that("pre-order handler returning a list splices and does not re-descend", 
 })
 
 test_that("pre-order handler returning the same node descends into its children", {
-  doc = pampa_parse("# H\n\n**bold** text\n")
+  doc = parse_qmd("# H\n\n**bold** text\n")
   saw_inner_str = FALSE
   ast_filter(doc, .order = "pre",
     pandoc_strong = function(el) el,
@@ -86,7 +86,7 @@ test_that("pre-order: a replacement's children are descended into, but the repla
   # Lua-style semantics: returning a different node installs it and
   # descent continues into ITS children, but the new node's own
   # handler does not fire at the same position (no re-dispatch).
-  doc = pampa_parse("**bold**\n")
+  doc = parse_qmd("**bold**\n")
   emph_visits = 0L
   str_visits = 0L
   ast_filter(doc, .order = "pre",
@@ -99,7 +99,7 @@ test_that("pre-order: a replacement's children are descended into, but the repla
 })
 
 test_that(".order defaults to post and is checked", {
-  doc = pampa_parse("x\n")
+  doc = parse_qmd("x\n")
   expect_silent(ast_filter(doc))
   expect_error(ast_filter(doc, .order = "bogus"), "should be one of")
 })

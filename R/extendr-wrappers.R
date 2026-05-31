@@ -23,22 +23,6 @@ pampa_parse_pd_impl <- function(text, filename, prune_errors) .Call(wrap__pampa_
 #' @noRd
 pampa_parse_ts_impl <- function(text, filename, prune_errors) .Call(wrap__pampa_parse_ts_impl, text, filename, prune_errors)
 
-#' Capture pampa's tree-sitter debug dump for QMD text.
-#'
-#' Returns the lines of the `print_whole_tree` output that pampa emits
-#' to stderr when run with `-v`. Primarily a testing helper for
-#' cross-checking the structured `ts_ast` against pampa's own view.
-#' @noRd
-pampa_tree_impl <- function(text, filename) .Call(wrap__pampa_tree_impl, text, filename)
-
-#' Render QMD text to Pandoc's native AST format.
-#'
-#' Returns the lines of `pampa::writers::native::write` applied to the
-#' parsed Pandoc document, or an empty vector if parsing failed.
-#' Primarily a testing helper.
-#' @noRd
-pampa_native_impl <- function(text, filename) .Call(wrap__pampa_native_impl, text, filename)
-
 #' Render QMD input through pampa's own QMD writer (text/file path).
 #'
 #' Parses `text` with pampa's QMD reader and writes the resulting Pandoc

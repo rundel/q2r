@@ -15,7 +15,7 @@ shortcode_srcs = list(
 test_that("to_qmd() reconstructs shortcodes identically to pampa's own writer", {
   for (nm in names(shortcode_srcs)) {
     src = shortcode_srcs[[nm]]
-    pd = pampa_parse(src, quiet = TRUE)
+    pd = parse_qmd(src, quiet = TRUE)
     expect_false(has_error_diagnostics(pd), info = nm)
     q2r_out = to_qmd(pd)
     pampa_out = q2r:::pampa_write_qmd_text_impl(src, "<text>")$text
@@ -25,7 +25,7 @@ test_that("to_qmd() reconstructs shortcodes identically to pampa's own writer", 
 
 test_that("nested shortcode round-trips without error", {
   src = "{{< video {{< meta url >}} >}}\n"
-  pd = pampa_parse(src, quiet = TRUE)
+  pd = parse_qmd(src, quiet = TRUE)
   expect_no_error(out <- to_qmd(pd))
   expect_identical(out, src)
 })

@@ -6,7 +6,7 @@ NULL
 #' `r lifecycle::badge("experimental")`
 #'
 #' Recursively concatenates the textual content of a pandoc AST,
-#' dropping all formatting. The output of a [`pampa_parse()`] result
+#' dropping all formatting. The output of a [`parse_qmd()`] result
 #' fed back through `ast_text()` is roughly what readers would see if
 #' the document were rendered as a flat string.
 #'
@@ -36,7 +36,7 @@ NULL
 #'
 #' @examples
 #' \dontrun{
-#' doc = pampa_parse("# Hello *world*\n\nSecond paragraph.\n")
+#' doc = parse_qmd("# Hello *world*\n\nSecond paragraph.\n")
 #' ast_text(doc)
 #' # "Hello world\n\nSecond paragraph."
 #' }

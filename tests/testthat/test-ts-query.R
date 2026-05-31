@@ -1,5 +1,5 @@
 test_that("ts_query captures atx_heading nodes", {
-  ts = pampa_parse("# H1\n\n## H2\n\nbody\n", ast = "ts")
+  ts = parse_qmd("# H1\n\n## H2\n\nbody\n", ast = "ts")
   out = ts_query(ts, "(atx_heading) @h")
   expect_type(out, "list")
   expect_length(out, 2L)
@@ -8,14 +8,14 @@ test_that("ts_query captures atx_heading nodes", {
 })
 
 test_that("ts_query handles multiple captures per match", {
-  ts = pampa_parse("# Hello\n", ast = "ts")
+  ts = parse_qmd("# Hello\n", ast = "ts")
   out = ts_query(ts, "(atx_heading) @whole")
   expect_length(out, 1L)
   expect_named(out[[1L]], "whole")
 })
 
 test_that("ts_query returns an empty list on no matches", {
-  ts = pampa_parse("plain text\n", ast = "ts")
+  ts = parse_qmd("plain text\n", ast = "ts")
   out = ts_query(ts, "(atx_heading) @h")
   expect_length(out, 0L)
 })
