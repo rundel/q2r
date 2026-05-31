@@ -64,9 +64,9 @@ to_qmd_ts_node = function(x) {
   if (is.null(handler)) {
     warning(
       "to_qmd(): no rule for ts_node kind '", x@kind,
-      "' - falling back to plain concatenation"
+      "' - falling back to verbatim source text"
     )
-    handler = ts_concat
+    handler = ts_text_or(ts_concat)
   }
   handler(x)
 }
@@ -102,14 +102,14 @@ ts_kind_handlers = list(
   }),
   metadata = ts_concat,
 
-  atx_heading = function(x) {
+  atx_heading = ts_text_or(function(x) {
     parts = ts_children_qmd(x)
     if (length(parts) <= 1L) {
       paste0(parts, "\n", collapse = "")
     } else {
       paste0(parts[1L], " ", paste0(parts[-1L], collapse = ""), "\n")
     }
-  },
+  }),
 
   pandoc_paragraph = ts_text_or(function(x) {
     ch = x@children@content
@@ -128,7 +128,7 @@ ts_kind_handlers = list(
   pandoc_list = ts_text_or(),
   list_item    = ts_text_or(),
 
-  pandoc_code_block = function(x) {
+  pandoc_code_block = ts_text_or(function(x) {
     ch = x@children@content
     kinds = vapply(ch, function(c) c@kind, character(1L))
     parts = ts_children_qmd(x)
@@ -155,14 +155,14 @@ ts_kind_handlers = list(
       out = paste0(out, "\n")
     }
     out
-  },
+  }),
 
   code_fence_content = ts_text_or(NULL),
 
   pandoc_emph      = ts_concat,
   pandoc_strong    = ts_concat,
   pandoc_code_span = ts_concat,
-  content          = ts_concat,
+  content          = ts_text_or(),
 
   pandoc_span  = ts_text_or(),
   pandoc_image = ts_text_or(),
@@ -181,5 +181,7 @@ ts_kind_handlers = list(
   grid_table          = ts_text_or(NULL),
   caption             = ts_text_or(NULL),
   shortcode           = ts_text_or(NULL),
-  inline_ref_def      = ts_text_or(NULL)
+  inline_ref_def      = ts_text_or(NULL),
+
+  ERROR               = ts_text_or(ts_concat)
 )

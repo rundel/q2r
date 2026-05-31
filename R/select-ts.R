@@ -22,17 +22,25 @@ ts_collect_matches = function(root, quos, mask, include_root = TRUE) {
   out
 }
 
+# Grammar-gap kinds whose verbatim `@text` is the sole carrier of bytes the
+# named children do not cover (the `ts_text_or(NULL)` content kinds in
+# to-qmd.R). For these, clearing `@text` on rebuild would silently drop the
+# content; for every other kind `to_qmd()` correctly re-renders by walking the
+# (mutated) children.
+ts_gap_text_kinds = c("code_fence_content", "pandoc_math", "pandoc_display_math")
+
 ts_rebuild_node = function(node, new_children) {
-  # `text` is intentionally cleared: it was a verbatim source-span
-  # fallback for grammar gaps in the original tree, so any change to
-  # children invalidates it. `to_qmd()` falls back to walking children
-  # when `text` is NULL.
+  # `text` is a verbatim source-span fallback for grammar gaps. Changing
+  # children invalidates it for ordinary nodes (to_qmd() then walks children),
+  # but for the gap-content kinds it is the only carrier of the node's bytes,
+  # so preserve it to avoid silent data loss.
+  keep_text = node@kind %in% ts_gap_text_kinds
   ts_node(
     kind       = node@kind,
     is_named   = node@is_named,
     field_name = node@field_name,
     range      = node@range,
-    text       = NULL,
+    text       = if (keep_text) node@text else NULL,
     children   = ts_nodes(new_children)
   )
 }
