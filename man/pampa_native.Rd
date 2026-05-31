@@ -7,7 +7,7 @@
 pampa_native(input)
 }
 \arguments{
-\item{input}{A single string, handled like \code{\link[=pampa_parse_pd]{pampa_parse_pd()}}.}
+\item{input}{A single string, handled like \code{\link[=pampa_parse]{pampa_parse()}}.}
 }
 \value{
 A character vector of lines (empty if parsing failed).

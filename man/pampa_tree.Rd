@@ -7,7 +7,7 @@
 pampa_tree(input)
 }
 \arguments{
-\item{input}{A single string, handled like \code{\link[=pampa_parse_pd]{pampa_parse_pd()}}.}
+\item{input}{A single string, handled like \code{\link[=pampa_parse]{pampa_parse()}}.}
 }
 \value{
 A character vector of lines.
@@ -17,5 +17,5 @@ A character vector of lines.
 }
 \details{
 Test helper that returns the \code{print_whole_tree} lines pampa emits
-when run with \code{-v}. Use \code{\link[=pampa_parse_ts]{pampa_parse_ts()}} for a structured AST.
+when run with \code{-v}. Use \code{\link[=pampa_parse]{pampa_parse()}} for a structured AST.
 }

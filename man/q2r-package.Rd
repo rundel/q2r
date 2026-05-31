@@ -7,8 +7,7 @@
 \title{q2r: R Interface to the pampa Quarto Parser}
 \description{
 Exploratory R bindings to the \code{pampa} Rust crate from the
-quarto-dev/q2 project. See \code{\link[=pampa_parse_pd]{pampa_parse_pd()}} and
-\code{\link[=pampa_parse_ts]{pampa_parse_ts()}}.
+quarto-dev/q2 project. See \code{\link[=pampa_parse]{pampa_parse()}}.
 }
 \section{Package options}{
 

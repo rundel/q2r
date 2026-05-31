@@ -32,12 +32,12 @@ ast_kinds = function(pd) {
 
 expect_apostrophe_roundtrip = function(prefix) {
   src = mk_src(prefix)
-  pd  = pampa_parse_pd(src, quiet = TRUE)
+  pd  = pampa_parse(src, quiet = TRUE)
   errs = vapply(pd@diagnostics, function(d) d@kind == "error", logical(1L))
   expect_false(any(errs), info = paste0("initial parse of ", deparse(src)))
 
   out = to_qmd(pd)
-  pd2 = tryCatch(pampa_parse_pd(out, quiet = TRUE), error = function(e) e)
+  pd2 = tryCatch(pampa_parse(out, quiet = TRUE), error = function(e) e)
   expect_true(S7::S7_inherits(pd2, pandoc),
               info = paste0("re-parse of writer output ", deparse(out)))
   errs2 = vapply(pd2@diagnostics, function(d) d@kind == "error", logical(1L))
@@ -59,7 +59,7 @@ for (nm in names(inline_close_variants)) {
 
 test_that("to_qmd(pandoc) emits backslash-escaped apostrophe after a strong-close", {
   src = mk_src("**bold**")
-  out = to_qmd(pampa_parse_pd(src, quiet = TRUE))
+  out = to_qmd(pampa_parse(src, quiet = TRUE))
   expect_true(grepl(paste0(bslash, apos, "s"), out, fixed = TRUE),
               info = paste0("output: ", deparse(out)))
 })

@@ -51,14 +51,23 @@ pampa_diagnostics_from_raw = function(raw, text, filename) {
   )
 }
 
-#' Parse QMD input with pampa and return the Pandoc AST
+#' Parse QMD input with pampa
 #'
 #' `r lifecycle::badge("experimental")`
+#'
+#' Parses QMD text or a file with pampa and returns the requested AST.
+#' With `ast = "pd"` (the default) the Pandoc AST is returned as a
+#' [`pandoc`] object; with `ast = "ts"` the tree-sitter concrete syntax
+#' tree is returned as a [`ts_tree`]. Either way any parse diagnostics are
+#' attached to the returned object's `@diagnostics` slot.
 #'
 #' @param input A single string. Treated as a file path if it does not
 #'   contain newlines and `file.exists()` returns TRUE; otherwise
 #'   treated as raw text. To parse an R-held [`ts_tree`] as Pandoc,
 #'   render it first with [`to_qmd()`] and feed the result back in.
+#' @param ast The AST to return: `"pd"` (the default) for the Pandoc AST
+#'   as a [`pandoc`] object, or `"ts"` for the tree-sitter AST as a
+#'   [`ts_tree`].
 #' @param quiet If `FALSE` (the default) any error-kind diagnostics are
 #'   raised as R errors (after attaching diagnostics to the result),
 #'   and warning-kind diagnostics are emitted as R warnings. If `TRUE`
@@ -68,50 +77,29 @@ pampa_diagnostics_from_raw = function(raw, text, filename) {
 #'   parser-error diagnostics are deduplicated by tree-sitter `ERROR`
 #'   node, keeping the earliest per node. Set to `FALSE` to see every
 #'   raw diagnostic pampa produces (useful for debugging the parser).
-#' @return A [`pandoc`] object with any parse diagnostics attached in
-#'   its `@diagnostics` slot. If pampa fails to produce a Pandoc AST the
-#'   returned object has an empty `@blocks`; the diagnostics explain why.
+#' @return For `ast = "pd"` a [`pandoc`] object, for `ast = "ts"` a
+#'   [`ts_tree`] object, with any parse diagnostics attached in the
+#'   `@diagnostics` slot. If pampa fails to produce a Pandoc AST the
+#'   returned `pandoc` has an empty `@blocks`; the diagnostics explain
+#'   why. Tree-sitter parsing itself never fails.
 #' @export
-pampa_parse_pd = function(input, quiet = FALSE, prune_errors = TRUE) {
+pampa_parse = function(input, ast = c("pd", "ts"), quiet = FALSE, prune_errors = TRUE) {
+  ast = match.arg(ast)
   src = pampa_read_input(input)
-  raw = pampa_parse_pd_impl(src$text, src$filename, isTRUE(prune_errors))
-  diagnostics = pampa_diagnostics_from_raw(raw, src$text, src$filename)
 
-  doc = if (is.null(raw$pd_ast)) pandoc() else pandoc_from_list(raw$pd_ast)
-  doc@diagnostics = diagnostics
+  if (ast == "pd") {
+    raw = pampa_parse_pd_impl(src$text, src$filename, isTRUE(prune_errors))
+    diagnostics = pampa_diagnostics_from_raw(raw, src$text, src$filename)
+    out = if (is.null(raw$pd_ast)) pandoc() else pandoc_from_list(raw$pd_ast)
+  } else {
+    raw = pampa_parse_ts_impl(src$text, src$filename, isTRUE(prune_errors))
+    diagnostics = pampa_diagnostics_from_raw(raw, src$text, src$filename)
+    out = ts_tree_from_list(raw$ts_ast)
+  }
+
+  out@diagnostics = diagnostics
   pampa_signal_diagnostics(diagnostics, quiet = quiet)
-  doc
-}
-
-#' Parse QMD input with tree-sitter and return the tree-sitter AST
-#'
-#' `r lifecycle::badge("experimental")`
-#'
-#' @param input A single string. Treated as a file path if it does not
-#'   contain newlines and `file.exists()` returns TRUE; otherwise
-#'   treated as raw text.
-#' @param quiet If `FALSE` (the default) any error-kind diagnostics are
-#'   raised as R errors (after attaching diagnostics to the result),
-#'   and warning-kind diagnostics are emitted as R warnings. If `TRUE`
-#'   no signal is raised; diagnostics are still attached to the
-#'   returned object's `@diagnostics` slot.
-#' @param prune_errors If `TRUE` (the default, matching the pampa CLI)
-#'   parser-error diagnostics are deduplicated by tree-sitter `ERROR`
-#'   node, keeping the earliest per node. Set to `FALSE` to see every
-#'   raw diagnostic pampa produces (useful for debugging the parser).
-#' @return A [`ts_tree`] object with any parse diagnostics attached in
-#'   its `@diagnostics` slot. Tree-sitter parsing itself never fails;
-#'   the diagnostics surface higher-level pampa errors.
-#' @export
-pampa_parse_ts = function(input, quiet = FALSE, prune_errors = TRUE) {
-  src = pampa_read_input(input)
-  raw = pampa_parse_ts_impl(src$text, src$filename, isTRUE(prune_errors))
-  diagnostics = pampa_diagnostics_from_raw(raw, src$text, src$filename)
-
-  tree = ts_tree_from_list(raw$ts_ast)
-  tree@diagnostics = diagnostics
-  pampa_signal_diagnostics(diagnostics, quiet = quiet)
-  tree
+  out
 }
 
 #' Dump pampa's raw tree-sitter tree for QMD input
@@ -119,9 +107,9 @@ pampa_parse_ts = function(input, quiet = FALSE, prune_errors = TRUE) {
 #' `r lifecycle::badge("experimental")`
 #'
 #' Test helper that returns the `print_whole_tree` lines pampa emits
-#' when run with `-v`. Use [`pampa_parse_ts()`] for a structured AST.
+#' when run with `-v`. Use [`pampa_parse()`] for a structured AST.
 #'
-#' @param input A single string, handled like [`pampa_parse_pd()`].
+#' @param input A single string, handled like [`pampa_parse()`].
 #' @return A character vector of lines.
 #' @export
 pampa_tree = function(input) {
@@ -136,7 +124,7 @@ pampa_tree = function(input) {
 #' Test helper that returns pampa's native-format rendering of the
 #' parsed document.
 #'
-#' @param input A single string, handled like [`pampa_parse_pd()`].
+#' @param input A single string, handled like [`pampa_parse()`].
 #' @return A character vector of lines (empty if parsing failed).
 #' @export
 pampa_native = function(input) {

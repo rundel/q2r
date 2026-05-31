@@ -18,7 +18,7 @@ A single character string.
 }
 \details{
 Recursively concatenates the textual content of a pandoc AST,
-dropping all formatting. The output of a \code{\link[=pampa_parse_pd]{pampa_parse_pd()}} result
+dropping all formatting. The output of a \code{\link[=pampa_parse]{pampa_parse()}} result
 fed back through \code{ast_text()} is roughly what readers would see if
 the document were rendered as a flat string.
 
@@ -48,7 +48,7 @@ wrapped in \verb{[^...]} to flag it; rarely useful in match logic.
 }
 \examples{
 \dontrun{
-doc = pampa_parse_pd("# Hello *world*\n\nSecond paragraph.\n")
+doc = pampa_parse("# Hello *world*\n\nSecond paragraph.\n")
 ast_text(doc)
 # "Hello world\n\nSecond paragraph."
 }

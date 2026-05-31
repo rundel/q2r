@@ -19,8 +19,8 @@ test_that("ts_node validates field_name and text scalar-string invariant", {
   expect_error(ts_node(text = c("a", "b")), "text")
 })
 
-test_that("pampa_parse_ts yields a structured tree rooted at 'document'", {
-  res = pampa_parse_ts("# Heading\n\nHello *world*.\n")
+test_that("pampa_parse(ast = 'ts') yields a structured tree rooted at 'document'", {
+  res = pampa_parse("# Heading\n\nHello *world*.\n", ast = "ts")
   expect_true(S7::S7_inherits(res, ts_tree))
   expect_identical(res@root@kind, "document")
   expect_true(S7::S7_inherits(res@root@children, ts_nodes))
@@ -28,7 +28,7 @@ test_that("pampa_parse_ts yields a structured tree rooted at 'document'", {
 })
 
 test_that("leaf nodes carry a text substring from the source", {
-  res = pampa_parse_ts("# Hi\n")
+  res = pampa_parse("# Hi\n", ast = "ts")
   leaves = character()
   walk = function(n) {
     if (length(n@children@content) == 0L) {
@@ -42,7 +42,7 @@ test_that("leaf nodes carry a text substring from the source", {
 })
 
 test_that("leaves always carry @text; non-leaf @text is populated only when children leave byte gaps", {
-  res = pampa_parse_ts("# Hi\n")
+  res = pampa_parse("# Hi\n", ast = "ts")
   check = function(n) {
     if (length(n@children@content) == 0L) {
       expect_false(is.null(n@text))
@@ -65,7 +65,7 @@ test_that("leaves always carry @text; non-leaf @text is populated only when chil
 })
 
 test_that("every node exposes an is_named logical flag", {
-  res = pampa_parse_ts("# Hi\n")
+  res = pampa_parse("# Hi\n", ast = "ts")
   named = logical()
   walk = function(n) {
     named <<- c(named, n@is_named)
@@ -78,7 +78,7 @@ test_that("every node exposes an is_named logical flag", {
 })
 
 test_that("ts_tree prints without error and includes root kind", {
-  res = pampa_parse_ts("# Hi\n")
+  res = pampa_parse("# Hi\n", ast = "ts")
   out = utils::capture.output(print(res))
   expect_true(any(grepl("document", out)))
 })
@@ -109,7 +109,7 @@ tree_ranges_by_kind = function(tree_lines) {
 
 test_that("ts_ast and tree dump agree on ranges when input lacks a trailing newline", {
   src = "# Hello world!"
-  ts_ast_nodes = ts_ranges_by_kind(pampa_parse_ts(src)@root)
+  ts_ast_nodes = ts_ranges_by_kind(pampa_parse(src, ast = "ts")@root)
   tree_nodes = tree_ranges_by_kind(pampa_tree(src))
 
   expect_identical(length(ts_ast_nodes), length(tree_nodes))
@@ -131,7 +131,7 @@ test_that("ts_ast and tree dump agree on the document root range with/without tr
       regexec("\\((\\d+), (\\d+)\\) - \\((\\d+), (\\d+)\\)", tree_first)
     )[[1L]]
     tree_range = as.integer(c(m[[2L]], m[[3L]], m[[4L]], m[[5L]]))
-    root = pampa_parse_ts(src)@root
+    root = pampa_parse(src, ast = "ts")@root
     ts_ast_range = c(
       root@range@start_point@row, root@range@start_point@column,
       root@range@end_point@row,   root@range@end_point@column

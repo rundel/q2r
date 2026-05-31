@@ -48,7 +48,7 @@ NULL
 #'
 #' @examples
 #' \dontrun{
-#' doc = pampa_parse_pd("# Hello\n\n**bold** and *italic*\n")
+#' doc = pampa_parse("# Hello\n\n**bold** and *italic*\n")
 #' doc |> ast_filter(
 #'   pandoc_strong = \(el) pandoc_small_caps(el@content),
 #'   pandoc_header = \(el) {

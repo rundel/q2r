@@ -1,5 +1,5 @@
 make_header = function() {
-  doc = pampa_parse_pd("# Hello {#intro .foo .bar lang=en}\n")
+  doc = pampa_parse("# Hello {#intro .foo .bar lang=en}\n")
   select_first(doc, is(pandoc_header))
 }
 
@@ -12,7 +12,7 @@ test_that("has_class detects present and absent classes", {
 })
 
 test_that("has_class is FALSE on a node without @attr", {
-  doc = pampa_parse_pd("just text\n")
+  doc = pampa_parse("just text\n")
   s = select_first(doc, is(pandoc_str))
   expect_false(has_class(s, "anything"))
 })
@@ -53,7 +53,7 @@ test_that("get_id returns the id, set_id overwrites", {
 })
 
 test_that("get_id returns \"\" for nodes without @attr", {
-  doc = pampa_parse_pd("text\n")
+  doc = pampa_parse("text\n")
   s = select_first(doc, is(pandoc_str))
   expect_equal(get_id(s), "")
 })
@@ -88,13 +88,13 @@ test_that("remove_attr drops the named attribute", {
 })
 
 test_that("add_class on a node without @attr errors clearly", {
-  doc = pampa_parse_pd("text\n")
+  doc = pampa_parse("text\n")
   s = select_first(doc, is(pandoc_str))
   expect_error(add_class(s, "x"), "no @attr slot")
 })
 
 test_that("attribute helpers compose inside map_nodes", {
-  doc = pampa_parse_pd("# H {.note}\n")
+  doc = pampa_parse("# H {.note}\n")
   out = map_nodes(doc, is(pandoc_header), .f = function(h) {
     h |> add_class("highlight") |> set_id("section-1")
   })
@@ -105,7 +105,7 @@ test_that("attribute helpers compose inside map_nodes", {
 })
 
 test_that("ast_filter dispatch + attribute helpers", {
-  doc = pampa_parse_pd("# H\n\nA *para* with **bold**.\n")
+  doc = pampa_parse("# H\n\nA *para* with **bold**.\n")
   out = ast_filter(doc,
     pandoc_header = function(el) add_class(el, "filtered-header"),
     pandoc_strong = function(el) {
@@ -122,7 +122,7 @@ test_that("has_class inside select_nodes predicate still uses the mask", {
   # The data-mask helper `has_class("note")` is single-arg and reads the
   # current node from state; this test ensures the exported two-arg
   # version does not shadow it inside a predicate.
-  doc = pampa_parse_pd("# Plain\n\n::: {.note}\nContent.\n:::\n")
+  doc = pampa_parse("# Plain\n\n::: {.note}\nContent.\n:::\n")
   matches = select_nodes(doc, is(pandoc_div), has_class("note"))
   expect_length(matches, 1L)
 })

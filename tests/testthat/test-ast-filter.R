@@ -1,11 +1,11 @@
 test_that("ast_filter is a no-op when no handlers are given", {
-  doc = pampa_parse_pd("# H\n\nPara with **bold**.\n")
+  doc = pampa_parse("# H\n\nPara with **bold**.\n")
   out = ast_filter(doc)
   expect_equal(to_qmd(out), to_qmd(doc))
 })
 
 test_that("ast_filter rewrites a single type", {
-  doc = pampa_parse_pd("Some **bold** text.\n")
+  doc = pampa_parse("Some **bold** text.\n")
   out = ast_filter(doc, pandoc_strong = function(el) {
     pandoc_small_caps(content = el@content)
   })
@@ -16,7 +16,7 @@ test_that("ast_filter rewrites a single type", {
 })
 
 test_that("ast_filter dispatches on inheritance (pandoc_block catches all blocks)", {
-  doc = pampa_parse_pd("# Title\n\nA para.\n")
+  doc = pampa_parse("# Title\n\nA para.\n")
   visited = character()
   out = ast_filter(doc, pandoc_block = function(el) {
     visited <<- c(visited, S7::S7_class(el)@name)
@@ -28,7 +28,7 @@ test_that("ast_filter dispatches on inheritance (pandoc_block catches all blocks
 })
 
 test_that("ast_filter first-match-wins for overlapping handlers", {
-  doc = pampa_parse_pd("# Title\n\nA para.\n")
+  doc = pampa_parse("# Title\n\nA para.\n")
   saw = character()
   ast_filter(doc,
     pandoc_header = function(el) { saw <<- c(saw, "specific"); el },
@@ -39,13 +39,13 @@ test_that("ast_filter first-match-wins for overlapping handlers", {
 })
 
 test_that("ast_filter handler returning NULL deletes the node", {
-  doc = pampa_parse_pd("Keep me. **drop me**. Keep me too.\n")
+  doc = pampa_parse("Keep me. **drop me**. Keep me too.\n")
   out = ast_filter(doc, pandoc_strong = function(el) NULL)
   expect_length(select_nodes(out, is(pandoc_strong)), 0L)
 })
 
 test_that("ast_filter handler returning a list splices", {
-  doc = pampa_parse_pd("a **b** c\n")
+  doc = pampa_parse("a **b** c\n")
   out = ast_filter(doc, pandoc_strong = function(el) {
     list(pandoc_str(text = "X"), pandoc_space(), pandoc_str(text = "Y"))
   })
@@ -57,7 +57,7 @@ test_that("ast_filter handler returning a list splices", {
 })
 
 test_that("ast_filter traverses post-order (parent sees rewritten children)", {
-  doc = pampa_parse_pd("**outer *inner* end**\n")
+  doc = pampa_parse("**outer *inner* end**\n")
   parent_saw_replacement = FALSE
   ast_filter(doc,
     pandoc_emph   = function(el) pandoc_str(text = "[E]"),
@@ -74,7 +74,7 @@ test_that("ast_filter traverses post-order (parent sees rewritten children)", {
 })
 
 test_that("ast_filter with multiple handlers in one pass", {
-  doc = pampa_parse_pd("# H\n\nA *em* and **strong**.\n")
+  doc = pampa_parse("# H\n\nA *em* and **strong**.\n")
   out = ast_filter(doc,
     pandoc_emph   = function(el) pandoc_strong(content = el@content),
     pandoc_strong = function(el) pandoc_emph(content = el@content),
@@ -92,7 +92,7 @@ test_that("ast_filter with multiple handlers in one pass", {
 })
 
 test_that("ast_filter rejects unknown class names", {
-  doc = pampa_parse_pd("hi\n")
+  doc = pampa_parse("hi\n")
   expect_error(
     ast_filter(doc, NotAClass = function(el) el),
     "S7 class"
@@ -100,7 +100,7 @@ test_that("ast_filter rejects unknown class names", {
 })
 
 test_that("ast_filter rejects unnamed handlers", {
-  doc = pampa_parse_pd("hi\n")
+  doc = pampa_parse("hi\n")
   expect_error(
     ast_filter(doc, function(el) el),
     "must be named"
@@ -108,7 +108,7 @@ test_that("ast_filter rejects unnamed handlers", {
 })
 
 test_that("ast_filter works on a bare pandoc_node (not just full document)", {
-  doc = pampa_parse_pd("**bold**\n")
+  doc = pampa_parse("**bold**\n")
   strong = select_first(doc, is(pandoc_strong))
   expect_s7_class(strong, pandoc_strong)
   out = ast_filter(strong, pandoc_str = function(el) pandoc_str(text = paste0("!", el@text, "!")))
@@ -116,7 +116,7 @@ test_that("ast_filter works on a bare pandoc_node (not just full document)", {
 })
 
 test_that("ast_filter handler accepts a formula", {
-  doc = pampa_parse_pd("a **b** c\n")
+  doc = pampa_parse("a **b** c\n")
   out = ast_filter(doc, pandoc_strong = ~ pandoc_emph(content = .x@content))
   expect_length(select_nodes(out, is(pandoc_strong)), 0L)
   expect_length(select_nodes(out, is(pandoc_emph)), 1L)
@@ -124,7 +124,7 @@ test_that("ast_filter handler accepts a formula", {
 
 test_that("ast_filter round-trip identity preserves the document", {
   text = "# Hello\n\nA *paragraph* with **bold** and `code`.\n\n- one\n- two\n"
-  doc = pampa_parse_pd(text)
+  doc = pampa_parse(text)
   out = ast_filter(doc, pandoc_str = function(el) el)
   expect_equal(to_qmd(out), to_qmd(doc))
 })

@@ -29,8 +29,7 @@ reference:
       Convert between QMD text/files and q2r's two AST representations,
       and render an AST back to QMD source.
     contents:
-    - pampa_parse_pd
-    - pampa_parse_ts
+    - pampa_parse
     - pampa_native
     - pampa_tree
     - to_qmd
@@ -203,7 +202,7 @@ reference:
   - title: Tree-sitter AST
     desc: >
       S7 classes for the tree-sitter concrete syntax tree returned by
-      `pampa_parse_ts()`. The tree is structurally faithful to the
+      `pampa_parse(ast = "ts")`. The tree is structurally faithful to the
       source bytes; use it when `to_qmd()` round-trip equivalence
       matters. `print.ts_tree` documents the tree display and its
       `position` / `ascii` knobs.

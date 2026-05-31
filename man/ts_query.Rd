@@ -9,7 +9,7 @@ ts_query(input, query_text)
 \arguments{
 \item{input}{Either a \code{\link{ts_tree}} (re-renders to QMD via \code{\link[=to_qmd]{to_qmd()}}
 then re-parses), a single string treated as text/file path (per
-\code{\link[=pampa_parse_ts]{pampa_parse_ts()}}'s rules), or raw text.}
+\code{\link[=pampa_parse]{pampa_parse()}}'s rules), or raw text.}
 
 \item{query_text}{A tree-sitter query string (S-expression form).
 See \url{https://github.com/quarto-dev/q2/tree/main/crates/tree-sitter-qmd/tree-sitter-markdown/queries/}
@@ -36,7 +36,7 @@ you need full structural pattern matching, captures, or predicates
 }
 \examples{
 \dontrun{
-ts = pampa_parse_ts("# Heading\n\nbody\n")
+ts = pampa_parse("# Heading\n\nbody\n", ast = "ts")
 ts_query(ts, "(atx_heading) @h")
 }
 }
