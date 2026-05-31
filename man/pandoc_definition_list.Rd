@@ -4,7 +4,7 @@
 \alias{pandoc_definition_list}
 \title{Definition list}
 \usage{
-pandoc_definition_list(source_info = <object>, content = list())
+pandoc_definition_list(source_info = pandoc_source_info(), content = list())
 }
 \description{
 Definition list

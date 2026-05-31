@@ -4,7 +4,10 @@
 \alias{pandoc_block_quote}
 \title{Block quote}
 \usage{
-pandoc_block_quote(source_info = <object>, content = <object>)
+pandoc_block_quote(
+  source_info = pandoc_source_info(),
+  content = pandoc_blocks(list())
+)
 }
 \description{
 Block quote

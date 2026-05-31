@@ -4,7 +4,7 @@
 \alias{pandoc_raw_block}
 \title{Raw block}
 \usage{
-pandoc_raw_block(source_info = <object>, format = "", text = "")
+pandoc_raw_block(source_info = pandoc_source_info(), format = "", text = "")
 }
 \description{
 Raw block

@@ -6,16 +6,16 @@
 \alias{pandoc_table_foot}
 \title{Table head / body / foot}
 \usage{
-pandoc_table_head(attr = <object>, rows = list())
+pandoc_table_head(attr = pandoc_attr(), rows = list())
 
 pandoc_table_body(
-  attr = <object>,
+  attr = pandoc_attr(),
   row_head_columns = 0L,
   head_rows = list(),
   body_rows = list()
 )
 
-pandoc_table_foot(attr = <object>, rows = list())
+pandoc_table_foot(attr = pandoc_attr(), rows = list())
 }
 \description{
 Table head / body / foot

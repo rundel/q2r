@@ -4,7 +4,10 @@
 \alias{pandoc_emph}
 \title{Emphasized text}
 \usage{
-pandoc_emph(source_info = <object>, content = <object>)
+pandoc_emph(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
 }
 \description{
 Emphasized text

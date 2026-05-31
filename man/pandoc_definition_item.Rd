@@ -4,7 +4,7 @@
 \alias{pandoc_definition_item}
 \title{Definition-list item}
 \usage{
-pandoc_definition_item(term = <object>, defs = list())
+pandoc_definition_item(term = pandoc_inlines(list()), defs = list())
 }
 \description{
 Definition-list item

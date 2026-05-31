@@ -5,9 +5,9 @@
 \title{Note definition (fenced block form)}
 \usage{
 pandoc_note_definition_fenced_block(
-  source_info = <object>,
+  source_info = pandoc_source_info(),
   id = "",
-  content = <object>
+  content = pandoc_blocks(list())
 )
 }
 \description{

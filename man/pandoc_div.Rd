@@ -4,7 +4,11 @@
 \alias{pandoc_div}
 \title{Div}
 \usage{
-pandoc_div(source_info = <object>, attr = <object>, content = <object>)
+pandoc_div(
+  source_info = pandoc_source_info(),
+  attr = pandoc_attr(),
+  content = pandoc_blocks(list())
+)
 }
 \description{
 Div

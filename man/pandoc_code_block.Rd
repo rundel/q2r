@@ -4,7 +4,11 @@
 \alias{pandoc_code_block}
 \title{Code block}
 \usage{
-pandoc_code_block(source_info = <object>, attr = <object>, text = "")
+pandoc_code_block(
+  source_info = pandoc_source_info(),
+  attr = pandoc_attr(),
+  text = ""
+)
 }
 \description{
 Code block

@@ -27,7 +27,7 @@ pandoc_node = S7::new_class(
   package = "q2r",
   abstract = TRUE,
   properties = list(
-    source_info = S7::new_property(pandoc_source_info, default = pandoc_source_info())
+    source_info = S7::new_property(pandoc_source_info, default = quote(pandoc_source_info()))
   )
 )
 
@@ -138,8 +138,8 @@ pandoc_citation = S7::new_class(
   properties = list(
     id       = S7::new_property(S7::class_character, default = ""),
     mode     = S7::new_property(S7::class_character, default = "NormalCitation"),
-    prefix   = S7::new_property(pandoc_inlines, default = pandoc_inlines(list())),
-    suffix   = S7::new_property(pandoc_inlines, default = pandoc_inlines(list())),
+    prefix   = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))),
+    suffix   = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))),
     note_num = S7::new_property(S7::class_integer, default = 0L),
     hash     = S7::new_property(S7::class_integer, default = 0L)
   )
@@ -155,7 +155,7 @@ pandoc_caption = S7::new_class(
   package = "q2r",
   properties = list(
     short = S7::new_property(S7::class_any, default = NULL),
-    long  = S7::new_property(pandoc_blocks, default = pandoc_blocks(list()))
+    long  = S7::new_property(pandoc_blocks, default = quote(pandoc_blocks(list())))
   ),
   validator = function(self) {
     if (!is.null(self@short) && !S7::S7_inherits(self@short, pandoc_inlines)) {
@@ -171,7 +171,7 @@ pandoc_definition_item = S7::new_class(
   "pandoc_definition_item",
   package = "q2r",
   properties = list(
-    term = S7::new_property(pandoc_inlines, default = pandoc_inlines(list())),
+    term = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))),
     defs = S7::new_property(S7::class_list, default = list())
   ),
   validator = function(self) {
@@ -199,11 +199,11 @@ pandoc_cell = S7::new_class(
   "pandoc_cell",
   package = "q2r",
   properties = list(
-    attr      = S7::new_property(pandoc_attr, default = pandoc_attr()),
+    attr      = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
     alignment = S7::new_property(S7::class_character, default = "Default"),
     row_span  = S7::new_property(S7::class_integer, default = 1L),
     col_span  = S7::new_property(S7::class_integer, default = 1L),
-    content   = S7::new_property(pandoc_blocks, default = pandoc_blocks(list()))
+    content   = S7::new_property(pandoc_blocks, default = quote(pandoc_blocks(list())))
   )
 )
 
@@ -214,7 +214,7 @@ pandoc_row = S7::new_class(
   "pandoc_row",
   package = "q2r",
   properties = list(
-    attr  = S7::new_property(pandoc_attr, default = pandoc_attr()),
+    attr  = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
     cells = S7::new_property(S7::class_list, default = list())
   ),
   validator = function(self) {
@@ -230,7 +230,7 @@ pandoc_table_head = S7::new_class(
   "pandoc_table_head",
   package = "q2r",
   properties = list(
-    attr = S7::new_property(pandoc_attr, default = pandoc_attr()),
+    attr = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
     rows = S7::new_property(S7::class_list, default = list())
   )
 )
@@ -241,7 +241,7 @@ pandoc_table_body = S7::new_class(
   "pandoc_table_body",
   package = "q2r",
   properties = list(
-    attr             = S7::new_property(pandoc_attr, default = pandoc_attr()),
+    attr             = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
     row_head_columns = S7::new_property(S7::class_integer, default = 0L),
     head_rows        = S7::new_property(S7::class_list, default = list()),
     body_rows        = S7::new_property(S7::class_list, default = list())
@@ -254,7 +254,7 @@ pandoc_table_foot = S7::new_class(
   "pandoc_table_foot",
   package = "q2r",
   properties = list(
-    attr = S7::new_property(pandoc_attr, default = pandoc_attr()),
+    attr = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
     rows = S7::new_property(S7::class_list, default = list())
   )
 )

@@ -4,7 +4,11 @@
 \alias{pandoc_highlight}
 \title{CriticMarkup: highlight}
 \usage{
-pandoc_highlight(source_info = <object>, attr = <object>, content = <object>)
+pandoc_highlight(
+  source_info = pandoc_source_info(),
+  attr = pandoc_attr(),
+  content = pandoc_inlines(list())
+)
 }
 \description{
 CriticMarkup: highlight

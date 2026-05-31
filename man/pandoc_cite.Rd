@@ -4,7 +4,11 @@
 \alias{pandoc_cite}
 \title{Citation reference}
 \usage{
-pandoc_cite(source_info = <object>, citations = list(), content = <object>)
+pandoc_cite(
+  source_info = pandoc_source_info(),
+  citations = list(),
+  content = pandoc_inlines(list())
+)
 }
 \description{
 Citation reference

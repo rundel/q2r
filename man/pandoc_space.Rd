@@ -4,7 +4,7 @@
 \alias{pandoc_space}
 \title{Space}
 \usage{
-pandoc_space(source_info = <object>)
+pandoc_space(source_info = pandoc_source_info())
 }
 \description{
 Space

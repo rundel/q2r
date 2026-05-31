@@ -4,7 +4,7 @@
 \alias{pandoc_str}
 \title{Literal string}
 \usage{
-pandoc_str(source_info = <object>, text = "")
+pandoc_str(source_info = pandoc_source_info(), text = "")
 }
 \description{
 A \code{pandoc_str} is a maximal run of non-whitespace characters: Pandoc

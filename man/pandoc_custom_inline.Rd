@@ -5,10 +5,10 @@
 \title{Custom inline node (Quarto extensions)}
 \usage{
 pandoc_custom_inline(
-  source_info = <object>,
+  source_info = pandoc_source_info(),
   type_name = "",
   slots = list(),
-  attr = <object>
+  attr = pandoc_attr()
 )
 }
 \description{

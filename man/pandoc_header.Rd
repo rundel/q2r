@@ -5,10 +5,10 @@
 \title{Header}
 \usage{
 pandoc_header(
-  source_info = <object>,
+  source_info = pandoc_source_info(),
   level = 1L,
-  attr = <object>,
-  content = <object>
+  attr = pandoc_attr(),
+  content = pandoc_inlines(list())
 )
 }
 \description{

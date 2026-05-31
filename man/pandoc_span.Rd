@@ -4,7 +4,11 @@
 \alias{pandoc_span}
 \title{Inline span}
 \usage{
-pandoc_span(source_info = <object>, attr = <object>, content = <object>)
+pandoc_span(
+  source_info = pandoc_source_info(),
+  attr = pandoc_attr(),
+  content = pandoc_inlines(list())
+)
 }
 \description{
 Inline span

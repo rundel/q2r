@@ -4,7 +4,7 @@
 \alias{pandoc_soft_break}
 \title{Soft line break}
 \usage{
-pandoc_soft_break(source_info = <object>)
+pandoc_soft_break(source_info = pandoc_source_info())
 }
 \description{
 Soft line break

@@ -5,13 +5,13 @@
 \title{Table}
 \usage{
 pandoc_table(
-  source_info = <object>,
-  attr = <object>,
-  caption = <object>,
+  source_info = pandoc_source_info(),
+  attr = pandoc_attr(),
+  caption = pandoc_caption(),
   colspec = list(),
-  head = <object>,
+  head = pandoc_table_head(),
   bodies = list(),
-  foot = <object>
+  foot = pandoc_table_foot()
 )
 }
 \description{

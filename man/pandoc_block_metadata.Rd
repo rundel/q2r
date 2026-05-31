@@ -4,7 +4,10 @@
 \alias{pandoc_block_metadata}
 \title{Block metadata}
 \usage{
-pandoc_block_metadata(source_info = <object>, meta = <object>)
+pandoc_block_metadata(
+  source_info = pandoc_source_info(),
+  meta = pandoc_meta_value()
+)
 }
 \description{
 Block metadata

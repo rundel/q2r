@@ -4,7 +4,7 @@
 \alias{pandoc_note_reference}
 \title{Note reference}
 \usage{
-pandoc_note_reference(source_info = <object>, id = "")
+pandoc_note_reference(source_info = pandoc_source_info(), id = "")
 }
 \description{
 Note reference

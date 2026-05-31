@@ -13,8 +13,8 @@ ts_point(row = NA_integer_, column = NA_integer_)
 ts_range(
   start_byte = NA_integer_,
   end_byte = NA_integer_,
-  start_point = <object>,
-  end_point = <object>
+  start_point = ts_point(),
+  end_point = ts_point()
 )
 
 ts_nodes(content = list())
@@ -23,12 +23,12 @@ ts_node(
   kind = "",
   is_named = TRUE,
   field_name = NULL,
-  range = <object>,
+  range = ts_range(),
   text = NULL,
-  children = <object>
+  children = ts_nodes(list())
 )
 
-ts_tree(root = <object>, language = "qmd", diagnostics = list())
+ts_tree(root = ts_node(), language = "qmd", diagnostics = list())
 }
 \description{
 S7 classes representing the tree-sitter (\code{tree-sitter-qmd}) AST

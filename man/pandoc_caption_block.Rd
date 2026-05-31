@@ -4,7 +4,10 @@
 \alias{pandoc_caption_block}
 \title{Caption block (orphan caption)}
 \usage{
-pandoc_caption_block(source_info = <object>, content = <object>)
+pandoc_caption_block(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
 }
 \description{
 Caption block (orphan caption)

@@ -4,7 +4,11 @@
 \alias{pandoc_code}
 \title{Inline code}
 \usage{
-pandoc_code(source_info = <object>, attr = <object>, text = "")
+pandoc_code(
+  source_info = pandoc_source_info(),
+  attr = pandoc_attr(),
+  text = ""
+)
 }
 \description{
 Inline code

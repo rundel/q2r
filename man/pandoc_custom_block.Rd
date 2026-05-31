@@ -5,10 +5,10 @@
 \title{Custom block node (Quarto extensions: callouts, tabsets, ...)}
 \usage{
 pandoc_custom_block(
-  source_info = <object>,
+  source_info = pandoc_source_info(),
   type_name = "",
   slots = list(),
-  attr = <object>
+  attr = pandoc_attr()
 )
 }
 \description{

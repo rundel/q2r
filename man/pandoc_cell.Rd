@@ -5,11 +5,11 @@
 \title{Table cell}
 \usage{
 pandoc_cell(
-  attr = <object>,
+  attr = pandoc_attr(),
   alignment = "Default",
   row_span = 1L,
   col_span = 1L,
-  content = <object>
+  content = pandoc_blocks(list())
 )
 }
 \description{

@@ -5,9 +5,9 @@
 \title{Image}
 \usage{
 pandoc_image(
-  source_info = <object>,
-  attr = <object>,
-  content = <object>,
+  source_info = pandoc_source_info(),
+  attr = pandoc_attr(),
+  content = pandoc_inlines(list()),
   url = "",
   title = ""
 )

@@ -4,7 +4,7 @@
 \alias{pandoc_horizontal_rule}
 \title{Horizontal rule}
 \usage{
-pandoc_horizontal_rule(source_info = <object>)
+pandoc_horizontal_rule(source_info = pandoc_source_info())
 }
 \description{
 Horizontal rule

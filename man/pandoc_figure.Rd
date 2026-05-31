@@ -5,10 +5,10 @@
 \title{Figure}
 \usage{
 pandoc_figure(
-  source_info = <object>,
-  attr = <object>,
-  caption = <object>,
-  content = <object>
+  source_info = pandoc_source_info(),
+  attr = pandoc_attr(),
+  caption = pandoc_caption(),
+  content = pandoc_blocks(list())
 )
 }
 \description{

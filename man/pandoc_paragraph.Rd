@@ -4,7 +4,10 @@
 \alias{pandoc_paragraph}
 \title{Paragraph}
 \usage{
-pandoc_paragraph(source_info = <object>, content = <object>)
+pandoc_paragraph(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
 }
 \description{
 Paragraph

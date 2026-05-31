@@ -4,7 +4,10 @@
 \alias{pandoc_small_caps}
 \title{Small caps}
 \usage{
-pandoc_small_caps(source_info = <object>, content = <object>)
+pandoc_small_caps(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
 }
 \description{
 Small caps

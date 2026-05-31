@@ -4,7 +4,10 @@
 \alias{pandoc_subscript}
 \title{Subscript}
 \usage{
-pandoc_subscript(source_info = <object>, content = <object>)
+pandoc_subscript(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
 }
 \description{
 Subscript

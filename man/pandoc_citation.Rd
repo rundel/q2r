@@ -7,8 +7,8 @@
 pandoc_citation(
   id = "",
   mode = "NormalCitation",
-  prefix = <object>,
-  suffix = <object>,
+  prefix = pandoc_inlines(list()),
+  suffix = pandoc_inlines(list()),
   note_num = 0L,
   hash = 0L
 )

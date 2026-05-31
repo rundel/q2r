@@ -4,7 +4,11 @@
 \alias{pandoc_ordered_list}
 \title{Ordered list}
 \usage{
-pandoc_ordered_list(source_info = <object>, attr = <object>, content = list())
+pandoc_ordered_list(
+  source_info = pandoc_source_info(),
+  attr = pandoc_list_attributes(),
+  content = list()
+)
 }
 \description{
 Ordered list

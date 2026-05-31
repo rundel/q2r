@@ -4,7 +4,7 @@
 \alias{pandoc_line_block}
 \title{Line block}
 \usage{
-pandoc_line_block(source_info = <object>, content = list())
+pandoc_line_block(source_info = pandoc_source_info(), content = list())
 }
 \description{
 Line block

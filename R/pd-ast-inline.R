@@ -30,7 +30,7 @@ pandoc_emph = S7::new_class(
   "pandoc_emph",
   package = "q2r",
   parent = pandoc_inline,
-  properties = list(content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list())))
+  properties = list(content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))))
 )
 
 #' Underlined text
@@ -39,7 +39,7 @@ pandoc_underline = S7::new_class(
   "pandoc_underline",
   package = "q2r",
   parent = pandoc_inline,
-  properties = list(content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list())))
+  properties = list(content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))))
 )
 
 #' Strong text
@@ -48,7 +48,7 @@ pandoc_strong = S7::new_class(
   "pandoc_strong",
   package = "q2r",
   parent = pandoc_inline,
-  properties = list(content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list())))
+  properties = list(content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))))
 )
 
 #' Struck-through text
@@ -57,7 +57,7 @@ pandoc_strikeout = S7::new_class(
   "pandoc_strikeout",
   package = "q2r",
   parent = pandoc_inline,
-  properties = list(content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list())))
+  properties = list(content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))))
 )
 
 #' Superscript
@@ -66,7 +66,7 @@ pandoc_superscript = S7::new_class(
   "pandoc_superscript",
   package = "q2r",
   parent = pandoc_inline,
-  properties = list(content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list())))
+  properties = list(content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))))
 )
 
 #' Subscript
@@ -75,7 +75,7 @@ pandoc_subscript = S7::new_class(
   "pandoc_subscript",
   package = "q2r",
   parent = pandoc_inline,
-  properties = list(content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list())))
+  properties = list(content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))))
 )
 
 #' Small caps
@@ -84,7 +84,7 @@ pandoc_small_caps = S7::new_class(
   "pandoc_small_caps",
   package = "q2r",
   parent = pandoc_inline,
-  properties = list(content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list())))
+  properties = list(content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))))
 )
 
 #' Quoted text
@@ -95,7 +95,7 @@ pandoc_quoted = S7::new_class(
   parent = pandoc_inline,
   properties = list(
     quote_type = S7::new_property(S7::class_character, default = "double"),
-    content    = S7::new_property(pandoc_inlines, default = pandoc_inlines(list()))
+    content    = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list())))
   ),
   validator = function(self) {
     if (!self@quote_type %in% c("single", "double")) {
@@ -112,7 +112,7 @@ pandoc_cite = S7::new_class(
   parent = pandoc_inline,
   properties = list(
     citations = S7::new_property(S7::class_list, default = list()),
-    content   = S7::new_property(pandoc_inlines, default = pandoc_inlines(list()))
+    content   = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list())))
   ),
   validator = function(self) {
     ok = vapply(self@citations, function(x) S7::S7_inherits(x, pandoc_citation), logical(1))
@@ -127,7 +127,7 @@ pandoc_code = S7::new_class(
   package = "q2r",
   parent = pandoc_inline,
   properties = list(
-    attr = S7::new_property(pandoc_attr, default = pandoc_attr()),
+    attr = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
     text = S7::new_property(S7::class_character, default = "")
   )
 )
@@ -180,8 +180,8 @@ pandoc_link = S7::new_class(
   package = "q2r",
   parent = pandoc_inline,
   properties = list(
-    attr    = S7::new_property(pandoc_attr, default = pandoc_attr()),
-    content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list())),
+    attr    = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
+    content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))),
     url     = S7::new_property(S7::class_character, default = ""),
     title   = S7::new_property(S7::class_character, default = "")
   )
@@ -194,8 +194,8 @@ pandoc_image = S7::new_class(
   package = "q2r",
   parent = pandoc_inline,
   properties = list(
-    attr    = S7::new_property(pandoc_attr, default = pandoc_attr()),
-    content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list())),
+    attr    = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
+    content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))),
     url     = S7::new_property(S7::class_character, default = ""),
     title   = S7::new_property(S7::class_character, default = "")
   )
@@ -207,7 +207,7 @@ pandoc_note = S7::new_class(
   "pandoc_note",
   package = "q2r",
   parent = pandoc_inline,
-  properties = list(content = S7::new_property(pandoc_blocks, default = pandoc_blocks(list())))
+  properties = list(content = S7::new_property(pandoc_blocks, default = quote(pandoc_blocks(list()))))
 )
 
 #' Inline span
@@ -217,8 +217,8 @@ pandoc_span = S7::new_class(
   package = "q2r",
   parent = pandoc_inline,
   properties = list(
-    attr    = S7::new_property(pandoc_attr, default = pandoc_attr()),
-    content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list()))
+    attr    = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
+    content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list())))
   )
 )
 
@@ -260,7 +260,7 @@ pandoc_attr_inline = S7::new_class(
   "pandoc_attr_inline",
   package = "q2r",
   parent = pandoc_inline,
-  properties = list(attr = S7::new_property(pandoc_attr, default = pandoc_attr()))
+  properties = list(attr = S7::new_property(pandoc_attr, default = quote(pandoc_attr())))
 )
 
 #' CriticMarkup: insertion
@@ -270,8 +270,8 @@ pandoc_insert = S7::new_class(
   package = "q2r",
   parent = pandoc_inline,
   properties = list(
-    attr    = S7::new_property(pandoc_attr, default = pandoc_attr()),
-    content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list()))
+    attr    = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
+    content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list())))
   )
 )
 
@@ -282,8 +282,8 @@ pandoc_delete = S7::new_class(
   package = "q2r",
   parent = pandoc_inline,
   properties = list(
-    attr    = S7::new_property(pandoc_attr, default = pandoc_attr()),
-    content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list()))
+    attr    = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
+    content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list())))
   )
 )
 
@@ -294,8 +294,8 @@ pandoc_highlight = S7::new_class(
   package = "q2r",
   parent = pandoc_inline,
   properties = list(
-    attr    = S7::new_property(pandoc_attr, default = pandoc_attr()),
-    content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list()))
+    attr    = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
+    content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list())))
   )
 )
 
@@ -306,8 +306,8 @@ pandoc_edit_comment = S7::new_class(
   package = "q2r",
   parent = pandoc_inline,
   properties = list(
-    attr    = S7::new_property(pandoc_attr, default = pandoc_attr()),
-    content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list()))
+    attr    = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
+    content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list())))
   )
 )
 
@@ -320,6 +320,6 @@ pandoc_custom_inline = S7::new_class(
   properties = list(
     type_name = S7::new_property(S7::class_character, default = ""),
     slots     = S7::new_property(S7::class_list, default = list()),
-    attr      = S7::new_property(pandoc_attr, default = pandoc_attr())
+    attr      = S7::new_property(pandoc_attr, default = quote(pandoc_attr()))
   )
 )

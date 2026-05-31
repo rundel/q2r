@@ -4,7 +4,10 @@
 \alias{pandoc_underline}
 \title{Underlined text}
 \usage{
-pandoc_underline(source_info = <object>, content = <object>)
+pandoc_underline(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
 }
 \description{
 Underlined text

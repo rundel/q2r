@@ -5,9 +5,9 @@
 \title{Quoted text}
 \usage{
 pandoc_quoted(
-  source_info = <object>,
+  source_info = pandoc_source_info(),
   quote_type = "double",
-  content = <object>
+  content = pandoc_inlines(list())
 )
 }
 \description{

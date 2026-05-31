@@ -4,7 +4,10 @@
 \alias{pandoc_strikeout}
 \title{Struck-through text}
 \usage{
-pandoc_strikeout(source_info = <object>, content = <object>)
+pandoc_strikeout(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
 }
 \description{
 Struck-through text

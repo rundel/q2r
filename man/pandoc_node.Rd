@@ -6,11 +6,11 @@
 \alias{pandoc_inline}
 \title{Virtual parent classes}
 \usage{
-pandoc_node(source_info = <object>)
+pandoc_node(source_info = pandoc_source_info())
 
-pandoc_block(source_info = <object>)
+pandoc_block(source_info = pandoc_source_info())
 
-pandoc_inline(source_info = <object>)
+pandoc_inline(source_info = pandoc_source_info())
 }
 \description{
 \code{pandoc_node} is the abstract root of the AST; every block and inline

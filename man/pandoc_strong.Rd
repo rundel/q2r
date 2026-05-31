@@ -4,7 +4,10 @@
 \alias{pandoc_strong}
 \title{Strong text}
 \usage{
-pandoc_strong(source_info = <object>, content = <object>)
+pandoc_strong(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
 }
 \description{
 Strong text

@@ -4,7 +4,10 @@
 \alias{pandoc_superscript}
 \title{Superscript}
 \usage{
-pandoc_superscript(source_info = <object>, content = <object>)
+pandoc_superscript(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
 }
 \description{
 Superscript

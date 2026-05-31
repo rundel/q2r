@@ -4,7 +4,7 @@
 \alias{pandoc_raw_inline}
 \title{Raw inline}
 \usage{
-pandoc_raw_inline(source_info = <object>, format = "", text = "")
+pandoc_raw_inline(source_info = pandoc_source_info(), format = "", text = "")
 }
 \description{
 Raw inline

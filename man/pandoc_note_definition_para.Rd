@@ -5,9 +5,9 @@
 \title{Note definition (paragraph form)}
 \usage{
 pandoc_note_definition_para(
-  source_info = <object>,
+  source_info = pandoc_source_info(),
   id = "",
-  content = <object>
+  content = pandoc_inlines(list())
 )
 }
 \description{

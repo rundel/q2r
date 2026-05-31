@@ -4,7 +4,7 @@
 \alias{pandoc_line_break}
 \title{Hard line break}
 \usage{
-pandoc_line_break(source_info = <object>)
+pandoc_line_break(source_info = pandoc_source_info())
 }
 \description{
 Hard line break

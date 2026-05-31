@@ -26,8 +26,8 @@ ts_range = S7::new_class(
   properties = list(
     start_byte  = S7::new_property(S7::class_integer, default = NA_integer_),
     end_byte    = S7::new_property(S7::class_integer, default = NA_integer_),
-    start_point = S7::new_property(ts_point, default = ts_point()),
-    end_point   = S7::new_property(ts_point, default = ts_point())
+    start_point = S7::new_property(ts_point, default = quote(ts_point())),
+    end_point   = S7::new_property(ts_point, default = quote(ts_point()))
   )
 )
 
@@ -52,9 +52,9 @@ ts_node = S7::new_class(
     kind       = S7::new_property(S7::class_character, default = ""),
     is_named   = S7::new_property(S7::class_logical, default = TRUE),
     field_name = S7::new_property(S7::class_any, default = NULL),
-    range      = S7::new_property(ts_range, default = ts_range()),
+    range      = S7::new_property(ts_range, default = quote(ts_range())),
     text       = S7::new_property(S7::class_any, default = NULL),
-    children   = S7::new_property(ts_nodes, default = ts_nodes(list()))
+    children   = S7::new_property(ts_nodes, default = quote(ts_nodes(list())))
   ),
   validator = function(self) {
     if (!is.null(self@field_name) &&
@@ -73,7 +73,7 @@ ts_tree = S7::new_class(
   "ts_tree",
   package = "q2r",
   properties = list(
-    root        = S7::new_property(ts_node, default = ts_node()),
+    root        = S7::new_property(ts_node, default = quote(ts_node())),
     language    = S7::new_property(S7::class_character, default = "qmd"),
     diagnostics = S7::new_property(S7::class_list, default = list())
   ),

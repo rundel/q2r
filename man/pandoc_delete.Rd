@@ -4,7 +4,11 @@
 \alias{pandoc_delete}
 \title{CriticMarkup: deletion}
 \usage{
-pandoc_delete(source_info = <object>, attr = <object>, content = <object>)
+pandoc_delete(
+  source_info = pandoc_source_info(),
+  attr = pandoc_attr(),
+  content = pandoc_inlines(list())
+)
 }
 \description{
 CriticMarkup: deletion

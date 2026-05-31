@@ -4,7 +4,10 @@
 \alias{pandoc_plain}
 \title{Plain block}
 \usage{
-pandoc_plain(source_info = <object>, content = <object>)
+pandoc_plain(
+  source_info = pandoc_source_info(),
+  content = pandoc_inlines(list())
+)
 }
 \description{
 Plain block

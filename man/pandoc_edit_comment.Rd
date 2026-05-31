@@ -5,9 +5,9 @@
 \title{CriticMarkup: comment}
 \usage{
 pandoc_edit_comment(
-  source_info = <object>,
-  attr = <object>,
-  content = <object>
+  source_info = pandoc_source_info(),
+  attr = pandoc_attr(),
+  content = pandoc_inlines(list())
 )
 }
 \description{

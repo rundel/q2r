@@ -4,7 +4,11 @@
 \alias{pandoc_insert}
 \title{CriticMarkup: insertion}
 \usage{
-pandoc_insert(source_info = <object>, attr = <object>, content = <object>)
+pandoc_insert(
+  source_info = pandoc_source_info(),
+  attr = pandoc_attr(),
+  content = pandoc_inlines(list())
+)
 }
 \description{
 CriticMarkup: insertion

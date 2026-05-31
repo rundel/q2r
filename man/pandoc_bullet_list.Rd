@@ -4,7 +4,7 @@
 \alias{pandoc_bullet_list}
 \title{Bullet list}
 \usage{
-pandoc_bullet_list(source_info = <object>, content = list())
+pandoc_bullet_list(source_info = pandoc_source_info(), content = list())
 }
 \description{
 Bullet list

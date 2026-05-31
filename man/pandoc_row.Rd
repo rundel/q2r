@@ -4,7 +4,7 @@
 \alias{pandoc_row}
 \title{Table row}
 \usage{
-pandoc_row(attr = <object>, cells = list())
+pandoc_row(attr = pandoc_attr(), cells = list())
 }
 \description{
 Table row

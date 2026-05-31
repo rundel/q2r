@@ -4,7 +4,11 @@
 \alias{pandoc_math}
 \title{Math}
 \usage{
-pandoc_math(source_info = <object>, math_type = "inline", text = "")
+pandoc_math(
+  source_info = pandoc_source_info(),
+  math_type = "inline",
+  text = ""
+)
 }
 \description{
 Math

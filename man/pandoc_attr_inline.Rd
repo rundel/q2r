@@ -4,7 +4,7 @@
 \alias{pandoc_attr_inline}
 \title{Standalone attribute inline}
 \usage{
-pandoc_attr_inline(source_info = <object>, attr = <object>)
+pandoc_attr_inline(source_info = pandoc_source_info(), attr = pandoc_attr())
 }
 \description{
 Standalone attribute inline

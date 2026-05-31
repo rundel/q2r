@@ -5,7 +5,7 @@
 \title{Shortcode}
 \usage{
 pandoc_shortcode(
-  source_info = <object>,
+  source_info = pandoc_source_info(),
   name = "",
   is_escaped = FALSE,
   positional_args = list(),

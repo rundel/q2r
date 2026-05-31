@@ -4,7 +4,7 @@
 \alias{pandoc_caption}
 \title{Caption (short + long)}
 \usage{
-pandoc_caption(short = NULL, long = <object>)
+pandoc_caption(short = NULL, long = pandoc_blocks(list()))
 }
 \description{
 \code{short} is either \code{NULL} or a \code{pandoc_inlines}; \code{long} is a \code{pandoc_blocks}.

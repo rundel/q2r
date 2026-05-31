@@ -8,7 +8,7 @@ pandoc_plain = S7::new_class(
   package = "q2r",
   parent = pandoc_block,
   properties = list(
-    content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list()))
+    content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list())))
   )
 )
 
@@ -19,7 +19,7 @@ pandoc_paragraph = S7::new_class(
   package = "q2r",
   parent = pandoc_block,
   properties = list(
-    content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list()))
+    content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list())))
   )
 )
 
@@ -43,7 +43,7 @@ pandoc_code_block = S7::new_class(
   package = "q2r",
   parent = pandoc_block,
   properties = list(
-    attr = S7::new_property(pandoc_attr, default = pandoc_attr()),
+    attr = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
     text = S7::new_property(S7::class_character, default = "")
   )
 )
@@ -67,7 +67,7 @@ pandoc_block_quote = S7::new_class(
   package = "q2r",
   parent = pandoc_block,
   properties = list(
-    content = S7::new_property(pandoc_blocks, default = pandoc_blocks(list()))
+    content = S7::new_property(pandoc_blocks, default = quote(pandoc_blocks(list())))
   )
 )
 
@@ -78,7 +78,7 @@ pandoc_ordered_list = S7::new_class(
   package = "q2r",
   parent = pandoc_block,
   properties = list(
-    attr    = S7::new_property(pandoc_list_attributes, default = pandoc_list_attributes()),
+    attr    = S7::new_property(pandoc_list_attributes, default = quote(pandoc_list_attributes())),
     content = S7::new_property(S7::class_list, default = list())
   ),
   validator = function(self) {
@@ -121,8 +121,8 @@ pandoc_header = S7::new_class(
   parent = pandoc_block,
   properties = list(
     level   = S7::new_property(S7::class_integer, default = 1L),
-    attr    = S7::new_property(pandoc_attr, default = pandoc_attr()),
-    content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list()))
+    attr    = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
+    content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list())))
   )
 )
 
@@ -141,9 +141,9 @@ pandoc_figure = S7::new_class(
   package = "q2r",
   parent = pandoc_block,
   properties = list(
-    attr    = S7::new_property(pandoc_attr, default = pandoc_attr()),
-    caption = S7::new_property(pandoc_caption, default = pandoc_caption()),
-    content = S7::new_property(pandoc_blocks, default = pandoc_blocks(list()))
+    attr    = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
+    caption = S7::new_property(pandoc_caption, default = quote(pandoc_caption())),
+    content = S7::new_property(pandoc_blocks, default = quote(pandoc_blocks(list())))
   )
 )
 
@@ -154,8 +154,8 @@ pandoc_div = S7::new_class(
   package = "q2r",
   parent = pandoc_block,
   properties = list(
-    attr    = S7::new_property(pandoc_attr, default = pandoc_attr()),
-    content = S7::new_property(pandoc_blocks, default = pandoc_blocks(list()))
+    attr    = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
+    content = S7::new_property(pandoc_blocks, default = quote(pandoc_blocks(list())))
   )
 )
 
@@ -166,12 +166,12 @@ pandoc_table = S7::new_class(
   package = "q2r",
   parent = pandoc_block,
   properties = list(
-    attr    = S7::new_property(pandoc_attr, default = pandoc_attr()),
-    caption = S7::new_property(pandoc_caption, default = pandoc_caption()),
+    attr    = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
+    caption = S7::new_property(pandoc_caption, default = quote(pandoc_caption())),
     colspec = S7::new_property(S7::class_list, default = list()),
-    head    = S7::new_property(pandoc_table_head, default = pandoc_table_head()),
+    head    = S7::new_property(pandoc_table_head, default = quote(pandoc_table_head())),
     bodies  = S7::new_property(S7::class_list, default = list()),
-    foot    = S7::new_property(pandoc_table_foot, default = pandoc_table_foot())
+    foot    = S7::new_property(pandoc_table_foot, default = quote(pandoc_table_foot()))
   )
 )
 
@@ -182,7 +182,7 @@ pandoc_block_metadata = S7::new_class(
   package = "q2r",
   parent = pandoc_block,
   properties = list(
-    meta = S7::new_property(pandoc_meta_value, default = pandoc_meta_value())
+    meta = S7::new_property(pandoc_meta_value, default = quote(pandoc_meta_value()))
   )
 )
 
@@ -194,7 +194,7 @@ pandoc_note_definition_para = S7::new_class(
   parent = pandoc_block,
   properties = list(
     id      = S7::new_property(S7::class_character, default = ""),
-    content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list()))
+    content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list())))
   )
 )
 
@@ -206,7 +206,7 @@ pandoc_note_definition_fenced_block = S7::new_class(
   parent = pandoc_block,
   properties = list(
     id      = S7::new_property(S7::class_character, default = ""),
-    content = S7::new_property(pandoc_blocks, default = pandoc_blocks(list()))
+    content = S7::new_property(pandoc_blocks, default = quote(pandoc_blocks(list())))
   )
 )
 
@@ -217,7 +217,7 @@ pandoc_caption_block = S7::new_class(
   package = "q2r",
   parent = pandoc_block,
   properties = list(
-    content = S7::new_property(pandoc_inlines, default = pandoc_inlines(list()))
+    content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list())))
   )
 )
 
@@ -230,6 +230,6 @@ pandoc_custom_block = S7::new_class(
   properties = list(
     type_name = S7::new_property(S7::class_character, default = ""),
     slots     = S7::new_property(S7::class_list, default = list()),
-    attr      = S7::new_property(pandoc_attr, default = pandoc_attr())
+    attr      = S7::new_property(pandoc_attr, default = quote(pandoc_attr()))
   )
 )
