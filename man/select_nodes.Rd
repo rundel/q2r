@@ -65,8 +65,8 @@ Predicates are unquoted R expressions evaluated against each candidate
 node with a per-AST data mask. The mask exposes the node's S7 slots
 as bare names (\code{level}, \code{url}, \code{text}, \code{kind}, ...) plus a set of
 helper functions (\code{is()}, \code{has_class()}, \code{has_id()}, \code{has_attr()},
-\code{is_leaf()}, \code{is_named()}). Multiple predicates are combined with
-\code{&} (logical AND).
+\code{has_text()}, \code{has_label()}, \code{is_leaf()}, \code{is_named()}). Multiple
+predicates are combined with \code{&} (logical AND).
 }
 \section{Selection verbs}{
 
@@ -128,6 +128,12 @@ matches any block.
 \item \code{has_id("intro")} tests \verb{@attr@id}.
 \item \code{has_attr("key")} / \code{has_attr("key", "val")} test
 \verb{@attr@attributes}.
+\item \code{has_text("Exercise")} tests the node's flattened text
+(\code{\link[=ast_text]{ast_text()}}) against one or more regex patterns (\code{fixed = TRUE}
+for literal matching); the analog of parsermd's \code{has_heading()}.
+\item \code{has_label("fig-*")} glob-matches the node's \verb{@attr@id}, where
+Quarto labels surface as \verb{#id}; the analog of parsermd's
+\code{has_label()}.
 \item \code{is_leaf()} matches nodes with no children.
 \item \code{is_named()} is tree-sitter only.
 \item \code{starts_with()}, \code{ends_with()}, \code{matches()}, \code{contains()} — string

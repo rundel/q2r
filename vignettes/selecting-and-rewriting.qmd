@@ -289,6 +289,61 @@ Nodes without an `@attr` slot degrade gracefully for predicates
 (`has_class(pandoc_str(...), "x")` returns `FALSE`) but error on
 setters with a clear message.
 
+## Document-level helpers
+
+The verbs above descend the whole nested tree. A second, complementary
+set of helpers works at the document author's altitude: the flat stream
+of top-level blocks, where headings partition the document into
+sections. These mirror the section, label, and tabular conveniences from
+the parsermd package.
+
+`ast_summary()` gives a one-row-per-top-level-block overview. The `node`
+column is a list-column of the live S7 objects, so a filtered frame can
+be fed straight back through the verbs.
+
+```{r}
+ast_summary(doc)
+```
+
+`ast_sections()` reports, for each top-level block, the chain of
+enclosing heading titles (`h1` through `h6`). A heading is part of the
+section it opens.
+
+```{r}
+ast_sections(doc)
+```
+
+Two predicate helpers extend the selection mask with the same flavour as
+`has_class()`. `has_text()` greps a node's flattened `ast_text()`, and
+`has_label()` glob-matches its `@attr@id` (where Quarto labels live).
+
+```{r}
+select_nodes(doc, is(pandoc_header) & has_text("Watch"))
+```
+
+`select_section()` slices the contiguous run of blocks under a heading,
+up to the next heading of equal or higher level. The `path` names the
+enclosing heading chain, outermost first, with glob matching.
+
+```{r}
+doc |>
+  select_section(c("Intro", "Conclusion")) |>
+  purrr::map_chr(ast_text)
+```
+
+Finally, `read_qmd()` / `write_qmd()` / `edit_qmd()` close the
+parse-edit-write loop over files. `write_qmd()` renders with `to_qmd()`
+and writes verbatim, so the round trip stays byte-faithful.
+
+```{r}
+tmp = tempfile(fileext = ".qmd")
+write_qmd(doc, tmp)
+identical(to_qmd(read_qmd(tmp)), to_qmd(doc))
+```
+
+`edit_qmd(path, .f)` is the in-place shorthand for
+`write_qmd(.f(read_qmd(path)), path)`.
+
 ## Recipes: porting Pandoc / Quarto Lua filters
 
 The verbs above are general purpose, but most Lua filters in the wild

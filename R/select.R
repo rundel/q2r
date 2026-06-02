@@ -14,8 +14,8 @@ NULL
 #' node with a per-AST data mask. The mask exposes the node's S7 slots
 #' as bare names (`level`, `url`, `text`, `kind`, ...) plus a set of
 #' helper functions (`is()`, `has_class()`, `has_id()`, `has_attr()`,
-#' `is_leaf()`, `is_named()`). Multiple predicates are combined with
-#' `&` (logical AND).
+#' `has_text()`, `has_label()`, `is_leaf()`, `is_named()`). Multiple
+#' predicates are combined with `&` (logical AND).
 #'
 #' @section Selection verbs:
 #' - [`select_nodes()`] descends the whole tree (including the root)
@@ -65,6 +65,12 @@ NULL
 #' - `has_id("intro")` tests `@attr@id`.
 #' - `has_attr("key")` / `has_attr("key", "val")` test
 #'   `@attr@attributes`.
+#' - `has_text("Exercise")` tests the node's flattened text
+#'   ([`ast_text()`]) against one or more regex patterns (`fixed = TRUE`
+#'   for literal matching); the analog of parsermd's `has_heading()`.
+#' - `has_label("fig-*")` glob-matches the node's `@attr@id`, where
+#'   Quarto labels surface as `#id`; the analog of parsermd's
+#'   `has_label()`.
 #' - `is_leaf()` matches nodes with no children.
 #' - `is_named()` is tree-sitter only.
 #' - `starts_with()`, `ends_with()`, `matches()`, `contains()` — string
@@ -213,6 +219,20 @@ mask_has_attr = function(key, value) {
   identical(unname(attrs[[key]]), value)
 }
 
+mask_has_text = function(pattern, fixed = FALSE) {
+  txt = tryCatch(ast_text(ast_current_node()), error = function(e) NA_character_)
+  if (length(txt) != 1L || is.na(txt)) return(FALSE)
+  any(purrr::map_lgl(pattern, function(p) grepl(p, txt, fixed = fixed)))
+}
+
+mask_has_label = function(pattern) {
+  a = ast_attr(ast_current_node())
+  if (is.null(a)) return(FALSE)
+  id = a@id
+  if (length(id) != 1L || !nzchar(id)) return(FALSE)
+  any(purrr::map_lgl(utils::glob2rx(pattern), function(p) grepl(p, id)))
+}
+
 mask_is_leaf = function() {
   node = ast_current_node()
   if (S7::S7_inherits(node, ts_node)) {
@@ -279,6 +299,8 @@ ast_helper_env = function() {
   e$has_class   = mask_has_class
   e$has_id      = mask_has_id
   e$has_attr    = mask_has_attr
+  e$has_text    = mask_has_text
+  e$has_label   = mask_has_label
   e$is_leaf     = mask_is_leaf
   e$starts_with = mask_starts_with
   e$ends_with   = mask_ends_with

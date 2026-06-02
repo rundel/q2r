@@ -502,6 +502,13 @@ S7::method(print, pandoc_node) = function(x, ...) {
   invisible(x)
 }
 
+# A compact one-line representation (distinct from print()'s full tree),
+# so a list-column of nodes - e.g. ast_summary()'s `node` column -
+# formats as `<pandoc_header>` rather than erroring.
+S7::method(format, pandoc_node) = function(x, ...) {
+  paste0("<", pandoc_class_name(x), ">")
+}
+
 S7::method(print, pandoc) = function(x,
                                       color = cli::num_ansi_colors() > 1L,
                                       ...) {
