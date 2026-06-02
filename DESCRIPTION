@@ -54,6 +54,7 @@ Collate:
     'io.R'
     'extendr-wrappers.R'
     'q2r-package.R'
+    'render.R'
     'select-section.R'
     'select-ts.R'
     'tests.R'
