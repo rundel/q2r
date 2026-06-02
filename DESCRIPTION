@@ -52,6 +52,7 @@ Collate:
     'from-rust.R'
     'pampa.R'
     'io.R'
+    'collection.R'
     'extendr-wrappers.R'
     'q2r-package.R'
     'render.R'
