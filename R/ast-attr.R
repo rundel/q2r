@@ -27,15 +27,22 @@ NULL
 #' - `remove_class(x, cls)` remove one or more classes; no-op on
 #'   classes that are not present.
 #' - `get_id(x)` / `set_id(x, id)` read or replace `@attr@id`.
-#' - `get_attr(x, key)` / `set_attr(x, key, value)` /
-#'   `remove_attr(x, key)` manipulate `@attr@attributes`. `get_attr()`
-#'   returns `NA_character_` for missing keys.
+#' - `get_attr(x, key)` reads a single attribute, returning
+#'   `NA_character_` for missing keys.
+#' - `set_attr(x, key = value, ...)` sets one or more attributes from
+#'   named `key = value` pairs. A `value` of `NULL` removes that key
+#'   (the named map's idiomatic R removal, mirroring Lua's
+#'   `el.attributes[key] = nil`), so a single call can both set and
+#'   drop: `set_attr(x, target = "_blank", lang = NULL)`.
 #'
 #' @param x A [`pandoc_node`] (typically one with an `@attr` slot).
 #' @param cls A character vector of class names.
 #' @param id A single string.
-#' @param key A single string naming an attribute.
-#' @param value A single string value.
+#' @param key A single string naming an attribute (for `get_attr()`).
+#' @param ... For `set_attr()`, named `key = value` pairs; each `value`
+#'   is a single string, or `NULL` to remove that key. Quote names that
+#'   are not syntactic R identifiers (e.g. `"data-level" = "2"`), and
+#'   use rlang's `!!!` / `:=` to supply dynamic keys.
 #'
 #' @return Predicates return a logical scalar (or a string, for getters).
 #'   Setters return a node of the same class as `x`.
@@ -144,28 +151,27 @@ get_attr = function(x, key) {
 
 #' @rdname ast_attr
 #' @export
-set_attr = function(x, key, value) {
-  if (!is.character(key) || length(key) != 1L) {
-    stop("`set_attr()`: `key` must be a single string.", call. = FALSE)
-  }
-  if (!is.character(value) || length(value) != 1L) {
-    stop("`set_attr()`: `value` must be a single string.", call. = FALSE)
+set_attr = function(x, ...) {
+  pairs = rlang::list2(...)
+  nms = names(pairs)
+  if (length(pairs) && (is.null(nms) || !all(nzchar(nms)))) {
+    stop("`set_attr()`: attributes must be supplied as named `key = value` pairs.",
+         call. = FALSE)
   }
   a = ast_attr_get_slot(x, "set_attr")
   new_attrs = a@attributes
-  new_attrs[key] = value
-  ast_attr_set_slot(x, pandoc_attr(
-    id         = a@id,
-    classes    = a@classes,
-    attributes = new_attrs
-  ))
-}
-
-#' @rdname ast_attr
-#' @export
-remove_attr = function(x, key) {
-  a = ast_attr_get_slot(x, "remove_attr")
-  new_attrs = a@attributes[!names(a@attributes) %in% key]
+  for (i in seq_along(pairs)) {
+    value = pairs[[i]]
+    if (!is.null(value) && (!is.character(value) || length(value) != 1L)) {
+      stop("`set_attr()`: `", nms[[i]],
+           "` must be a single string, or NULL to remove it.", call. = FALSE)
+    }
+    if (is.null(value)) {
+      new_attrs = new_attrs[names(new_attrs) != nms[[i]]]
+    } else {
+      new_attrs[nms[[i]]] = value
+    }
+  }
   ast_attr_set_slot(x, pandoc_attr(
     id         = a@id,
     classes    = a@classes,

@@ -9,7 +9,6 @@
 \alias{set_id}
 \alias{get_attr}
 \alias{set_attr}
-\alias{remove_attr}
 \title{Attribute manipulation helpers}
 \usage{
 has_class(x, cls)
@@ -24,9 +23,7 @@ set_id(x, id)
 
 get_attr(x, key)
 
-set_attr(x, key, value)
-
-remove_attr(x, key)
+set_attr(x, ...)
 }
 \arguments{
 \item{x}{A \code{\link{pandoc_node}} (typically one with an \verb{@attr} slot).}
@@ -35,9 +32,12 @@ remove_attr(x, key)
 
 \item{id}{A single string.}
 
-\item{key}{A single string naming an attribute.}
+\item{key}{A single string naming an attribute (for \code{get_attr()}).}
 
-\item{value}{A single string value.}
+\item{...}{For \code{set_attr()}, named \code{key = value} pairs; each \code{value}
+is a single string, or \code{NULL} to remove that key. Quote names that
+are not syntactic R identifiers (e.g. \code{"data-level" = "2"}), and
+use rlang's \verb{!!!} / \verb{:=} to supply dynamic keys.}
 }
 \value{
 Predicates return a logical scalar (or a string, for getters).
@@ -70,9 +70,13 @@ already present are not duplicated).
 \item \code{remove_class(x, cls)} remove one or more classes; no-op on
 classes that are not present.
 \item \code{get_id(x)} / \code{set_id(x, id)} read or replace \verb{@attr@id}.
-\item \code{get_attr(x, key)} / \code{set_attr(x, key, value)} /
-\code{remove_attr(x, key)} manipulate \verb{@attr@attributes}. \code{get_attr()}
-returns \code{NA_character_} for missing keys.
+\item \code{get_attr(x, key)} reads a single attribute, returning
+\code{NA_character_} for missing keys.
+\item \code{set_attr(x, key = value, ...)} sets one or more attributes from
+named \code{key = value} pairs. A \code{value} of \code{NULL} removes that key
+(the named map's idiomatic R removal, mirroring Lua's
+\code{el.attributes[key] = nil}), so a single call can both set and
+drop: \code{set_attr(x, target = "_blank", lang = NULL)}.
 }
 }
 

@@ -275,11 +275,11 @@ immutable getters/setters that read like Lua's direct field access
 
 - `has_class(x, cls)` / `add_class(x, cls)` / `remove_class(x, cls)`
 - `get_id(x)` / `set_id(x, id)`
-- `get_attr(x, key)` / `set_attr(x, key, value)` / `remove_attr(x, key)`
+- `get_attr(x, key)` / `set_attr(x, key = value, ...)` (pass `key = NULL` to remove it)
 
 ```{r}
 out = doc |> ast_filter(pandoc_header = \(h) {
-  h |> add_class("section") |> set_attr("data-level", as.character(h@level))
+  h |> add_class("section") |> set_attr("data-level" = as.character(h@level))
 })
 
 out |> select_nodes(is(pandoc_header)) |> purrr::map(\(h) h@attr)
@@ -328,9 +328,7 @@ The q2r translation is a single `ast_filter` handler keyed on
 out = doc |> ast_filter(
   pandoc_link = \(l) {
     if (!grepl("^https?://", l@url)) return(l)
-    l |>
-      set_attr("target", "_blank") |>
-      set_attr("rel", "noopener")
+    set_attr(l, target = "_blank", rel = "noopener")
   }
 )
 

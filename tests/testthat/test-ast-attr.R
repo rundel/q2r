@@ -70,21 +70,51 @@ test_that("get_attr returns the value or NA_character_", {
   expect_equal(get_attr(h, "absent"), NA_character_)
 })
 
-test_that("set_attr adds and updates key/value pairs", {
+test_that("set_attr adds and updates key = value pairs", {
   h = make_header()
-  h2 = set_attr(h, "dir", "ltr")
+  h2 = set_attr(h, dir = "ltr")
   expect_equal(get_attr(h2, "dir"), "ltr")
   expect_equal(get_attr(h2, "lang"), "en")
-  h3 = set_attr(h2, "lang", "fr")
+  h3 = set_attr(h2, lang = "fr")
   expect_equal(get_attr(h3, "lang"), "fr")
 })
 
-test_that("remove_attr drops the named attribute", {
+test_that("set_attr sets several pairs in one call, including quoted keys", {
   h = make_header()
-  h2 = remove_attr(h, "lang")
+  h2 = set_attr(h, "data-level" = "2", dir = "ltr")
+  expect_equal(get_attr(h2, "data-level"), "2")
+  expect_equal(get_attr(h2, "dir"), "ltr")
+})
+
+test_that("set_attr(key = NULL) drops the named attribute", {
+  h = make_header()
+  h2 = set_attr(h, lang = NULL)
   expect_equal(get_attr(h2, "lang"), NA_character_)
   expect_equal(h2@attr@id, "intro")
   expect_equal(h2@attr@classes, c("foo", "bar"))
+})
+
+test_that("set_attr can set and remove in a single call", {
+  h = make_header()
+  h2 = set_attr(h, dir = "ltr", lang = NULL)
+  expect_equal(get_attr(h2, "dir"), "ltr")
+  expect_equal(get_attr(h2, "lang"), NA_character_)
+})
+
+test_that("set_attr(key = NULL) on an absent key is a no-op", {
+  h = make_header()
+  h2 = set_attr(h, absent = NULL)
+  expect_equal(h2@attr@attributes, h@attr@attributes)
+})
+
+test_that("set_attr rejects unnamed arguments", {
+  h = make_header()
+  expect_error(set_attr(h, "ltr"), "named `key = value` pairs")
+})
+
+test_that("set_attr rejects a non-string, non-NULL value", {
+  h = make_header()
+  expect_error(set_attr(h, dir = 1L), "single string, or NULL")
 })
 
 test_that("add_class on a node without @attr errors clearly", {
