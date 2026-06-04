@@ -109,6 +109,15 @@ reference:
     contents:
     - table_df
 
+  - title: Code cells
+    desc: >
+      Read and edit Quarto executable cells: engine, label, body, and
+      `#|` options on a `pandoc_code_block`, plus `collect_code()` to
+      tangle a document's cells. Inside a predicate the mask also exposes
+      `is_code_cell()` and `has_option()`.
+    contents:
+    - code_cell
+
   - title: Tree-sitter queries
     desc: >
       Raw tree-sitter `.scm` query escape hatch with capture support,

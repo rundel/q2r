@@ -134,6 +134,10 @@ for literal matching); the analog of parsermd's \code{has_heading()}.
 \item \code{has_label("fig-*")} glob-matches the node's \verb{@attr@id}, where
 Quarto labels surface as \verb{#id}; the analog of parsermd's
 \code{has_label()}.
+\item \code{is_code_cell()} matches an executable Quarto cell (see
+\code{\link{code_cell}}).
+\item \code{has_option("eval")} / \code{has_option("eval", FALSE)} test a cell's
+\verb{#|} options.
 \item \code{is_leaf()} matches nodes with no children.
 \item \code{is_named()} is tree-sitter only.
 \item \code{starts_with()}, \code{ends_with()}, \code{matches()}, \code{contains()} — string

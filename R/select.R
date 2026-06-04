@@ -71,6 +71,10 @@ NULL
 #' - `has_label("fig-*")` glob-matches the node's `@attr@id`, where
 #'   Quarto labels surface as `#id`; the analog of parsermd's
 #'   `has_label()`.
+#' - `is_code_cell()` matches an executable Quarto cell (see
+#'   [`code_cell`]).
+#' - `has_option("eval")` / `has_option("eval", FALSE)` test a cell's
+#'   `#|` options.
 #' - `is_leaf()` matches nodes with no children.
 #' - `is_named()` is tree-sitter only.
 #' - `starts_with()`, `ends_with()`, `matches()`, `contains()` — string
@@ -233,6 +237,20 @@ mask_has_label = function(pattern) {
   any(purrr::map_lgl(utils::glob2rx(pattern), function(p) grepl(p, id)))
 }
 
+mask_has_option = function(key, value) {
+  node = ast_current_node()
+  if (!S7::S7_inherits(node, pandoc_code_block)) return(FALSE)
+  opts = cell_options(node)
+  if (!(key %in% names(opts))) return(FALSE)
+  if (missing(value)) return(TRUE)
+  identical(opts[[key]], value)
+}
+
+mask_is_code_cell = function() {
+  node = ast_current_node()
+  S7::S7_inherits(node, pandoc_code_block) && is_code_cell(node)
+}
+
 mask_is_leaf = function() {
   node = ast_current_node()
   if (S7::S7_inherits(node, ts_node)) {
@@ -301,6 +319,8 @@ ast_helper_env = function() {
   e$has_attr    = mask_has_attr
   e$has_text    = mask_has_text
   e$has_label   = mask_has_label
+  e$has_option  = mask_has_option
+  e$is_code_cell = mask_is_code_cell
   e$is_leaf     = mask_is_leaf
   e$starts_with = mask_starts_with
   e$ends_with   = mask_ends_with

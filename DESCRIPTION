@@ -23,7 +23,8 @@ Imports:
     rlang,
     S7,
     stringr,
-    withr
+    withr,
+    yaml
 Suggests:
     quarto,
     testthat (>= 3.0.0),
@@ -47,6 +48,7 @@ Collate:
     'ast-text.R'
     'ast-sections.R'
     'ast-summary.R'
+    'cell.R'
     'to-rust.R'
     'to-qmd.R'
     'from-rust.R'
