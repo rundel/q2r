@@ -101,6 +101,14 @@ reference:
     - as_inlines
     - as_blocks
 
+  - title: Tables
+    desc: >
+      Convert between a `pandoc_table` and a `data.frame`: flatten a
+      parsed table to columns, or build a renderable table from a data
+      frame (alignment, caption, and id ride along as attributes).
+    contents:
+    - table_df
+
   - title: Tree-sitter queries
     desc: >
       Raw tree-sitter `.scm` query escape hatch with capture support,

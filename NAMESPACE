@@ -2,7 +2,9 @@
 
 export(add_class)
 export(as_blocks)
+export(as_df)
 export(as_inlines)
+export(as_table)
 export(ast_filter)
 export(ast_sections)
 export(ast_skip)

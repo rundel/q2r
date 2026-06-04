@@ -58,6 +58,7 @@ Collate:
     'render.R'
     'select-section.R'
     'select-ts.R'
+    'table.R'
     'tests.R'
     'ts-query.R'
     'zzz.R'
