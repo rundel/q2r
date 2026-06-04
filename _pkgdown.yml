@@ -118,6 +118,18 @@ reference:
     contents:
     - code_cell
 
+  - title: Document structure
+    desc: >
+      Author-altitude helpers over the top-level block stream: the
+      enclosing-heading chain, section slicing and splitting, a tabular
+      overview, and a generated table of contents.
+    contents:
+    - ast_sections
+    - select_section
+    - ast_summary
+    - ast_toc
+    - split_sections
+
   - title: Tree-sitter queries
     desc: >
       Raw tree-sitter `.scm` query escape hatch with capture support,
