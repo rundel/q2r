@@ -75,6 +75,8 @@ NULL
 #'   [`code_cell`]).
 #' - `has_option("eval")` / `has_option("eval", FALSE)` test a cell's
 #'   `#|` options.
+#' - `has_engine("r")` / `has_engine(c("r", "python"))` test a cell's
+#'   engine ([`cell_engine()`]).
 #' - `is_leaf()` matches nodes with no children.
 #' - `is_named()` is tree-sitter only.
 #' - `starts_with()`, `ends_with()`, `matches()`, `contains()` — string
@@ -246,6 +248,16 @@ mask_has_option = function(key, value) {
   identical(opts[[key]], value)
 }
 
+mask_has_engine = function(...) {
+  engines = unlist(c(...), use.names = FALSE)
+  if (length(engines) == 0L) return(FALSE)
+  node = ast_current_node()
+  if (!S7::S7_inherits(node, pandoc_code_block)) return(FALSE)
+  eng = cell_engine(node)
+  if (length(eng) != 1L || is.na(eng)) return(FALSE)
+  eng %in% engines
+}
+
 mask_is_code_cell = function() {
   node = ast_current_node()
   S7::S7_inherits(node, pandoc_code_block) && is_code_cell(node)
@@ -320,6 +332,7 @@ ast_helper_env = function() {
   e$has_text    = mask_has_text
   e$has_label   = mask_has_label
   e$has_option  = mask_has_option
+  e$has_engine  = mask_has_engine
   e$is_code_cell = mask_is_code_cell
   e$is_leaf     = mask_is_leaf
   e$starts_with = mask_starts_with

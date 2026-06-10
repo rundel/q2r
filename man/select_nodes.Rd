@@ -138,6 +138,8 @@ Quarto labels surface as \verb{#id}; the analog of parsermd's
 \code{\link{code_cell}}).
 \item \code{has_option("eval")} / \code{has_option("eval", FALSE)} test a cell's
 \verb{#|} options.
+\item \code{has_engine("r")} / \code{has_engine(c("r", "python"))} test a cell's
+engine (\code{\link[=cell_engine]{cell_engine()}}).
 \item \code{is_leaf()} matches nodes with no children.
 \item \code{is_named()} is tree-sitter only.
 \item \code{starts_with()}, \code{ends_with()}, \code{matches()}, \code{contains()} — string

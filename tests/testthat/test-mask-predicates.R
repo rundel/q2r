@@ -28,3 +28,21 @@ test_that("has_label is a no-match on nodes without an id", {
   doc = parse_qmd("plain paragraph\n")
   expect_length(select_nodes(doc, has_label("*")), 0L)
 })
+
+test_that("has_engine matches a cell's engine, multiple engines OR", {
+  doc = parse_qmd(paste(
+    "```{r}", "1 + 1", "```", "",
+    "```{python}", "2 + 2", "```", "",
+    "```", "plain", "```", "",
+    sep = "\n"
+  ))
+  expect_length(select_nodes(doc, has_engine("r")), 1L)
+  expect_length(select_nodes(doc, has_engine("python")), 1L)
+  expect_length(select_nodes(doc, has_engine(c("r", "python"))), 2L)
+  expect_length(select_nodes(doc, has_engine("julia")), 0L)
+})
+
+test_that("has_engine is a no-match on non-cells and plain code blocks", {
+  doc = parse_qmd("some text\n\n```\nplain\n```\n")
+  expect_length(select_nodes(doc, has_engine("r")), 0L)
+})
