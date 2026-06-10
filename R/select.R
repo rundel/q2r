@@ -69,7 +69,8 @@ NULL
 #'   ([`ast_text()`]) against one or more regex patterns (`fixed = TRUE`
 #'   for literal matching); the analog of parsermd's `has_heading()`.
 #' - `has_label("fig-*")` glob-matches the node's `@attr@id`, where
-#'   Quarto labels surface as `#id`; the analog of parsermd's
+#'   Quarto labels surface as `#id`; for code cells without an attr id it
+#'   falls back to the cell's `label` option. The analog of parsermd's
 #'   `has_label()`.
 #' - `is_code_cell()` matches an executable Quarto cell (see
 #'   [`code_cell`]).
@@ -202,23 +203,27 @@ mask_is = function(cls) {
   S7::S7_inherits(ast_current_node(), cls)
 }
 
+# Attr-based helpers test only standard `pandoc_attr` attributes; nodes
+# carrying other attribute shapes (e.g. `pandoc_list_attributes` on lists)
+# are a plain no-match rather than a predicate error.
+
 mask_has_class = function(...) {
   classes = unlist(c(...), use.names = FALSE)
   if (length(classes) == 0L) return(FALSE)
   a = ast_attr(ast_current_node())
-  if (is.null(a)) return(FALSE)
+  if (!S7::S7_inherits(a, pandoc_attr)) return(FALSE)
   any(classes %in% a@classes)
 }
 
 mask_has_id = function(id) {
   a = ast_attr(ast_current_node())
-  if (is.null(a)) return(FALSE)
+  if (!S7::S7_inherits(a, pandoc_attr)) return(FALSE)
   identical(a@id, id)
 }
 
 mask_has_attr = function(key, value) {
   a = ast_attr(ast_current_node())
-  if (is.null(a)) return(FALSE)
+  if (!S7::S7_inherits(a, pandoc_attr)) return(FALSE)
   attrs = a@attributes
   if (!(key %in% names(attrs))) return(FALSE)
   if (missing(value)) return(TRUE)
@@ -232,9 +237,15 @@ mask_has_text = function(pattern, fixed = FALSE) {
 }
 
 mask_has_label = function(pattern) {
-  a = ast_attr(ast_current_node())
-  if (is.null(a)) return(FALSE)
-  id = a@id
+  node = ast_current_node()
+  a = ast_attr(node)
+  id = if (S7::S7_inherits(a, pandoc_attr)) a@id else ""
+  # A code cell's label lives in its `#|` options, not its attr id (it only
+  # becomes an id in rendered output), so fall back to it for parsermd parity.
+  if ((length(id) != 1L || !nzchar(id)) && S7::S7_inherits(node, pandoc_code_block)) {
+    label = cell_options(node)$label
+    if (!is.null(label)) id = as.character(label)
+  }
   if (length(id) != 1L || !nzchar(id)) return(FALSE)
   any(purrr::map_lgl(utils::glob2rx(pattern), function(p) grepl(p, id)))
 }

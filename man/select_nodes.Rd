@@ -132,7 +132,8 @@ matches any block.
 (\code{\link[=ast_text]{ast_text()}}) against one or more regex patterns (\code{fixed = TRUE}
 for literal matching); the analog of parsermd's \code{has_heading()}.
 \item \code{has_label("fig-*")} glob-matches the node's \verb{@attr@id}, where
-Quarto labels surface as \verb{#id}; the analog of parsermd's
+Quarto labels surface as \verb{#id}; for code cells without an attr id it
+falls back to the cell's \code{label} option. The analog of parsermd's
 \code{has_label()}.
 \item \code{is_code_cell()} matches an executable Quarto cell (see
 \code{\link{code_cell}}).

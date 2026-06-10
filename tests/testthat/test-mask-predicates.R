@@ -29,6 +29,25 @@ test_that("has_label is a no-match on nodes without an id", {
   expect_length(select_nodes(doc, has_label("*")), 0L)
 })
 
+test_that("has_label falls back to a code cell's label option", {
+  doc = parse_qmd(paste(
+    "```{r}", "#| label: fig-stats", "plot(1)", "```", "",
+    "```{r}", "1 + 1", "```", "",
+    sep = "\n"
+  ))
+  expect_length(select_nodes(doc, has_label("fig-stats")), 1L)
+  expect_length(select_nodes(doc, has_label("fig-*")), 1L)
+  expect_length(select_nodes(doc, has_label("nope")), 0L)
+})
+
+test_that("attr helpers are a silent no-match on non-standard attributes", {
+  doc = parse_qmd("1. one\n2. two\n\n- a\n- b\n")
+  expect_silent(expect_length(select_nodes(doc, has_id("x")), 0L))
+  expect_silent(expect_length(select_nodes(doc, has_class("x")), 0L))
+  expect_silent(expect_length(select_nodes(doc, has_label("*")), 0L))
+  expect_silent(expect_length(select_nodes(doc, has_attr("x")), 0L))
+})
+
 test_that("has_engine matches a cell's engine, multiple engines OR", {
   doc = parse_qmd(paste(
     "```{r}", "1 + 1", "```", "",
