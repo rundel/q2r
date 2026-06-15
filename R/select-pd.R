@@ -51,7 +51,7 @@ pd_walk_children_of_list = function(items, visit) {
 pd_collect_matches = function(root, quos, mask, include_root) {
   out = list()
   visitor = function(node) {
-    if (ast_eval_predicates(quos, node, mask, "pandoc")) {
+    if (ast_eval_predicates(quos, node, mask)) {
       out[[length(out) + 1L]] <<- node
     }
   }
@@ -67,7 +67,7 @@ pd_first_match = function(root, quos, mask, include_root) {
   found = NULL
   visitor = function(node) {
     if (!is.null(found)) return()
-    if (ast_eval_predicates(quos, node, mask, "pandoc")) {
+    if (ast_eval_predicates(quos, node, mask)) {
       found <<- node
     }
   }
@@ -89,7 +89,7 @@ pd_first_match = function(root, quos, mask, include_root) {
 pd_rewrite_node = function(node, quos, mask, .f) {
   inner = function(child) pd_rewrite_node(child, quos, mask, .f)
   rebuilt = pandoc_modify_children(node, inner)
-  if (ast_eval_predicates(quos, rebuilt, mask, "pandoc")) {
+  if (ast_eval_predicates(quos, rebuilt, mask)) {
     return(.f(rebuilt))
   }
   rebuilt
@@ -133,7 +133,7 @@ S7::method(select_nodes, pandoc_blocks) = function(x, ...) {
   mask = ast_make_mask("pandoc")
   out = list()
   visitor = function(node) {
-    if (ast_eval_predicates(quos, node, mask, "pandoc")) {
+    if (ast_eval_predicates(quos, node, mask)) {
       out[[length(out) + 1L]] <<- node
     }
   }
@@ -146,7 +146,7 @@ S7::method(select_nodes, pandoc_inlines) = function(x, ...) {
   mask = ast_make_mask("pandoc")
   out = list()
   visitor = function(node) {
-    if (ast_eval_predicates(quos, node, mask, "pandoc")) {
+    if (ast_eval_predicates(quos, node, mask)) {
       out[[length(out) + 1L]] <<- node
     }
   }
@@ -214,7 +214,7 @@ S7::method(select_children, pandoc) = function(x, ...) {
   quos = ast_quos(...)
   mask = ast_make_mask("pandoc")
   purrr::keep(pd_collect_direct_children(x), function(c) {
-    ast_eval_predicates(quos, c, mask, "pandoc")
+    ast_eval_predicates(quos, c, mask)
   })
 }
 
@@ -222,7 +222,7 @@ S7::method(select_children, pandoc_node) = function(x, ...) {
   quos = ast_quos(...)
   mask = ast_make_mask("pandoc")
   purrr::keep(pd_collect_direct_children(x), function(c) {
-    ast_eval_predicates(quos, c, mask, "pandoc")
+    ast_eval_predicates(quos, c, mask)
   })
 }
 
@@ -230,7 +230,7 @@ S7::method(select_children, pandoc_blocks) = function(x, ...) {
   quos = ast_quos(...)
   mask = ast_make_mask("pandoc")
   purrr::keep(x@content, function(c) {
-    ast_eval_predicates(quos, c, mask, "pandoc")
+    ast_eval_predicates(quos, c, mask)
   })
 }
 
@@ -238,7 +238,7 @@ S7::method(select_children, pandoc_inlines) = function(x, ...) {
   quos = ast_quos(...)
   mask = ast_make_mask("pandoc")
   purrr::keep(x@content, function(c) {
-    ast_eval_predicates(quos, c, mask, "pandoc")
+    ast_eval_predicates(quos, c, mask)
   })
 }
 
@@ -264,7 +264,7 @@ S7::method(walk_nodes, pandoc) = function(x, ..., .f) {
   quos = ast_quos(...)
   mask = ast_make_mask("pandoc")
   pd_walk_node(x, function(node) {
-    if (ast_eval_predicates(quos, node, mask, "pandoc")) fn(node)
+    if (ast_eval_predicates(quos, node, mask)) fn(node)
   })
   invisible(x)
 }
@@ -275,7 +275,7 @@ S7::method(walk_nodes, pandoc_node) = function(x, ..., .f) {
   quos = ast_quos(...)
   mask = ast_make_mask("pandoc")
   pd_walk_node(x, function(node) {
-    if (ast_eval_predicates(quos, node, mask, "pandoc")) fn(node)
+    if (ast_eval_predicates(quos, node, mask)) fn(node)
   })
   invisible(x)
 }
@@ -395,7 +395,7 @@ S7::method(insert_after, pandoc_node) = function(x, ..., .what) {
 select_nodes_on_list = function(nodes, quos, mask, kind, include_root) {
   out = list()
   visitor = function(node) {
-    if (ast_eval_predicates(quos, node, mask, kind)) {
+    if (ast_eval_predicates(quos, node, mask)) {
       out[[length(out) + 1L]] <<- node
     }
   }
@@ -457,7 +457,7 @@ S7::method(select_children, S7::class_list) = function(x, ...) {
     if (is.null(n)) return()
     direct = if (kind == "ts") n@children@content else pd_collect_direct_children(n)
     out <<- c(out, purrr::keep(direct, function(c) {
-      ast_eval_predicates(quos, c, mask, kind)
+      ast_eval_predicates(quos, c, mask)
     }))
   })
   out

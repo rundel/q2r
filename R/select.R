@@ -180,7 +180,6 @@ insert_after = S7::new_generic("insert_after", "x", function(x, ..., .what) {
 select_state = local({
   st = new.env(parent = emptyenv())
   st$node = NULL
-  st$kind = NULL
   st
 })
 
@@ -392,16 +391,11 @@ ast_make_mask = function(kind = c("pandoc", "ts")) {
   rlang::new_data_mask(env)
 }
 
-ast_eval_predicates = function(quos, node, mask, kind) {
+ast_eval_predicates = function(quos, node, mask) {
   if (length(quos) == 0L) return(TRUE)
   prev_node = select_state$node
-  prev_kind = select_state$kind
   select_state$node = node
-  select_state$kind = kind
-  on.exit({
-    select_state$node = prev_node
-    select_state$kind = prev_kind
-  }, add = TRUE)
+  on.exit({ select_state$node = prev_node }, add = TRUE)
   for (q in quos) {
     res = tryCatch(
       rlang::eval_tidy(q, mask),
@@ -449,8 +443,6 @@ ast_resolve_what = function(what, node) {
   out = if (is.function(what) || rlang::is_formula(what)) {
     fn = ast_as_fn(what)
     fn(node)
-  } else if (rlang::is_quosure(what)) {
-    rlang::eval_tidy(what)
   } else {
     what
   }

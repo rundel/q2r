@@ -9,7 +9,7 @@ NULL
 ts_collect_matches = function(root, quos, mask, include_root = TRUE) {
   out = list()
   visit = function(node) {
-    if (ast_eval_predicates(quos, node, mask, "ts")) {
+    if (ast_eval_predicates(quos, node, mask)) {
       out[[length(out) + 1L]] <<- node
     }
     purrr::walk(node@children@content, visit)
@@ -59,7 +59,7 @@ ts_rewrite_node = function(node, quos, mask, .f) {
   } else {
     ts_rebuild_node(node, new_children)
   }
-  if (ast_eval_predicates(quos, rebuilt, mask, "ts")) {
+  if (ast_eval_predicates(quos, rebuilt, mask)) {
     return(.f(rebuilt))
   }
   rebuilt
@@ -69,7 +69,7 @@ ts_rewrite_node = function(node, quos, mask, .f) {
 ts_walk_node = function(node, quos, mask, .f) {
   purrr::walk(node@children@content, ts_walk_node,
               quos = quos, mask = mask, .f = .f)
-  if (ast_eval_predicates(quos, node, mask, "ts")) .f(node)
+  if (ast_eval_predicates(quos, node, mask)) .f(node)
 }
 
 # Final commit of a rewritten root node into a tree, dropping NULL or
@@ -146,7 +146,7 @@ S7::method(select_children, ts_node) = function(x, ...) {
   quos = ast_quos(...)
   mask = ast_make_mask("ts")
   purrr::keep(x@children@content, function(ch) {
-    ast_eval_predicates(quos, ch, mask, "ts")
+    ast_eval_predicates(quos, ch, mask)
   })
 }
 
@@ -154,7 +154,7 @@ S7::method(select_children, ts_nodes) = function(x, ...) {
   quos = ast_quos(...)
   mask = ast_make_mask("ts")
   purrr::keep(x@content, function(ch) {
-    ast_eval_predicates(quos, ch, mask, "ts")
+    ast_eval_predicates(quos, ch, mask)
   })
 }
 
@@ -165,7 +165,7 @@ ts_first_match = function(root, quos, mask, include_root = TRUE) {
   found = NULL
   visit = function(node) {
     if (!is.null(found)) return()
-    if (ast_eval_predicates(quos, node, mask, "ts")) {
+    if (ast_eval_predicates(quos, node, mask)) {
       found <<- node
       return()
     }

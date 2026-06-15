@@ -48,10 +48,7 @@ S7::method(to_qmd, pandoc) = function(x) {
       )
     ))
   }
-  result = raw$text
-  diagnostics = pampa_diagnostics_from_raw(raw, "", "<ast>")
-  if (length(diagnostics)) attr(result, "diagnostics") = diagnostics
-  result
+  raw$text
 }
 
 S7::method(to_qmd, ts_tree) = function(x) to_qmd_ts_node(x@root)
