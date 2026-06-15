@@ -44,7 +44,10 @@ read_qmd = function(path, ast = c("pd", "ts"), ...) {
   if (!file.exists(path) || dir.exists(path)) {
     stop("`read_qmd()`: file not found: ", path, call. = FALSE)
   }
-  parse_qmd(path, ast = match.arg(ast), ...)
+  parse_qmd_text(
+    to_utf8_source(read_file_bytes(path)), basename(path),
+    ast = match.arg(ast), ...
+  )
 }
 
 #' @rdname read_qmd

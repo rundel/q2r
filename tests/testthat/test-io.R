@@ -16,6 +16,16 @@ test_that("read_qmd errors on a missing file rather than treating it as text", {
   expect_error(read_qmd("/no/such/file.qmd"), "file not found")
 })
 
+test_that("read_qmd reads from disk even when the filename contains a newline", {
+  dir = withr::local_tempdir()
+  path = file.path(dir, "wei\nrd.qmd")
+  writeLines("# Inside heading\n\nbody\n", path)
+  doc = read_qmd(path)
+  h = select_first(doc, is(pandoc_header))
+  expect_true(S7::S7_inherits(h, pandoc_header))
+  expect_equal(ast_text(h), "Inside heading")
+})
+
 test_that("write_qmd writes exactly what to_qmd produces and returns input invisibly", {
   doc = parse_qmd("# H\n\nsome body text\n")
   out = withr::local_tempfile(fileext = ".qmd")

@@ -69,7 +69,8 @@ render_qmd = function(x, output_file = NULL, output_format = NULL, ..., quiet = 
   if (!dir.exists(dest_dir)) dir.create(dest_dir, recursive = TRUE)
   file.copy(produced, dest_dir, recursive = TRUE, overwrite = TRUE)
 
-  main = produced[!utils::file_test("-d", produced)]
-  if (length(main) == 0L) main = produced
+  files = produced[!utils::file_test("-d", produced)]
+  by_stem = files[tools::file_path_sans_ext(basename(files)) == stem]
+  main = if (length(by_stem)) by_stem else if (length(files)) files else produced
   invisible(file.path(dest_dir, basename(main[[1L]])))
 }

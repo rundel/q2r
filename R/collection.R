@@ -103,16 +103,16 @@ write_qmd_dir = function(x, dir = NULL) {
 
 S7::method(print, qmd_collection) = function(x, ...) {
   n = length(x@docs)
-  cat(sprintf("<qmd_collection: %d document%s>\n", n, if (n == 1L) "" else "s"))
-  nms = names(x@docs)
-  if (is.null(nms)) nms = paste0("[", seq_len(n), "]")
-  for (i in seq_len(n)) {
-    d = x@docs[[i]]
+  cat(cli::format_inline("<qmd_collection: {n} document{?s}>\n"))
+  docs = x@docs
+  if (is.null(names(docs))) names(docs) = paste0("[", seq_len(n), "]")
+  lines = purrr::imap_chr(docs, function(d, nm) {
     nb = length(d@blocks@content)
     nd = length(d@diagnostics)
-    diag = if (nd) sprintf(", %d diagnostic%s", nd, if (nd == 1L) "" else "s") else ""
-    cat(sprintf("  %s (%d block%s%s)\n", nms[[i]], nb, if (nb == 1L) "" else "s", diag))
-  }
+    diag = if (nd) cli::format_inline(", {nd} diagnostic{?s}") else ""
+    cli::format_inline("  {nm} ({nb} block{?s}{diag})\n")
+  })
+  cat(lines, sep = "")
   invisible(x)
 }
 
@@ -181,7 +181,7 @@ S7::method(ast_summary, qmd_collection) = function(x, max_text = 40L) {
   })
   parts = purrr::compact(parts)
   if (length(parts) == 0L) {
-    base = ast_summary_of_blocks(list(), max_text)
+    base = ast_summary(list(), max_text = max_text)
     base$doc = character(0)
     return(base[c("doc", setdiff(names(base), "doc"))])
   }

@@ -12,9 +12,11 @@ read_file_bytes = function(path) {
   text
 }
 
-pampa_read_input = function(input) {
-  stopifnot(is.character(input), length(input) == 1L, !is.na(input))
-  if (Encoding(input) == "bytes") {
+# Validate and normalize source text to UTF-8 before handing it to pampa,
+# which requires UTF-8 input. Shared by the `pampa_read_input()` heuristic
+# and by `read_qmd()`, which reads its file itself.
+to_utf8_source = function(text) {
+  if (Encoding(text) == "bytes") {
     stop(
       "`input` has \"bytes\" encoding, which cannot be translated to UTF-8. ",
       "Declare its source encoding first (e.g. `Encoding(x) <- \"UTF-8\"` or ",
@@ -22,28 +24,29 @@ pampa_read_input = function(input) {
       call. = FALSE
     )
   }
-  is_text = grepl("\n", input, fixed = TRUE)
-  res = if (!is_text && file.exists(input) && !dir.exists(input)) {
-    list(
-      text     = read_file_bytes(input),
-      filename = basename(input)
-    )
-  } else {
-    list(text = input, filename = "<text>")
-  }
-  res$text = enc2utf8(res$text)
-  if (!validUTF8(res$text)) {
+  text = enc2utf8(text)
+  if (!validUTF8(text)) {
     stop(
       "`input` is not valid UTF-8 after translation; pampa requires UTF-8 ",
       "source. Check the encoding of the file or string.",
       call. = FALSE
     )
   }
-  res
+  text
+}
+
+pampa_read_input = function(input) {
+  stopifnot(is.character(input), length(input) == 1L, !is.na(input))
+  is_text = grepl("\n", input, fixed = TRUE)
+  if (!is_text && file.exists(input) && !dir.exists(input)) {
+    list(text = to_utf8_source(read_file_bytes(input)), filename = basename(input))
+  } else {
+    list(text = to_utf8_source(input), filename = "<text>")
+  }
 }
 
 pampa_diagnostics_from_raw = function(raw, text, filename) {
-  lapply(
+  purrr::map(
     raw$diagnostics %||% list(),
     diagnostic_from_list,
     source_text = text,
@@ -88,14 +91,27 @@ pampa_diagnostics_from_raw = function(raw, text, filename) {
 parse_qmd = function(input, ast = c("pd", "ts"), quiet = FALSE, prune_errors = TRUE) {
   ast = match.arg(ast)
   src = pampa_read_input(input)
+  parse_qmd_text(
+    src$text, src$filename,
+    ast = ast, quiet = quiet, prune_errors = prune_errors
+  )
+}
 
+# Parse already-read, UTF-8-validated source text. Split out from
+# `parse_qmd()` so `read_qmd()` can read its file directly and feed the bytes
+# in, rather than re-running `pampa_read_input()`'s text-vs-file heuristic on
+# a path it has already confirmed exists (a filename containing a newline
+# would otherwise be reparsed as literal text).
+parse_qmd_text = function(text, filename, ast = c("pd", "ts"),
+                          quiet = FALSE, prune_errors = TRUE) {
+  ast = match.arg(ast)
   if (ast == "pd") {
-    raw = pampa_parse_pd_impl(src$text, src$filename, isTRUE(prune_errors))
-    diagnostics = pampa_diagnostics_from_raw(raw, src$text, src$filename)
+    raw = pampa_parse_pd_impl(text, filename, isTRUE(prune_errors))
+    diagnostics = pampa_diagnostics_from_raw(raw, text, filename)
     out = if (is.null(raw$pd_ast)) pandoc() else pandoc_from_list(raw$pd_ast)
   } else {
-    raw = pampa_parse_ts_impl(src$text, src$filename, isTRUE(prune_errors))
-    diagnostics = pampa_diagnostics_from_raw(raw, src$text, src$filename)
+    raw = pampa_parse_ts_impl(text, filename, isTRUE(prune_errors))
+    diagnostics = pampa_diagnostics_from_raw(raw, text, filename)
     out = ts_tree_from_list(raw$ts_ast)
   }
 
