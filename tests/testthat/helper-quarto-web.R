@@ -44,9 +44,9 @@ expect_no_error_diagnostics = function(actual) {
     rendered = vapply(errs, function(d) format(d, color = FALSE), character(1L))
     testthat::expect(
       FALSE,
-      sprintf(
-        "%s has %d error diagnostic(s):\n\n%s",
-        act_lab$lab, length(errs), paste(rendered, collapse = "\n\n")
+      paste0(
+        cli::format_inline("{act_lab$lab} has {length(errs)} error diagnostic{?s}:"),
+        "\n\n", paste(rendered, collapse = "\n\n")
       )
     )
   }
@@ -55,7 +55,7 @@ expect_no_error_diagnostics = function(actual) {
 
 number_ast_lines = function(lines) {
   w = max(2L, nchar(as.character(length(lines))))
-  sprintf(paste0("%", w, "d │ %s"), seq_along(lines), lines)
+  paste0(formatC(seq_along(lines), width = w), " │ ", lines)
 }
 
 diff_ast_lines = function(act_lines, exp_lines, x_arg, y_arg) {
@@ -86,10 +86,11 @@ expect_ts_ast_equal = function(actual, expected) {
   diff = diff_ast_lines(act_lines, exp_lines, act_lab$lab, exp_lab$lab)
   testthat::expect(
     length(diff) == 0,
-    sprintf(
-      "ts ast mismatch (actual: %d lines, expected: %d lines):\n%s",
-      length(act_lines), length(exp_lines),
-      paste(diff, collapse = "\n")
+    paste0(
+      cli::format_inline(
+        "ts ast mismatch (actual: {length(act_lines)} lines, expected: {length(exp_lines)} lines):"
+      ),
+      "\n", paste(diff, collapse = "\n")
     )
   )
   invisible(actual)
@@ -108,10 +109,11 @@ expect_pd_ast_equal = function(actual, expected) {
   diff = diff_ast_lines(act_lines, exp_lines, act_lab$lab, exp_lab$lab)
   testthat::expect(
     length(diff) == 0,
-    sprintf(
-      "pd ast mismatch (actual: %d lines, expected: %d lines):\n%s",
-      length(act_lines), length(exp_lines),
-      paste(diff, collapse = "\n")
+    paste0(
+      cli::format_inline(
+        "pd ast mismatch (actual: {length(act_lines)} lines, expected: {length(exp_lines)} lines):"
+      ),
+      "\n", paste(diff, collapse = "\n")
     )
   )
   invisible(actual)

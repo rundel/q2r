@@ -101,11 +101,9 @@ ts_tree_to_list = function(tree) {
 }
 
 ts_format_position = function(range) {
-  sprintf(
-    "(%d, %d) - (%d, %d)",
-    range@start_point@row, range@start_point@column,
-    range@end_point@row,   range@end_point@column
-  )
+  s = range@start_point
+  e = range@end_point
+  cli::format_inline("({s@row}, {s@column}) - ({e@row}, {e@column})")
 }
 
 ts_format_label = function(x, position = FALSE, text = TRUE) {
@@ -124,7 +122,7 @@ ts_format_label = function(x, position = FALSE, text = TRUE) {
   text_snip = if (text && is_leaf && !is.null(x@text) && nzchar(x@text)) {
     paste0(" ", pandoc_quote(x@text))
   } else ""
-  sprintf("%s%s%s%s", field, kind, pos, text_snip)
+  paste0(field, kind, pos, text_snip)
 }
 
 ts_emit_node = function(buf, x, prefix_self, prefix_kids, position, text) {

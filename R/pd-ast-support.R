@@ -130,7 +130,7 @@ pandoc_meta_value = S7::new_class(
       "list", "map", "path", "glob", "expr"
     )
     if (length(self@kind) != 1L || !self@kind %in% allowed) {
-      sprintf("@kind must be one of %s", paste(allowed, collapse = "/"))
+      cli::format_inline("@kind must be one of {.or {allowed}}")
     }
   }
 )
