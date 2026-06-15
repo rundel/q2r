@@ -1,4 +1,4 @@
-#' @include pd-ast-pandoc.R pd-ast-block.R ast-text.R
+#' @include pd-ast-pandoc.R pd-ast-block.R ast-text.R ast-construct.R
 NULL
 
 #' Heading-section path for each top-level block
@@ -34,16 +34,8 @@ NULL
 #' @export
 ast_sections = S7::new_generic("ast_sections", "x")
 
-S7::method(ast_sections, pandoc) = function(x) {
-  ast_sections_of_blocks(x@blocks@content)
-}
-
-S7::method(ast_sections, pandoc_blocks) = function(x) {
-  ast_sections_of_blocks(x@content)
-}
-
-S7::method(ast_sections, S7::class_list) = function(x) {
-  ast_sections_of_blocks(x)
+S7::method(ast_sections, pd_block_source) = function(x) {
+  ast_sections_of_blocks(as_block_list(x))
 }
 
 

@@ -2,6 +2,20 @@
 NULL
 
 
+# Document-level helpers accept a `pandoc`, a `pandoc_blocks`, or a plain
+# list of blocks interchangeably. `as_block_list()` pulls the top-level
+# block list out of any of those, and `pd_block_source` is the S7 union
+# that lets a single method serve all three (collapsing what would
+# otherwise be three near-identical per-type registrations).
+as_block_list = function(x) {
+  if (S7::S7_inherits(x, pandoc)) return(x@blocks@content)
+  if (S7::S7_inherits(x, pandoc_blocks)) return(x@content)
+  x
+}
+
+pd_block_source = S7::new_union(pandoc, pandoc_blocks, S7::class_list)
+
+
 #' Coerce flexible input into pandoc_inlines or pandoc_blocks
 #'
 #' `r lifecycle::badge("experimental")`

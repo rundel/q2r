@@ -114,15 +114,7 @@ S7::method(as_df, pandoc_table) = function(x) {
   out
 }
 
-S7::method(as_df, pandoc) = function(x) {
-  purrr::map(select_nodes(x, is(pandoc_table)), as_df)
-}
-
-S7::method(as_df, pandoc_blocks) = function(x) {
-  purrr::map(select_nodes(x, is(pandoc_table)), as_df)
-}
-
-S7::method(as_df, S7::class_list) = function(x) {
+S7::method(as_df, pd_block_source) = function(x) {
   purrr::map(select_nodes(x, is(pandoc_table)), as_df)
 }
 

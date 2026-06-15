@@ -50,16 +50,8 @@ select_section = S7::new_generic(
   function(x, path, levels = 1:6, include_heading = TRUE) S7::S7_dispatch()
 )
 
-S7::method(select_section, pandoc) = function(x, path, levels = 1:6, include_heading = TRUE) {
-  select_section_on_blocks(x@blocks@content, path, levels, include_heading)
-}
-
-S7::method(select_section, pandoc_blocks) = function(x, path, levels = 1:6, include_heading = TRUE) {
-  select_section_on_blocks(x@content, path, levels, include_heading)
-}
-
-S7::method(select_section, S7::class_list) = function(x, path, levels = 1:6, include_heading = TRUE) {
-  select_section_on_blocks(x, path, levels, include_heading)
+S7::method(select_section, pd_block_source) = function(x, path, levels = 1:6, include_heading = TRUE) {
+  select_section_on_blocks(as_block_list(x), path, levels, include_heading)
 }
 
 

@@ -39,16 +39,8 @@ ast_summary = S7::new_generic(
   function(x, max_text = 40L) S7::S7_dispatch()
 )
 
-S7::method(ast_summary, pandoc) = function(x, max_text = 40L) {
-  ast_summary_of_blocks(x@blocks@content, max_text)
-}
-
-S7::method(ast_summary, pandoc_blocks) = function(x, max_text = 40L) {
-  ast_summary_of_blocks(x@content, max_text)
-}
-
-S7::method(ast_summary, S7::class_list) = function(x, max_text = 40L) {
-  ast_summary_of_blocks(x, max_text)
+S7::method(ast_summary, pd_block_source) = function(x, max_text = 40L) {
+  ast_summary_of_blocks(as_block_list(x), max_text)
 }
 
 

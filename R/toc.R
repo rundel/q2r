@@ -34,15 +34,7 @@ ast_toc = S7::new_generic("ast_toc", "x", function(x, max_level = 3L, ...) {
   S7::S7_dispatch()
 })
 
-S7::method(ast_toc, pandoc) = function(x, max_level = 3L, ...) {
-  ast_toc_of_headers(select_nodes(x, is(pandoc_header)), max_level)
-}
-
-S7::method(ast_toc, pandoc_blocks) = function(x, max_level = 3L, ...) {
-  ast_toc_of_headers(select_nodes(x, is(pandoc_header)), max_level)
-}
-
-S7::method(ast_toc, S7::class_list) = function(x, max_level = 3L, ...) {
+S7::method(ast_toc, pd_block_source) = function(x, max_level = 3L, ...) {
   ast_toc_of_headers(select_nodes(x, is(pandoc_header)), max_level)
 }
 
@@ -126,16 +118,8 @@ split_sections = S7::new_generic("split_sections", "x", function(x, level = 1L, 
   S7::S7_dispatch()
 })
 
-S7::method(split_sections, pandoc) = function(x, level = 1L, ...) {
-  split_sections_of_blocks(x@blocks@content, level)
-}
-
-S7::method(split_sections, pandoc_blocks) = function(x, level = 1L, ...) {
-  split_sections_of_blocks(x@content, level)
-}
-
-S7::method(split_sections, S7::class_list) = function(x, level = 1L, ...) {
-  split_sections_of_blocks(x, level)
+S7::method(split_sections, pd_block_source) = function(x, level = 1L, ...) {
+  split_sections_of_blocks(as_block_list(x), level)
 }
 
 split_sections_of_blocks = function(blocks, level) {
