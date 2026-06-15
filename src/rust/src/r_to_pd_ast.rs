@@ -19,7 +19,11 @@ use pampa::pandoc::table::{
     Alignment, Cell, ColSpec, ColWidth, Row, Table, TableBody, TableFoot, TableHead,
 };
 use pampa::pandoc::{Attr, Block, ConfigValue, Inline, Pandoc, Shortcode, ShortcodeArg};
-use quarto_source_map::SourceInfo;
+use quarto_source_map::{FileId, SourceInfo};
+
+fn default_si() -> SourceInfo {
+    SourceInfo::original(FileId(0), 0, 0)
+}
 
 fn field(list: &List, name: &str) -> Option<Robj> {
     for (nm, val) in list.iter() {
@@ -226,7 +230,7 @@ fn caption_from_r(r: &Robj) -> ERResult<Caption> {
         return Ok(Caption {
             short: None,
             long: None,
-            source_info: SourceInfo::default(),
+            source_info: default_si(),
         });
     }
     let lst = as_list(r)?;
@@ -246,7 +250,7 @@ fn caption_from_r(r: &Robj) -> ERResult<Caption> {
     Ok(Caption {
         short,
         long,
-        source_info: SourceInfo::default(),
+        source_info: default_si(),
     })
 }
 
@@ -266,7 +270,7 @@ fn cell_from_list(list: List) -> ERResult<Cell> {
         row_span,
         col_span,
         content,
-        source_info: SourceInfo::default(),
+        source_info: default_si(),
         attr_source: AttrSourceInfo::empty(),
     })
 }
@@ -287,7 +291,7 @@ fn row_from_list(list: List) -> ERResult<Row> {
     Ok(Row {
         attr,
         cells,
-        source_info: SourceInfo::default(),
+        source_info: default_si(),
         attr_source: AttrSourceInfo::empty(),
     })
 }
@@ -307,7 +311,7 @@ fn table_head_from_r(r: &Robj) -> ERResult<TableHead> {
         return Ok(TableHead {
             attr: empty_attr(),
             rows: Vec::new(),
-            source_info: SourceInfo::default(),
+            source_info: default_si(),
             attr_source: AttrSourceInfo::empty(),
         });
     }
@@ -315,7 +319,7 @@ fn table_head_from_r(r: &Robj) -> ERResult<TableHead> {
     Ok(TableHead {
         attr: attr_field(&lst)?,
         rows: rows_from_field(&lst, "rows")?,
-        source_info: SourceInfo::default(),
+        source_info: default_si(),
         attr_source: AttrSourceInfo::empty(),
     })
 }
@@ -332,7 +336,7 @@ fn table_body_from_list(list: List) -> ERResult<TableBody> {
         rowhead_columns,
         head,
         body,
-        source_info: SourceInfo::default(),
+        source_info: default_si(),
         attr_source: AttrSourceInfo::empty(),
     })
 }
@@ -342,7 +346,7 @@ fn table_foot_from_r(r: &Robj) -> ERResult<TableFoot> {
         return Ok(TableFoot {
             attr: empty_attr(),
             rows: Vec::new(),
-            source_info: SourceInfo::default(),
+            source_info: default_si(),
             attr_source: AttrSourceInfo::empty(),
         });
     }
@@ -350,7 +354,7 @@ fn table_foot_from_r(r: &Robj) -> ERResult<TableFoot> {
     Ok(TableFoot {
         attr: attr_field(&lst)?,
         rows: rows_from_field(&lst, "rows")?,
-        source_info: SourceInfo::default(),
+        source_info: default_si(),
         attr_source: AttrSourceInfo::empty(),
     })
 }
@@ -362,7 +366,7 @@ fn table_from_list(list: List) -> ERResult<Table> {
         None => Caption {
             short: None,
             long: None,
-            source_info: SourceInfo::default(),
+            source_info: default_si(),
         },
     };
     let colspec = match field(&list, "colspec") {
@@ -394,7 +398,7 @@ fn table_from_list(list: List) -> ERResult<Table> {
         head,
         bodies,
         foot,
-        source_info: SourceInfo::default(),
+        source_info: default_si(),
         attr_source: AttrSourceInfo::empty(),
     })
 }
@@ -498,13 +502,13 @@ fn shortcode_from_list(list: List) -> ERResult<Shortcode> {
         name,
         positional_args,
         keyword_args,
-        source_info: SourceInfo::default(),
+        source_info: default_si(),
     })
 }
 
 fn inline_from_list(list: List) -> ERResult<Inline> {
     let tag = need_tag(&list)?;
-    let si = SourceInfo::default();
+    let si = default_si();
     let asi = || AttrSourceInfo::empty();
     let tsi = || TargetSourceInfo::empty();
     Ok(match tag.as_str() {
@@ -617,7 +621,7 @@ fn inline_from_list(list: List) -> ERResult<Inline> {
             id: need_str(&list, "id")?,
             source_info: si,
         }),
-        "AttrInline" => Inline::Attr(InlineAttr::new(attr_field(&list)?, asi())),
+        "AttrInline" => Inline::Attr(InlineAttr::new(attr_field(&list)?, asi(), si)),
         "Insert" => Inline::Insert(Insert {
             attr: attr_field(&list)?,
             content: inlines_from_content_field(&list, "content")?,
@@ -678,7 +682,7 @@ fn list_number_delim(s: &str) -> ListNumberDelim {
 
 fn block_from_list(list: List) -> ERResult<Block> {
     let tag = need_tag(&list)?;
-    let si = SourceInfo::default();
+    let si = default_si();
     let asi = || AttrSourceInfo::empty();
     Ok(match tag.as_str() {
         "Plain" => Block::Plain(Plain {
@@ -802,7 +806,7 @@ fn block_from_list(list: List) -> ERResult<Block> {
                 caption: Caption {
                     short: None,
                     long: Some(caption_blocks),
-                    source_info: SourceInfo::default(),
+                    source_info: default_si(),
                 },
                 content: blocks_from_content_field(&list, "content")?,
                 source_info: si,

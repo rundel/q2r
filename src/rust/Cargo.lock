@@ -201,8 +201,8 @@ dependencies = [
 
 [[package]]
 name = "comrak-to-pandoc"
-version = "0.1.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+version = "0.1.1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "comrak",
  "hashlink",
@@ -620,7 +620,7 @@ checksum = "384b8ab6d37215f3c5301a95a4accb5d64aa607f1fcb26a11b5303878451b4fe"
 [[package]]
 name = "pampa"
 version = "0.0.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "ariadne",
  "base64",
@@ -649,6 +649,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sha1",
+ "smallvec",
  "tokio",
  "tree-sitter",
  "tree-sitter-qmd",
@@ -747,7 +748,7 @@ dependencies = [
 [[package]]
 name = "quarto-ast-reconcile"
 version = "0.0.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "hashlink",
  "quarto-pandoc-types",
@@ -759,8 +760,8 @@ dependencies = [
 
 [[package]]
 name = "quarto-citeproc"
-version = "0.1.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+version = "0.1.1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "glob",
  "hashlink",
@@ -779,7 +780,7 @@ dependencies = [
 [[package]]
 name = "quarto-config"
 version = "0.0.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "indexmap",
  "quarto-error-reporting",
@@ -792,8 +793,8 @@ dependencies = [
 
 [[package]]
 name = "quarto-csl"
-version = "0.1.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+version = "0.1.1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "quarto-error-reporting",
  "quarto-source-map",
@@ -804,7 +805,7 @@ dependencies = [
 [[package]]
 name = "quarto-doctemplate"
 version = "0.1.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "quarto-error-reporting",
  "quarto-parse-errors",
@@ -820,7 +821,7 @@ dependencies = [
 [[package]]
 name = "quarto-error-message-macros"
 version = "0.1.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -831,8 +832,8 @@ dependencies = [
 
 [[package]]
 name = "quarto-error-reporting"
-version = "0.1.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+version = "0.1.1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "ariadne",
  "once_cell",
@@ -846,8 +847,8 @@ dependencies = [
 
 [[package]]
 name = "quarto-highlight-encoding"
-version = "0.1.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+version = "0.1.1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "serde",
  "serde_json",
@@ -856,7 +857,7 @@ dependencies = [
 [[package]]
 name = "quarto-pandoc-types"
 version = "0.0.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "hashlink",
  "indexmap",
@@ -869,7 +870,7 @@ dependencies = [
 [[package]]
 name = "quarto-parse-errors"
 version = "0.1.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "hashlink",
  "quarto-error-message-macros",
@@ -882,24 +883,26 @@ dependencies = [
 
 [[package]]
 name = "quarto-source-map"
-version = "0.1.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+version = "0.1.1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "serde",
+ "serde_json",
+ "smallvec",
 ]
 
 [[package]]
 name = "quarto-treesitter-ast"
 version = "0.1.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "tree-sitter",
 ]
 
 [[package]]
 name = "quarto-xml"
-version = "0.1.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+version = "0.1.1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "quarto-error-reporting",
  "quarto-source-map",
@@ -909,8 +912,8 @@ dependencies = [
 
 [[package]]
 name = "quarto-yaml"
-version = "0.1.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+version = "0.1.1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "quarto-source-map",
  "serde",
@@ -1174,6 +1177,9 @@ name = "smallvec"
 version = "1.15.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "67b1b7a3b5fe4f1376887184045fcf45c69e92af734b7aaddc05fb777b6fbd03"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "stable_deref_trait"
@@ -1298,7 +1304,7 @@ dependencies = [
 [[package]]
 name = "tree-sitter-doctemplate"
 version = "0.1.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "cc",
  "tree-sitter",
@@ -1314,7 +1320,7 @@ checksum = "009994f150cc0cd50ff54917d5bc8bffe8cad10ca10d81c34da2ec421ae61782"
 [[package]]
 name = "tree-sitter-qmd"
 version = "0.0.0"
-source = "git+https://github.com/quarto-dev/q2?rev=6e8795559783d7e0e6bc00b660e6eb39087d95a1#6e8795559783d7e0e6bc00b660e6eb39087d95a1"
+source = "git+https://github.com/quarto-dev/q2?rev=8665000356e112f1ea28b3c61c9b2f0c5c3d216c#8665000356e112f1ea28b3c61c9b2f0c5c3d216c"
 dependencies = [
  "cc",
  "tree-sitter",
