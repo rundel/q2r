@@ -81,10 +81,8 @@ cell_split_text = function(text) {
     return(list(prefix = NA_character_, opts = character(), code = character()))
   }
   is_opt = grepl(cell_directive_re, lines)
-  k = 0L
-  for (i in seq_along(lines)) {
-    if (is_opt[[i]]) k = i else break
-  }
+  first_code = match(FALSE, is_opt)
+  k = if (is.na(first_code)) length(lines) else first_code - 1L
   opt_lines = if (k >= 1L) lines[seq_len(k)] else character()
   code_lines = if (k < length(lines)) lines[(k + 1L):length(lines)] else character()
   prefix = if (length(opt_lines)) {
