@@ -740,6 +740,7 @@ dependencies = [
  "pampa",
  "quarto-error-reporting",
  "quarto-source-map",
+ "serde_json",
  "streaming-iterator",
  "tree-sitter",
  "tree-sitter-qmd",

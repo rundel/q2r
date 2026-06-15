@@ -216,6 +216,23 @@ table_to_list = function(x) {
   )
 }
 
+meta_to_list = function(m) {
+  kind = m@kind
+  v = m@value
+  switch(kind,
+    map = list(
+      kind = "map",
+      keys = names(v) %||% character(),
+      values = unname(purrr::map(v, meta_to_list))
+    ),
+    list    = list(kind = "list", value = unname(purrr::map(v, meta_to_list))),
+    inlines = list(kind = "inlines", value = inlines_to_list(v)),
+    blocks  = list(kind = "blocks", value = blocks_to_list(v)),
+    null    = list(kind = "null"),
+    list(kind = kind, value = v)
+  )
+}
+
 pandoc_to_list = function(x) {
-  list(tag = "Pandoc", blocks = blocks_to_list(x@blocks))
+  list(tag = "Pandoc", meta = meta_to_list(x@meta), blocks = blocks_to_list(x@blocks))
 }

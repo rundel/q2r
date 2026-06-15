@@ -268,10 +268,27 @@ citation_from_list = function(x) {
   )
 }
 
+meta_from_list = function(x) {
+  if (is.null(x)) return(pandoc_meta_value(kind = "map", value = list()))
+  kind = x$kind
+  value = switch(kind,
+    map = purrr::set_names(
+      purrr::map(x$values %||% list(), meta_from_list),
+      x$keys %||% character()
+    ),
+    list    = purrr::map(x$value %||% list(), meta_from_list),
+    inlines = inlines_from_list(x$value),
+    blocks  = blocks_from_list(x$value),
+    null    = NULL,
+    x$value
+  )
+  pandoc_meta_value(kind = kind, value = value)
+}
+
 pandoc_from_list = function(x) {
   if (is.null(x)) return(NULL)
   pandoc(
-    meta = pandoc_meta_value(),
+    meta = meta_from_list(x$meta),
     blocks = blocks_from_list(x$blocks)
   )
 }

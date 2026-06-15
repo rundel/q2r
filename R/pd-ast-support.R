@@ -118,7 +118,10 @@ pandoc_meta_value = S7::new_class(
     value = S7::new_property(S7::class_any, default = list())
   ),
   validator = function(self) {
-    allowed = c("string", "bool", "inlines", "blocks", "list", "map")
+    allowed = c(
+      "string", "int", "real", "bool", "null", "inlines", "blocks",
+      "list", "map", "path", "glob", "expr"
+    )
     if (length(self@kind) != 1L || !self@kind %in% allowed) {
       sprintf("@kind must be one of %s", paste(allowed, collapse = "/"))
     }

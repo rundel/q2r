@@ -18,7 +18,10 @@ use std::collections::HashMap;
 use pampa::pandoc::table::{
     Alignment, Cell, ColSpec, ColWidth, Row, Table, TableBody, TableFoot, TableHead,
 };
-use pampa::pandoc::{Attr, Block, ConfigValue, Inline, Pandoc, Shortcode, ShortcodeArg};
+use pampa::pandoc::{
+    Attr, Block, ConfigMapEntry, ConfigValue, ConfigValueKind, Inline, MergeOp, Pandoc, Shortcode,
+    ShortcodeArg,
+};
 use quarto_source_map::{FileId, SourceInfo};
 
 fn default_si() -> SourceInfo {
@@ -87,6 +90,18 @@ fn need_i32(list: &List, name: &str) -> ERResult<i32> {
     field(list, name)
         .and_then(|r| opt_i32(&r))
         .ok_or_else(|| Error::Other(format!("missing integer field '{}'", name)))
+}
+
+fn need_f64(list: &List, name: &str) -> ERResult<f64> {
+    field(list, name)
+        .and_then(|r| opt_f64(&r))
+        .ok_or_else(|| Error::Other(format!("missing numeric field '{}'", name)))
+}
+
+fn need_bool(list: &List, name: &str) -> ERResult<bool> {
+    field(list, name)
+        .and_then(|r| opt_bool(&r))
+        .ok_or_else(|| Error::Other(format!("missing logical field '{}'", name)))
 }
 
 fn need_tag(list: &List) -> ERResult<String> {
@@ -848,6 +863,82 @@ fn block_from_list(list: List) -> ERResult<Block> {
     })
 }
 
+fn config_value_from_r(r: &Robj) -> ERResult<ConfigValue> {
+    let lst = as_list(r)?;
+    let kind = need_str(&lst, "kind")?;
+    let si = default_si();
+    Ok(match kind.as_str() {
+        "map" => {
+            let keys = field(&lst, "keys").map(|x| str_vec(&x)).unwrap_or_default();
+            let value_objs: Vec<Robj> = match field(&lst, "values") {
+                Some(v) if !v.is_null() => as_list(&v)?.iter().map(|(_, val)| val).collect(),
+                _ => Vec::new(),
+            };
+            if keys.len() != value_objs.len() {
+                return Err(Error::Other(format!(
+                    "meta map: {} keys but {} values",
+                    keys.len(),
+                    value_objs.len()
+                )));
+            }
+            let mut entries = Vec::with_capacity(keys.len());
+            for (k, vobj) in keys.into_iter().zip(value_objs.iter()) {
+                entries.push(ConfigMapEntry {
+                    key: k,
+                    key_source: default_si(),
+                    value: config_value_from_r(vobj)?,
+                });
+            }
+            ConfigValue::new_map(entries, si)
+        }
+        "list" => {
+            let items: Vec<Robj> = match field(&lst, "value") {
+                Some(v) if !v.is_null() => as_list(&v)?.iter().map(|(_, val)| val).collect(),
+                _ => Vec::new(),
+            };
+            let mut cvs = Vec::with_capacity(items.len());
+            for it in items.iter() {
+                cvs.push(config_value_from_r(it)?);
+            }
+            ConfigValue::new_array(cvs, si)
+        }
+        "string" => ConfigValue::new_string(need_str(&lst, "value")?, si),
+        "path" => ConfigValue::new_path(need_str(&lst, "value")?, si),
+        "glob" => ConfigValue::new_glob(need_str(&lst, "value")?, si),
+        "expr" => ConfigValue::new_expr(need_str(&lst, "value")?, si),
+        "bool" => ConfigValue::new_bool(need_bool(&lst, "value")?, si),
+        "null" => ConfigValue::null(si),
+        "int" => {
+            let n = need_f64(&lst, "value")? as i64;
+            let value: ConfigValueKind = serde_json::from_value(serde_json::json!({ "Scalar": n }))
+                .map_err(|e| Error::Other(format!("meta int: {}", e)))?;
+            ConfigValue {
+                value,
+                source_info: si,
+                merge_op: MergeOp::Concat,
+            }
+        }
+        "real" => {
+            let f = need_f64(&lst, "value")?;
+            let num = serde_json::Number::from_f64(f)
+                .ok_or_else(|| Error::Other("meta real: non-finite value".into()))?;
+            let value: ConfigValueKind =
+                serde_json::from_value(serde_json::json!({ "Scalar": num }))
+                    .map_err(|e| Error::Other(format!("meta real: {}", e)))?;
+            ConfigValue {
+                value,
+                source_info: si,
+                merge_op: MergeOp::Concat,
+            }
+        }
+        "inlines" => ConfigValue::new_inlines(inlines_from_content_field(&lst, "value")?, si),
+        "blocks" => ConfigValue::new_blocks(blocks_from_content_field(&lst, "value")?, si),
+        other => {
+            return Err(Error::Other(format!("unknown meta kind '{}'", other)));
+        }
+    })
+}
+
 pub fn pandoc_from_r(r: &Robj) -> ERResult<Pandoc> {
     let lst = as_list(r)?;
     let tag = need_tag(&lst)?;
@@ -857,9 +948,10 @@ pub fn pandoc_from_r(r: &Robj) -> ERResult<Pandoc> {
             tag
         )));
     }
+    let meta = match field(&lst, "meta") {
+        Some(m) if !m.is_null() => config_value_from_r(&m)?,
+        _ => ConfigValue::default(),
+    };
     let blocks = blocks_from_content_field(&lst, "blocks")?;
-    Ok(Pandoc {
-        meta: ConfigValue::default(),
-        blocks,
-    })
+    Ok(Pandoc { meta, blocks })
 }

@@ -1,8 +1,8 @@
 use extendr_api::prelude::*;
 use pampa::pandoc::{
-    Alignment, Attr, Block, Caption, Cell, Citation, CitationMode, ColSpec, ColWidth, Inline,
-    MathType, Pandoc, QuoteType, Row, Shortcode, ShortcodeArg, Table, TableBody, TableFoot,
-    TableHead,
+    Alignment, Attr, Block, Caption, Cell, Citation, CitationMode, ColSpec, ColWidth, ConfigValue,
+    ConfigValueKind, Inline, MathType, Pandoc, QuoteType, Row, Shortcode, ShortcodeArg, Table,
+    TableBody, TableFoot, TableHead,
 };
 
 fn attr_to_r(attr: &Attr) -> Robj {
@@ -388,6 +388,69 @@ fn block_to_r(b: &Block) -> Robj {
     }
 }
 
+// Document metadata (Pandoc.meta) is exported as a value-only tagged list
+// mirroring ConfigValueKind; source_info and merge_op are intentionally
+// dropped (the QMD writer ignores them, and dropping them keeps the
+// round-trip AST comparison stable).
+fn config_value_to_r(cv: &ConfigValue) -> Robj {
+    match &cv.value {
+        ConfigValueKind::Map(entries) => {
+            let keys: Vec<&str> = entries.iter().map(|e| e.key.as_str()).collect();
+            let vals: Vec<Robj> = entries.iter().map(|e| config_value_to_r(&e.value)).collect();
+            list!(kind = "map", keys = keys, values = List::from_values(vals)).into()
+        }
+        ConfigValueKind::Array(items) => {
+            let vals: Vec<Robj> = items.iter().map(config_value_to_r).collect();
+            list!(kind = "list", value = List::from_values(vals)).into()
+        }
+        ConfigValueKind::PandocInlines(inlines) => {
+            list!(kind = "inlines", value = inlines_to_r(inlines)).into()
+        }
+        ConfigValueKind::PandocBlocks(blocks) => {
+            list!(kind = "blocks", value = blocks_to_r(blocks)).into()
+        }
+        ConfigValueKind::Path(s) => list!(kind = "path", value = s.as_str()).into(),
+        ConfigValueKind::Glob(s) => list!(kind = "glob", value = s.as_str()).into(),
+        ConfigValueKind::Expr(s) => list!(kind = "expr", value = s.as_str()).into(),
+        ConfigValueKind::Scalar(_) => {
+            let inner = serde_json::to_value(&cv.value)
+                .ok()
+                .and_then(|v| v.get("Scalar").cloned())
+                .unwrap_or(serde_json::Value::Null);
+            scalar_json_to_r(&inner)
+        }
+    }
+}
+
+fn scalar_json_to_r(v: &serde_json::Value) -> Robj {
+    match v {
+        serde_json::Value::Null => list!(kind = "null").into(),
+        serde_json::Value::Bool(b) => list!(kind = "bool", value = *b).into(),
+        serde_json::Value::Number(n) => {
+            if let Some(i) = n.as_i64() {
+                list!(kind = "int", value = i as f64).into()
+            } else {
+                list!(kind = "real", value = n.as_f64().unwrap_or(f64::NAN)).into()
+            }
+        }
+        serde_json::Value::String(s) => list!(kind = "string", value = s.as_str()).into(),
+        serde_json::Value::Array(arr) => {
+            let vals: Vec<Robj> = arr.iter().map(scalar_json_to_r).collect();
+            list!(kind = "list", value = List::from_values(vals)).into()
+        }
+        serde_json::Value::Object(obj) => {
+            let keys: Vec<&str> = obj.keys().map(|s| s.as_str()).collect();
+            let vals: Vec<Robj> = obj.values().map(scalar_json_to_r).collect();
+            list!(kind = "map", keys = keys, values = List::from_values(vals)).into()
+        }
+    }
+}
+
 pub fn pandoc_to_r(p: &Pandoc) -> Robj {
-    list!(tag = "Pandoc", blocks = blocks_to_r(&p.blocks)).into()
+    list!(
+        tag = "Pandoc",
+        meta = config_value_to_r(&p.meta),
+        blocks = blocks_to_r(&p.blocks)
+    )
+    .into()
 }
