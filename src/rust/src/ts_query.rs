@@ -57,10 +57,7 @@ pub fn run_ts_query(text: &str, query_text: &str) -> List {
         let mut names: Vec<&str> = Vec::with_capacity(m.captures.len());
         let mut values: Vec<Robj> = Vec::with_capacity(m.captures.len());
         for cap in m.captures.iter() {
-            let name = capture_names
-                .get(cap.index as usize)
-                .copied()
-                .unwrap_or("");
+            let name = capture_names.get(cap.index as usize).copied().unwrap_or("");
             let mut walker = cap.node.walk();
             let node_value = ts_ast_to_r::node_to_r_at(&mut walker, bytes);
             names.push(name);

@@ -1,5 +1,5 @@
-use extendr_api::prelude::*;
 use extendr_api::Result as ERResult;
+use extendr_api::prelude::*;
 use hashlink::LinkedHashMap;
 use pampa::pandoc::attr::{AttrSourceInfo, TargetSourceInfo, empty_attr};
 use pampa::pandoc::block::{
@@ -9,12 +9,11 @@ use pampa::pandoc::block::{
 };
 use pampa::pandoc::caption::Caption;
 use pampa::pandoc::inline::{
-    Cite, Citation, CitationMode, Code, Delete, EditComment, Emph, Highlight, Image, InlineAttr,
-    Insert, LineBreak, Link, Math, MathType, Note, NoteReference, Quoted, QuoteType, RawInline,
-    SmallCaps, SoftBreak, Space, Str, Strikeout, Strong, Subscript, Superscript, Underline, Span,
+    Citation, CitationMode, Cite, Code, Delete, EditComment, Emph, Highlight, Image, InlineAttr,
+    Insert, LineBreak, Link, Math, MathType, Note, NoteReference, QuoteType, Quoted, RawInline,
+    SmallCaps, SoftBreak, Space, Span, Str, Strikeout, Strong, Subscript, Superscript, Underline,
 };
 use pampa::pandoc::list::{ListAttributes, ListNumberDelim, ListNumberStyle};
-use std::collections::HashMap;
 use pampa::pandoc::table::{
     Alignment, Cell, ColSpec, ColWidth, Row, Table, TableBody, TableFoot, TableHead,
 };
@@ -23,6 +22,7 @@ use pampa::pandoc::{
     ShortcodeArg,
 };
 use quarto_source_map::{FileId, SourceInfo};
+use std::collections::HashMap;
 
 fn default_si() -> SourceInfo {
     SourceInfo::original(FileId(0), 0, 0)
@@ -132,9 +132,7 @@ fn attr_from_r(r: &Robj) -> ERResult<Attr> {
     let classes = field(&lst, "classes")
         .map(|x| str_vec(&x))
         .unwrap_or_default();
-    let keys = field(&lst, "keys")
-        .map(|x| str_vec(&x))
-        .unwrap_or_default();
+    let keys = field(&lst, "keys").map(|x| str_vec(&x)).unwrap_or_default();
     let values = field(&lst, "values")
         .map(|x| str_vec(&x))
         .unwrap_or_default();
@@ -292,10 +290,7 @@ fn cell_from_list(list: List) -> ERResult<Cell> {
 
 fn cells_from_field(list: &List, name: &str) -> ERResult<Vec<Cell>> {
     match field(list, name) {
-        Some(r) => items_from_r(&r)?
-            .into_iter()
-            .map(cell_from_list)
-            .collect(),
+        Some(r) => items_from_r(&r)?.into_iter().map(cell_from_list).collect(),
         None => Ok(Vec::new()),
     }
 }
@@ -313,10 +308,7 @@ fn row_from_list(list: List) -> ERResult<Row> {
 
 fn rows_from_field(list: &List, name: &str) -> ERResult<Vec<Row>> {
     match field(list, name) {
-        Some(r) => items_from_r(&r)?
-            .into_iter()
-            .map(row_from_list)
-            .collect(),
+        Some(r) => items_from_r(&r)?.into_iter().map(row_from_list).collect(),
         None => Ok(Vec::new()),
     }
 }
@@ -430,9 +422,7 @@ fn citation_from_list(list: List) -> ERResult<Citation> {
     let note_num = field(&list, "note_num")
         .and_then(|r| opt_i32(&r))
         .unwrap_or(0) as usize;
-    let hash = field(&list, "hash")
-        .and_then(|r| opt_i32(&r))
-        .unwrap_or(0) as usize;
+    let hash = field(&list, "hash").and_then(|r| opt_i32(&r)).unwrap_or(0) as usize;
     Ok(Citation {
         id,
         prefix,
@@ -450,15 +440,18 @@ fn shortcode_arg_from_r(r: &Robj) -> ERResult<ShortcodeArg> {
     let value = field(&lst, "value")
         .ok_or_else(|| Error::Other(format!("shortcode arg '{}' missing 'value'", kind)))?;
     Ok(match kind.as_str() {
-        "string" => ShortcodeArg::String(opt_str(&value).ok_or_else(|| {
-            Error::Other("shortcode arg 'string' value not a string".into())
-        })?),
-        "number" => ShortcodeArg::Number(opt_f64(&value).ok_or_else(|| {
-            Error::Other("shortcode arg 'number' value not numeric".into())
-        })?),
-        "boolean" => ShortcodeArg::Boolean(opt_bool(&value).ok_or_else(|| {
-            Error::Other("shortcode arg 'boolean' value not boolean".into())
-        })?),
+        "string" => ShortcodeArg::String(
+            opt_str(&value)
+                .ok_or_else(|| Error::Other("shortcode arg 'string' value not a string".into()))?,
+        ),
+        "number" => ShortcodeArg::Number(
+            opt_f64(&value)
+                .ok_or_else(|| Error::Other("shortcode arg 'number' value not numeric".into()))?,
+        ),
+        "boolean" => ShortcodeArg::Boolean(
+            opt_bool(&value)
+                .ok_or_else(|| Error::Other("shortcode arg 'boolean' value not boolean".into()))?,
+        ),
         "shortcode" => {
             let inner = as_list(&value)?;
             ShortcodeArg::Shortcode(shortcode_from_list(inner)?)
@@ -468,9 +461,8 @@ fn shortcode_arg_from_r(r: &Robj) -> ERResult<ShortcodeArg> {
             let mut map: HashMap<String, ShortcodeArg> = HashMap::new();
             for item in items {
                 let k = need_str(&item, "key")?;
-                let v_r = field(&item, "value").ok_or_else(|| {
-                    Error::Other("shortcode kv missing 'value'".into())
-                })?;
+                let v_r = field(&item, "value")
+                    .ok_or_else(|| Error::Other("shortcode kv missing 'value'".into()))?;
                 map.insert(k, shortcode_arg_from_r(&v_r)?);
             }
             ShortcodeArg::KeyValue(map)
@@ -506,9 +498,8 @@ fn shortcode_from_list(list: List) -> ERResult<Shortcode> {
         let items = items_from_r(&r)?;
         for item in items {
             let k = need_str(&item, "key")?;
-            let v_r = field(&item, "value").ok_or_else(|| {
-                Error::Other("shortcode keyword_arg missing 'value'".into())
-            })?;
+            let v_r = field(&item, "value")
+                .ok_or_else(|| Error::Other("shortcode keyword_arg missing 'value'".into()))?;
             keyword_args.insert(k, shortcode_arg_from_r(&v_r)?);
         }
     }

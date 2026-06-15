@@ -171,22 +171,14 @@ fn inline_to_r(i: &Inline) -> Robj {
         Inline::SoftBreak(_) => list!(tag = "SoftBreak").into(),
         Inline::LineBreak(_) => list!(tag = "LineBreak").into(),
         Inline::Emph(e) => list!(tag = "Emph", content = inlines_to_r(&e.content)).into(),
-        Inline::Underline(u) => {
-            list!(tag = "Underline", content = inlines_to_r(&u.content)).into()
-        }
+        Inline::Underline(u) => list!(tag = "Underline", content = inlines_to_r(&u.content)).into(),
         Inline::Strong(s) => list!(tag = "Strong", content = inlines_to_r(&s.content)).into(),
-        Inline::Strikeout(s) => {
-            list!(tag = "Strikeout", content = inlines_to_r(&s.content)).into()
-        }
+        Inline::Strikeout(s) => list!(tag = "Strikeout", content = inlines_to_r(&s.content)).into(),
         Inline::Superscript(s) => {
             list!(tag = "Superscript", content = inlines_to_r(&s.content)).into()
         }
-        Inline::Subscript(s) => {
-            list!(tag = "Subscript", content = inlines_to_r(&s.content)).into()
-        }
-        Inline::SmallCaps(s) => {
-            list!(tag = "SmallCaps", content = inlines_to_r(&s.content)).into()
-        }
+        Inline::Subscript(s) => list!(tag = "Subscript", content = inlines_to_r(&s.content)).into(),
+        Inline::SmallCaps(s) => list!(tag = "SmallCaps", content = inlines_to_r(&s.content)).into(),
         Inline::Code(c) => list!(
             tag = "Code",
             attr = attr_to_r(&c.attr),
@@ -250,9 +242,7 @@ fn inline_to_r(i: &Inline) -> Robj {
             )
             .into()
         }
-        Inline::NoteReference(nr) => {
-            list!(tag = "NoteReference", id = nr.id.as_str()).into()
-        }
+        Inline::NoteReference(nr) => list!(tag = "NoteReference", id = nr.id.as_str()).into(),
         Inline::Attr(ia) => list!(tag = "AttrInline", attr = attr_to_r(&ia.attr)).into(),
         Inline::Insert(x) => list!(
             tag = "Insert",
@@ -286,15 +276,9 @@ fn inline_to_r(i: &Inline) -> Robj {
 fn block_to_r(b: &Block) -> Robj {
     match b {
         Block::Plain(p) => list!(tag = "Plain", content = inlines_to_r(&p.content)).into(),
-        Block::Paragraph(p) => {
-            list!(tag = "Paragraph", content = inlines_to_r(&p.content)).into()
-        }
+        Block::Paragraph(p) => list!(tag = "Paragraph", content = inlines_to_r(&p.content)).into(),
         Block::LineBlock(lb) => {
-            let lines: Vec<Robj> = lb
-                .content
-                .iter()
-                .map(|line| inlines_to_r(line))
-                .collect();
+            let lines: Vec<Robj> = lb.content.iter().map(|line| inlines_to_r(line)).collect();
             list!(tag = "LineBlock", content = List::from_values(lines)).into()
         }
         Block::CodeBlock(c) => list!(
@@ -332,8 +316,7 @@ fn block_to_r(b: &Block) -> Robj {
                 .content
                 .iter()
                 .map(|(term, defs)| {
-                    let def_list: Vec<Robj> =
-                        defs.iter().map(|d| blocks_to_r(d)).collect();
+                    let def_list: Vec<Robj> = defs.iter().map(|d| blocks_to_r(d)).collect();
                     list!(
                         term = inlines_to_r(term),
                         defs = List::from_values(def_list)
@@ -396,7 +379,10 @@ fn config_value_to_r(cv: &ConfigValue) -> Robj {
     match &cv.value {
         ConfigValueKind::Map(entries) => {
             let keys: Vec<&str> = entries.iter().map(|e| e.key.as_str()).collect();
-            let vals: Vec<Robj> = entries.iter().map(|e| config_value_to_r(&e.value)).collect();
+            let vals: Vec<Robj> = entries
+                .iter()
+                .map(|e| config_value_to_r(&e.value))
+                .collect();
             list!(kind = "map", keys = keys, values = List::from_values(vals)).into()
         }
         ConfigValueKind::Array(items) => {

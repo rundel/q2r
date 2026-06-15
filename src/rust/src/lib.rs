@@ -23,10 +23,7 @@ fn diags_to_list_ref(
     diags: &[quarto_error_reporting::DiagnosticMessage],
     ctx: &quarto_source_map::SourceContext,
 ) -> List {
-    let v: Vec<Robj> = diags
-        .iter()
-        .map(|d| diag_to_r::diag_to_r(d, ctx))
-        .collect();
+    let v: Vec<Robj> = diags.iter().map(|d| diag_to_r::diag_to_r(d, ctx)).collect();
     List::from_values(v)
 }
 
@@ -46,7 +43,14 @@ fn fallback_source_context(text: &str, filename: &str) -> quarto_source_map::Sou
 #[extendr]
 fn pampa_parse_pd_impl(text: &str, filename: &str, prune_errors: bool) -> List {
     let mut sink = std::io::sink();
-    let result = qmd::read(text.as_bytes(), false, filename, &mut sink, prune_errors, None);
+    let result = qmd::read(
+        text.as_bytes(),
+        false,
+        filename,
+        &mut sink,
+        prune_errors,
+        None,
+    );
     match result {
         Ok((pandoc, ctx, diags)) => {
             let pd_ast = pd_ast_to_r::pandoc_to_r(&pandoc);
@@ -72,7 +76,14 @@ fn pampa_parse_pd_impl(text: &str, filename: &str, prune_errors: bool) -> List {
 fn pampa_parse_ts_impl(text: &str, filename: &str, prune_errors: bool) -> List {
     let ts_ast = ts_ast_to_r::parse_ts_ast_to_r(text.as_bytes());
     let mut sink = std::io::sink();
-    let result = qmd::read(text.as_bytes(), false, filename, &mut sink, prune_errors, None);
+    let result = qmd::read(
+        text.as_bytes(),
+        false,
+        filename,
+        &mut sink,
+        prune_errors,
+        None,
+    );
     let diag_list = match result {
         Ok((_, ctx, diags)) => diags_to_list_ref(&diags, &ctx.source_context),
         Err(diags) => {
@@ -129,19 +140,23 @@ fn pampa_write_qmd_ast_impl(r_ast: Robj) -> List {
     let pandoc = match r_to_pd_ast::pandoc_from_r(&r_ast) {
         Ok(p) => p,
         Err(e) => {
-            return list!(text = NULL, error = e.to_string(), diagnostics = List::new(0));
+            return list!(
+                text = NULL,
+                diagnostics = List::new(0),
+                error = e.to_string()
+            );
         }
     };
     let mut out: Vec<u8> = Vec::new();
     match qmd_writer::write(&pandoc, &mut out) {
         Ok(()) => {
             let rendered = String::from_utf8_lossy(&out).into_owned();
-            list!(text = rendered, diagnostics = List::new(0))
+            list!(text = rendered, diagnostics = List::new(0), error = NULL)
         }
         Err(write_diags) => {
             let ctx = quarto_source_map::SourceContext::new();
             let diag_list = diags_to_list(write_diags, &ctx);
-            list!(text = NULL, diagnostics = diag_list)
+            list!(text = NULL, diagnostics = diag_list, error = NULL)
         }
     }
 }
