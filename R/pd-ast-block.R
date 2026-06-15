@@ -41,8 +41,8 @@ pandoc_line_block = S7::new_class(
   parent = pandoc_block,
   properties = list(content = S7::new_property(S7::class_list, default = list())),
   validator = function(self) {
-    ok = vapply(self@content, function(x) S7::S7_inherits(x, pandoc_inlines), logical(1))
-    if (!all(ok)) "@content must be a list of pandoc_inlines objects"
+    validate_list_of(self@content, pandoc_inlines,
+      "@content must be a list of pandoc_inlines objects")
   }
 )
 
@@ -92,8 +92,8 @@ pandoc_ordered_list = S7::new_class(
     content = S7::new_property(S7::class_list, default = list())
   ),
   validator = function(self) {
-    ok = vapply(self@content, function(x) S7::S7_inherits(x, pandoc_blocks), logical(1))
-    if (!all(ok)) "@content must be a list of pandoc_blocks (one per list item)"
+    validate_list_of(self@content, pandoc_blocks,
+      "@content must be a list of pandoc_blocks (one per list item)")
   }
 )
 
@@ -105,8 +105,8 @@ pandoc_bullet_list = S7::new_class(
   parent = pandoc_block,
   properties = list(content = S7::new_property(S7::class_list, default = list())),
   validator = function(self) {
-    ok = vapply(self@content, function(x) S7::S7_inherits(x, pandoc_blocks), logical(1))
-    if (!all(ok)) "@content must be a list of pandoc_blocks (one per list item)"
+    validate_list_of(self@content, pandoc_blocks,
+      "@content must be a list of pandoc_blocks (one per list item)")
   }
 )
 
@@ -118,8 +118,8 @@ pandoc_definition_list = S7::new_class(
   parent = pandoc_block,
   properties = list(content = S7::new_property(S7::class_list, default = list())),
   validator = function(self) {
-    ok = vapply(self@content, function(x) S7::S7_inherits(x, pandoc_definition_item), logical(1))
-    if (!all(ok)) "@content must be a list of pandoc_definition_item objects"
+    validate_list_of(self@content, pandoc_definition_item,
+      "@content must be a list of pandoc_definition_item objects")
   }
 )
 

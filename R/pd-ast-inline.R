@@ -134,8 +134,8 @@ pandoc_cite = S7::new_class(
     content   = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list())))
   ),
   validator = function(self) {
-    ok = vapply(self@citations, function(x) S7::S7_inherits(x, pandoc_citation), logical(1))
-    if (!all(ok)) "@citations must be a list of pandoc_citation objects"
+    validate_list_of(self@citations, pandoc_citation,
+      "@citations must be a list of pandoc_citation objects")
   }
 )
 

@@ -13,6 +13,13 @@
 #' @seealso [pandoc_node], [pandoc_block_constructors], [pandoc_inline_constructors]
 NULL
 
+# Shared validator body: returns `msg` unless every element of `x` inherits
+# `cls` (an empty list passes). Collated first so every block/inline/support
+# class can use it.
+validate_list_of = function(x, cls, msg) {
+  if (!all(purrr::map_lgl(x, S7::S7_inherits, cls))) msg
+}
+
 #' @rdname pandoc_support_types
 #' @export
 pandoc_source_info = S7::new_class(
@@ -90,8 +97,8 @@ pandoc_blocks = S7::new_class(
   package = "q2r",
   properties = list(content = S7::class_list),
   validator = function(self) {
-    ok = vapply(self@content, function(x) S7::S7_inherits(x, pandoc_block), logical(1))
-    if (!all(ok)) "all elements of @content must be pandoc_block objects"
+    validate_list_of(self@content, pandoc_block,
+      "all elements of @content must be pandoc_block objects")
   }
 )
 
@@ -102,8 +109,8 @@ pandoc_inlines = S7::new_class(
   package = "q2r",
   properties = list(content = S7::class_list),
   validator = function(self) {
-    ok = vapply(self@content, function(x) S7::S7_inherits(x, pandoc_inline), logical(1))
-    if (!all(ok)) "all elements of @content must be pandoc_inline objects"
+    validate_list_of(self@content, pandoc_inline,
+      "all elements of @content must be pandoc_inline objects")
   }
 )
 
@@ -185,8 +192,8 @@ pandoc_definition_item = S7::new_class(
     defs = S7::new_property(S7::class_list, default = list())
   ),
   validator = function(self) {
-    ok = vapply(self@defs, function(x) S7::S7_inherits(x, pandoc_blocks), logical(1))
-    if (!all(ok)) "@defs must be a list of pandoc_blocks objects"
+    validate_list_of(self@defs, pandoc_blocks,
+      "@defs must be a list of pandoc_blocks objects")
   }
 )
 
@@ -225,8 +232,8 @@ pandoc_row = S7::new_class(
     cells = S7::new_property(S7::class_list, default = list())
   ),
   validator = function(self) {
-    ok = vapply(self@cells, function(x) S7::S7_inherits(x, pandoc_cell), logical(1))
-    if (!all(ok)) "@cells must be a list of pandoc_cell objects"
+    validate_list_of(self@cells, pandoc_cell,
+      "@cells must be a list of pandoc_cell objects")
   }
 )
 

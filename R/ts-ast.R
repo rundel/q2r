@@ -38,8 +38,8 @@ ts_nodes = S7::new_class(
   package = "q2r",
   properties = list(content = S7::class_list),
   validator = function(self) {
-    ok = vapply(self@content, function(x) S7::S7_inherits(x, ts_node), logical(1))
-    if (!all(ok)) "all elements of @content must be ts_node objects"
+    validate_list_of(self@content, ts_node,
+      "all elements of @content must be ts_node objects")
   }
 )
 
@@ -78,10 +78,8 @@ ts_tree = S7::new_class(
     diagnostics = S7::new_property(S7::class_list, default = list())
   ),
   validator = function(self) {
-    if (length(self@diagnostics) &&
-        !all(vapply(self@diagnostics, S7::S7_inherits, logical(1), pampa_diagnostic))) {
-      "@diagnostics must be a list of pampa_diagnostic objects"
-    }
+    validate_list_of(self@diagnostics, pampa_diagnostic,
+      "@diagnostics must be a list of pampa_diagnostic objects")
   }
 )
 

@@ -62,10 +62,8 @@ qmd_collection = S7::new_class(
     paths = S7::new_property(S7::class_character, default = character(0))
   ),
   validator = function(self) {
-    if (length(self@docs) &&
-        !all(vapply(self@docs, S7::S7_inherits, logical(1), pandoc))) {
-      return("@docs must be a list of pandoc objects")
-    }
+    msg = validate_list_of(self@docs, pandoc, "@docs must be a list of pandoc objects")
+    if (!is.null(msg)) return(msg)
     if (length(self@paths) != length(self@docs)) {
       "@paths must be the same length as @docs"
     }

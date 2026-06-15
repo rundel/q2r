@@ -13,9 +13,7 @@ pandoc = S7::new_class(
     diagnostics = S7::new_property(S7::class_list, default = list())
   ),
   validator = function(self) {
-    if (length(self@diagnostics) &&
-        !all(vapply(self@diagnostics, S7::S7_inherits, logical(1), pampa_diagnostic))) {
-      "@diagnostics must be a list of pampa_diagnostic objects"
-    }
+    validate_list_of(self@diagnostics, pampa_diagnostic,
+      "@diagnostics must be a list of pampa_diagnostic objects")
   }
 )
