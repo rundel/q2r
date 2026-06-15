@@ -61,7 +61,6 @@ Collate:
     'select-section.R'
     'select-ts.R'
     'table.R'
-    'tests.R'
     'toc.R'
     'ts-query.R'
     'zzz.R'

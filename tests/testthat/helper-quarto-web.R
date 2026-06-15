@@ -142,7 +142,7 @@ update_tests = function(target, files, mtime_paths, gen_func, skip_map = list())
 
 maybe_regenerate_quarto_web_tests = function() {
   if (nzchar(Sys.getenv("CI"))) return(invisible(FALSE))
-  gen_src = "../../R/tests.R"
+  gen_src = "_gen-quarto-web.R"
   if (!file.exists(gen_src)) return(invisible(FALSE))
   if (!quarto_web_available()) return(invisible(FALSE))
 
