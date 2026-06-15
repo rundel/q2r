@@ -65,9 +65,9 @@ on the relevant node types; the same verb name works on both ASTs.
 
 Predicates are unquoted R expressions evaluated against each candidate
 node with a per-AST data mask. The mask exposes the node's S7 slots
-as bare names (\code{level}, \code{url}, \code{text}, \code{kind}, ...) plus a set of
-helper functions (\code{is()}, \code{has_class()}, \code{has_id()}, \code{has_attr()},
-\code{has_text()}, \code{has_label()}, \code{is_leaf()}, \code{is_named()}). Multiple
+as bare names (\code{level}, \code{url}, \code{text}, \code{kind}, \code{is_named}, ...) plus a
+set of helper functions (\code{is()}, \code{has_class()}, \code{has_id()},
+\code{has_attr()}, \code{has_text()}, \code{has_label()}, \code{is_leaf()}). Multiple
 predicates are combined with \code{&} (logical AND).
 }
 \section{Selection verbs}{
@@ -144,7 +144,8 @@ falls back to the cell's \code{label} option. The analog of parsermd's
 \item \code{has_engine("r")} / \code{has_engine(c("r", "python"))} test a cell's
 engine (\code{\link[=cell_engine]{cell_engine()}}).
 \item \code{is_leaf()} matches nodes with no children.
-\item \code{is_named()} is tree-sitter only.
+\item \code{is_named} (a bare slot, tree-sitter only, not a function call)
+is the \code{ts_node} named/anonymous flag.
 \item \code{starts_with()}, \code{ends_with()}, \code{matches()}, \code{contains()} — string
 tests usable as e.g. \code{starts_with("http", url)}.
 \item \code{any_of(x)} and \code{all_of(x)} — splice a character vector for use

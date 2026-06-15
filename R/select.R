@@ -12,9 +12,9 @@ NULL
 #'
 #' Predicates are unquoted R expressions evaluated against each candidate
 #' node with a per-AST data mask. The mask exposes the node's S7 slots
-#' as bare names (`level`, `url`, `text`, `kind`, ...) plus a set of
-#' helper functions (`is()`, `has_class()`, `has_id()`, `has_attr()`,
-#' `has_text()`, `has_label()`, `is_leaf()`, `is_named()`). Multiple
+#' as bare names (`level`, `url`, `text`, `kind`, `is_named`, ...) plus a
+#' set of helper functions (`is()`, `has_class()`, `has_id()`,
+#' `has_attr()`, `has_text()`, `has_label()`, `is_leaf()`). Multiple
 #' predicates are combined with `&` (logical AND).
 #'
 #' @section Selection verbs:
@@ -79,7 +79,8 @@ NULL
 #' - `has_engine("r")` / `has_engine(c("r", "python"))` test a cell's
 #'   engine ([`cell_engine()`]).
 #' - `is_leaf()` matches nodes with no children.
-#' - `is_named()` is tree-sitter only.
+#' - `is_named` (a bare slot, tree-sitter only, not a function call)
+#'   is the `ts_node` named/anonymous flag.
 #' - `starts_with()`, `ends_with()`, `matches()`, `contains()` — string
 #'   tests usable as e.g. `starts_with("http", url)`.
 #' - `any_of(x)` and `all_of(x)` — splice a character vector for use

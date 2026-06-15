@@ -62,17 +62,19 @@ pampa_diagnostics_from_raw = function(raw, text, filename) {
 #' attached to the returned object's `@diagnostics` slot.
 #'
 #' @param input A single string. Treated as a file path if it does not
-#'   contain newlines and `file.exists()` returns TRUE; otherwise
-#'   treated as raw text. To parse an R-held [`ts_tree`] as Pandoc,
-#'   render it first with [`to_qmd()`] and feed the result back in.
+#'   contain newlines and names an existing file (`file.exists()` is
+#'   TRUE and it is not a directory); otherwise treated as raw text. To
+#'   parse an R-held [`ts_tree`] as Pandoc, render it first with
+#'   [`to_qmd()`] and feed the result back in.
 #' @param ast The AST to return: `"pd"` (the default) for the Pandoc AST
 #'   as a [`pandoc`] object, or `"ts"` for the tree-sitter AST as a
 #'   [`ts_tree`].
 #' @param quiet If `FALSE` (the default) any error-kind diagnostics are
 #'   raised as R errors (after attaching diagnostics to the result),
-#'   and warning-kind diagnostics are emitted as R warnings. If `TRUE`
-#'   no signal is raised; diagnostics are still attached to the
-#'   returned object's `@diagnostics` slot.
+#'   and warning-kind diagnostics are emitted as R warnings. `info` and
+#'   `note` diagnostics are never signalled regardless of `quiet`. If
+#'   `TRUE` no signal is raised; diagnostics of every kind are still
+#'   attached to the returned object's `@diagnostics` slot.
 #' @param prune_errors If `TRUE` (the default, matching the pampa CLI)
 #'   parser-error diagnostics are deduplicated by tree-sitter `ERROR`
 #'   node, keeping the earliest per node. Set to `FALSE` to see every

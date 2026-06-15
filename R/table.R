@@ -23,6 +23,10 @@ NULL
 #' code) inside a cell is dropped. Cell row and column spans are not
 #' modelled: each cell maps to exactly one column.
 #'
+#' Only the first header row becomes the column names; any further header
+#' rows and any body group-header rows are flattened into ordinary data
+#' rows.
+#'
 #' @param x A [`pandoc_table`] (returns one `data.frame`), or a
 #'   [`pandoc`] / [`pandoc_blocks`] / list of blocks (returns a list of
 #'   `data.frame`s, one per table found in document order).
