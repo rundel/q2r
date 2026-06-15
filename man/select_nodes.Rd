@@ -39,7 +39,9 @@ insert_after(x, ..., .what)
 \arguments{
 \item{x}{A \code{\link{pandoc}}, \code{\link{pandoc_node}}, \code{\link{pandoc_blocks}},
 \code{\link{pandoc_inlines}}, \code{\link{ts_tree}}, \code{\link{ts_node}}, \code{\link{ts_nodes}}, or a
-plain \code{list} of nodes from a previous selection.}
+plain \code{list} of nodes from a previous selection. For a plain list,
+each mutation verb is applied to every element in turn (insert and
+splice flatten their multi-node results back into one list).}
 
 \item{...}{Predicate expressions, combined with \code{&}. May be empty
 to match every node (use with care).}

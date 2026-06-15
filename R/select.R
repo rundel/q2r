@@ -90,7 +90,9 @@ NULL
 #'
 #' @param x A [`pandoc`], [`pandoc_node`], [`pandoc_blocks`],
 #'   [`pandoc_inlines`], [`ts_tree`], [`ts_node`], [`ts_nodes`], or a
-#'   plain `list` of nodes from a previous selection.
+#'   plain `list` of nodes from a previous selection. For a plain list,
+#'   each mutation verb is applied to every element in turn (insert and
+#'   splice flatten their multi-node results back into one list).
 #' @param ... Predicate expressions, combined with `&`. May be empty
 #'   to match every node (use with care).
 #' @param .f A function (or rlang formula like `~ ...`) called with each

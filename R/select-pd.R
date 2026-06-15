@@ -468,3 +468,46 @@ S7::method(select_first, S7::class_list) = function(x, ...) {
   matches = select_nodes(x, ...)
   if (length(matches) == 0L) NULL else matches[[1L]]
 }
+
+
+# ---- list-of-nodes dispatch (chained mutation) --------------------------
+# Apply a per-node mutation verb to each element of a parentless list of
+# nodes (the result of a prior `select_*`), so verbs compose in a pipe.
+# Each element dispatches on its own class, so a mixed list is handled
+# element-by-element. Multi-node results (insert/splice) flatten up and
+# deletions drop out, per `ast_to_node_list`.
+
+ast_map_list_mutation = function(x, verb) {
+  out = list()
+  for (n in x) out = c(out, ast_to_node_list(verb(n)))
+  out
+}
+
+S7::method(map_nodes, S7::class_list) = function(x, ..., .f) {
+  ast_map_list_mutation(x, function(n) map_nodes(n, ..., .f = .f))
+}
+
+S7::method(replace_nodes, S7::class_list) = function(x, ..., .with) {
+  ast_map_list_mutation(x, function(n) replace_nodes(n, ..., .with = .with))
+}
+
+S7::method(delete_nodes, S7::class_list) = function(x, ...) {
+  ast_map_list_mutation(x, function(n) delete_nodes(n, ...))
+}
+
+S7::method(splice_nodes, S7::class_list) = function(x, ..., .f) {
+  ast_map_list_mutation(x, function(n) splice_nodes(n, ..., .f = .f))
+}
+
+S7::method(insert_before, S7::class_list) = function(x, ..., .what) {
+  ast_map_list_mutation(x, function(n) insert_before(n, ..., .what = .what))
+}
+
+S7::method(insert_after, S7::class_list) = function(x, ..., .what) {
+  ast_map_list_mutation(x, function(n) insert_after(n, ..., .what = .what))
+}
+
+S7::method(walk_nodes, S7::class_list) = function(x, ..., .f) {
+  purrr::walk(x, function(n) walk_nodes(n, ..., .f = .f))
+  invisible(x)
+}

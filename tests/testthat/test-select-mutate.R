@@ -79,3 +79,38 @@ test_that("ts map_nodes round-trip preserves the document on identity", {
   expect_s7_class(out, ts_tree)
   expect_equal(to_qmd(out), to_qmd(ts))
 })
+
+test_that("mutation verbs accept a list of nodes from a prior selection", {
+  doc = parse_qmd("# A\n\n# B\n\nbody\n")
+  hs = select_nodes(doc, is(pandoc_header))
+  expect_length(hs, 2L)
+
+  mapped = map_nodes(hs, is(pandoc_header), .f = function(h) add_class(h, "x"))
+  expect_length(mapped, 2L)
+  expect_true(all(purrr::map_lgl(mapped, has_class, "x")))
+
+  seen = 0L
+  walked = walk_nodes(hs, is(pandoc_header), .f = function(h) seen <<- seen + 1L)
+  expect_identical(seen, 2L)
+  expect_identical(walked, hs)
+
+  expect_length(delete_nodes(hs, is(pandoc_header)), 0L)
+})
+
+test_that("insert/splice on a node list return a flattened, longer list", {
+  doc = parse_qmd("# A\n\n# B\n")
+  hs = select_nodes(doc, is(pandoc_header))
+  out = insert_before(hs, is(pandoc_header), .what = pandoc_horizontal_rule())
+  expect_length(out, 4L)
+  expect_s7_class(out[[1L]], pandoc_horizontal_rule)
+  expect_s7_class(out[[2L]], pandoc_header)
+})
+
+test_that("mutation verbs work on a list of ts nodes too", {
+  ts = parse_qmd("# A\n\n# B\n", ast = "ts")
+  hs = select_nodes(ts, kind == "atx_heading")
+  expect_length(hs, 2L)
+  mapped = map_nodes(hs, .f = ~ .x)
+  expect_length(mapped, 2L)
+  expect_true(all(purrr::map_lgl(mapped, S7::S7_inherits, ts_node)))
+})
