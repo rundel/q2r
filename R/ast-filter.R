@@ -194,12 +194,12 @@ pd_call_wrapper_hook = function(hook, wrapper, expected_class, expected_name) {
 
 # ---- walker (post-order) ------------------------------------------------
 
-# Mirrors pd_rewrite_node() but dispatches on class instead of a
-# predicate set. Returns a value that the parent's
-# pandoc_modify_children can splice / replace / delete via
-# ast_to_node_list(). After children are rebuilt, list-level wrapper
-# hooks are applied to any pandoc_inlines / pandoc_blocks slots before
-# the node's own handler runs.
+# Post-order rewrite for ast_filter(): rebuild a node's children, then
+# apply list-level wrapper hooks to any pandoc_inlines / pandoc_blocks
+# slots, then run the node's own class-dispatched handler (rather than
+# the predicate-driven .f of the select-layer walkers). Returns a value
+# the parent's pandoc_modify_children can splice / replace / delete via
+# ast_to_node_list().
 pd_filter_walk = function(node, resolved) {
   inner = function(child) pd_filter_walk(child, resolved)
   rebuilt = pandoc_modify_children(node, inner)
