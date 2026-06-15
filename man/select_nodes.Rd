@@ -146,9 +146,9 @@ engine (\code{\link[=cell_engine]{cell_engine()}}).
 \item \code{is_leaf()} matches nodes with no children.
 \item \code{is_named} (a bare slot, tree-sitter only, not a function call)
 is the \code{ts_node} named/anonymous flag.
-\item \code{starts_with()}, \code{ends_with()}, \code{matches()}, \code{contains()} — string
+\item \code{starts_with()}, \code{ends_with()}, \code{matches()}, \code{contains()} - string
 tests usable as e.g. \code{starts_with("http", url)}.
-\item \code{any_of(x)} and \code{all_of(x)} — splice a character vector for use
+\item \code{any_of(x)} and \code{all_of(x)} - splice a character vector for use
 with \code{\%in\%}.
 \item Bare slot access: \code{level}, \code{url}, \code{title}, \code{text}, \code{format},
 \code{kind}, \code{class}, \code{quote_type}, \code{math_type}, etc. Missing slots

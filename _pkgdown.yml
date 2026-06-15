@@ -5,7 +5,7 @@ template:
   bootswatch: cosmo
 
 home:
-  title: q2r — R interface to the pampa Quarto parser
+  title: q2r - R interface to the pampa Quarto parser
   description: >
     Parse QMD documents into the Pandoc AST or the tree-sitter
     concrete syntax tree, query and rewrite the result with a

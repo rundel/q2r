@@ -4,7 +4,7 @@ NULL
 # Returns the `class()` vector for an S7 class, e.g. for `pandoc_str`:
 #   c("q2r::pandoc_str", "q2r::pandoc_inline", "q2r::pandoc_node", "S7_object")
 # `pd_fast` skips the S7 constructor (which would stamp this chain itself), so
-# we have to set it manually — otherwise `S7::S7_inherits()` and method dispatch
+# we have to set it manually - otherwise `S7::S7_inherits()` and method dispatch
 # on parent classes break. The chain is walked once per class via `@parent` and
 # memoized in `cache` (keyed by `@name`); subsequent calls are an env lookup.
 pd_chain = local({

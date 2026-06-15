@@ -81,9 +81,9 @@ NULL
 #' - `is_leaf()` matches nodes with no children.
 #' - `is_named` (a bare slot, tree-sitter only, not a function call)
 #'   is the `ts_node` named/anonymous flag.
-#' - `starts_with()`, `ends_with()`, `matches()`, `contains()` — string
+#' - `starts_with()`, `ends_with()`, `matches()`, `contains()` - string
 #'   tests usable as e.g. `starts_with("http", url)`.
-#' - `any_of(x)` and `all_of(x)` — splice a character vector for use
+#' - `any_of(x)` and `all_of(x)` - splice a character vector for use
 #'   with `%in%`.
 #' - Bare slot access: `level`, `url`, `title`, `text`, `format`,
 #'   `kind`, `class`, `quote_type`, `math_type`, etc. Missing slots

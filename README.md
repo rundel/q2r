@@ -61,6 +61,7 @@ Some *emphasized* text with a [link](https://example.com).
 pd = parse_qmd(qmd)
 pd
 #> pandoc
+#> ├─meta: map
 #> ├─header level=1 (#heading)
 #> │ └─str "Heading"
 #> └─paragraph
@@ -124,6 +125,10 @@ QMD source. A `pandoc` object is written by pampa’s QMD writer; a
 
 ``` r
 cat(to_qmd(pd))
+#> ---
+#> title: Example
+#> ---
+#> 
 #> # Heading
 #> 
 #> Some *emphasized* text with a [link](https://example.com).
@@ -164,5 +169,5 @@ See [my page](https://example.com/some path) for details.
 
 ## Related
 
-- [`quarto-dev/q2`](https://github.com/quarto-dev/q2) — upstream Rust
+- [`quarto-dev/q2`](https://github.com/quarto-dev/q2) - upstream Rust
   workspace containing `pampa` and the tree-sitter-qmd grammar.

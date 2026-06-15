@@ -105,5 +105,5 @@ See [my page](https://example.com/some path) for details.
 
 ## Related
 
-- [`quarto-dev/q2`](https://github.com/quarto-dev/q2) — upstream Rust workspace
+- [`quarto-dev/q2`](https://github.com/quarto-dev/q2) - upstream Rust workspace
   containing `pampa` and the tree-sitter-qmd grammar.
