@@ -1,3 +1,7 @@
+use crate::pd_enums::{
+    alignment_from_str, citation_mode_from_str, list_number_delim_from_str,
+    list_number_style_from_str, math_type_from_str, quote_type_from_str,
+};
 use extendr_api::Result as ERResult;
 use extendr_api::prelude::*;
 use hashlink::LinkedHashMap;
@@ -9,14 +13,12 @@ use pampa::pandoc::block::{
 };
 use pampa::pandoc::caption::Caption;
 use pampa::pandoc::inline::{
-    Citation, CitationMode, Cite, Code, Delete, EditComment, Emph, Highlight, Image, InlineAttr,
-    Insert, LineBreak, Link, Math, MathType, Note, NoteReference, QuoteType, Quoted, RawInline,
-    SmallCaps, SoftBreak, Space, Span, Str, Strikeout, Strong, Subscript, Superscript, Underline,
+    Citation, Cite, Code, Delete, EditComment, Emph, Highlight, Image, InlineAttr, Insert,
+    LineBreak, Link, Math, Note, NoteReference, Quoted, RawInline, SmallCaps, SoftBreak, Space,
+    Span, Str, Strikeout, Strong, Subscript, Superscript, Underline,
 };
-use pampa::pandoc::list::{ListAttributes, ListNumberDelim, ListNumberStyle};
-use pampa::pandoc::table::{
-    Alignment, Cell, ColSpec, ColWidth, Row, Table, TableBody, TableFoot, TableHead,
-};
+use pampa::pandoc::list::ListAttributes;
+use pampa::pandoc::table::{Cell, ColSpec, ColWidth, Row, Table, TableBody, TableFoot, TableHead};
 use pampa::pandoc::{
     Attr, Block, ConfigMapEntry, ConfigValue, ConfigValueKind, Inline, MergeOp, Pandoc, Shortcode,
     ShortcodeArg,
@@ -183,15 +185,6 @@ fn attr_field(list: &List) -> ERResult<Attr> {
     match field(list, "attr") {
         Some(r) => attr_from_r(&r),
         None => Ok(empty_attr()),
-    }
-}
-
-fn alignment_from_str(s: &str) -> Alignment {
-    match s {
-        "Left" => Alignment::Left,
-        "Right" => Alignment::Right,
-        "Center" => Alignment::Center,
-        _ => Alignment::Default,
     }
 }
 
@@ -412,11 +405,7 @@ fn table_from_list(list: List) -> ERResult<Table> {
 
 fn citation_from_list(list: List) -> ERResult<Citation> {
     let id = str_or_empty(&list, "id");
-    let mode = match str_or_empty(&list, "mode").as_str() {
-        "AuthorInText" => CitationMode::AuthorInText,
-        "SuppressAuthor" => CitationMode::SuppressAuthor,
-        _ => CitationMode::NormalCitation,
-    };
+    let mode = citation_mode_from_str(&str_or_empty(&list, "mode"));
     let prefix = inlines_from_content_field(&list, "prefix")?;
     let suffix = inlines_from_content_field(&list, "suffix")?;
     let note_num = field(&list, "note_num")
@@ -560,10 +549,7 @@ fn inline_from_list(list: List) -> ERResult<Inline> {
             attr_source: asi(),
         }),
         "Math" => {
-            let math_type = match str_or_empty(&list, "math_type").as_str() {
-                "display" => MathType::DisplayMath,
-                _ => MathType::InlineMath,
-            };
+            let math_type = math_type_from_str(&str_or_empty(&list, "math_type"));
             Inline::Math(Math {
                 math_type,
                 text: need_str(&list, "text")?,
@@ -576,10 +562,7 @@ fn inline_from_list(list: List) -> ERResult<Inline> {
             source_info: si,
         }),
         "Quoted" => {
-            let quote_type = match str_or_empty(&list, "quote_type").as_str() {
-                "single" => QuoteType::SingleQuote,
-                _ => QuoteType::DoubleQuote,
-            };
+            let quote_type = quote_type_from_str(&str_or_empty(&list, "quote_type"));
             Inline::Quoted(Quoted {
                 quote_type,
                 content: inlines_from_content_field(&list, "content")?,
@@ -665,27 +648,6 @@ fn inline_from_list(list: List) -> ERResult<Inline> {
     })
 }
 
-fn list_number_style(s: &str) -> ListNumberStyle {
-    match s {
-        "Example" => ListNumberStyle::Example,
-        "Decimal" => ListNumberStyle::Decimal,
-        "LowerRoman" => ListNumberStyle::LowerRoman,
-        "UpperRoman" => ListNumberStyle::UpperRoman,
-        "LowerAlpha" => ListNumberStyle::LowerAlpha,
-        "UpperAlpha" => ListNumberStyle::UpperAlpha,
-        _ => ListNumberStyle::Default,
-    }
-}
-
-fn list_number_delim(s: &str) -> ListNumberDelim {
-    match s {
-        "Period" => ListNumberDelim::Period,
-        "OneParen" => ListNumberDelim::OneParen,
-        "TwoParens" => ListNumberDelim::TwoParens,
-        _ => ListNumberDelim::Default,
-    }
-}
-
 fn block_from_list(list: List) -> ERResult<Block> {
     let tag = need_tag(&list)?;
     let si = default_si();
@@ -733,8 +695,8 @@ fn block_from_list(list: List) -> ERResult<Block> {
         }),
         "OrderedList" => {
             let start = need_i32(&list, "start")? as usize;
-            let style = list_number_style(&str_or_empty(&list, "style"));
-            let delim = list_number_delim(&str_or_empty(&list, "delim"));
+            let style = list_number_style_from_str(&str_or_empty(&list, "style"));
+            let delim = list_number_delim_from_str(&str_or_empty(&list, "delim"));
             let item_lists = field(&list, "items")
                 .map(|r| items_from_r(&r))
                 .transpose()?

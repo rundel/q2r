@@ -4,6 +4,7 @@ use pampa::writers::qmd as qmd_writer;
 
 mod diag_to_r;
 mod pd_ast_to_r;
+mod pd_enums;
 mod r_to_pd_ast;
 mod ts_ast_to_r;
 mod ts_query;

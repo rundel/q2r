@@ -1,8 +1,11 @@
+use crate::pd_enums::{
+    alignment_to_str, citation_mode_to_str, list_number_delim_to_str, list_number_style_to_str,
+    math_type_to_str, quote_type_to_str,
+};
 use extendr_api::prelude::*;
 use pampa::pandoc::{
-    Alignment, Attr, Block, Caption, Cell, Citation, CitationMode, ColSpec, ColWidth, ConfigValue,
-    ConfigValueKind, Inline, MathType, Pandoc, QuoteType, Row, Shortcode, ShortcodeArg, Table,
-    TableBody, TableFoot, TableHead,
+    Attr, Block, Caption, Cell, Citation, ColSpec, ColWidth, ConfigValue, ConfigValueKind, Inline,
+    Pandoc, Row, Shortcode, ShortcodeArg, Table, TableBody, TableFoot, TableHead,
 };
 
 fn attr_to_r(attr: &Attr) -> Robj {
@@ -62,15 +65,6 @@ fn shortcode_to_r(sc: &Shortcode) -> Robj {
         keyword_args = List::from_values(kw)
     )
     .into()
-}
-
-fn alignment_to_str(a: &Alignment) -> &'static str {
-    match a {
-        Alignment::Left => "Left",
-        Alignment::Center => "Center",
-        Alignment::Right => "Right",
-        Alignment::Default => "Default",
-    }
 }
 
 fn colspec_to_r(cs: &ColSpec) -> Robj {
@@ -148,14 +142,9 @@ fn table_to_r(t: &Table) -> Robj {
 }
 
 fn citation_to_r(c: &Citation) -> Robj {
-    let mode = match c.mode {
-        CitationMode::AuthorInText => "AuthorInText",
-        CitationMode::SuppressAuthor => "SuppressAuthor",
-        CitationMode::NormalCitation => "NormalCitation",
-    };
     list!(
         id = c.id.as_str(),
-        mode = mode,
+        mode = citation_mode_to_str(&c.mode),
         prefix = inlines_to_r(&c.prefix),
         suffix = inlines_to_r(&c.suffix),
         note_num = c.note_num as i32,
@@ -185,31 +174,24 @@ fn inline_to_r(i: &Inline) -> Robj {
             text = c.text.as_str()
         )
         .into(),
-        Inline::Math(m) => {
-            let mt = match m.math_type {
-                MathType::InlineMath => "inline",
-                MathType::DisplayMath => "display",
-            };
-            list!(tag = "Math", math_type = mt, text = m.text.as_str()).into()
-        }
+        Inline::Math(m) => list!(
+            tag = "Math",
+            math_type = math_type_to_str(&m.math_type),
+            text = m.text.as_str()
+        )
+        .into(),
         Inline::RawInline(r) => list!(
             tag = "RawInline",
             format = r.format.as_str(),
             text = r.text.as_str()
         )
         .into(),
-        Inline::Quoted(q) => {
-            let qt = match q.quote_type {
-                QuoteType::SingleQuote => "single",
-                QuoteType::DoubleQuote => "double",
-            };
-            list!(
-                tag = "Quoted",
-                quote_type = qt,
-                content = inlines_to_r(&q.content)
-            )
-            .into()
-        }
+        Inline::Quoted(q) => list!(
+            tag = "Quoted",
+            quote_type = quote_type_to_str(&q.quote_type),
+            content = inlines_to_r(&q.content)
+        )
+        .into(),
         Inline::Link(l) => list!(
             tag = "Link",
             attr = attr_to_r(&l.attr),
@@ -301,8 +283,8 @@ fn block_to_r(b: &Block) -> Robj {
             list!(
                 tag = "OrderedList",
                 start = ol.attr.0 as i32,
-                style = format!("{:?}", ol.attr.1).as_str(),
-                delim = format!("{:?}", ol.attr.2).as_str(),
+                style = list_number_style_to_str(&ol.attr.1),
+                delim = list_number_delim_to_str(&ol.attr.2),
                 items = List::from_values(items)
             )
             .into()
