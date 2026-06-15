@@ -31,6 +31,7 @@ reference:
     contents:
     - parse_qmd
     - to_qmd
+    - render_qmd
 
   - title: Diagnostics
     desc: >
@@ -38,6 +39,15 @@ reference:
       lazy text renderer used by `print()` / `format()`.
     contents:
     - pampa_diagnostic
+
+  - title: Files and collections
+    desc: >
+      File round-trip sugar over `parse_qmd()` / `to_qmd()`, and a
+      lightweight container for parsing and writing back a whole
+      directory of QMD documents at once.
+    contents:
+    - read_qmd
+    - qmd_collection
 
   - title: Querying and rewriting the AST
     desc: >
