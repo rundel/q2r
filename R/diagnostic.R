@@ -80,23 +80,17 @@ pampa_signal_diagnostics = function(diagnostics, quiet = FALSE) {
 
   color = cli::num_ansi_colors() > 1L
 
-  warns = Filter(function(d) identical(d@kind, "warning"), diagnostics)
-  if (length(warns)) {
-    txt = paste(
-      vapply(warns, format_pampa_diagnostic, character(1L), color = color),
-      collapse = "\n"
-    )
-    warning(txt, call. = FALSE)
+  render = function(kind) {
+    matched = purrr::keep(diagnostics, function(d) identical(d@kind, kind))
+    if (!length(matched)) return(NULL)
+    paste(purrr::map_chr(matched, format_pampa_diagnostic, color = color), collapse = "\n")
   }
 
-  errs = Filter(function(d) identical(d@kind, "error"), diagnostics)
-  if (length(errs)) {
-    txt = paste(
-      vapply(errs, format_pampa_diagnostic, character(1L), color = color),
-      collapse = "\n"
-    )
-    stop(txt, call. = FALSE)
-  }
+  # Flush warnings before raising the error, so a single call surfaces both.
+  w = render("warning")
+  if (!is.null(w)) warning(w, call. = FALSE)
+  e = render("error")
+  if (!is.null(e)) stop(e, call. = FALSE)
 
   invisible()
 }

@@ -112,27 +112,20 @@ S7::method(pandoc_format_label, pandoc_header) = function(x) {
   )
 }
 
-S7::method(pandoc_format_label, pandoc_link) = function(x) {
+format_link_like = function(x, kind) {
   tail = if (nchar(x@title) > 0L) {
     paste0(" ", pandoc_field("title"), pandoc_quote(x@title))
   } else ""
   paste0(
-    pandoc_style_kind("link"), " ",
+    pandoc_style_kind(kind), " ",
     pandoc_field("url"), pandoc_quote(x@url),
     tail, pandoc_format_attr(x@attr)
   )
 }
 
-S7::method(pandoc_format_label, pandoc_image) = function(x) {
-  tail = if (nchar(x@title) > 0L) {
-    paste0(" ", pandoc_field("title"), pandoc_quote(x@title))
-  } else ""
-  paste0(
-    pandoc_style_kind("image"), " ",
-    pandoc_field("url"), pandoc_quote(x@url),
-    tail, pandoc_format_attr(x@attr)
-  )
-}
+S7::method(pandoc_format_label, pandoc_link) = function(x) format_link_like(x, "link")
+
+S7::method(pandoc_format_label, pandoc_image) = function(x) format_link_like(x, "image")
 
 S7::method(pandoc_format_label, pandoc_quoted) = function(x) {
   paste0(pandoc_style_kind("quoted"), " ", pandoc_field("type"), x@quote_type)
@@ -167,32 +160,36 @@ S7::method(pandoc_format_label, pandoc_table) = function(x) {
   paste0(pandoc_style_kind("table"), pandoc_format_attr(x@attr))
 }
 
+format_kind_id = function(x, kind) {
+  paste0(pandoc_style_kind(kind), " ", pandoc_field("id"), x@id)
+}
+
 S7::method(pandoc_format_label, pandoc_note_reference) = function(x) {
-  paste0(pandoc_style_kind("note_reference"), " ", pandoc_field("id"), x@id)
+  format_kind_id(x, "note_reference")
 }
 
 S7::method(pandoc_format_label, pandoc_note_definition_para) = function(x) {
-  paste0(pandoc_style_kind("note_definition_para"), " ", pandoc_field("id"), x@id)
+  format_kind_id(x, "note_definition_para")
 }
 
 S7::method(pandoc_format_label, pandoc_note_definition_fenced_block) = function(x) {
-  paste0(pandoc_style_kind("note_definition_fenced_block"), " ", pandoc_field("id"), x@id)
+  format_kind_id(x, "note_definition_fenced_block")
+}
+
+format_custom_node = function(x, kind) {
+  paste0(
+    pandoc_style_kind(kind), " ",
+    pandoc_field("type"), x@type_name,
+    pandoc_format_attr(x@attr)
+  )
 }
 
 S7::method(pandoc_format_label, pandoc_custom_block) = function(x) {
-  paste0(
-    pandoc_style_kind("custom_block"), " ",
-    pandoc_field("type"), x@type_name,
-    pandoc_format_attr(x@attr)
-  )
+  format_custom_node(x, "custom_block")
 }
 
 S7::method(pandoc_format_label, pandoc_custom_inline) = function(x) {
-  paste0(
-    pandoc_style_kind("custom_inline"), " ",
-    pandoc_field("type"), x@type_name,
-    pandoc_format_attr(x@attr)
-  )
+  format_custom_node(x, "custom_inline")
 }
 
 S7::method(pandoc_format_label, pandoc_shortcode) = function(x) {
@@ -203,10 +200,6 @@ S7::method(pandoc_format_label, pandoc_attr_inline) = function(x) {
   paste0(pandoc_style_kind("attr_inline"), pandoc_format_attr(x@attr))
 }
 
-S7::method(pandoc_format_label, pandoc_block_metadata) = function(x) {
-  pandoc_style_kind("block_metadata")
-}
-
 S7::method(pandoc_format_label, pandoc_citation) = function(x) {
   paste0(
     pandoc_style_kind("citation"), " ",
@@ -215,6 +208,8 @@ S7::method(pandoc_format_label, pandoc_citation) = function(x) {
   )
 }
 
+# definition_item and caption are support types that do not inherit
+# pandoc_node, so the pandoc_node default does not cover them.
 S7::method(pandoc_format_label, pandoc_definition_item) = function(x) {
   pandoc_style_kind("definition_item")
 }
