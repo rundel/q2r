@@ -123,6 +123,21 @@ test_that("add_class on a node without @attr errors clearly", {
   expect_error(add_class(s, "x"), "no @attr slot")
 })
 
+test_that("getters degrade on a non-standard @attr (ordered list)", {
+  doc = parse_qmd("1. one\n2. two\n")
+  ol = select_first(doc, is(pandoc_ordered_list))
+  expect_false(has_class(ol, "x"))
+  expect_equal(get_id(ol), "")
+  expect_equal(get_attr(ol, "x"), NA_character_)
+})
+
+test_that("setters error clearly on a non-standard @attr (ordered list)", {
+  doc = parse_qmd("1. one\n2. two\n")
+  ol = select_first(doc, is(pandoc_ordered_list))
+  expect_error(add_class(ol, "x"), "non-standard @attr")
+  expect_error(set_id(ol, "y"), "non-standard @attr")
+})
+
 test_that("attribute helpers compose inside map_nodes", {
   doc = parse_qmd("# H {.note}\n")
   out = map_nodes(doc, is(pandoc_header), .f = function(h) {

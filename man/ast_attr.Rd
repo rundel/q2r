@@ -55,8 +55,10 @@ etc.). Modelled on Pandoc Lua filters' direct field access
 immutable value semantics: every setter returns a new node, the
 input is never modified.
 
-Nodes without an \verb{@attr} slot are handled defensively: predicates
-return \code{FALSE} / \code{""} / \code{NA}, setters error with a clear message.
+Nodes without a standard \verb{@attr} slot are handled defensively: the
+getters return \code{FALSE} / \code{""} / \code{NA} (including nodes such as ordered
+and bullet lists, whose \verb{@attr} is a \code{pandoc_list_attributes} rather
+than a \code{\link{pandoc_attr}}), while setters error with a clear message.
 }
 \section{Available helpers}{
 

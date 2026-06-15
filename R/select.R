@@ -208,26 +208,19 @@ mask_is = function(cls) {
 # are a plain no-match rather than a predicate error.
 
 mask_has_class = function(...) {
-  classes = unlist(c(...), use.names = FALSE)
-  if (length(classes) == 0L) return(FALSE)
-  a = ast_attr(ast_current_node())
-  if (!S7::S7_inherits(a, pandoc_attr)) return(FALSE)
-  any(classes %in% a@classes)
+  attr_has_class(ast_attr(ast_current_node()), unlist(c(...), use.names = FALSE))
 }
 
 mask_has_id = function(id) {
   a = ast_attr(ast_current_node())
-  if (!S7::S7_inherits(a, pandoc_attr)) return(FALSE)
-  identical(a@id, id)
+  S7::S7_inherits(a, pandoc_attr) && identical(a@id, id)
 }
 
 mask_has_attr = function(key, value) {
-  a = ast_attr(ast_current_node())
-  if (!S7::S7_inherits(a, pandoc_attr)) return(FALSE)
-  attrs = a@attributes
-  if (!(key %in% names(attrs))) return(FALSE)
+  v = attr_get(ast_attr(ast_current_node()), key)
+  if (is.na(v)) return(FALSE)
   if (missing(value)) return(TRUE)
-  identical(unname(attrs[[key]]), value)
+  identical(v, value)
 }
 
 mask_has_text = function(pattern, fixed = FALSE) {
@@ -238,8 +231,7 @@ mask_has_text = function(pattern, fixed = FALSE) {
 
 mask_has_label = function(pattern) {
   node = ast_current_node()
-  a = ast_attr(node)
-  id = if (S7::S7_inherits(a, pandoc_attr)) a@id else ""
+  id = attr_get_id(ast_attr(node))
   # A code cell's label lives in its `#|` options, not its attr id (it only
   # becomes an id in rendered output), so fall back to it for parsermd parity.
   if ((length(id) != 1L || !nzchar(id)) && S7::S7_inherits(node, pandoc_code_block)) {
