@@ -269,6 +269,9 @@ mask_is_code_cell = function() {
 
 mask_is_leaf = function() {
   node = ast_current_node()
+  if (S7::S7_inherits(node, pandoc)) {
+    return(length(node@blocks@content) == 0L)
+  }
   if (S7::S7_inherits(node, ts_node)) {
     return(length(node@children@content) == 0L)
   }

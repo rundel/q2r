@@ -65,7 +65,7 @@ ast_summary_text = function(node, max_text) {
 ast_summary_of_blocks = function(blocks, max_text = 40L) {
   secs = ast_sections_of_blocks(blocks)
   out = data.frame(
-    type    = purrr::map_chr(blocks, function(b) S7::S7_class(b)@name),
+    type    = purrr::map_chr(blocks, pandoc_class_name),
     level   = purrr::map_int(blocks, function(b) {
       if (S7::S7_inherits(b, pandoc_header)) b@level else NA_integer_
     }),

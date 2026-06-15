@@ -72,6 +72,13 @@ test_that("splice_nodes errors when .f returns a single node", {
   )
 })
 
+test_that("splice_nodes accepts a wrapper (pandoc_inlines) return", {
+  doc = parse_qmd("**bold**\n")
+  out = splice_nodes(doc, is(pandoc_strong), .f = function(s) s@content)
+  expect_length(select_nodes(out, is(pandoc_strong)), 0L)
+  expect_length(select_nodes(out, is(pandoc_str)), 1L)
+})
+
 test_that("ts map_nodes round-trip preserves the document on identity", {
   src = "# Hello\n\nworld\n"
   ts = parse_qmd(src, ast = "ts")

@@ -266,11 +266,11 @@ S7::method(splice_nodes, ts_tree) = function(x, ..., .f) {
   if (is.null(user_fn)) stop("splice_nodes requires .f", call. = FALSE)
   fn = function(node) {
     out = user_fn(node)
-    if (!is.list(out) || S7::S7_inherits(out, ts_node)) {
+    if (S7::S7_inherits(out, ts_node)) {
       stop("splice_nodes .f must return a list of nodes; ",
            "use map_nodes for single-node replacement", call. = FALSE)
     }
-    out
+    ast_to_node_list(out)
   }
   quos = ast_quos(...)
   out = ts_rewrite_node(x@root, quos, ast_make_mask("ts"), fn)
@@ -282,10 +282,11 @@ S7::method(splice_nodes, ts_node) = function(x, ..., .f) {
   if (is.null(user_fn)) stop("splice_nodes requires .f", call. = FALSE)
   fn = function(node) {
     out = user_fn(node)
-    if (!is.list(out) || S7::S7_inherits(out, ts_node)) {
-      stop("splice_nodes .f must return a list of nodes", call. = FALSE)
+    if (S7::S7_inherits(out, ts_node)) {
+      stop("splice_nodes .f must return a list of nodes; ",
+           "use map_nodes for single-node replacement", call. = FALSE)
     }
-    out
+    ast_to_node_list(out)
   }
   quos = ast_quos(...)
   ts_rewrite_node(x, quos, ast_make_mask("ts"), fn)

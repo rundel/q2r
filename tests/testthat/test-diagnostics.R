@@ -188,3 +188,10 @@ test_that("prune_errors keeps distinct errors at separate ERROR nodes", {
   titles = unique(vapply(res@diagnostics, function(d) d@title, character(1L)))
   expect_gte(length(titles), 2L)
 })
+
+test_that("format(pampa_diagnostic) tolerates extra arguments like print() does", {
+  res = parse_qmd(bad_qmd, quiet = TRUE)
+  d = res@diagnostics[[1L]]
+  expect_no_error(format(d, color = FALSE, extra = 1))
+  expect_no_error(capture.output(print(d, color = FALSE, extra = 1)))
+})

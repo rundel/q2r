@@ -57,7 +57,7 @@ diagnostic_from_list = function(x, source_text, source_filename) {
   )
 }
 
-format_pampa_diagnostic = function(x, color = cli::num_ansi_colors() > 1L) {
+format_pampa_diagnostic = function(x, color = cli::num_ansi_colors() > 1L, ...) {
   code = if (is.na(x@code)) NULL else x@code
   txt = pampa_diag_format_impl(
     kind            = x@kind,
