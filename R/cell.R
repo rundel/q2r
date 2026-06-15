@@ -109,10 +109,19 @@ cell_comment_prefix = function(engine) {
 cell_yaml_scalar = function(v) {
   if (length(v) != 1L) return(NULL)
   if (is.logical(v)) return(if (isTRUE(v)) "true" else "false")
-  if (is.numeric(v)) return(format(v, trim = TRUE))
+  # scientific = FALSE avoids forms like "2e+09" that YAML 1.1 will not parse
+  # as numbers, and digits = 15 keeps full double precision where the default
+  # 7-digit format() silently rounds (e.g. 1.234568e+14).
+  if (is.numeric(v)) return(format(v, trim = TRUE, scientific = FALSE, digits = 15))
   if (is.character(v)) {
+    reserved = c("yes", "no", "true", "false", "on", "off", "null", "~")
+    indicators = c("-", "?", ":", ",", "[", "]", "{", "}", "#", "&",
+                   "*", "!", "|", ">", "'", "\"", "%", "@", "`")
     needs_quote = !nzchar(v) ||
-      grepl("[:#]", v) || grepl("^[[:space:]]|[[:space:]]$", v)
+      grepl("[:#]", v) ||
+      grepl("^[[:space:]]|[[:space:]]$", v) ||
+      tolower(v) %in% reserved ||
+      substr(v, 1L, 1L) %in% indicators
     if (needs_quote) return(paste0("\"", gsub("\"", "\\\\\"", v), "\""))
     return(v)
   }

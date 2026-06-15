@@ -65,6 +65,32 @@ test_that("set_cell_options round-trips through to_qmd", {
   expect_identical(cell_options(rt)$eval, FALSE)
 })
 
+test_that("cell option values serialize at full precision and re-parse to the same value", {
+  # Full precision: every digit is kept where the default format() rounded to
+  # "1.234568e+14" and silently lost precision.
+  expect_identical(cell_yaml_scalar(123456789012345), "123456789012345")
+  # Numbers within yaml's parse range re-parse to the same value (no "2e+09").
+  for (x in list(2000000000, 6.5, 42, 1e-5)) {
+    expect_equal(yaml::yaml.load(cell_yaml_scalar(x)), x)
+  }
+  # YAML-reserved words and leading indicators are quoted so they re-parse as
+  # strings rather than booleans / null / sequence items.
+  expect_identical(cell_yaml_scalar("yes"), "\"yes\"")
+  expect_identical(cell_yaml_scalar("null"), "\"null\"")
+  expect_identical(cell_yaml_scalar("- dash"), "\"- dash\"")
+  expect_identical(yaml::yaml.load(cell_yaml_scalar("yes")), "yes")
+})
+
+test_that("a YAML-reserved string option round-trips as a string, not a boolean", {
+  cell = cell_of("```{r}\nx=1\n```\n")
+  out = set_cell_options(cell, mode = "yes")
+  rt = select_first(
+    parse_qmd(to_qmd(pandoc(blocks = pandoc_blocks(list(out))))),
+    is(pandoc_code_block)
+  )
+  expect_identical(cell_options(rt)$mode, "yes")
+})
+
 test_that("set_cell_label sets the label option", {
   cell = cell_of("```{r}\nx=1\n```\n")
   expect_equal(cell_label(set_cell_label(cell, "new")), "new")
