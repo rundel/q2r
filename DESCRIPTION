@@ -26,9 +26,9 @@ Imports:
     withr,
     yaml
 Suggests:
+    diffobj,
     quarto,
-    testthat (>= 3.0.0),
-    waldo
+    testthat (>= 3.0.0)
 VignetteBuilder: quarto
 Config/testthat/edition: 3
 Collate:
@@ -49,6 +49,7 @@ Collate:
     'ast-sections.R'
     'ast-summary.R'
     'cell.R'
+    'table.R'
     'to-rust.R'
     'to-qmd.R'
     'from-rust.R'
@@ -60,7 +61,6 @@ Collate:
     'render.R'
     'select-section.R'
     'select-ts.R'
-    'table.R'
     'toc.R'
     'ts-query.R'
     'zzz.R'

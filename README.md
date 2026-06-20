@@ -167,6 +167,20 @@ See [my page](https://example.com/some path) for details.
 #> ───╯
 ```
 
+## Working with the AST
+
+Beyond `parse_qmd()` / `to_qmd()`, q2r ships a tidyselect-style
+vocabulary for querying and rewriting either AST (`select_nodes()`,
+`select_descendants()`, `map_nodes()`, `replace_nodes()`,
+`delete_nodes()`, `insert_before()`, …), an `ast_filter()`
+Lua-filter-style walker, document-level helpers (`ast_summary()`,
+`select_section()`, `ast_toc()`, `split_sections()`), code-cell helpers
+(`cell_options()`, `set_cell_options()`, `collect_code()`), table
+bridges (`as_df()` / `as_table()`), file round-trip sugar (`read_qmd()`,
+`write_qmd()`, `edit_qmd()`), and multi-document collections
+(`parse_qmd_dir()`). See the `vignette("selecting-and-rewriting")` for a
+tour.
+
 ## Related
 
 - [`quarto-dev/q2`](https://github.com/quarto-dev/q2) - upstream Rust

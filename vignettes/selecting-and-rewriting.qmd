@@ -553,8 +553,15 @@ doc |>
 
 ## The tree-sitter side
 
-Every verb above works on a [`ts_tree`] too. The mask exposes the
-ts-specific slots (`kind`, `is_named`, `field_name`, `text`):
+The node-tree verbs (`select_nodes()`, `select_descendants()`,
+`select_children()`, `select_first()`, `walk_nodes()`, and the mutators)
+dispatch on a [`ts_tree`] too. The mask exposes the ts-specific slots
+(`kind`, `is_named`, `field_name`, `text`), but the attribute/text mask
+helpers (`has_class()`, `has_id()`, `has_attr()`, `has_text()`,
+`has_label()`) and the document-level helpers (`ast_summary()`,
+`ast_sections()`, `select_section()`, `ast_toc()`, `split_sections()`)
+are pandoc-only - on a `ts_tree` the mask helpers are a silent no-match
+and the document-level helpers have no method:
 
 ```{r}
 ts = parse_qmd(src, ast = "ts")
