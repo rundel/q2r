@@ -9,6 +9,15 @@ pandoc_meta_value(kind = "map", value = list())
 
 pandoc_config_value(kind = "map", value = list())
 }
+\arguments{
+\item{kind}{The value kind, one of \code{"string"}, \code{"int"}, \code{"real"},
+\code{"bool"}, \code{"null"}, \code{"inlines"}, \code{"blocks"}, \code{"list"}, \code{"map"},
+\code{"path"}, \code{"glob"}, or \code{"expr"}.}
+
+\item{value}{The payload, whose R type depends on \code{kind} (a scalar for
+the scalar kinds, a named list for \code{"map"}, an unnamed list for
+\code{"list"}, a \link{pandoc_inlines} / \link{pandoc_blocks} for those kinds).}
+}
 \description{
 Pandoc meta / config value
 }

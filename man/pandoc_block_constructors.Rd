@@ -23,65 +23,41 @@
 \alias{pandoc_custom_block}
 \title{Block constructors}
 \usage{
-pandoc_plain(
-  source_info = pandoc_source_info(),
-  content = pandoc_inlines(list())
-)
+pandoc_plain(content = pandoc_inlines(list()))
 
-pandoc_paragraph(
-  source_info = pandoc_source_info(),
-  content = pandoc_inlines(list())
-)
+pandoc_paragraph(content = pandoc_inlines(list()))
 
-pandoc_line_block(source_info = pandoc_source_info(), content = list())
+pandoc_line_block(content = list())
 
-pandoc_code_block(
-  source_info = pandoc_source_info(),
-  attr = pandoc_attr(),
-  text = ""
-)
+pandoc_code_block(attr = pandoc_attr(), text = "")
 
-pandoc_raw_block(source_info = pandoc_source_info(), format = "", text = "")
+pandoc_raw_block(format = "", text = "")
 
-pandoc_block_quote(
-  source_info = pandoc_source_info(),
-  content = pandoc_blocks(list())
-)
+pandoc_block_quote(content = pandoc_blocks(list()))
 
-pandoc_ordered_list(
-  source_info = pandoc_source_info(),
-  attr = pandoc_list_attributes(),
-  content = list()
-)
+pandoc_ordered_list(attr = pandoc_list_attributes(), content = list())
 
-pandoc_bullet_list(source_info = pandoc_source_info(), content = list())
+pandoc_bullet_list(content = list())
 
-pandoc_definition_list(source_info = pandoc_source_info(), content = list())
+pandoc_definition_list(content = list())
 
 pandoc_header(
-  source_info = pandoc_source_info(),
   level = 1L,
   attr = pandoc_attr(),
   content = pandoc_inlines(list())
 )
 
-pandoc_horizontal_rule(source_info = pandoc_source_info())
+pandoc_horizontal_rule()
 
 pandoc_figure(
-  source_info = pandoc_source_info(),
   attr = pandoc_attr(),
   caption = pandoc_caption(),
   content = pandoc_blocks(list())
 )
 
-pandoc_div(
-  source_info = pandoc_source_info(),
-  attr = pandoc_attr(),
-  content = pandoc_blocks(list())
-)
+pandoc_div(attr = pandoc_attr(), content = pandoc_blocks(list()))
 
 pandoc_table(
-  source_info = pandoc_source_info(),
   attr = pandoc_attr(),
   caption = pandoc_caption(),
   colspec = list(),
@@ -90,40 +66,29 @@ pandoc_table(
   foot = pandoc_table_foot()
 )
 
-pandoc_block_metadata(
-  source_info = pandoc_source_info(),
-  meta = pandoc_meta_value()
-)
+pandoc_block_metadata(meta = pandoc_meta_value())
 
-pandoc_note_definition_para(
-  source_info = pandoc_source_info(),
-  id = "",
-  content = pandoc_inlines(list())
-)
+pandoc_note_definition_para(id = "", content = pandoc_inlines(list()))
 
-pandoc_note_definition_fenced_block(
-  source_info = pandoc_source_info(),
-  id = "",
-  content = pandoc_blocks(list())
-)
+pandoc_note_definition_fenced_block(id = "", content = pandoc_blocks(list()))
 
-pandoc_caption_block(
-  source_info = pandoc_source_info(),
-  content = pandoc_inlines(list())
-)
+pandoc_caption_block(content = pandoc_inlines(list()))
 
-pandoc_custom_block(
-  source_info = pandoc_source_info(),
-  type_name = "",
-  slots = list(),
-  attr = pandoc_attr()
-)
+pandoc_custom_block(type_name = "", slots = list(), attr = pandoc_attr())
 }
 \description{
 Constructors for the concrete Pandoc block-level node classes. Each returns
 an S7 object extending \link{pandoc_block}. See \link{pandoc_node} for the abstract
 hierarchy and \link{pandoc_inline_constructors} for the inline nodes.
 }
+\section{Notes}{
+
+\code{pandoc_block_metadata()} is parse-only and lossy: the reader never
+populates its \verb{@meta} slot (it stays the empty default) and pampa's
+writer does not emit it, so it round-trips as an empty node. The slot
+is kept for forward compatibility.
+}
+
 \seealso{
 \link{pandoc_inline_constructors}, \link{pandoc_node}, \link{pandoc_support_types}
 }

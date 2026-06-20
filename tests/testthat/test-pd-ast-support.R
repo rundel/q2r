@@ -1,12 +1,3 @@
-test_that("pandoc_source_info defaults are all NA", {
-  si = pandoc_source_info()
-  expect_s7_class = function(x, cls) expect_true(S7::S7_inherits(x, cls))
-  expect_s7_class(si, pandoc_source_info)
-  expect_identical(si@file_id, NA_integer_)
-  expect_identical(si@start_row, NA_integer_)
-  expect_identical(si@end_col, NA_integer_)
-})
-
 test_that("pandoc_attr defaults are empty", {
   a = pandoc_attr()
   expect_identical(a@id, "")

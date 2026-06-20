@@ -1,9 +1,9 @@
 #' Pandoc AST support types
 #'
 #' Helper value types that appear inside concrete block and inline nodes:
-#' source locations, attributes, ordered-list attributes, citations,
-#' captions, definition-list items, and table cells/rows/columns. Each
-#' returns a plain S7 object (these are not [pandoc_node] subclasses).
+#' attributes, ordered-list attributes, citations, captions,
+#' definition-list items, and table cells/rows/columns. Each returns a
+#' plain S7 object (these are not [pandoc_node] subclasses).
 #'
 #' @section Notes:
 #' For [pandoc_caption], `short` is either `NULL` or a [pandoc_inlines] and
@@ -20,22 +20,6 @@ validate_list_of = function(x, cls, msg) {
   if (!all(purrr::map_lgl(x, S7::S7_inherits, cls))) msg
 }
 
-#' @rdname pandoc_support_types
-#' @export
-pandoc_source_info = S7::new_class(
-  "pandoc_source_info",
-  package = "q2r",
-  properties = list(
-    file_id      = S7::new_property(S7::class_integer, default = NA_integer_),
-    start_offset = S7::new_property(S7::class_integer, default = NA_integer_),
-    start_row    = S7::new_property(S7::class_integer, default = NA_integer_),
-    start_col    = S7::new_property(S7::class_integer, default = NA_integer_),
-    end_offset   = S7::new_property(S7::class_integer, default = NA_integer_),
-    end_row      = S7::new_property(S7::class_integer, default = NA_integer_),
-    end_col      = S7::new_property(S7::class_integer, default = NA_integer_)
-  )
-)
-
 #' Virtual parent classes
 #'
 #' `pandoc_node` is the abstract root of the AST; every block and inline
@@ -46,10 +30,7 @@ pandoc_source_info = S7::new_class(
 pandoc_node = S7::new_class(
   "pandoc_node",
   package = "q2r",
-  abstract = TRUE,
-  properties = list(
-    source_info = S7::new_property(pandoc_source_info, default = quote(pandoc_source_info()))
-  )
+  abstract = TRUE
 )
 
 #' @rdname pandoc_node
@@ -116,6 +97,12 @@ pandoc_inlines = S7::new_class(
 
 #' Pandoc meta / config value
 #'
+#' @param kind The value kind, one of `"string"`, `"int"`, `"real"`,
+#'   `"bool"`, `"null"`, `"inlines"`, `"blocks"`, `"list"`, `"map"`,
+#'   `"path"`, `"glob"`, or `"expr"`.
+#' @param value The payload, whose R type depends on `kind` (a scalar for
+#'   the scalar kinds, a named list for `"map"`, an unnamed list for
+#'   `"list"`, a [pandoc_inlines] / [pandoc_blocks] for those kinds).
 #' @export
 pandoc_meta_value = S7::new_class(
   "pandoc_meta_value",
@@ -246,7 +233,10 @@ pandoc_table_head = S7::new_class(
   properties = list(
     attr = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
     rows = S7::new_property(S7::class_list, default = list())
-  )
+  ),
+  validator = function(self) {
+    validate_list_of(self@rows, pandoc_row, "@rows must be a list of pandoc_row objects")
+  }
 )
 
 #' @rdname pandoc_table_head
@@ -259,7 +249,14 @@ pandoc_table_body = S7::new_class(
     row_head_columns = S7::new_property(S7::class_integer, default = 0L),
     head_rows        = S7::new_property(S7::class_list, default = list()),
     body_rows        = S7::new_property(S7::class_list, default = list())
-  )
+  ),
+  validator = function(self) {
+    msg = validate_list_of(self@head_rows, pandoc_row,
+                           "@head_rows must be a list of pandoc_row objects")
+    if (!is.null(msg)) return(msg)
+    validate_list_of(self@body_rows, pandoc_row,
+                     "@body_rows must be a list of pandoc_row objects")
+  }
 )
 
 #' @rdname pandoc_table_head
@@ -270,5 +267,8 @@ pandoc_table_foot = S7::new_class(
   properties = list(
     attr = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
     rows = S7::new_property(S7::class_list, default = list())
-  )
+  ),
+  validator = function(self) {
+    validate_list_of(self@rows, pandoc_row, "@rows must be a list of pandoc_row objects")
+  }
 )

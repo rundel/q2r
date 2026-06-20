@@ -117,8 +117,8 @@ pandoc_quoted = S7::new_class(
     content    = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list())))
   ),
   validator = function(self) {
-    if (!self@quote_type %in% c("single", "double")) {
-      "@quote_type must be \"single\" or \"double\""
+    if (length(self@quote_type) != 1L || !self@quote_type %in% c("single", "double")) {
+      "@quote_type must be a single \"single\" or \"double\""
     }
   }
 )
@@ -174,8 +174,8 @@ pandoc_math = S7::new_class(
     text      = S7::new_property(S7::class_character, default = "")
   ),
   validator = function(self) {
-    if (!self@math_type %in% c("inline", "display")) {
-      "@math_type must be \"inline\" or \"display\""
+    if (length(self@math_type) != 1L || !self@math_type %in% c("inline", "display")) {
+      "@math_type must be a single \"inline\" or \"display\""
     }
   }
 )

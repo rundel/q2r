@@ -55,3 +55,12 @@ test_that("a document not starting at h1 still selects by title", {
 test_that("select_section rejects an empty path", {
   expect_error(select_section(section_doc(), character(0)), "non-empty")
 })
+
+test_that("select_section terminates at a higher heading excluded from levels", {
+  doc = parse_qmd("## A\n\nbody\n\n# Big\n\nother\n")
+  sec = select_section(doc, "A", levels = 2:6)
+  txt = ast_text(pandoc(blocks = pandoc_blocks(sec)))
+  expect_true(grepl("body", txt))
+  expect_false(grepl("Big", txt))    # the intervening h1 ends the h2 section
+  expect_false(grepl("other", txt))
+})

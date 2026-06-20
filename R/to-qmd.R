@@ -19,12 +19,12 @@ NULL
 #'   source bytes, and pampa exposes no public `ts_ast -> Pandoc`
 #'   conversion that we could invoke independently of its reader.
 #'
-#' Only top-level dispatch is currently supported. There is no method
-#' for individual blocks, inlines, or `ts_node` subtrees (TODO: restore
-#' sub-tree dispatch by wrapping a fragment in a minimal `pandoc` and
-#' routing through pampa).
+#' On the pandoc side only whole-document dispatch is supported: there is
+#' no method for an individual block or inline (wrap a fragment in a
+#' minimal `pandoc` and route it through pampa). The tree-sitter side is
+#' pure byte-recovery, so it also dispatches on a single [`ts_node`].
 #'
-#' @param x A [`pandoc`] or [`ts_tree`] object.
+#' @param x A [`pandoc`], [`ts_tree`], or [`ts_node`] object.
 #' @return A single string with the rendered QMD.
 #' @export
 to_qmd = S7::new_generic("to_qmd", "x")
@@ -38,11 +38,13 @@ S7::method(to_qmd, pandoc) = function(x) {
       "to_qmd(): pampa's QMD writer failed; see attached diagnostics"
     }
     diagnostics = pampa_diagnostics_from_raw(raw, "", "<ast>")
+    # No `call`: under S7 dispatch sys.call() points at the dispatch shim, not
+    # the user's to_qmd(x), which is more misleading than omitting it.
     stop(structure(
       class = c("to_qmd_error", "error", "condition"),
       list(
         message     = msg,
-        call        = sys.call(-1L),
+        call        = NULL,
         diagnostics = diagnostics,
         error       = raw$error
       )
@@ -52,6 +54,11 @@ S7::method(to_qmd, pandoc) = function(x) {
 }
 
 S7::method(to_qmd, ts_tree) = function(x) to_qmd_ts_node(x@root)
+
+# The ts path is pure byte-recovery (no pampa writer involved), so a single
+# ts_node renders on its own - unlike the pandoc path, which is intentionally
+# whole-document only.
+S7::method(to_qmd, ts_node) = function(x) to_qmd_ts_node(x)
 
 to_qmd_ts_node = function(x) {
   if (length(x@children@content) == 0L) {
@@ -91,12 +98,8 @@ ts_text_or = function(fallback = ts_concat) {
 }
 
 ts_kind_handlers = list(
-  document = function(x) {
-    paste(ts_children_qmd(x), collapse = "")
-  },
-  section = ts_text_or(function(x) {
-    paste(ts_children_qmd(x), collapse = "")
-  }),
+  document = ts_concat,
+  section  = ts_text_or(ts_concat),
   metadata = ts_concat,
 
   atx_heading = ts_text_or(function(x) {

@@ -135,7 +135,7 @@ block_to_list = function(x) {
   if (S7::S7_inherits(x, pandoc_horizontal_rule)) return(list(tag = "HorizontalRule"))
   if (S7::S7_inherits(x, pandoc_figure))         return(list(
     tag = "Figure", attr = attr_to_list(x@attr),
-    caption = blocks_to_list(x@caption@long),
+    caption = caption_to_list(x@caption),
     content = blocks_to_list(x@content)
   ))
   if (S7::S7_inherits(x, pandoc_div))            return(list(

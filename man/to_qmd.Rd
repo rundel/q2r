@@ -7,7 +7,7 @@
 to_qmd(x, ...)
 }
 \arguments{
-\item{x}{A \code{\link{pandoc}} or \code{\link{ts_tree}} object.}
+\item{x}{A \code{\link{pandoc}}, \code{\link{ts_tree}}, or \code{\link{ts_node}} object.}
 }
 \value{
 A single string with the rendered QMD.
@@ -31,8 +31,8 @@ source bytes, and pampa exposes no public \code{ts_ast -> Pandoc}
 conversion that we could invoke independently of its reader.
 }
 
-Only top-level dispatch is currently supported. There is no method
-for individual blocks, inlines, or \code{ts_node} subtrees (TODO: restore
-sub-tree dispatch by wrapping a fragment in a minimal \code{pandoc} and
-routing through pampa).
+On the pandoc side only whole-document dispatch is supported: there is
+no method for an individual block or inline (wrap a fragment in a
+minimal \code{pandoc} and route it through pampa). The tree-sitter side is
+pure byte-recovery, so it also dispatches on a single \code{\link{ts_node}}.
 }

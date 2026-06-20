@@ -167,12 +167,25 @@ S7::method(select_descendants, pandoc_node) = function(x, ...) {
   pd_collect_matches(x, quos, ast_make_mask("pandoc"), include_root = FALSE)
 }
 
+# Walk each wrapped element's children (the element itself is excluded), so a
+# wrapper behaves like the ts_nodes wrapper: root-exclusive descendants.
+select_descendants_of_wrapper = function(items, ...) {
+  quos = ast_quos(...)
+  mask = ast_make_mask("pandoc")
+  out = list()
+  visitor = function(node) {
+    if (ast_eval_predicates(quos, node, mask)) out[[length(out) + 1L]] <<- node
+  }
+  purrr::walk(items, function(el) if (!is.null(el)) pd_walk_children(el, visitor))
+  out
+}
+
 S7::method(select_descendants, pandoc_blocks) = function(x, ...) {
-  select_nodes(x, ...)
+  select_descendants_of_wrapper(x@content, ...)
 }
 
 S7::method(select_descendants, pandoc_inlines) = function(x, ...) {
-  select_nodes(x, ...)
+  select_descendants_of_wrapper(x@content, ...)
 }
 
 
@@ -388,12 +401,56 @@ S7::method(insert_after, pandoc_node) = function(x, ..., .what) {
 }
 
 
+# ---- wrapper-class verbs (pandoc_blocks / pandoc_inlines) ---------------
+# The selection verbs above dispatch on the wrappers directly; round out the
+# vocabulary by delegating select_first / walk_nodes / the mutators to the
+# wrapped @content list. Mutators re-wrap the list result in the same wrapper
+# class so the verb returns the type it was given.
+
+S7::method(select_first, pandoc_blocks)  = function(x, ...) select_first(x@content, ...)
+S7::method(select_first, pandoc_inlines) = function(x, ...) select_first(x@content, ...)
+
+S7::method(walk_nodes, pandoc_blocks) = function(x, ..., .f) {
+  walk_nodes(x@content, ..., .f = .f)
+  invisible(x)
+}
+S7::method(walk_nodes, pandoc_inlines) = function(x, ..., .f) {
+  walk_nodes(x@content, ..., .f = .f)
+  invisible(x)
+}
+
+S7::method(map_nodes, pandoc_blocks)  = function(x, ..., .f) pandoc_blocks(map_nodes(x@content, ..., .f = .f))
+S7::method(map_nodes, pandoc_inlines) = function(x, ..., .f) pandoc_inlines(map_nodes(x@content, ..., .f = .f))
+
+S7::method(replace_nodes, pandoc_blocks)  = function(x, ..., .with) pandoc_blocks(replace_nodes(x@content, ..., .with = .with))
+S7::method(replace_nodes, pandoc_inlines) = function(x, ..., .with) pandoc_inlines(replace_nodes(x@content, ..., .with = .with))
+
+S7::method(delete_nodes, pandoc_blocks)  = function(x, ...) pandoc_blocks(delete_nodes(x@content, ...))
+S7::method(delete_nodes, pandoc_inlines) = function(x, ...) pandoc_inlines(delete_nodes(x@content, ...))
+
+S7::method(splice_nodes, pandoc_blocks)  = function(x, ..., .f) pandoc_blocks(splice_nodes(x@content, ..., .f = .f))
+S7::method(splice_nodes, pandoc_inlines) = function(x, ..., .f) pandoc_inlines(splice_nodes(x@content, ..., .f = .f))
+
+S7::method(insert_before, pandoc_blocks)  = function(x, ..., .what) pandoc_blocks(insert_before(x@content, ..., .what = .what))
+S7::method(insert_before, pandoc_inlines) = function(x, ..., .what) pandoc_inlines(insert_before(x@content, ..., .what = .what))
+
+S7::method(insert_after, pandoc_blocks)  = function(x, ..., .what) pandoc_blocks(insert_after(x@content, ..., .what = .what))
+S7::method(insert_after, pandoc_inlines) = function(x, ..., .what) pandoc_inlines(insert_after(x@content, ..., .what = .what))
+
+
 # ---- list-of-nodes dispatch (chained selection) -------------------------
 # After a prior select_*, the user often pipes a list of nodes into
 # another `select_descendants()`. Provide a generic shape that handles
 # both kinds of lists by inspecting the first element.
 
 select_nodes_on_list = function(nodes, quos, mask, kind, include_root) {
+  # The ts walk lives in select-ts.R (`ts_collect_matches`); reuse it rather
+  # than keeping a third near-duplicate pre-order walker here.
+  if (kind == "ts") {
+    return(purrr::list_flatten(purrr::map(nodes, function(n) {
+      if (is.null(n)) list() else ts_collect_matches(n, quos, mask, include_root)
+    })))
+  }
   out = list()
   visitor = function(node) {
     if (ast_eval_predicates(quos, node, mask)) {
@@ -402,25 +459,9 @@ select_nodes_on_list = function(nodes, quos, mask, kind, include_root) {
   }
   purrr::walk(nodes, function(n) {
     if (is.null(n)) return()
-    if (kind == "ts") {
-      if (include_root) {
-        ts_walk_iter(n, visitor)
-      } else {
-        purrr::walk(n@children@content, ts_walk_iter, visit = visitor)
-      }
-    } else {
-      if (include_root) pd_walk_node(n, visitor) else pd_walk_children(n, visitor)
-    }
+    if (include_root) pd_walk_node(n, visitor) else pd_walk_children(n, visitor)
   })
   out
-}
-
-# Small helper used above; defined here so both ts and pd list-dispatch
-# can call it. Mirrors `ts_walk_node` but takes a `visit` callback
-# instead of predicate/.f.
-ts_walk_iter = function(node, visit) {
-  visit(node)
-  purrr::walk(node@children@content, ts_walk_iter, visit = visit)
 }
 
 pd_list_kind = function(nodes) {

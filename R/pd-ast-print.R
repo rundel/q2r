@@ -35,6 +35,7 @@ pandoc_truncate = function(text,
                            n = getOption("q2r.print_max_width", 40L),
                            side = getOption("q2r.print_trunc_side", "right")) {
   if (length(text) == 0L) return("")
+  n = max(1L, n)  # str_trunc() aborts when width < the ellipsis width
   side = match.arg(side, c("right", "left", "center"))
   s = encodeString(if (length(text) > 1L) paste(text, collapse = " ") else text)
   if (nchar(s) <= n) return(s)
@@ -499,7 +500,10 @@ S7::method(print, pandoc_node) = function(x, ...) {
 
 # A compact one-line representation (distinct from print()'s full tree),
 # so a list-column of nodes - e.g. ast_summary()'s `node` column -
-# formats as `<pandoc_header>` rather than erroring.
+# formats as `<pandoc_header>` rather than erroring. Deliberately scoped to
+# pandoc_node: the support types (caption, row, cell, citation, ...) are never
+# put in a list-column, so they keep base format() and are labeled via
+# pandoc_format_label() inside the tree printer instead.
 S7::method(format, pandoc_node) = function(x, ...) {
   paste0("<", pandoc_class_name(x), ">")
 }

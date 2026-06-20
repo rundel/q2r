@@ -34,8 +34,9 @@ test_that("ast_filter first-match-wins for overlapping handlers", {
     pandoc_header = function(el) { saw <<- c(saw, "specific"); el },
     pandoc_block  = function(el) { saw <<- c(saw, "general");  el }
   )
-  expect_true("specific" %in% saw)
-  expect_false("specific" %in% saw && saw[saw == "specific"][1] == "general")
+  # The header fires the specific handler and the paragraph the general one;
+  # first-match-wins means the header does NOT also fire `pandoc_block`.
+  expect_equal(saw, c("specific", "general"))
 })
 
 test_that("ast_filter handler returning NULL deletes the node", {
@@ -84,11 +85,13 @@ test_that("ast_filter with multiple handlers in one pass", {
       } else el
     }
   )
-  # NB: post-order means emph→strong runs first, then the new strong
-  # gets the strong handler applied → emph. So emph stays emph here.
-  # Verify the header demotion at least:
-  h = select_first(out, is(pandoc_header))
-  expect_equal(h@level, 2L)
+  # A handler's replacement is NOT re-filtered, so emph and strong swap
+  # cleanly: the original *em* is now wrapped in a strong, and the original
+  # **strong** is now wrapped in an emph.
+  expect_equal(purrr::map_chr(select_nodes(out, is(pandoc_emph)), ast_text), "strong")
+  expect_equal(purrr::map_chr(select_nodes(out, is(pandoc_strong)), ast_text), "em")
+  # and the h1 was demoted to h2
+  expect_equal(select_first(out, is(pandoc_header))@level, 2L)
 })
 
 test_that("ast_filter rejects unknown class names", {
@@ -127,4 +130,17 @@ test_that("ast_filter round-trip identity preserves the document", {
   doc = parse_qmd(text)
   out = ast_filter(doc, pandoc_str = function(el) el)
   expect_equal(to_qmd(out), to_qmd(doc))
+})
+
+test_that("ast_filter dispatches on a pandoc_blocks wrapper and a bare list", {
+  doc = parse_qmd("# H\n\n**bold** text\n")
+  bold_to_caps = function(el) pandoc_small_caps(content = el@content)
+
+  out_wrap = ast_filter(doc@blocks, pandoc_strong = bold_to_caps)
+  expect_s7_class(out_wrap, pandoc_blocks)
+  expect_length(select_nodes(out_wrap, is(pandoc_small_caps)), 1L)
+
+  out_list = ast_filter(doc@blocks@content, pandoc_strong = bold_to_caps)
+  expect_type(out_list, "list")
+  expect_length(select_nodes(out_list, is(pandoc_small_caps)), 1L)
 })

@@ -16,7 +16,9 @@ other levels stay inside their enclosing section.}
 \item{...}{Unused; for future extension.}
 }
 \value{
-A named \code{list} of \code{\link{pandoc}} documents.
+A named \code{list} of \code{\link{pandoc}} documents. Names follow the heading
+text, so two headings sharing a title yield repeated names; index by
+position to keep such sections distinct.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

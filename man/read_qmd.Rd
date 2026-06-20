@@ -46,9 +46,13 @@ byte-faithful. Returns its input invisibly so it can end a pipe.
 }
 }
 \examples{
-\dontrun{
-doc = read_qmd("notes.qmd")
-edit_qmd("notes.qmd", \(d) map_nodes(d, is(pandoc_header), .f = add_class("done")))
-}
+path = tempfile(fileext = ".qmd")
+writeLines("# Title\n\nSome text.\n", path)
+
+read_qmd(path)
+
+edit_qmd(path, \(d) map_nodes(d, is(pandoc_header),
+                              .f = \(h) add_class(h, "done")))
+cat(readLines(path), sep = "\n")
 
 }

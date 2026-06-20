@@ -9,7 +9,8 @@ shortcode_srcs = list(
   nested_positional = "{{< video {{< meta url >}} >}}\n",
   include          = "{{< include file.qmd >}}\n",
   keyword_args     = "{{< foo bar=baz >}}\n",
-  nested_in_keyword = "{{< foo key={{< meta b >}} >}}\n"
+  nested_in_keyword = "{{< foo key={{< meta b >}} >}}\n",
+  multi_keyword    = "{{< kbd win=Ctrl mac=Cmd linux=Super >}}\n"
 )
 
 test_that("to_qmd() reconstructs shortcodes identically to pampa's own writer", {
@@ -28,4 +29,11 @@ test_that("nested shortcode round-trips without error", {
   pd = parse_qmd(src, quiet = TRUE)
   expect_no_error(out <- to_qmd(pd))
   expect_identical(out, src)
+})
+
+test_that("shortcode keyword args keep source (non-alphabetical) order", {
+  # `win`/`mac`/`linux` would sort to `linux`/`mac`/`win`; the parser must not
+  # reorder them, so the round trip stays byte-identical to the source.
+  src = "{{< kbd win=Ctrl mac=Cmd linux=Super >}}\n"
+  expect_identical(to_qmd(parse_qmd(src, quiet = TRUE)), src)
 })

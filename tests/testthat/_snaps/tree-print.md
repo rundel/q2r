@@ -322,7 +322,7 @@
             │ │ ├─language_specifier "r"
             │ │ └─"}" "}"
             │ ├─block_continuation
-            │ ├─code_fence_content
+            │ ├─code_fence_content "x = 1\n"
             │ │ └─block_continuation
             │ └─fenced_code_block_delimiter "```"
             ├─pandoc_paragraph
@@ -330,7 +330,7 @@
             │ ├─pandoc_space " "
             │ ├─pandoc_str "math"
             │ ├─pandoc_space " "
-            │ ├─pandoc_math
+            │ ├─pandoc_math "$a + b$"
             │ │ ├─"$" "$"
             │ │ └─"$" "$"
             │ ├─pandoc_space " "
@@ -341,7 +341,7 @@
             │ ├─pandoc_str "math"
             │ └─pandoc_str ":"
             ├─pandoc_paragraph
-            │ └─pandoc_display_math
+            │ └─pandoc_display_math "$$\n\\sum_i x_i\n$$"
             │   ├─"$$" "$$"
             │   └─"$$" "$$"
             ├─pandoc_div
@@ -486,7 +486,7 @@
             | | +-language_specifier "r"
             | | \-"}" "}"
             | +-block_continuation
-            | +-code_fence_content
+            | +-code_fence_content "x = 1\n"
             | | \-block_continuation
             | \-fenced_code_block_delimiter "```"
             +-pandoc_paragraph
@@ -494,7 +494,7 @@
             | +-pandoc_space " "
             | +-pandoc_str "math"
             | +-pandoc_space " "
-            | +-pandoc_math
+            | +-pandoc_math "$a + b$"
             | | +-"$" "$"
             | | \-"$" "$"
             | +-pandoc_space " "
@@ -505,7 +505,7 @@
             | +-pandoc_str "math"
             | \-pandoc_str ":"
             +-pandoc_paragraph
-            | \-pandoc_display_math
+            | \-pandoc_display_math "$$\n\\sum_i x_i\n$$"
             |   +-"$$" "$$"
             |   \-"$$" "$$"
             +-pandoc_div

@@ -29,8 +29,10 @@ set_cell_label(x, value)
 collect_code(x, engine = NULL, eval_only = FALSE, label_comments = TRUE)
 }
 \arguments{
-\item{x}{A \code{\link{pandoc_code_block}} (for the accessors / setters) or any
-node or document (for \code{collect_code()}).}
+\item{x}{For the accessors and setters, a \code{\link{pandoc_code_block}}: the
+accessors return empty / \code{NA} on a non-cell, and the setters require
+an executable cell (braced engine). For \code{collect_code()}, any node or
+document to gather cells from.}
 
 \item{...}{For \code{set_cell_options()}, named \code{key = value} option pairs.}
 

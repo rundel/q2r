@@ -68,3 +68,27 @@ test_that("class slot accessor returns the S7 class name", {
   hs = select_nodes(doc, class == "pandoc_header")
   expect_length(hs, 1L)
 })
+
+test_that("the three selection verbs dispatch on a pandoc_blocks wrapper", {
+  blks = parse_qmd("# A\n\n# B\n")@blocks
+  expect_length(select_nodes(blks, is(pandoc_header)), 2L)
+  expect_length(select_descendants(blks, is(pandoc_str)), 2L)
+  expect_length(select_children(blks, is(pandoc_header)), 2L)
+})
+
+test_that("select_first, walk_nodes, and the mutators dispatch on wrappers too", {
+  blks = parse_qmd("# A\n\n# B\n")@blocks
+  expect_s7_class(select_first(blks, is(pandoc_header)), pandoc_header)
+
+  seen = 0L
+  walk_nodes(blks, is(pandoc_header), .f = function(h) seen <<- seen + 1L)
+  expect_equal(seen, 2L)
+
+  out = map_nodes(blks, is(pandoc_header), .f = function(h) add_class(h, "x"))
+  expect_s7_class(out, pandoc_blocks)
+  expect_true(has_class(out@content[[1]], "x"))
+
+  dropped = delete_nodes(blks, is(pandoc_header))
+  expect_s7_class(dropped, pandoc_blocks)
+  expect_length(dropped@content, 0L)
+})

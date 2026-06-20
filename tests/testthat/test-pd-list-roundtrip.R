@@ -22,7 +22,7 @@ test_that("pandoc_to_list / pandoc_from_list are structural inverses (rich doc)"
   pd = parse_qmd(src)
   expect_false(has_error_diagnostics(pd))
   l = q2r:::pandoc_to_list(pd)
-  expect_identical(q2r:::pandoc_to_list(pandoc_from_list(l)), l)
+  expect_identical(q2r:::pandoc_to_list(q2r:::pandoc_from_list(l)), l)
 })
 
 test_that("pandoc_to_list / pandoc_from_list invert across quarto-web fixtures", {
@@ -31,6 +31,17 @@ test_that("pandoc_to_list / pandoc_from_list invert across quarto-web fixtures",
     pd = parse_qmd(quarto_web_read(rel), quiet = TRUE)
     if (has_error_diagnostics(pd)) next
     l = q2r:::pandoc_to_list(pd)
-    expect_identical(q2r:::pandoc_to_list(pandoc_from_list(l)), l)
+    expect_identical(q2r:::pandoc_to_list(q2r:::pandoc_from_list(l)), l)
   }
+})
+
+test_that("Figure caption short survives the converter round-trip", {
+  fig = pandoc_figure(
+    caption = pandoc_caption(short = as_inlines("Short"), long = as_blocks("Long")),
+    content = pandoc_blocks(list(pandoc_plain(content = as_inlines("body"))))
+  )
+  doc = pandoc(blocks = pandoc_blocks(list(fig)))
+  rt = q2r:::pandoc_from_list(q2r:::pandoc_to_list(doc))@blocks@content[[1]]
+  expect_equal(ast_text(rt@caption@short), "Short")
+  expect_equal(ast_text(rt@caption@long), "Long")
 })

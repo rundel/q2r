@@ -8,6 +8,20 @@ NULL
 #' tree-sitter node kinds are open-ended grammar-defined strings, so a
 #' single `ts_node` class with a `kind` string property is used.
 #'
+#' @param row,column For [ts_point], the 0-based row and column.
+#' @param start_byte,end_byte For [ts_range], the byte offsets of the span.
+#' @param start_point,end_point For [ts_range], the start/end [ts_point]s.
+#' @param kind For [ts_node], the grammar node kind (a string).
+#' @param is_named For [ts_node], whether the node is named (vs anonymous).
+#' @param field_name For [ts_node], the parent field name, or `NULL`.
+#' @param range For [ts_node], its [ts_range].
+#' @param text For [ts_node], the source text it carries, or `NULL`.
+#' @param content For [ts_nodes], a list of [ts_node]s.
+#' @param children For [ts_node], its child [ts_nodes].
+#' @param root For [ts_tree], the root [ts_node].
+#' @param language For [ts_tree], the grammar name (default `"qmd"`).
+#' @param diagnostics For [ts_tree], a list of [pampa_diagnostic]s.
+#'
 #' @export
 ts_point = S7::new_class(
   "ts_point",
@@ -118,8 +132,11 @@ ts_format_label = function(x, position = FALSE, text = TRUE) {
   pos = if (position) {
     paste0(" ", pandoc_style_pos(ts_format_position(x@range)))
   } else ""
-  is_leaf = length(x@children@content) == 0L
-  text_snip = if (text && is_leaf && !is.null(x@text) && nzchar(x@text)) {
+  # Show the text snippet for leaves and for the grammar-gap *content* kinds
+  # (math / code-fence content) whose bytes live only in `@text`; container
+  # non-leaves keep their (verbose, redundant) `@text` hidden.
+  show_text = length(x@children@content) == 0L || x@kind %in% ts_gap_text_kinds
+  text_snip = if (text && show_text && !is.null(x@text) && nzchar(x@text)) {
     paste0(" ", pandoc_quote(x@text))
   } else ""
   paste0(field, kind, pos, text_snip)
@@ -180,8 +197,8 @@ ts_tree_lines = function(x, position = FALSE, text = TRUE) {
 #' Renders a [`ts_tree`] or [`ts_node`] as an indented tree.
 #'
 #' @param x A [`ts_tree`] or [`ts_node`].
-#' @param position If `TRUE`, include each node's `(row, column)` byte
-#'   range in the label. Defaults to `FALSE`.
+#' @param position If `TRUE`, include each node's start-end `(row, column)`
+#'   point range in the label. Defaults to `FALSE`.
 #' @param text If `TRUE` (the default), include the source-text snippet
 #'   for leaf nodes that carry one.
 #' @param color For `ts_tree`, whether to use ANSI colour when printing
@@ -194,6 +211,16 @@ NULL
 
 S7::method(print, ts_node) = function(x, position = FALSE, text = TRUE, ...) {
   cat(ts_tree_lines(x, position = position, text = text), sep = "\n")
+  invisible(x)
+}
+
+S7::method(print, ts_nodes) = function(x, position = FALSE, text = TRUE, ...) {
+  n = length(x@content)
+  cat(cli::format_inline("<ts_nodes: {n} node{?s}>\n"))
+  for (nd in x@content) {
+    cat(ts_tree_lines(nd, position = position, text = text), sep = "\n")
+    cat("\n")
+  }
   invisible(x)
 }
 

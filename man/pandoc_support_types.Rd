@@ -2,7 +2,6 @@
 % Please edit documentation in R/pd-ast-support.R
 \name{pandoc_support_types}
 \alias{pandoc_support_types}
-\alias{pandoc_source_info}
 \alias{pandoc_attr}
 \alias{pandoc_list_attributes}
 \alias{pandoc_citation}
@@ -13,16 +12,6 @@
 \alias{pandoc_row}
 \title{Pandoc AST support types}
 \usage{
-pandoc_source_info(
-  file_id = NA_integer_,
-  start_offset = NA_integer_,
-  start_row = NA_integer_,
-  start_col = NA_integer_,
-  end_offset = NA_integer_,
-  end_row = NA_integer_,
-  end_col = NA_integer_
-)
-
 pandoc_attr(id = "", classes = character(0), attributes = character(0))
 
 pandoc_list_attributes(start = 1L, style = "Decimal", delim = "Period")
@@ -54,9 +43,9 @@ pandoc_row(attr = pandoc_attr(), cells = list())
 }
 \description{
 Helper value types that appear inside concrete block and inline nodes:
-source locations, attributes, ordered-list attributes, citations,
-captions, definition-list items, and table cells/rows/columns. Each
-returns a plain S7 object (these are not \link{pandoc_node} subclasses).
+attributes, ordered-list attributes, citations, captions,
+definition-list items, and table cells/rows/columns. Each returns a
+plain S7 object (these are not \link{pandoc_node} subclasses).
 }
 \section{Notes}{
 

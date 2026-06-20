@@ -7,6 +7,12 @@ NULL
 #' an S7 object extending [pandoc_block]. See [pandoc_node] for the abstract
 #' hierarchy and [pandoc_inline_constructors] for the inline nodes.
 #'
+#' @section Notes:
+#' `pandoc_block_metadata()` is parse-only and lossy: the reader never
+#' populates its `@meta` slot (it stays the empty default) and pampa's
+#' writer does not emit it, so it round-trips as an empty node. The slot
+#' is kept for forward compatibility.
+#'
 #' @name pandoc_block_constructors
 #' @seealso [pandoc_inline_constructors], [pandoc_node], [pandoc_support_types]
 NULL
@@ -182,7 +188,14 @@ pandoc_table = S7::new_class(
     head    = S7::new_property(pandoc_table_head, default = quote(pandoc_table_head())),
     bodies  = S7::new_property(S7::class_list, default = list()),
     foot    = S7::new_property(pandoc_table_foot, default = quote(pandoc_table_foot()))
-  )
+  ),
+  validator = function(self) {
+    msg = validate_list_of(self@colspec, pandoc_col_spec,
+                           "@colspec must be a list of pandoc_col_spec objects")
+    if (!is.null(msg)) return(msg)
+    validate_list_of(self@bodies, pandoc_table_body,
+                     "@bodies must be a list of pandoc_table_body objects")
+  }
 )
 
 #' @rdname pandoc_block_constructors

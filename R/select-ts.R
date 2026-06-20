@@ -22,42 +22,86 @@ ts_collect_matches = function(root, quos, mask, include_root = TRUE) {
   out
 }
 
-# Grammar-gap kinds whose verbatim `@text` is the sole carrier of bytes the
-# named children do not cover (the `ts_text_or(NULL)` content kinds in
-# to-qmd.R). For these, clearing `@text` on rebuild would silently drop the
-# content; for every other kind `to_qmd()` correctly re-renders by walking the
-# (mutated) children.
+# Grammar-gap *content* kinds whose verbatim `@text` is the sole carrier of
+# bytes the named children do not cover (the `ts_text_or(NULL)` content kinds in
+# to-qmd.R). These have no useful child structure to re-render from, so the
+# verbatim span is kept as-is on rebuild - which means edits to their children
+# are a no-op on output (a known limitation of ts mutation).
 ts_gap_text_kinds = c("code_fence_content", "pandoc_math", "pandoc_display_math")
 
-ts_rebuild_node = function(node, new_children) {
+# Re-derive a container node's `@text` after its children changed. A non-leaf
+# only carries `@text` when its children do not cover its full byte span - a
+# grammar gap holding inter-child whitespace (blank lines between blocks, the
+# `>` of a block quote, list indentation). Clearing it drops that whitespace;
+# re-emitting it verbatim drops the mutation. Instead, slice the original gap
+# bytes (the spans between the *original* children) out of the original `@text`
+# and splice them around the rewritten children's rendered text. `groups[[i]]`
+# is the list of new nodes the original child `i` produced - empty for a
+# deletion, several for a splice - so gaps stay anchored to surviving children.
+# Returns NULL (clear `@text`; let to_qmd() walk children) when the node has no
+# gap, or as a safe fallback when the byte span and `@text` disagree.
+ts_recompute_gap_text = function(node, old_children, groups) {
+  txt = node@text
+  if (is.null(txt) || is.null(groups) || length(old_children) == 0L) return(NULL)
+  s = node@range@start_byte
+  e = node@range@end_byte
+  if (is.na(s) || is.na(e)) return(NULL)
+  bytes = charToRaw(enc2utf8(txt))
+  if (length(bytes) != e - s) return(NULL)
+  starts = purrr::map_int(old_children, function(ch) ch@range@start_byte)
+  ends   = purrr::map_int(old_children, function(ch) ch@range@end_byte)
+  if (anyNA(starts) || anyNA(ends)) return(NULL)
+  gap = function(from, to) {
+    if (to <= from) return("")
+    out = rawToChar(bytes[(from - s + 1L):(to - s)])
+    Encoding(out) = "UTF-8"
+    out
+  }
+  parts = character(0)
+  prev = s
+  for (i in seq_along(old_children)) {
+    parts = c(parts, gap(prev, starts[i]),
+              purrr::map_chr(groups[[i]], to_qmd_ts_node))
+    prev = ends[i]
+  }
+  paste0(c(parts, gap(prev, e)), collapse = "")
+}
+
+ts_rebuild_node = function(node, new_children, old_children = NULL, groups = NULL) {
   # `text` is a verbatim source-span fallback for grammar gaps. Changing
-  # children invalidates it for ordinary nodes (to_qmd() then walks children),
-  # but for the gap-content kinds it is the only carrier of the node's bytes,
-  # so preserve it to avoid silent data loss.
-  keep_text = node@kind %in% ts_gap_text_kinds
+  # children invalidates it for ordinary nodes (to_qmd() then walks children);
+  # for the gap-content kinds it is the only carrier of the node's bytes, so
+  # keep it verbatim; for gap *containers* it holds the inter-child whitespace
+  # that walking the (now mutated) children would drop, so recompute it.
+  new_text = if (node@kind %in% ts_gap_text_kinds) {
+    node@text
+  } else {
+    ts_recompute_gap_text(node, old_children, groups)
+  }
   ts_node(
     kind       = node@kind,
     is_named   = node@is_named,
     field_name = node@field_name,
     range      = node@range,
-    text       = if (keep_text) node@text else NULL,
+    text       = new_text,
     children   = ts_nodes(new_children)
   )
 }
 
 # Post-order rewrite. Walks every node, rebuilding parents whose
 # children changed. At each node, `.f` is only invoked if `quos` matches.
+# `groups` keeps each original child's rewritten output grouped so a rebuilt
+# parent can re-anchor its inter-child gap whitespace (see ts_recompute_gap_text).
 ts_rewrite_node = function(node, quos, mask, .f) {
   old_children = node@children@content
-  new_children = purrr::list_flatten(
-    purrr::map(old_children, function(ch) {
-      ast_to_node_list(ts_rewrite_node(ch, quos, mask, .f))
-    })
-  )
+  groups = purrr::map(old_children, function(ch) {
+    ast_to_node_list(ts_rewrite_node(ch, quos, mask, .f))
+  })
+  new_children = purrr::list_flatten(groups)
   rebuilt = if (identical(new_children, old_children)) {
     node
   } else {
-    ts_rebuild_node(node, new_children)
+    ts_rebuild_node(node, new_children, old_children, groups)
   }
   if (ast_eval_predicates(quos, rebuilt, mask)) {
     return(.f(rebuilt))
@@ -195,6 +239,8 @@ S7::method(select_first, ts_node) = function(x, ...) {
   ts_first_match(x, quos, ast_make_mask("ts"), include_root = TRUE)
 }
 
+S7::method(select_first, ts_nodes) = function(x, ...) select_first(x@content, ...)
+
 
 # ---- walk_nodes ---------------------------------------------------------
 
@@ -213,6 +259,20 @@ S7::method(walk_nodes, ts_node) = function(x, ..., .f) {
   ts_walk_node(x, quos, ast_make_mask("ts"), fn)
   invisible(x)
 }
+
+# ---- ts_nodes wrapper: round out the verb set (delegate to @content) ----
+# The three selection verbs already dispatch on ts_nodes; mirror the pandoc
+# wrappers for the rest, re-wrapping mutator results back in ts_nodes.
+S7::method(walk_nodes, ts_nodes) = function(x, ..., .f) {
+  walk_nodes(x@content, ..., .f = .f)
+  invisible(x)
+}
+S7::method(map_nodes, ts_nodes)     = function(x, ..., .f) ts_nodes(map_nodes(x@content, ..., .f = .f))
+S7::method(replace_nodes, ts_nodes) = function(x, ..., .with) ts_nodes(replace_nodes(x@content, ..., .with = .with))
+S7::method(delete_nodes, ts_nodes)  = function(x, ...) ts_nodes(delete_nodes(x@content, ...))
+S7::method(splice_nodes, ts_nodes)  = function(x, ..., .f) ts_nodes(splice_nodes(x@content, ..., .f = .f))
+S7::method(insert_before, ts_nodes) = function(x, ..., .what) ts_nodes(insert_before(x@content, ..., .what = .what))
+S7::method(insert_after, ts_nodes)  = function(x, ..., .what) ts_nodes(insert_after(x@content, ..., .what = .what))
 
 
 # ---- map_nodes ----------------------------------------------------------

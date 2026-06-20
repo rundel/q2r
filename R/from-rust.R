@@ -125,8 +125,6 @@ inline_from_list = function(x) {
     ),
     Shortcode   = {
       kw_in = x$keyword_args %||% list()
-      kw_keys = vapply(kw_in, function(a) a$key %||% "", character(1L))
-      kw_in = kw_in[order(kw_keys)]
       pd_fast(pandoc_shortcode,
         name            = x$name %||% "",
         is_escaped      = isTRUE(x$is_escaped),
@@ -154,7 +152,7 @@ block_from_list = function(x) {
     RawBlock       = pd_fast(pandoc_raw_block, format = x$format, text = x$text),
     BlockQuote     = pd_fast(pandoc_block_quote, content = blocks_from_list(x$content)),
     OrderedList    = pd_fast(pandoc_ordered_list,
-      attr = pd_fast(pandoc_list_attributes, start = x$start, style = x$style, delim = x$delim),
+      attr = pd_fast(pandoc_list_attributes, start = as.integer(x$start), style = x$style, delim = x$delim),
       content = lapply(x$items %||% list(), blocks_from_list)
     ),
     BulletList     = pd_fast(pandoc_bullet_list,
@@ -175,7 +173,7 @@ block_from_list = function(x) {
     HorizontalRule = pd_fast(pandoc_horizontal_rule),
     Figure         = pd_fast(pandoc_figure,
       attr = attr_from_list(x$attr),
-      caption = pd_fast(pandoc_caption, long = blocks_from_list(x$caption)),
+      caption = caption_from_list(x$caption),
       content = blocks_from_list(x$content)
     ),
     Div            = pd_fast(pandoc_div, attr = attr_from_list(x$attr), content = blocks_from_list(x$content)),

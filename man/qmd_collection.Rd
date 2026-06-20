@@ -12,7 +12,6 @@ parse_qmd_dir(
   dir = ".",
   pattern = "\\\\.qmd$",
   recurse = TRUE,
-  ast = c("pd", "ts"),
   quiet = TRUE,
   prune_errors = TRUE
 )
@@ -28,9 +27,6 @@ writes each document back to the path it was read from.}
 \code{"\\\\.qmd$"}).}
 
 \item{recurse}{Whether to descend into subdirectories.}
-
-\item{ast}{Which AST to build, \code{"pd"} (default) or \code{"ts"}, passed to
-\code{\link[=parse_qmd]{parse_qmd()}}.}
 
 \item{quiet}{Suppress per-file diagnostic signaling (default \code{TRUE};
 diagnostics are still attached to each document's \verb{@diagnostics}).}
@@ -65,8 +61,13 @@ document and return a new \code{qmd_collection}.
 \item \code{walk_nodes} applies a side effect to every document and returns the
 collection invisibly.
 \item \code{\link[=ast_summary]{ast_summary()}} returns a combined \code{data.frame} with a leading
-\code{doc} column naming the source document.
+\code{doc} column naming the source document, and \code{\link[=as_df]{as_df()}} returns a
+per-document named list of its tables.
 }
+
+The document-level helpers (\code{\link[=ast_sections]{ast_sections()}}, \code{\link[=ast_toc]{ast_toc()}},
+\code{\link[=select_section]{select_section()}}, \code{\link[=split_sections]{split_sections()}}, \code{\link[=ast_filter]{ast_filter()}}) are
+\emph{not} collection-aware; map them over \verb{@docs} yourself.
 }
 \examples{
 \dontrun{

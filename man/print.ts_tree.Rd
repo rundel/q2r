@@ -7,8 +7,8 @@
 \arguments{
 \item{x}{A \code{\link{ts_tree}} or \code{\link{ts_node}}.}
 
-\item{position}{If \code{TRUE}, include each node's \verb{(row, column)} byte
-range in the label. Defaults to \code{FALSE}.}
+\item{position}{If \code{TRUE}, include each node's start-end \verb{(row, column)}
+point range in the label. Defaults to \code{FALSE}.}
 
 \item{text}{If \code{TRUE} (the default), include the source-text snippet
 for leaf nodes that carry one.}

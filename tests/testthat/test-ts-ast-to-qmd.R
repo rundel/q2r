@@ -61,6 +61,13 @@ test_that("to_qmd reconstructs grammar-gap kinds via @text", {
   expect_roundtrip("```{r}\nx <- 1\nplot(x)\n```\n")
 })
 
+test_that("to_qmd dispatches on a bare ts_node but not a bare pandoc block", {
+  # the ts path is byte-recovery, so a single node renders; the pandoc path is
+  # intentionally whole-document only.
+  expect_error(to_qmd(pandoc_header(level = 1L)))
+  expect_equal(to_qmd(parse_qmd("# Hi\n", ast = "ts")@root), "# Hi\n")
+})
+
 test_that("ts byte-walker warns on unknown kinds and concatenates children", {
   fake = ts_node(
     kind = "__not_a_real_kind__",

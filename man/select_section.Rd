@@ -41,8 +41,10 @@ first, matched against the enclosing-heading chain from
 \code{levels}). A section anchor matches when its collapsed heading chain
 has the same length as \code{path} and each element glob-matches, so
 \code{path = c("Results", "Model *")} selects each \verb{Model *} subsection
-nested directly under a \code{Results} heading. Headings whose level is
-not in \code{levels} are treated as ordinary content.
+nested directly under a \code{Results} heading. \code{levels} restricts only
+which headings can \emph{start} a selected section; a heading at or above
+the matched heading's level still ends the section even when its own
+level is excluded from \code{levels}.
 
 Section membership depends on document order, which a per-node
 predicate (evaluated on one node in isolation) cannot see; that is

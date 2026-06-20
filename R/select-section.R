@@ -18,8 +18,10 @@ NULL
 #' `levels`). A section anchor matches when its collapsed heading chain
 #' has the same length as `path` and each element glob-matches, so
 #' `path = c("Results", "Model *")` selects each `Model *` subsection
-#' nested directly under a `Results` heading. Headings whose level is
-#' not in `levels` are treated as ordinary content.
+#' nested directly under a `Results` heading. `levels` restricts only
+#' which headings can *start* a selected section; a heading at or above
+#' the matched heading's level still ends the section even when its own
+#' level is excluded from `levels`.
 #'
 #' Section membership depends on document order, which a per-node
 #' predicate (evaluated on one node in isolation) cannot see; that is
@@ -71,20 +73,23 @@ select_section_on_blocks = function(blocks, path, levels, include_heading) {
   }
   if (length(blocks) == 0L) return(list())
   secs = ast_sections_of_blocks(blocks)
-  is_boundary = function(b) {
-    S7::S7_inherits(b, pandoc_header) && length(b@level) == 1L &&
-      !is.na(b@level) && b@level %in% levels
+  is_header = function(b) {
+    S7::S7_inherits(b, pandoc_header) && length(b@level) == 1L && !is.na(b@level)
   }
+  # `levels` only restricts which headings can *anchor* a selected section; a
+  # heading at or above the anchor's level still ends it, even when that
+  # heading's own level is excluded from `levels`.
+  is_anchor = function(b) is_header(b) && b@level %in% levels
   n = length(blocks)
   keep = logical(n)
   for (i in seq_len(n)) {
     b = blocks[[i]]
-    if (!is_boundary(b)) next
+    if (!is_anchor(b)) next
     if (!section_anchor_matches(secs[[i]], path, levels)) next
     end = n
     if (i < n) {
       for (j in (i + 1L):n) {
-        if (is_boundary(blocks[[j]]) && blocks[[j]]@level <= b@level) {
+        if (is_header(blocks[[j]]) && blocks[[j]]@level <= b@level) {
           end = j - 1L
           break
         }

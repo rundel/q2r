@@ -31,7 +31,10 @@ NULL
 #' - [`map_nodes()`] rewrites every match via `.f`. The function may
 #'   return a single node (in-place replacement), a list of nodes
 #'   (spliced in at the match site), `NULL` (delete), or the original
-#'   node (no-op). The new tree has the same class as the input.
+#'   node (no-op). Applied to a document / tree / wrapper the result is
+#'   the same class as the input; applied to a bare node the result
+#'   follows the mutation contract directly (it may be a node, a list, or
+#'   `NULL`).
 #' - [`replace_nodes()`] is `map_nodes()` with a constant replacement.
 #' - [`delete_nodes()`] is `map_nodes()` with `\(x) NULL`.
 #' - [`splice_nodes()`] is `map_nodes()` whose `.f` must return a list.
@@ -52,6 +55,11 @@ NULL
 #' parent is checked its children have already been rewritten. This
 #' matches Pandoc Lua filters' default.
 #'
+#' On a `ts_tree`, the three grammar-gap *content* kinds (`pandoc_math`,
+#' `pandoc_display_math`, `code_fence_content`) round-trip through their
+#' verbatim source bytes, so mutating *their* children is a no-op on
+#' [`to_qmd()`] output.
+#'
 #' @section Predicate helpers (only available inside `...`):
 #' These shadow nothing in the global R namespace because they are
 #' installed into the predicate's data mask, not the package
@@ -60,18 +68,25 @@ NULL
 #'
 #' - `is(<S7 class>)` honours S7 inheritance, so `is(pandoc_block)`
 #'   matches any block.
+#' The attribute- and text-based helpers (`has_class`, `has_id`,
+#' `has_attr`, `has_text`, `has_label`) resolve `@attr` / [`ast_text()`],
+#' which exist only on the pandoc AST, so on a `ts_tree` they are a silent
+#' no-match. Use [`ts_query()`] or bare-slot predicates (`kind`, `text`)
+#' for tree-sitter queries.
+#'
 #' - `has_class("foo")` / `has_class(c("foo", "bar"))` test
 #'   `@attr@classes` membership (pandoc only).
-#' - `has_id("intro")` tests `@attr@id`.
+#' - `has_id("intro")` tests `@attr@id` (pandoc only).
 #' - `has_attr("key")` / `has_attr("key", "val")` test
-#'   `@attr@attributes`.
+#'   `@attr@attributes` (pandoc only).
 #' - `has_text("Exercise")` tests the node's flattened text
 #'   ([`ast_text()`]) against one or more regex patterns (`fixed = TRUE`
-#'   for literal matching); the analog of parsermd's `has_heading()`.
+#'   for literal matching); the analog of parsermd's `has_heading()`
+#'   (pandoc only).
 #' - `has_label("fig-*")` glob-matches the node's `@attr@id`, where
 #'   Quarto labels surface as `#id`; for code cells without an attr id it
 #'   falls back to the cell's `label` option. The analog of parsermd's
-#'   `has_label()`.
+#'   `has_label()` (pandoc only).
 #' - `is_code_cell()` matches an executable Quarto cell (see
 #'   [`code_cell`]).
 #' - `has_option("eval")` / `has_option("eval", FALSE)` test a cell's
@@ -219,6 +234,9 @@ mask_has_id = function(id) {
 }
 
 mask_has_attr = function(key, value) {
+  if (!is.character(key) || length(key) != 1L) {
+    cli::cli_abort("{.arg key} in {.fn has_attr} must be a single string.")
+  }
   v = attr_get(ast_attr(ast_current_node()), key)
   if (is.na(v)) return(FALSE)
   if (missing(value)) return(TRUE)
@@ -438,7 +456,7 @@ ast_as_fn = function(f) {
   if (is.null(f)) return(NULL)
   if (is.function(f)) return(f)
   if (rlang::is_formula(f)) return(rlang::as_function(f))
-  stop(".f must be a function or a formula (e.g. `~ pandoc_str(.x@text)`)",
+  stop(".f must be a function or a formula (e.g. `~ pandoc_str(text = .x@text)`)",
        call. = FALSE)
 }
 

@@ -36,7 +36,9 @@ NULL
 #' cannot be expressed at single-element level (e.g. merging adjacent
 #' runs, dropping siblings based on neighbours).
 #'
-#' @param x A [`pandoc`] document or any [`pandoc_node`].
+#' @param x A [`pandoc`] document, any [`pandoc_node`], a
+#'   [`pandoc_blocks`] / [`pandoc_inlines`] wrapper, or a plain `list` of
+#'   nodes.
 #' @param ... Named functions, where each name is an exported S7 class
 #'   (e.g. `pandoc_strong`, `pandoc_header`, `pandoc_block`).
 #' @param .order Traversal direction: `"post"` (default, children
@@ -47,17 +49,15 @@ NULL
 #' @return A rewritten value of the same outer shape as `x`.
 #'
 #' @examples
-#' \dontrun{
 #' doc = parse_qmd("# Hello\n\n**bold** and *italic*\n")
 #' doc |> ast_filter(
-#'   pandoc_strong = \(el) pandoc_small_caps(el@content),
+#'   pandoc_strong = \(el) pandoc_small_caps(content = el@content),
 #'   pandoc_header = \(el) {
 #'     if (el@level == 1L) {
 #'       pandoc_header(level = 2L, content = el@content, attr = el@attr)
 #'     } else el
 #'   }
 #' )
-#' }
 #'
 #' @seealso [`map_nodes()`] for predicate-based rewriting,
 #'   [`ast_text()`] for stringifying a subtree.
@@ -283,4 +283,30 @@ S7::method(ast_filter, pandoc_node) = function(x, ..., .order = c("post", "pre")
   walker = ast_filter_pick_walker(.order)
   resolved = ast_filter_resolve_handlers(rlang::list2(...), parent.frame())
   walker(x, resolved)
+}
+
+# Wrapper / bare-list dispatch, so ast_filter() accepts the same block-level
+# inputs as the sibling verbs (`doc@blocks`, a plain list of blocks). The
+# per-element walker still fires nested `pandoc_blocks` / `pandoc_inlines`
+# hooks; only the top-level sequence is not treated as one such hook.
+ast_filter_on_each = function(items, resolved, walker) {
+  purrr::list_flatten(purrr::map(items, function(n) ast_to_node_list(walker(n, resolved))))
+}
+
+S7::method(ast_filter, pandoc_blocks) = function(x, ..., .order = c("post", "pre")) {
+  walker = ast_filter_pick_walker(.order)
+  resolved = ast_filter_resolve_handlers(rlang::list2(...), parent.frame())
+  pandoc_blocks(ast_filter_on_each(x@content, resolved, walker))
+}
+
+S7::method(ast_filter, pandoc_inlines) = function(x, ..., .order = c("post", "pre")) {
+  walker = ast_filter_pick_walker(.order)
+  resolved = ast_filter_resolve_handlers(rlang::list2(...), parent.frame())
+  pandoc_inlines(ast_filter_on_each(x@content, resolved, walker))
+}
+
+S7::method(ast_filter, S7::class_list) = function(x, ..., .order = c("post", "pre")) {
+  walker = ast_filter_pick_walker(.order)
+  resolved = ast_filter_resolve_handlers(rlang::list2(...), parent.frame())
+  ast_filter_on_each(x, resolved, walker)
 }

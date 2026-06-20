@@ -65,3 +65,42 @@ test_that("has_engine is a no-match on non-cells and plain code blocks", {
   doc = parse_qmd("some text\n\n```\nplain\n```\n")
   expect_length(select_nodes(doc, has_engine("r")), 0L)
 })
+
+test_that("is_leaf matches only childless nodes", {
+  doc = parse_qmd("# H {#sec-a}\n\ntext body\n")
+  expect_length(select_nodes(doc, is(pandoc_str) & is_leaf()), 3L)
+  expect_length(select_nodes(doc, is(pandoc_header) & is_leaf()), 0L)
+})
+
+test_that("has_attr matches a bare key and a key = value pair", {
+  doc = parse_qmd("# H {#sec-a key=val}\n")
+  expect_length(select_nodes(doc, has_attr("key")), 1L)
+  expect_length(select_nodes(doc, has_attr("key", "val")), 1L)
+  expect_length(select_nodes(doc, has_attr("key", "nope")), 0L)
+})
+
+test_that("starts_with/ends_with/matches/contains test a slot value", {
+  doc = parse_qmd("text body\n")
+  expect_length(select_nodes(doc, is(pandoc_str) & starts_with("bo", text)), 1L)
+  expect_length(select_nodes(doc, is(pandoc_str) & ends_with("dy", text)), 1L)
+  expect_length(select_nodes(doc, is(pandoc_str) & matches("^bo", text)), 1L)
+  expect_length(select_nodes(doc, is(pandoc_str) & contains("od", text)), 1L)
+  # called with one argument they curry into a predicate function
+  expect_gt(length(select_nodes(doc, is.function(matches("x")))), 0L)
+})
+
+test_that("any_of / all_of pass a vector through to has_class", {
+  doc = parse_qmd("::: {.note}\nx\n:::\n")
+  expect_length(select_nodes(doc, has_class(any_of(c("note", "warn")))), 1L)
+  expect_length(select_nodes(doc, has_class(all_of("note"))), 1L)
+  expect_length(select_nodes(doc, has_class(any_of(c("a", "b")))), 0L)
+})
+
+test_that("has_attr surfaces a non-scalar key as a warning, not a silent match", {
+  # Inside a predicate the clear cli error is caught by the once-per-session
+  # predicate-error handler, so it surfaces as a warning + no-match (rather
+  # than the opaque base "condition has length > 1" it used to raise).
+  doc = parse_qmd("# H {#h k=v}\n")
+  expect_warning(res <- select_nodes(doc, has_attr(c("k", "k2"))), "single string")
+  expect_length(res, 0L)
+})

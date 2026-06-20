@@ -90,7 +90,10 @@ returns its input invisibly.
 \item \code{\link[=map_nodes]{map_nodes()}} rewrites every match via \code{.f}. The function may
 return a single node (in-place replacement), a list of nodes
 (spliced in at the match site), \code{NULL} (delete), or the original
-node (no-op). The new tree has the same class as the input.
+node (no-op). Applied to a document / tree / wrapper the result is
+the same class as the input; applied to a bare node the result
+follows the mutation contract directly (it may be a node, a list, or
+\code{NULL}).
 \item \code{\link[=replace_nodes]{replace_nodes()}} is \code{map_nodes()} with a constant replacement.
 \item \code{\link[=delete_nodes]{delete_nodes()}} is \code{map_nodes()} with \verb{\\(x) NULL}.
 \item \code{\link[=splice_nodes]{splice_nodes()}} is \code{map_nodes()} whose \code{.f} must return a list.
@@ -114,6 +117,11 @@ match's position.
 The mutation walker traverses bottom-up (post-order), so when a
 parent is checked its children have already been rewritten. This
 matches Pandoc Lua filters' default.
+
+On a \code{ts_tree}, the three grammar-gap \emph{content} kinds (\code{pandoc_math},
+\code{pandoc_display_math}, \code{code_fence_content}) round-trip through their
+verbatim source bytes, so mutating \emph{their} children is a no-op on
+\code{\link[=to_qmd]{to_qmd()}} output.
 }
 
 \section{Predicate helpers (only available inside \code{...})}{
@@ -125,18 +133,24 @@ are unavailable.
 \itemize{
 \item \verb{is(<S7 class>)} honours S7 inheritance, so \code{is(pandoc_block)}
 matches any block.
+The attribute- and text-based helpers (\code{has_class}, \code{has_id},
+\code{has_attr}, \code{has_text}, \code{has_label}) resolve \verb{@attr} / \code{\link[=ast_text]{ast_text()}},
+which exist only on the pandoc AST, so on a \code{ts_tree} they are a silent
+no-match. Use \code{\link[=ts_query]{ts_query()}} or bare-slot predicates (\code{kind}, \code{text})
+for tree-sitter queries.
 \item \code{has_class("foo")} / \code{has_class(c("foo", "bar"))} test
 \verb{@attr@classes} membership (pandoc only).
-\item \code{has_id("intro")} tests \verb{@attr@id}.
+\item \code{has_id("intro")} tests \verb{@attr@id} (pandoc only).
 \item \code{has_attr("key")} / \code{has_attr("key", "val")} test
-\verb{@attr@attributes}.
+\verb{@attr@attributes} (pandoc only).
 \item \code{has_text("Exercise")} tests the node's flattened text
 (\code{\link[=ast_text]{ast_text()}}) against one or more regex patterns (\code{fixed = TRUE}
-for literal matching); the analog of parsermd's \code{has_heading()}.
+for literal matching); the analog of parsermd's \code{has_heading()}
+(pandoc only).
 \item \code{has_label("fig-*")} glob-matches the node's \verb{@attr@id}, where
 Quarto labels surface as \verb{#id}; for code cells without an attr id it
 falls back to the cell's \code{label} option. The analog of parsermd's
-\code{has_label()}.
+\code{has_label()} (pandoc only).
 \item \code{is_code_cell()} matches an executable Quarto cell (see
 \code{\link{code_cell}}).
 \item \code{has_option("eval")} / \code{has_option("eval", FALSE)} test a cell's

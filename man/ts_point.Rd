@@ -30,6 +30,33 @@ ts_node(
 
 ts_tree(root = ts_node(), language = "qmd", diagnostics = list())
 }
+\arguments{
+\item{row, column}{For \link{ts_point}, the 0-based row and column.}
+
+\item{start_byte, end_byte}{For \link{ts_range}, the byte offsets of the span.}
+
+\item{start_point, end_point}{For \link{ts_range}, the start/end \link{ts_point}s.}
+
+\item{content}{For \link{ts_nodes}, a list of \link{ts_node}s.}
+
+\item{kind}{For \link{ts_node}, the grammar node kind (a string).}
+
+\item{is_named}{For \link{ts_node}, whether the node is named (vs anonymous).}
+
+\item{field_name}{For \link{ts_node}, the parent field name, or \code{NULL}.}
+
+\item{range}{For \link{ts_node}, its \link{ts_range}.}
+
+\item{text}{For \link{ts_node}, the source text it carries, or \code{NULL}.}
+
+\item{children}{For \link{ts_node}, its child \link{ts_nodes}.}
+
+\item{root}{For \link{ts_tree}, the root \link{ts_node}.}
+
+\item{language}{For \link{ts_tree}, the grammar name (default \code{"qmd"}).}
+
+\item{diagnostics}{For \link{ts_tree}, a list of \link{pampa_diagnostic}s.}
+}
 \description{
 S7 classes representing the tree-sitter (\code{tree-sitter-qmd}) AST
 produced by pampa for a QMD document. Unlike the Pandoc AST,

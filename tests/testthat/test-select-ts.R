@@ -63,10 +63,47 @@ test_that("multiple predicates are combined with AND", {
   expect_length(m, 2L)
 })
 
+test_that("mutating a ts node preserves inter-block blank lines", {
+  # Deleting the spaces rebuilds the enclosing section; the blank lines between
+  # the heading and the two paragraphs (gap whitespace the named children do not
+  # cover) must survive the rebuild, not collapse away.
+  ts = parse_qmd("# A\n\nfirst para\n\nsecond para\n", ast = "ts")
+  out = to_qmd(delete_nodes(ts, kind == "pandoc_space"))
+  expect_equal(out, "# A\n\nfirstpara\n\nsecondpara\n")
+})
+
+test_that("ts blank-line preservation is correct across multibyte source", {
+  # Gap bytes are sliced from @text by byte offset; a multibyte char before the
+  # gap would break a character-indexed slice but not a byte-indexed one.
+  ts = parse_qmd("# ééé\n\nbody text\n\nmore\n", ast = "ts")
+  out = to_qmd(delete_nodes(ts, kind == "pandoc_space"))
+  expect_equal(out, "# ééé\n\nbodytext\n\nmore\n")
+})
+
+test_that("attr/text mask helpers silently no-match on the ts AST (pandoc only)", {
+  # has_text / has_id / has_label / has_class / has_attr rely on ast_text() /
+  # ast_attr(), which do not resolve on ts_node, so they are a silent no-match
+  # rather than an error or a once-per-session warning.
+  ts = parse_qmd("# Heading {#sec-a .cls}\n", ast = "ts")
+  expect_silent(expect_length(select_nodes(ts, has_text("Heading")), 0L))
+  expect_silent(expect_length(select_nodes(ts, has_id("sec-a")), 0L))
+  expect_silent(expect_length(select_nodes(ts, has_label("sec-*")), 0L))
+  expect_silent(expect_length(select_nodes(ts, has_class("cls")), 0L))
+})
+
 test_that("list-of-nodes dispatch supports chained selection", {
   ts = parse_qmd("# H1\n\n## H2\n\nbody\n", ast = "ts")
   step1 = select_nodes(ts, kind == "atx_heading")
   expect_length(step1, 2L)
   step2 = select_descendants(step1, kind == "atx_h1_marker" | kind == "atx_h2_marker")
   expect_gt(length(step2), 0L)
+})
+
+test_that("ts_nodes wrapper supports select_first and the mutators", {
+  ts = parse_qmd("# A\n\n# B\n", ast = "ts")
+  headings = q2r::ts_nodes(select_nodes(ts, kind == "atx_heading"))
+  expect_s7_class(select_first(headings, kind == "atx_heading"), ts_node)
+  out = delete_nodes(headings, kind == "atx_h1_marker")
+  expect_s7_class(out, ts_nodes)
+  expect_length(out@content, 2L)
 })

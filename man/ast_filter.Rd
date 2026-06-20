@@ -7,7 +7,9 @@
 ast_filter(x, ...)
 }
 \arguments{
-\item{x}{A \code{\link{pandoc}} document or any \code{\link{pandoc_node}}.}
+\item{x}{A \code{\link{pandoc}} document, any \code{\link{pandoc_node}}, a
+\code{\link{pandoc_blocks}} / \code{\link{pandoc_inlines}} wrapper, or a plain \code{list} of
+nodes.}
 
 \item{...}{Named functions, where each name is an exported S7 class
 (e.g. \code{pandoc_strong}, \code{pandoc_header}, \code{pandoc_block}).}
@@ -58,17 +60,15 @@ runs, dropping siblings based on neighbours).
 }
 }
 \examples{
-\dontrun{
 doc = parse_qmd("# Hello\n\n**bold** and *italic*\n")
 doc |> ast_filter(
-  pandoc_strong = \(el) pandoc_small_caps(el@content),
+  pandoc_strong = \(el) pandoc_small_caps(content = el@content),
   pandoc_header = \(el) {
     if (el@level == 1L) {
       pandoc_header(level = 2L, content = el@content, attr = el@attr)
     } else el
   }
 )
-}
 
 }
 \seealso{
