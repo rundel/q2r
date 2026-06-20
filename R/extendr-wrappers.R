@@ -57,7 +57,9 @@ pampa_diag_format_impl <- function(kind, code, title, problem, details, hints, l
 #'
 #' Returns `list(matches = list(...), error = NULL)` on success, or
 #' `list(matches = NULL, error = "<compile error>")` if the query
-#' string fails to compile against the tree-sitter-qmd grammar.
+#' string fails to compile against the tree-sitter-qmd grammar. If the
+#' input cannot be parsed at all it returns `list(matches = empty list,
+#' error = NULL)`, which is indistinguishable from a zero-match query.
 #' @noRd
 ts_query_impl <- function(text, query_text) .Call(wrap__ts_query_impl, text, query_text)
 

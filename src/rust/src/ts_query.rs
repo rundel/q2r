@@ -18,24 +18,12 @@ pub fn run_ts_query(text: &str, query_text: &str) -> List {
         }
     };
 
+    // `MarkdownParser::parse` sets the block grammar itself; `language` above
+    // is kept only for `Query::new`.
     let mut parser = MarkdownParser::default();
-    parser
-        .parser
-        .set_language(&language)
-        .expect("failed to set tree-sitter-qmd language");
 
-    let owned: Vec<u8>;
-    let bytes: &[u8] = if text.as_bytes().ends_with(b"\n") {
-        text.as_bytes()
-    } else {
-        owned = {
-            let mut v = Vec::with_capacity(text.len() + 1);
-            v.extend_from_slice(text.as_bytes());
-            v.push(b'\n');
-            v
-        };
-        &owned
-    };
+    let padded = ts_ast_to_r::ensure_trailing_newline(text.as_bytes());
+    let bytes: &[u8] = padded.as_ref();
 
     let tree = match parser.parse(bytes, None) {
         Some(t) => t,

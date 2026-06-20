@@ -59,9 +59,11 @@ fn opt_str(r: &Robj) -> Option<String> {
 }
 
 fn need_str(list: &List, name: &str) -> ERResult<String> {
-    field(list, name)
-        .and_then(|r| opt_str(&r))
-        .ok_or_else(|| Error::Other(format!("missing string field '{}'", name)))
+    match field(list, name) {
+        None => Err(Error::Other(format!("missing string field '{}'", name))),
+        Some(r) => opt_str(&r)
+            .ok_or_else(|| Error::Other(format!("field '{}' is not a single string", name))),
+    }
 }
 
 fn str_or_empty(list: &List, name: &str) -> String {
@@ -89,21 +91,27 @@ fn opt_i32(r: &Robj) -> Option<i32> {
 }
 
 fn need_i32(list: &List, name: &str) -> ERResult<i32> {
-    field(list, name)
-        .and_then(|r| opt_i32(&r))
-        .ok_or_else(|| Error::Other(format!("missing integer field '{}'", name)))
+    match field(list, name) {
+        None => Err(Error::Other(format!("missing integer field '{}'", name))),
+        Some(r) => opt_i32(&r)
+            .ok_or_else(|| Error::Other(format!("field '{}' is not a single integer", name))),
+    }
 }
 
 fn need_f64(list: &List, name: &str) -> ERResult<f64> {
-    field(list, name)
-        .and_then(|r| opt_f64(&r))
-        .ok_or_else(|| Error::Other(format!("missing numeric field '{}'", name)))
+    match field(list, name) {
+        None => Err(Error::Other(format!("missing numeric field '{}'", name))),
+        Some(r) => opt_f64(&r)
+            .ok_or_else(|| Error::Other(format!("field '{}' is not a single number", name))),
+    }
 }
 
 fn need_bool(list: &List, name: &str) -> ERResult<bool> {
-    field(list, name)
-        .and_then(|r| opt_bool(&r))
-        .ok_or_else(|| Error::Other(format!("missing logical field '{}'", name)))
+    match field(list, name) {
+        None => Err(Error::Other(format!("missing logical field '{}'", name))),
+        Some(r) => opt_bool(&r)
+            .ok_or_else(|| Error::Other(format!("field '{}' is not a single logical", name))),
+    }
 }
 
 fn need_tag(list: &List) -> ERResult<String> {
@@ -768,14 +776,17 @@ fn block_from_list(list: List) -> ERResult<Block> {
         }),
         "HorizontalRule" => Block::HorizontalRule(HorizontalRule { source_info: si }),
         "Figure" => {
-            let caption_blocks = blocks_from_content_field(&list, "caption")?;
-            Block::Figure(Figure {
-                attr: attr_field(&list)?,
-                caption: Caption {
+            let caption = match field(&list, "caption") {
+                Some(c) => caption_from_r(&c)?,
+                None => Caption {
                     short: None,
-                    long: Some(caption_blocks),
+                    long: None,
                     source_info: default_si(),
                 },
+            };
+            Block::Figure(Figure {
+                attr: attr_field(&list)?,
+                caption,
                 content: blocks_from_content_field(&list, "content")?,
                 source_info: si,
                 attr_source: asi(),

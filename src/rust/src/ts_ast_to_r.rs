@@ -1,6 +1,21 @@
 use extendr_api::prelude::*;
+use std::borrow::Cow;
 use tree_sitter::{Node, TreeCursor};
-use tree_sitter_qmd::{LANGUAGE, MarkdownParser};
+use tree_sitter_qmd::MarkdownParser;
+
+/// Append a trailing newline if absent, matching pampa's `qmd::read` so node
+/// ranges agree with the text pampa emits. Shared by the ts AST and ts query
+/// entry points (which both feed bytes to `MarkdownParser::parse`).
+pub fn ensure_trailing_newline(src: &[u8]) -> Cow<'_, [u8]> {
+    if src.ends_with(b"\n") {
+        Cow::Borrowed(src)
+    } else {
+        let mut v = Vec::with_capacity(src.len() + 1);
+        v.extend_from_slice(src);
+        v.push(b'\n');
+        Cow::Owned(v)
+    }
+}
 
 fn node_to_r(cursor: &mut TreeCursor, src: &[u8]) -> Robj {
     let node: Node = cursor.node();
@@ -102,31 +117,15 @@ pub fn node_to_r_at(cursor: &mut TreeCursor, src: &[u8]) -> Robj {
 }
 
 pub fn parse_ts_ast_to_r(src: &[u8]) -> Robj {
+    // `MarkdownParser::parse` sets the block grammar itself, so no manual
+    // `set_language` is needed here.
     let mut parser = MarkdownParser::default();
-    parser
-        .parser
-        .set_language(&LANGUAGE.into())
-        .expect("failed to set tree-sitter-qmd language");
+    let bytes = ensure_trailing_newline(src);
 
-    // Match pampa's qmd::read: append a trailing newline if absent,
-    // so node ranges agree with the text dump pampa emits.
-    let owned: Vec<u8>;
-    let bytes: &[u8] = if src.ends_with(b"\n") {
-        src
-    } else {
-        owned = {
-            let mut v = Vec::with_capacity(src.len() + 1);
-            v.extend_from_slice(src);
-            v.push(b'\n');
-            v
-        };
-        &owned
-    };
-
-    let tree = match parser.parse(bytes, None) {
+    let tree = match parser.parse(&bytes, None) {
         Some(t) => t,
         None => return NULL.into(),
     };
     let mut cursor = tree.walk_cursor();
-    node_to_r(&mut cursor, bytes)
+    node_to_r(&mut cursor, &bytes)
 }

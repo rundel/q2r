@@ -251,7 +251,7 @@ fn inline_to_r(i: &Inline) -> Robj {
         )
         .into(),
         Inline::Shortcode(sc) => shortcode_to_r(sc),
-        Inline::Custom(_) => list!(tag = "CustomInline", type_name = "").into(),
+        Inline::Custom(c) => list!(tag = "CustomInline", type_name = c.type_name.as_str()).into(),
     }
 }
 
@@ -316,16 +316,13 @@ fn block_to_r(b: &Block) -> Robj {
         )
         .into(),
         Block::HorizontalRule(_) => list!(tag = "HorizontalRule").into(),
-        Block::Figure(f) => {
-            let cap = f.caption.long.as_deref().unwrap_or(&[]);
-            list!(
-                tag = "Figure",
-                attr = attr_to_r(&f.attr),
-                caption = blocks_to_r(cap),
-                content = blocks_to_r(&f.content)
-            )
-            .into()
-        }
+        Block::Figure(f) => list!(
+            tag = "Figure",
+            attr = attr_to_r(&f.attr),
+            caption = caption_to_r(&f.caption),
+            content = blocks_to_r(&f.content)
+        )
+        .into(),
         Block::Div(d) => list!(
             tag = "Div",
             attr = attr_to_r(&d.attr),
@@ -349,14 +346,14 @@ fn block_to_r(b: &Block) -> Robj {
         Block::CaptionBlock(c) => {
             list!(tag = "CaptionBlock", content = inlines_to_r(&c.content)).into()
         }
-        Block::Custom(_) => list!(tag = "CustomBlock", type_name = "").into(),
+        Block::Custom(c) => list!(tag = "CustomBlock", type_name = c.type_name.as_str()).into(),
     }
 }
 
 // Document metadata (Pandoc.meta) is exported as a value-only tagged list
-// mirroring ConfigValueKind; source_info and merge_op are intentionally
-// dropped (the QMD writer ignores them, and dropping them keeps the
-// round-trip AST comparison stable).
+// mirroring ConfigValueKind; source_info, key_source, and merge_op are
+// intentionally dropped (the QMD writer ignores them, and dropping them keeps
+// the round-trip AST comparison stable).
 fn config_value_to_r(cv: &ConfigValue) -> Robj {
     match &cv.value {
         ConfigValueKind::Map(entries) => {
@@ -396,12 +393,18 @@ fn scalar_json_to_r(v: &serde_json::Value) -> Robj {
         serde_json::Value::Bool(b) => list!(kind = "bool", value = *b).into(),
         serde_json::Value::Number(n) => {
             if let Some(i) = n.as_i64() {
+                // R has no native 64-bit integer, so the value crosses the FFI as
+                // an f64; integers beyond +/-2^53 lose precision. No quarto-web
+                // fixture hits this (pinned in test-meta-roundtrip.R).
                 list!(kind = "int", value = i as f64).into()
             } else {
                 list!(kind = "real", value = n.as_f64().unwrap_or(f64::NAN)).into()
             }
         }
         serde_json::Value::String(s) => list!(kind = "string", value = s.as_str()).into(),
+        // The Array / Object arms are unreachable from qmd::read (YAML
+        // collections become ConfigValueKind::List/Map before reaching here);
+        // they exist only to keep the serde_json::Value match total.
         serde_json::Value::Array(arr) => {
             let vals: Vec<Robj> = arr.iter().map(scalar_json_to_r).collect();
             list!(kind = "list", value = List::from_values(vals)).into()

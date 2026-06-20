@@ -51,13 +51,13 @@ fn content_to_r(c: &MessageContent) -> Robj {
 fn location_to_r(loc: &SourceInfo, ctx: &SourceContext) -> Robj {
     let len = loc.length();
     let start = loc.map_offset(0, ctx);
-    let end = loc.map_offset(len, ctx).or_else(|| {
-        if len > 0 {
-            loc.map_offset(len - 1, ctx)
-        } else {
-            None
-        }
-    });
+    // Fall back to the last in-range byte, then to the start, so a mappable
+    // start with an unmappable end keeps a location rather than dropping it
+    // (matching pampa's json/diagnostic writers).
+    let end = loc
+        .map_offset(len, ctx)
+        .or_else(|| if len > 0 { loc.map_offset(len - 1, ctx) } else { None })
+        .or_else(|| start.clone());
 
     let file = start
         .as_ref()
@@ -116,6 +116,10 @@ pub fn diag_to_r(diag: &DiagnosticMessage, ctx: &SourceContext) -> Robj {
         })
         .collect();
 
+    // Hints flatten to bare strings, dropping the Plain/Markdown tag that
+    // `problem`/`details` preserve; on reconstruction they all become Markdown.
+    // This is deliberate and render-safe - full symmetry is not worth an
+    // R-side slot change.
     let hints: Vec<&str> = diag.hints.iter().map(|h| h.as_str()).collect();
 
     let problem: Robj = match &diag.problem {
@@ -249,7 +253,14 @@ pub fn format_diag(
     let diag = reconstruct_diagnostic(kind, code, title, problem, details, hints, location);
 
     let mut ctx = SourceContext::new();
-    ctx.add_file(source_filename.to_string(), Some(source_text.to_string()));
+    // Pad to a trailing newline (as the parser did) so an offset at the
+    // appended newline still resolves and the caret renders at format time.
+    let padded = if source_text.ends_with('\n') {
+        source_text.to_string()
+    } else {
+        format!("{source_text}\n")
+    };
+    ctx.add_file(source_filename.to_string(), Some(padded));
 
     let opts = TextRenderOptions {
         enable_hyperlinks: hyperlinks,

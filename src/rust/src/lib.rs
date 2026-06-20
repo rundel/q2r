@@ -30,7 +30,16 @@ fn diags_to_list_ref(
 
 fn fallback_source_context(text: &str, filename: &str) -> quarto_source_map::SourceContext {
     let mut ctx = quarto_source_map::SourceContext::new();
-    ctx.add_file(filename.to_string(), Some(text.to_string()));
+    // pampa's qmd::read pads its input with a trailing newline before parsing,
+    // so error offsets are computed against text.len()+1. Pad the fallback
+    // context to match, otherwise an offset at the appended newline (the usual
+    // "unexpected end" position) overruns and the whole location maps to NA.
+    let padded = if text.ends_with('\n') {
+        text.to_string()
+    } else {
+        format!("{text}\n")
+    };
+    ctx.add_file(filename.to_string(), Some(padded));
     ctx
 }
 
@@ -166,7 +175,9 @@ fn pampa_write_qmd_ast_impl(r_ast: Robj) -> List {
 ///
 /// Returns `list(matches = list(...), error = NULL)` on success, or
 /// `list(matches = NULL, error = "<compile error>")` if the query
-/// string fails to compile against the tree-sitter-qmd grammar.
+/// string fails to compile against the tree-sitter-qmd grammar. If the
+/// input cannot be parsed at all it returns `list(matches = empty list,
+/// error = NULL)`, which is indistinguishable from a zero-match query.
 /// @noRd
 #[extendr]
 fn ts_query_impl(text: &str, query_text: &str) -> List {
