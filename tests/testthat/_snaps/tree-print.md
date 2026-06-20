@@ -4,6 +4,7 @@
       print(pd)
     Output
       pandoc
+      ├─meta: map
       ├─header level=1 (#sec-intro .intro)
       │ ├─str "Heading"
       │ ├─space
@@ -109,6 +110,7 @@
       print(pd)
     Output
       pandoc
+      +-meta: map
       +-header level=1 (#sec-intro .intro)
       | +-str "Heading"
       | +-space
