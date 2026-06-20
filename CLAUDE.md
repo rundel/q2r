@@ -84,6 +84,12 @@ Top-level [`tools/config.R`](tools/config.R) and [`tools/msrv.R`](tools/msrv.R) 
 - `quarto-source-map` is a direct dep because we construct a `SourceContext` ourselves on the `Err` branch of `qmd::read` (the reader only returns a context on `Ok`) and on every `pampa_diag_format_impl` call.
 - `quarto-error-reporting` is a direct dep because we need `TextRenderOptions` (hyperlink toggle) and to `Deserialize`/reconstruct `DiagnosticMessage` values.
 
+## Reverse dependency: markermd
+
+- [`markermd`](../markermd) (sibling checkout at `/Users/rundel/Desktop/Projects/markermd`, `rundel/markermd`) is the primary downstream consumer of q2r: a Shiny-based interactive grading interface for R Markdown / Quarto assignments. It lists q2r under `Imports` with `Remotes: rundel/q2r`.
+- It uses q2r's public API: `parse_qmd()`, `to_qmd()`, the `pandoc_*` block/inline constructors, `pandoc` / `pandoc_blocks` / `pandoc_attr`, `ast_text()`, `select_children()`, the predicate-mask helpers inside quoted filter expressions (`is()`, `is_code_cell()`, `has_*()`), and the cell accessors (`cell_engine()`, `cell_label()`, `cell_code()`). It does not touch the internals q2r drops (e.g. `pandoc_source_info`).
+- Treat it as the reverse-dependency check for q2r's exported surface: a breaking change to a q2r public symbol or to `parse_qmd` / `to_qmd` / `ast_text` behaviour should be validated by installing q2r (`devtools::install(quick = TRUE, upgrade = FALSE)`) and running `devtools::test()` in `../markermd`. Behaviour-only changes (e.g. `ast_text` of a citation) are the likeliest source of silent breakage since markermd builds its grading UI on the AST shape.
+
 ## ts_ast byte-recovery contract
 
 - `to_qmd(ts_tree)` aims for **functional equivalence**: the output must re-parse to a `ts_ast` equal to the original (same kind tree and same `@text` slots). The correctness check used by the round-trip tests is `expect_ts_ast_equal(ts2, ts)` after `to_qmd(ts) -> parse_qmd(..., ast = "ts")`. Wrapper nodes that have a grammar gap (children don't cover the full byte range) preserve the gap by falling back to verbatim `@text`; this is how blank lines, indentation, and other inter-element whitespace stay byte-identical across the round trip.
