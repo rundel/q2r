@@ -39,8 +39,10 @@ NULL
 #' `has_option(key)` / `has_option(key, value)`, so
 #' `select_nodes(doc, is_code_cell() & has_option("eval", FALSE))` works.
 #'
-#' @param x A [`pandoc_code_block`] (for the accessors / setters) or any
-#'   node or document (for `collect_code()`).
+#' @param x For the accessors and setters, a [`pandoc_code_block`]: the
+#'   accessors return empty / `NA` on a non-cell, and the setters require
+#'   an executable cell (braced engine). For `collect_code()`, any node or
+#'   document to gather cells from.
 #' @param value For `set_cell_label()`, the new label string.
 #' @param engine For `collect_code()`, keep only cells with this engine.
 #' @param eval_only For `collect_code()`, drop cells whose `eval` option
@@ -106,6 +108,9 @@ cell_comment_prefix = function(engine) {
 
 cell_yaml_scalar = function(v) {
   if (length(v) != 1L) return(NULL)
+  # NA of any type serializes as YAML null (round-trips to R NULL); without this
+  # a logical NA became "false" and a character NA the bare token "NA".
+  if (is.atomic(v) && is.na(v)) return("null")
   if (is.logical(v)) return(if (isTRUE(v)) "true" else "false")
   # scientific = FALSE avoids forms like "2e+09" that YAML 1.1 will not parse
   # as numbers, and digits = 15 keeps full double precision where the default
@@ -133,6 +138,12 @@ cell_serialize_options = function(opts, prefix) {
     if (!is.null(sc)) {
       paste0(prefix, " ", k, ": ", sc)
     } else {
+      # Coerce integral-valued doubles to integer so the multi-line yaml path
+      # emits `1` / `2` rather than the noisy `1.0` / `2.0`.
+      if (is.double(v) && length(v) && all(is.finite(v)) &&
+          all(v == trunc(v)) && all(abs(v) < .Machine$integer.max)) {
+        v = as.integer(v)
+      }
       y = yaml::as.yaml(stats::setNames(list(v), k))
       ylines = strsplit(sub("\n+$", "", y), "\n", fixed = TRUE)[[1L]]
       paste0(prefix, " ", ylines)
@@ -203,8 +214,11 @@ cell_label = function(x) {
 #' @rdname code_cell
 #' @export
 set_cell_options = function(x, ...) {
-  if (!S7::S7_inherits(x, pandoc_code_block)) {
-    stop("`set_cell_options()`: `x` must be a pandoc_code_block.", call. = FALSE)
+  if (!is_code_cell(x)) {
+    stop("`set_cell_options()`: `x` must be an executable cell ",
+         "(a pandoc_code_block with a braced engine class such as `{r}`); ",
+         "a plain fenced block has no option block to write into.",
+         call. = FALSE)
   }
   pairs = rlang::list2(...)
   nms = names(pairs)

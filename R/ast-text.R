@@ -78,7 +78,9 @@ S7::method(ast_text, S7::class_list) = function(x) {
   if (all(purrr::map_lgl(x, S7::S7_inherits, pandoc_block))) {
     return(ast_text_join_blocks(x))
   }
-  paste(purrr::map_chr(x, ast_text), collapse = "")
+  # Heterogeneous (block + inline) lists are unusual; join with a single
+  # newline so adjacent blocks are not run together.
+  paste(purrr::map_chr(x, ast_text), collapse = "\n")
 }
 
 
@@ -113,7 +115,16 @@ S7::method(ast_text, pandoc_edit_comment) = function(x) ast_text(x@content)
 S7::method(ast_text, pandoc_note)        = function(x) {
   paste0("[^", ast_text(x@content), "]")
 }
-S7::method(ast_text, pandoc_cite)        = function(x) ast_text(x@content)
+S7::method(ast_text, pandoc_cite)        = function(x) {
+  content = ast_text(x@content)
+  if (nzchar(content)) return(content)
+  # A parsed citation keeps its keys in @citations, not @content; flatten
+  # prefix / @id / suffix (which carry their own spacing) so the citation is
+  # matchable via has_text() / ast_summary() rather than invisible.
+  paste(purrr::map_chr(x@citations, function(cit) {
+    paste0(ast_text(cit@prefix), "@", cit@id, ast_text(cit@suffix))
+  }), collapse = "; ")
+}
 
 
 # ---- inline misc --------------------------------------------------------

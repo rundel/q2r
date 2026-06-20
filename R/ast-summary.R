@@ -62,8 +62,8 @@ ast_summary_of_blocks = function(blocks, max_text = 40L) {
       if (S7::S7_inherits(b, pandoc_header)) b@level else NA_integer_
     }),
     id      = purrr::map_chr(blocks, function(b) {
-      a = ast_attr_maybe_get(b)
-      if (is.null(a) || !nzchar(a@id)) NA_character_ else a@id
+      id = attr_get_id(ast_attr_maybe_get(b))
+      if (!nzchar(id)) NA_character_ else id
     }),
     section = purrr::map_chr(secs, function(s) {
       named = s[!is.na(s)]

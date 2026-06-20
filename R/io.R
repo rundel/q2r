@@ -27,10 +27,14 @@ NULL
 #'   `write_qmd()` and `edit_qmd()` return the (edited) AST invisibly.
 #'
 #' @examples
-#' \dontrun{
-#' doc = read_qmd("notes.qmd")
-#' edit_qmd("notes.qmd", \(d) map_nodes(d, is(pandoc_header), .f = add_class("done")))
-#' }
+#' path = tempfile(fileext = ".qmd")
+#' writeLines("# Title\n\nSome text.\n", path)
+#'
+#' read_qmd(path)
+#'
+#' edit_qmd(path, \(d) map_nodes(d, is(pandoc_header),
+#'                               .f = \(h) add_class(h, "done")))
+#' cat(readLines(path), sep = "\n")
 #'
 #' @name read_qmd
 NULL
@@ -53,7 +57,9 @@ read_qmd = function(path, ast = c("pd", "ts"), ...) {
 #' @rdname read_qmd
 #' @export
 write_qmd = function(x, path) {
-  writeLines(to_qmd(x), path, sep = "")
+  # Write the exact UTF-8 bytes; writeLines() would re-encode through the
+  # session locale on a non-UTF-8 platform, breaking the byte-fidelity promise.
+  writeBin(charToRaw(enc2utf8(to_qmd(x))), path)
   invisible(x)
 }
 

@@ -132,10 +132,21 @@ as_table = function(df, caption = NULL, align = NULL, id = "") {
   if (!is.data.frame(df)) df = as.data.frame(df, stringsAsFactors = FALSE)
   nms = names(df)
   ncol = ncol(df)
+  if (ncol == 0L) {
+    cli::cli_abort("{.arg df} must have at least one column.")
+  }
 
   if (is.null(align)) align = attr(df, "q2r_align", exact = TRUE)
   if (is.null(align)) align = rep("default", ncol)
-  align = rep(as.character(align), length.out = max(ncol, 1L))
+  align = rep(as.character(align), length.out = ncol)
+  valid_align = c("left", "right", "center", "centre", "default")
+  bad = !tolower(align) %in% valid_align
+  if (any(bad)) {
+    cli::cli_abort(c(
+      "{.arg align} must be one of {.val {valid_align}}.",
+      "x" = "Got {.val {unique(align[bad])}}."
+    ))
+  }
   colspec = purrr::map(seq_len(ncol), function(j) {
     pandoc_col_spec(alignment = r_align_to_pd(align[[j]]), width = NULL)
   })
@@ -154,8 +165,7 @@ as_table = function(df, caption = NULL, align = NULL, id = "") {
 
   body_rows = purrr::map(seq_len(nrow(df)), function(i) {
     cells = purrr::map(seq_len(ncol), function(j) {
-      v = df[[j]][[i]]
-      table_cell_from_text(if (length(v) != 1L || is.na(v)) "" else as.character(v))
+      table_cell_from_text(table_cell_value(df[[j]][[i]]))
     })
     pandoc_row(cells = cells)
   })
@@ -183,4 +193,13 @@ table_cell_from_text = function(text) {
   pandoc_cell(content = pandoc_blocks(list(
     pandoc_plain(content = as_inlines(text))
   )))
+}
+
+# Render a single data-frame cell to plain text: a length-1 NA becomes "", a
+# length-1 value its string form, and a longer value (list-column entry or
+# vector cell) its elements joined with ", " (NA elements blanked).
+table_cell_value = function(v) {
+  if (length(v) == 0L) return("")
+  if (length(v) == 1L) return(if (is.na(v)) "" else as.character(v))
+  paste0(ifelse(is.na(v), "", as.character(v)), collapse = ", ")
 }

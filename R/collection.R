@@ -1,4 +1,4 @@
-#' @include pd-ast-pandoc.R select.R select-pd.R ast-summary.R pd-ast-print.R pampa.R io.R
+#' @include pd-ast-pandoc.R select.R select-pd.R ast-summary.R pd-ast-print.R pampa.R io.R table.R
 NULL
 
 #' A collection of QMD documents
@@ -23,7 +23,12 @@ NULL
 #' - `walk_nodes` applies a side effect to every document and returns the
 #'   collection invisibly.
 #' - [`ast_summary()`] returns a combined `data.frame` with a leading
-#'   `doc` column naming the source document.
+#'   `doc` column naming the source document, and [`as_df()`] returns a
+#'   per-document named list of its tables.
+#'
+#' The document-level helpers ([`ast_sections()`], [`ast_toc()`],
+#' [`select_section()`], [`split_sections()`], [`ast_filter()`]) are
+#' *not* collection-aware; map them over `@docs` yourself.
 #'
 #' @param dir For `parse_qmd_dir()`, the directory to scan. For
 #'   `write_qmd_dir()`, the destination directory; `NULL` (the default)
@@ -31,8 +36,6 @@ NULL
 #' @param pattern A regular expression selecting files (default
 #'   `"\\.qmd$"`).
 #' @param recurse Whether to descend into subdirectories.
-#' @param ast Which AST to build, `"pd"` (default) or `"ts"`, passed to
-#'   [`parse_qmd()`].
 #' @param quiet Suppress per-file diagnostic signaling (default `TRUE`;
 #'   diagnostics are still attached to each document's `@diagnostics`).
 #' @param prune_errors Passed to [`parse_qmd()`].
@@ -73,14 +76,13 @@ qmd_collection = S7::new_class(
 #' @rdname qmd_collection
 #' @export
 parse_qmd_dir = function(dir = ".", pattern = "\\.qmd$", recurse = TRUE,
-                         ast = c("pd", "ts"), quiet = TRUE, prune_errors = TRUE) {
-  ast = match.arg(ast)
+                         quiet = TRUE, prune_errors = TRUE) {
   if (!dir.exists(dir)) {
     stop("`parse_qmd_dir()`: directory not found: ", dir, call. = FALSE)
   }
   rel = list.files(dir, pattern = pattern, recursive = recurse, full.names = FALSE)
-  abs = list.files(dir, pattern = pattern, recursive = recurse, full.names = TRUE)
-  docs = purrr::map(abs, parse_qmd, ast = ast, quiet = quiet, prune_errors = prune_errors)
+  abs = file.path(dir, rel)
+  docs = purrr::map(abs, parse_qmd, quiet = quiet, prune_errors = prune_errors)
   names(docs) = rel
   qmd_collection(docs = docs, paths = abs)
 }
@@ -91,7 +93,11 @@ write_qmd_dir = function(x, dir = NULL) {
   if (!S7::S7_inherits(x, qmd_collection)) {
     stop("`write_qmd_dir()`: `x` must be a qmd_collection.", call. = FALSE)
   }
-  targets = if (is.null(dir)) x@paths else file.path(dir, names(x@docs))
+  targets = if (is.null(dir)) {
+    x@paths
+  } else {
+    file.path(dir, names(x@docs) %||% basename(x@paths))
+  }
   purrr::walk2(x@docs, targets, function(d, path) {
     pdir = dirname(path)
     if (!dir.exists(pdir)) dir.create(pdir, recursive = TRUE)
@@ -170,6 +176,10 @@ S7::method(insert_before, qmd_collection) = function(x, ..., .what) {
 
 S7::method(insert_after, qmd_collection) = function(x, ..., .what) {
   coll_rewrite(x, function(d) insert_after(d, ..., .what = .what))
+}
+
+S7::method(as_df, qmd_collection) = function(x) {
+  purrr::map(x@docs, as_df)
 }
 
 S7::method(ast_summary, qmd_collection) = function(x, max_text = 40L) {

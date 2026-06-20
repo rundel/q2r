@@ -49,3 +49,17 @@ test_that("edit_qmd accepts a formula", {
   writeLines("# Heading\n\nbody\n", tmp)
   expect_silent(edit_qmd(tmp, ~ .x))
 })
+
+test_that("write_qmd writes exact UTF-8 bytes (round-trips a unicode doc)", {
+  tmp = withr::local_tempfile(fileext = ".qmd")
+  doc = parse_qmd("# Héadîng\n\nbödy café\n")
+  write_qmd(doc, tmp)
+  back = readBin(tmp, "raw", n = file.info(tmp)$size)
+  expect_identical(back, charToRaw(enc2utf8(to_qmd(doc))))
+})
+
+test_that("read_qmd reports a clear error on a NUL-containing (binary) file", {
+  tmp = withr::local_tempfile(fileext = ".qmd")
+  writeBin(as.raw(c(0x68, 0x00, 0x69)), tmp)
+  expect_error(read_qmd(tmp), "NUL")
+})

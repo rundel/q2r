@@ -68,7 +68,7 @@ NULL
 as_inlines = function(x) {
   if (S7::S7_inherits(x, pandoc_inlines)) return(x)
   if (S7::S7_inherits(x, pandoc_inline)) return(pandoc_inlines(list(x)))
-  if (is.character(x)) return(pandoc_inlines(chars_to_inline_items(x)))
+  if (is.character(x)) return(pandoc_inlines(chars_to_inline_items(x[!is.na(x)])))
   if (is.null(x)) return(pandoc_inlines(list()))
   if (is.list(x)) {
     if (length(x) == 0L) return(pandoc_inlines(list()))
@@ -93,6 +93,7 @@ as_blocks = function(x) {
   if (S7::S7_inherits(x, pandoc_blocks)) return(x)
   if (S7::S7_inherits(x, pandoc_block)) return(pandoc_blocks(list(x)))
   if (is.character(x)) {
+    x = x[!is.na(x)]
     if (length(x) == 0L) return(pandoc_blocks(list()))
     paras = purrr::keep(x, nzchar)
     if (length(paras) == 0L) return(pandoc_blocks(list()))

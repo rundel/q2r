@@ -195,3 +195,41 @@ test_that("format(pampa_diagnostic) tolerates extra arguments like print() does"
   expect_no_error(format(d, color = FALSE, extra = 1))
   expect_no_error(capture.output(print(d, color = FALSE, extra = 1)))
 })
+
+test_that("a parse-error diagnostic carries a resolved source location", {
+  d = parse_qmd(":::: {", quiet = TRUE)@diagnostics[[1L]]
+  expect_equal(d@kind, "error")
+  loc = d@location
+  expect_equal(loc$file, "<text>")
+  expect_equal(loc$start_offset, 6L)
+  expect_equal(loc$start_row, 1L)
+  expect_equal(loc$start_column, 7L)
+})
+
+test_that("format() renders the caret/location and honours the color flag", {
+  d = parse_qmd(":::: {", quiet = TRUE)@diagnostics[[1L]]
+  plain = format(d, color = FALSE)
+  expect_match(plain, "Parse error", fixed = TRUE)
+  expect_match(plain, "<text>:1:7", fixed = TRUE)
+  expect_match(plain, "unexpected character or token", fixed = TRUE)
+  # color = FALSE strips ANSI; ariadne's hardcoded colour survives color = TRUE
+  expect_false(grepl("\033", plain, fixed = TRUE))
+  expect_true(grepl("\033", format(d, color = TRUE), fixed = TRUE))
+})
+
+test_that("format() tolerates a NULL or multi-element @code", {
+  d_null = q2r:::pampa_diagnostic(kind = "error", title = "x", code = NULL,
+                                  source_text = "x", source_filename = "<text>")
+  expect_no_error(format(d_null, color = FALSE))
+  d_multi = q2r:::pampa_diagnostic(kind = "error", title = "x", code = c("A", "B"),
+                                   source_text = "x", source_filename = "<text>")
+  expect_no_error(format(d_multi, color = FALSE))
+})
+
+test_that("an at-EOF parser error still resolves a location and renders a caret", {
+  # the offset points at the parser-appended trailing newline; padding the
+  # fallback / format contexts keeps it from collapsing to an all-NA location.
+  d = parse_qmd("[text](", quiet = TRUE)@diagnostics[[1L]]
+  expect_false(is.na(d@location$start_offset))
+  expect_match(format(d, color = FALSE), "[text](", fixed = TRUE)
+})

@@ -16,10 +16,28 @@ test_that("ast_toc honours explicit ids and respects max_level", {
   expect_true(grepl("Beta", qmd))
 })
 
+test_that("ast_toc nests subheadings under their parent and keeps siblings flat", {
+  toc = ast_toc(parse_qmd("# A\n\n## B\n\ntext\n\n# C\n"))
+  expect_length(toc@content, 2L)
+  # A's item carries a nested bullet list (holding B) as its second block
+  expect_s7_class(toc@content[[1]]@content[[2]], pandoc_bullet_list)
+  # C is a flat sibling: a link only, with no nested list
+  expect_length(toc@content[[2]]@content, 1L)
+})
+
 test_that("ast_toc on a headingless document is an empty bullet list", {
   toc = ast_toc(parse_qmd("just text\n"))
   expect_s7_class(toc, pandoc_bullet_list)
   expect_length(toc@content, 0L)
+})
+
+test_that("pandoc_slug approximates Pandoc's auto-identifier algorithm", {
+  slug = q2r:::pandoc_slug
+  expect_equal(slug("123 Leading Number"), "leading-number")  # drop leading digits
+  expect_equal(slug("Section 2.1"), "section-2.1")            # keep the dot
+  expect_equal(slug("Hello, World!"), "hello-world")          # comma + ! dropped
+  expect_equal(slug("Trailing -"), "trailing")               # drop trailing hyphen
+  expect_equal(slug("!!!"), "section")                       # empty -> fallback
 })
 
 test_that("split_sections partitions at the given heading level", {
@@ -46,4 +64,13 @@ test_that("split_sections with no leading preamble omits the empty group", {
 
 test_that("split_sections on an empty document is an empty list", {
   expect_equal(split_sections(parse_qmd("")), stats::setNames(list(), character()))
+})
+
+test_that("split_sections names follow heading text and may repeat", {
+  parts = split_sections(parse_qmd("# A\n\nx\n\n# A\n\ny\n"), level = 1L)
+  expect_named(parts, c("A", "A"))
+  expect_length(parts, 2L)
+  # `parts[["A"]]` silently picks the first; index by position to disambiguate
+  expect_true(grepl("x", to_qmd(parts[[1]])))
+  expect_true(grepl("y", to_qmd(parts[[2]])))
 })

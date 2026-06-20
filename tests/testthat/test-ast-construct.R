@@ -102,3 +102,9 @@ test_that("as_inlines / as_blocks compose with constructors for terser filter co
   built = pandoc_paragraph(content = as_inlines("hello world"))
   expect_equal(ast_text(built), "hello world")
 })
+
+test_that("as_inlines / as_blocks drop NA rather than emitting the string 'NA'", {
+  expect_length(as_inlines(NA_character_)@content, 0L)
+  expect_length(as_blocks(NA_character_)@content, 0L)
+  expect_equal(ast_text(as_inlines(c("a", NA, "b"))), "a b")
+})

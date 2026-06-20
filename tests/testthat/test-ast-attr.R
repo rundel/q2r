@@ -171,3 +171,16 @@ test_that("has_class inside select_nodes predicate still uses the mask", {
   matches = select_nodes(doc, is(pandoc_div), has_class("note"))
   expect_length(matches, 1L)
 })
+
+test_that("get_attr errors on a non-scalar key", {
+  h = select_first(parse_qmd("# H {#h key=val}\n"), is(pandoc_header))
+  expect_equal(get_attr(h, "key"), "val")
+  expect_error(get_attr(h, c("key", "key2")), "single")
+})
+
+test_that("attribute setters reject NA", {
+  h = select_first(parse_qmd("# H\n"), is(pandoc_header))
+  expect_error(set_id(h, NA_character_), "non-NA")
+  expect_error(add_class(h, NA_character_), "NA")
+  expect_error(set_attr(h, key = NA_character_), "non-NA")
+})

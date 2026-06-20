@@ -33,3 +33,16 @@ test_that("ast_summary on an empty document has zero rows", {
   expect_equal(nrow(s), 0L)
   expect_equal(names(s), c("type", "level", "id", "section", "text", "node"))
 })
+
+test_that("ast_summary handles top-level lists whose @attr is not a pandoc_attr", {
+  # pandoc_ordered_list / pandoc_bullet_list carry a pandoc_list_attributes
+  # (no @id slot), so reading @attr@id directly aborts; the id column must
+  # fall back to NA instead.
+  doc = parse_qmd("1. one\n2. two\n\n- a\n- b\n")
+  s = ast_summary(doc)
+  expect_s3_class(s, "data.frame")
+  expect_true(any(s$type == "pandoc_ordered_list"))
+  expect_true(any(s$type == "pandoc_bullet_list"))
+  is_list = s$type %in% c("pandoc_ordered_list", "pandoc_bullet_list")
+  expect_true(all(is.na(s$id[is_list])))
+})

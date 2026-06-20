@@ -64,3 +64,54 @@ test_that("as_table handles a zero-row data frame", {
   expect_s7_class(tbl, pandoc_table)
   expect_length(tbl@bodies[[1]]@body_rows, 0L)
 })
+
+test_that("as_df flattens a multi-row body", {
+  df = as_df(parse_qmd("| a |\n|---|\n| 1 |\n| 2 |\n| 3 |\n"))[[1]]
+  expect_equal(nrow(df), 3L)
+  expect_equal(df[["a"]], c("1", "2", "3"))
+})
+
+test_that("as_df falls back to V1/V2 names when the header row is missing", {
+  tbl = pandoc_table(
+    head = pandoc_table_head(rows = list()),
+    bodies = list(pandoc_table_body(body_rows = list(
+      pandoc_row(cells = list(
+        q2r:::table_cell_from_text("p"),
+        q2r:::table_cell_from_text("q")
+      ))
+    ))),
+    colspec = list()
+  )
+  df = as_df(tbl)
+  expect_equal(names(df), c("V1", "V2"))
+  expect_equal(df[["V1"]], "p")
+})
+
+test_that("as_df on a column- and cell-less table is an empty data frame", {
+  df = as_df(pandoc_table())
+  expect_s3_class(df, "data.frame")
+  expect_equal(dim(df), c(0L, 0L))
+})
+
+test_that("as_table recycles a single alignment across all columns", {
+  tbl = as_table(data.frame(a = 1, b = 2, c = 3), align = "right")
+  expect_equal(purrr::map_chr(tbl@colspec, function(cs) cs@alignment),
+               rep("Right", 3L))
+})
+
+test_that("as_table renders NA scalars as '' and joins multi-length cells", {
+  df = data.frame(x = c(NA, "ok"), stringsAsFactors = FALSE)
+  df$lst = list(c(1, 2), 3)
+  tbl = as_table(df)
+  cell = function(row, col) ast_text(tbl@bodies[[1]]@body_rows[[row]]@cells[[col]])
+  expect_equal(cell(1L, 1L), "")       # NA scalar -> ""
+  expect_equal(cell(2L, 1L), "ok")
+  expect_equal(cell(1L, 2L), "1, 2")   # length-2 list element -> joined
+  expect_equal(cell(2L, 2L), "3")      # length-1 list element -> "3"
+})
+
+test_that("as_table rejects a zero-column data frame and invalid alignment", {
+  expect_error(as_table(data.frame()), "at least one column")
+  expect_error(as_table(data.frame(a = 1), align = "middle"), "align")
+  expect_error(as_table(data.frame(a = 1), align = NA_character_), "align")
+})

@@ -73,15 +73,17 @@ toc_link = function(it) {
   pandoc_link(content = as_inlines(it$text), url = paste0("#", target), title = "")
 }
 
-# Approximate Pandoc's auto-identifier algorithm: lower-case, drop
-# punctuation other than space/hyphen/underscore, collapse separators to
-# single hyphens, strip a leading run of hyphens.
+# Approximate Pandoc's auto-identifier algorithm: drop punctuation other than
+# space/hyphen/underscore/period, replace spaces with hyphens, lower-case, then
+# remove everything up to the first letter (ids must begin with a letter) and
+# any trailing hyphens, falling back to "section" when nothing is left.
 pandoc_slug = function(text) {
   s = tolower(text)
-  s = gsub("[^a-z0-9 _-]", "", s)
-  s = gsub("[ _]+", "-", trimws(s))
-  s = gsub("-+", "-", s)
-  sub("^-+", "", s)
+  s = gsub("[^a-z0-9 _.-]", "", s)
+  s = gsub("[[:space:]]+", "-", trimws(s))
+  s = sub("^[^a-z]+", "", s)
+  s = sub("-+$", "", s)
+  if (nzchar(s)) s else "section"
 }
 
 
@@ -104,7 +106,9 @@ pandoc_slug = function(text) {
 #' @param level Heading level at which to split (default `1`). Headings at
 #'   other levels stay inside their enclosing section.
 #' @param ... Unused; for future extension.
-#' @return A named `list` of [`pandoc`] documents.
+#' @return A named `list` of [`pandoc`] documents. Names follow the heading
+#'   text, so two headings sharing a title yield repeated names; index by
+#'   position to keep such sections distinct.
 #'
 #' @examples
 #' \dontrun{

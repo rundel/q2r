@@ -57,3 +57,10 @@ test_that("ast_text on a bullet list joins items with newlines", {
   expect_match(txt, "two")
   expect_match(txt, "three")
 })
+
+test_that("ast_text flattens a parsed citation key so it is matchable", {
+  doc = parse_qmd("See [@knuth1984] and [-@smith2000, p. 5].\n")
+  # the bare key flattens cleanly; the suffix one stays matchable on its key
+  expect_equal(ast_text(select_first(doc, is(pandoc_cite) & has_text("knuth1984"))), "@knuth1984")
+  expect_length(select_nodes(doc, is(pandoc_cite) & has_text("smith2000")), 1L)
+})

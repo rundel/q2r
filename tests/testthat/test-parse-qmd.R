@@ -63,6 +63,32 @@ test_that("a bullet list parses to pandoc_bullet_list with one item per entry", 
   expect_true(S7::S7_inherits(bl@content[[1L]], pandoc_blocks))
 })
 
+test_that("parse_qmd reads an existing newline-free path as a file", {
+  path = withr::local_tempfile(fileext = ".qmd")
+  writeLines("# FromFile\n\nbody text\n", path)
+  res = parse_qmd(path)
+  h = res@blocks@content[[1L]]
+  expect_true(S7::S7_inherits(h, pandoc_header))
+  expect_equal(ast_text(h), "FromFile")
+})
+
+test_that("parse_qmd treats a newline-free nonexistent string as inline text", {
+  res = parse_qmd("this-path-does-not-exist.qmd")
+  expect_true(S7::S7_inherits(res@blocks@content[[1L]], pandoc_paragraph))
+  expect_match(ast_text(res), "this-path-does-not-exist", fixed = TRUE)
+})
+
+test_that("parse_qmd treats a directory path as text, not a file to read", {
+  d = withr::local_tempdir()
+  res = parse_qmd(d)
+  expect_true(S7::S7_inherits(res, pandoc))
+  expect_match(ast_text(res), basename(d), fixed = TRUE)
+})
+
+test_that("parse_qmd rejects an unknown ast value", {
+  expect_error(parse_qmd("# hi", ast = "bogus"), "should be one of")
+})
+
 test_that("a link parses to pandoc_link with url + content", {
   res = parse_qmd("see [the docs](https://example.com)")
   para = res@blocks@content[[1L]]

@@ -55,6 +55,43 @@ test_that("mutation verbs return a new collection", {
   expect_false(has_class(h0, "tagged"))
 })
 
+test_that("select_descendants / select_children return per-document named lists", {
+  coll = parse_qmd_dir(make_collection_dir())
+  desc = select_descendants(coll, is(pandoc_str))
+  expect_named(desc, c("a.qmd", "sub/b.qmd"))
+  expect_true(all(purrr::map_int(desc, length) > 0L))
+  kids = select_children(coll, is(pandoc_header))
+  expect_named(kids, c("a.qmd", "sub/b.qmd"))
+})
+
+test_that("replace_nodes returns a new collection with matches replaced", {
+  coll = parse_qmd_dir(make_collection_dir())
+  out = replace_nodes(coll, is(pandoc_header),
+                      .with = function(h) pandoc_header(level = 6L, content = h@content))
+  expect_s7_class(out, qmd_collection)
+  levels = purrr::map_int(select_nodes(out, is(pandoc_header))[["a.qmd"]],
+                          function(h) h@level)
+  expect_true(length(levels) > 0L && all(levels == 6L))
+})
+
+test_that("splice_nodes returns a new collection with inserted content", {
+  coll = parse_qmd_dir(make_collection_dir())
+  out = splice_nodes(coll, is(pandoc_header),
+                     .f = function(h) list(h, pandoc_paragraph(content = as_inlines("added"))))
+  expect_s7_class(out, qmd_collection)
+  expect_gt(length(select_nodes(out, has_text("added"))[["a.qmd"]]), 0L)
+})
+
+test_that("insert_before / insert_after return new collections", {
+  coll = parse_qmd_dir(make_collection_dir())
+  hr = pandoc_horizontal_rule()
+  before = insert_before(coll, is(pandoc_header), .what = hr)
+  after  = insert_after(coll, is(pandoc_header), .what = hr)
+  expect_s7_class(before, qmd_collection)
+  expect_s7_class(after, qmd_collection)
+  expect_gt(length(select_nodes(before, is(pandoc_horizontal_rule))[["a.qmd"]]), 0L)
+})
+
 test_that("delete_nodes drops matches across all documents", {
   coll = parse_qmd_dir(make_collection_dir())
   out = delete_nodes(coll, is(pandoc_header))
@@ -100,4 +137,24 @@ test_that("write_qmd_dir writes back in place when dir is NULL", {
 
 test_that("write_qmd_dir rejects a non-collection", {
   expect_error(write_qmd_dir(parse_qmd("# x\n")), "must be a qmd_collection")
+})
+
+test_that("write_qmd_dir falls back to basename(@paths) when @docs is unnamed", {
+  coll = parse_qmd_dir(make_collection_dir())
+  unnamed = q2r:::qmd_collection(docs = unname(coll@docs), paths = coll@paths)
+  dest = withr::local_tempdir()
+  write_qmd_dir(unnamed, dest)
+  written = list.files(dest, recursive = TRUE)
+  expect_true(all(basename(coll@paths) %in% basename(written)))
+})
+
+test_that("as_df dispatches on a collection, returning per-document tables", {
+  d = withr::local_tempdir()
+  writeLines("| a | b |\n|---|---|\n| 1 | 2 |\n", file.path(d, "t.qmd"))
+  writeLines("no tables here\n", file.path(d, "n.qmd"))
+  coll = parse_qmd_dir(d)
+  res = as_df(coll)
+  expect_named(res, c("n.qmd", "t.qmd"))
+  expect_length(res[["n.qmd"]], 0L)
+  expect_equal(names(res[["t.qmd"]][[1]]), c("a", "b"))
 })

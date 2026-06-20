@@ -64,7 +64,12 @@ NULL
 # ---- internal helpers ---------------------------------------------------
 
 ast_attr_maybe_get = function(x) {
-  if (!"attr" %in% S7::prop_names(x)) NULL else x@attr
+  if (!"attr" %in% S7::prop_names(x)) return(NULL)
+  a = x@attr
+  # Only a standard `pandoc_attr` carries id/classes/attributes; a
+  # `pandoc_list_attributes` (ordered/bullet lists) is reported as absent so
+  # callers never reach into a slot it does not have.
+  if (S7::S7_inherits(a, pandoc_attr)) a else NULL
 }
 
 # Read a node's `@attr` for a setter. Errors when the node has no `@attr`
@@ -114,7 +119,7 @@ attr_get_id = function(a) {
 
 attr_get = function(a, key) {
   if (!S7::S7_inherits(a, pandoc_attr)) return(NA_character_)
-  if (!(key %in% names(a@attributes))) return(NA_character_)
+  if (length(key) != 1L || !(key %in% names(a@attributes))) return(NA_character_)
   unname(a@attributes[key])
 }
 
@@ -130,6 +135,9 @@ has_class = function(x, cls) {
 #' @rdname ast_attr
 #' @export
 add_class = function(x, cls) {
+  if (!is.character(cls) || anyNA(cls)) {
+    stop("`add_class()`: `cls` must be a character vector with no NA.", call. = FALSE)
+  }
   a = ast_attr_get_slot(x, "add_class")
   ast_attr_modify(x, a, classes = unique(c(a@classes, cls)))
 }
@@ -153,8 +161,8 @@ get_id = function(x) {
 #' @rdname ast_attr
 #' @export
 set_id = function(x, id) {
-  if (!is.character(id) || length(id) != 1L) {
-    stop("`set_id()`: `id` must be a single string.", call. = FALSE)
+  if (!is.character(id) || length(id) != 1L || is.na(id)) {
+    stop("`set_id()`: `id` must be a single non-NA string.", call. = FALSE)
   }
   a = ast_attr_get_slot(x, "set_id")
   ast_attr_modify(x, a, id = id)
@@ -166,6 +174,9 @@ set_id = function(x, id) {
 #' @rdname ast_attr
 #' @export
 get_attr = function(x, key) {
+  if (!is.character(key) || length(key) != 1L || is.na(key)) {
+    cli::cli_abort("{.arg key} must be a single non-NA string.")
+  }
   attr_get(ast_attr_maybe_get(x), key)
 }
 
@@ -182,9 +193,9 @@ set_attr = function(x, ...) {
   new_attrs = a@attributes
   for (i in seq_along(pairs)) {
     value = pairs[[i]]
-    if (!is.null(value) && (!is.character(value) || length(value) != 1L)) {
+    if (!is.null(value) && (!is.character(value) || length(value) != 1L || is.na(value))) {
       stop("`set_attr()`: `", nms[[i]],
-           "` must be a single string, or NULL to remove it.", call. = FALSE)
+           "` must be a single non-NA string, or NULL to remove it.", call. = FALSE)
     }
     if (is.null(value)) {
       new_attrs = new_attrs[names(new_attrs) != nms[[i]]]

@@ -52,6 +52,25 @@ test_that("set_cell_options preserves a non-# comment prefix", {
   out = set_cell_options(cell, echo = TRUE)
   expect_true(grepl("^//\\|", out@text))
   expect_identical(cell_options(out)$echo, TRUE)
+  # the //| prefix survives a full to_qmd + re-parse round trip, not just @text
+  rt = select_first(
+    parse_qmd(to_qmd(pandoc(blocks = pandoc_blocks(list(out))))),
+    is(pandoc_code_block)
+  )
+  expect_true(grepl("//|", rt@text, fixed = TRUE))
+  expect_identical(cell_options(rt)$echo, TRUE)
+})
+
+test_that("a vector-valued cell option serializes as a multi-line block and round-trips", {
+  cell = cell_of("```{r}\nx=1\n```\n")
+  out = set_cell_options(cell, "fig-cap" = c("one", "two"))
+  expect_match(out@text, "#| fig-cap:\n#| - one\n#| - two", fixed = TRUE)
+  expect_equal(cell_options(out)[["fig-cap"]], c("one", "two"))
+  rt = select_first(
+    parse_qmd(to_qmd(pandoc(blocks = pandoc_blocks(list(out))))),
+    is(pandoc_code_block)
+  )
+  expect_equal(cell_options(rt)[["fig-cap"]], c("one", "two"))
 })
 
 test_that("set_cell_options round-trips through to_qmd", {
@@ -68,17 +87,38 @@ test_that("set_cell_options round-trips through to_qmd", {
 test_that("cell option values serialize at full precision and re-parse to the same value", {
   # Full precision: every digit is kept where the default format() rounded to
   # "1.234568e+14" and silently lost precision.
-  expect_identical(cell_yaml_scalar(123456789012345), "123456789012345")
+  expect_identical(q2r:::cell_yaml_scalar(123456789012345), "123456789012345")
   # Numbers within yaml's parse range re-parse to the same value (no "2e+09").
   for (x in list(2000000000, 6.5, 42, 1e-5)) {
-    expect_equal(yaml::yaml.load(cell_yaml_scalar(x)), x)
+    expect_equal(yaml::yaml.load(q2r:::cell_yaml_scalar(x)), x)
   }
   # YAML-reserved words and leading indicators are quoted so they re-parse as
   # strings rather than booleans / null / sequence items.
-  expect_identical(cell_yaml_scalar("yes"), "\"yes\"")
-  expect_identical(cell_yaml_scalar("null"), "\"null\"")
-  expect_identical(cell_yaml_scalar("- dash"), "\"- dash\"")
-  expect_identical(yaml::yaml.load(cell_yaml_scalar("yes")), "yes")
+  expect_identical(q2r:::cell_yaml_scalar("yes"), "\"yes\"")
+  expect_identical(q2r:::cell_yaml_scalar("null"), "\"null\"")
+  expect_identical(q2r:::cell_yaml_scalar("- dash"), "\"- dash\"")
+  expect_identical(yaml::yaml.load(q2r:::cell_yaml_scalar("yes")), "yes")
+})
+
+test_that("NA cell-option values serialize as YAML null, not 'false' or 'NA'", {
+  expect_identical(q2r:::cell_yaml_scalar(NA), "null")
+  expect_identical(q2r:::cell_yaml_scalar(NA_character_), "null")
+  expect_identical(q2r:::cell_yaml_scalar(NA_real_), "null")
+  # null round-trips to R NULL, not the strings "false" / "NA"
+  expect_null(yaml::yaml.load(q2r:::cell_yaml_scalar(NA)))
+})
+
+test_that("set_cell_options requires an executable cell, not a plain fence", {
+  plain = cell_of("```r\nx = 1\n```\n")
+  expect_false(is_code_cell(plain))
+  expect_error(set_cell_options(plain, echo = TRUE), "executable cell")
+})
+
+test_that("integral-valued numeric vectors serialize without a .0 suffix", {
+  cell = cell_of("```{r}\nx=1\n```\n")
+  out = set_cell_options(cell, "fig-width" = c(4, 6))
+  expect_match(out@text, "#| fig-width:\n#| - 4\n#| - 6", fixed = TRUE)
+  expect_equal(cell_options(out)[["fig-width"]], c(4L, 6L))
 })
 
 test_that("a YAML-reserved string option round-trips as a string, not a boolean", {
@@ -112,8 +152,9 @@ test_that("collect_code tangles cells, filtering by engine and eval", {
   expect_false(grepl("z = 3", cc))
   expect_true(grepl("# a", cc, fixed = TRUE))
   expect_false(grepl("y = 2", collect_code(doc, eval_only = TRUE)))
-  expect_false(grepl("y = 2", collect_code(doc, label_comments = FALSE)) &&
-                 grepl("# a", collect_code(doc, label_comments = FALSE)))
+  no_labels = collect_code(doc, label_comments = FALSE)
+  expect_false(grepl("# a", no_labels, fixed = TRUE))
+  expect_true(grepl("y = 2", no_labels, fixed = TRUE))
 })
 
 test_that("the mask exposes is_code_cell() and has_option()", {

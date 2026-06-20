@@ -7,6 +7,15 @@ NULL
 # that is not.
 read_file_bytes = function(path) {
   raw = readBin(path, what = "raw", n = file.info(path)$size)
+  # rawToChar() aborts with an opaque "embedded nul in string" before the
+  # friendly UTF-8 guard downstream can fire, so catch the binary/UTF-16 case
+  # here with a message that names the likely cause.
+  if (any(raw == as.raw(0L))) {
+    cli::cli_abort(c(
+      "{.path {path}} contains NUL bytes, so it is not UTF-8 text.",
+      "i" = "It is likely a binary file or UTF-16/UTF-32 encoded; pampa needs UTF-8."
+    ))
+  }
   text = rawToChar(raw)
   Encoding(text) = "UTF-8"
   text
@@ -112,7 +121,7 @@ parse_qmd_text = function(text, filename, ast = c("pd", "ts"),
   } else {
     raw = pampa_parse_ts_impl(text, filename, isTRUE(prune_errors))
     diagnostics = pampa_diagnostics_from_raw(raw, text, filename)
-    out = ts_tree_from_list(raw$ts_ast)
+    out = ts_tree_from_list(raw$ts_ast) %||% ts_tree()
   }
 
   out@diagnostics = diagnostics
