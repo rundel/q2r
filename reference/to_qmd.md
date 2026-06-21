@@ -12,8 +12,9 @@ to_qmd(x, ...)
 
 - x:
 
-  A [`pandoc`](https://rundel.github.io/q2r/reference/pandoc.md) or
-  [`ts_tree`](https://rundel.github.io/q2r/reference/ts_point.md)
+  A [`pandoc`](https://rundel.github.io/q2r/reference/pandoc.md),
+  [`ts_tree`](https://rundel.github.io/q2r/reference/ts_point.md), or
+  [`ts_node`](https://rundel.github.io/q2r/reference/ts_point.md)
   object.
 
 ## Value
@@ -37,7 +38,8 @@ QMD source text. Two top-level methods are defined:
   pampa exposes no public `ts_ast -> Pandoc` conversion that we could
   invoke independently of its reader.
 
-Only top-level dispatch is currently supported. There is no method for
-individual blocks, inlines, or `ts_node` subtrees (TODO: restore
-sub-tree dispatch by wrapping a fragment in a minimal `pandoc` and
-routing through pampa).
+On the pandoc side only whole-document dispatch is supported: there is
+no method for an individual block or inline (wrap a fragment in a
+minimal `pandoc` and route it through pampa). The tree-sitter side is
+pure byte-recovery, so it also dispatches on a single
+[`ts_node`](https://rundel.github.io/q2r/reference/ts_point.md).

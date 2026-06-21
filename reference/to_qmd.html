@@ -20,6 +20,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/selecting-and-rewriting.html">Selecting and rewriting AST nodes</a></li>
   </ul></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/rundel/q2r/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -50,7 +51,7 @@
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>A <code><a href="pandoc.html">pandoc</a></code> or <code><a href="ts_point.html">ts_tree</a></code> object.</p></dd>
+<dd><p>A <code><a href="pandoc.html">pandoc</a></code>, <code><a href="ts_point.html">ts_tree</a></code>, or <code><a href="ts_point.html">ts_node</a></code> object.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -70,10 +71,10 @@ don't cover all of the parent's bytes (grammar gaps). This is
 byte-recovery, not "writing" - a tree-sitter AST already represents
 source bytes, and pampa exposes no public <code>ts_ast -&gt; Pandoc</code>
 conversion that we could invoke independently of its reader.</p></li>
-</ul><p>Only top-level dispatch is currently supported. There is no method
-for individual blocks, inlines, or <code>ts_node</code> subtrees (TODO: restore
-sub-tree dispatch by wrapping a fragment in a minimal <code>pandoc</code> and
-routing through pampa).</p>
+</ul><p>On the pandoc side only whole-document dispatch is supported: there is
+no method for an individual block or inline (wrap a fragment in a
+minimal <code>pandoc</code> and route it through pampa). The tree-sitter side is
+pure byte-recovery, so it also dispatches on a single <code><a href="ts_point.html">ts_node</a></code>.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

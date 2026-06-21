@@ -38,6 +38,7 @@
 <li><a class="dropdown-item" href="../articles/selecting-and-rewriting.html">Selecting and rewriting AST nodes</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -403,13 +404,12 @@
 <code>get_id(x)</code> / <code>set_id(x, id)</code>
 </li>
 <li>
-<code>get_attr(x, key)</code> / <code>set_attr(x, key, value)</code> / <code>remove_attr(x, key)</code>
-</li>
+<code>get_attr(x, key)</code> / <code>set_attr(x, key = value, ...)</code> (pass <code>key = NULL</code> to remove it)</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span> <span class="op">=</span> <span class="va">doc</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/ast_filter.html">ast_filter</a></span><span class="op">(</span>pandoc_header <span class="op">=</span> \<span class="op">(</span><span class="va">h</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">h</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/ast_attr.html">add_class</a></span><span class="op">(</span><span class="st">"section"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/ast_attr.html">set_attr</a></span><span class="op">(</span><span class="st">"data-level"</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">h</span><span class="op">@</span><span class="va">level</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">h</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/ast_attr.html">add_class</a></span><span class="op">(</span><span class="st">"section"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/ast_attr.html">set_attr</a></span><span class="op">(</span><span class="st">"data-level"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">h</span><span class="op">@</span><span class="va">level</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">out</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/select_nodes.html">select_nodes</a></span><span class="op">(</span><span class="fu">is</span><span class="op">(</span><span class="va">pandoc_header</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">h</span><span class="op">)</span> <span class="va">h</span><span class="op">@</span><span class="va">attr</span><span class="op">)</span></span>
@@ -435,6 +435,77 @@
 <span><span class="co">#&gt;  .. - attr(*, "names")= chr "data-level"</span></span></code></pre></div>
 </div>
 <p>Nodes without an <code>@attr</code> slot degrade gracefully for predicates (<code>has_class(pandoc_str(...), "x")</code> returns <code>FALSE</code>) but error on setters with a clear message.</p>
+</section><section class="level2"><h2 id="document-level-helpers">Document-level helpers<a class="anchor" aria-label="anchor" href="#document-level-helpers"></a>
+</h2>
+<p>The verbs above descend the whole nested tree. A second, complementary set of helpers works at the document author’s altitude: the flat stream of top-level blocks, where headings partition the document into sections. These mirror the section, label, and tabular conveniences from the parsermd package.</p>
+<p><code><a href="../reference/ast_summary.html">ast_summary()</a></code> gives a one-row-per-top-level-block overview. The <code>node</code> column is a list-column of the live S7 objects, so a filtered frame can be fed straight back through the verbs.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/ast_summary.html">ast_summary</a></span><span class="op">(</span><span class="va">doc</span><span class="op">)</span></span>
+<span><span class="co">#&gt;               type level         id    section</span></span>
+<span><span class="co">#&gt; 1    pandoc_header     1      intro      Intro</span></span>
+<span><span class="co">#&gt; 2 pandoc_paragraph    NA       &lt;NA&gt;      Intro</span></span>
+<span><span class="co">#&gt; 3       pandoc_div    NA       &lt;NA&gt;      Intro</span></span>
+<span><span class="co">#&gt; 4    pandoc_header     2 conclusion Conclusion</span></span>
+<span><span class="co">#&gt; 5 pandoc_paragraph    NA       &lt;NA&gt; Conclusion</span></span>
+<span><span class="co">#&gt;                                       text               node</span></span>
+<span><span class="co">#&gt; 1                                    Intro    &lt;pandoc_header&gt;</span></span>
+<span><span class="co">#&gt; 2             Some bold prose with a link. &lt;pandoc_paragraph&gt;</span></span>
+<span><span class="co">#&gt; 3 Watch out A callout with its own emphas…       &lt;pandoc_div&gt;</span></span>
+<span><span class="co">#&gt; 4                               Conclusion    &lt;pandoc_header&gt;</span></span>
+<span><span class="co">#&gt; 5                             Final words. &lt;pandoc_paragraph&gt;</span></span></code></pre></div>
+</div>
+<p><code><a href="../reference/ast_sections.html">ast_sections()</a></code> reports, for each top-level block, the chain of enclosing heading titles (<code>h1</code> through <code>h6</code>). A heading is part of the section it opens.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/ast_sections.html">ast_sections</a></span><span class="op">(</span><span class="va">doc</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt;      h1      h2      h3      h4      h5      h6 </span></span>
+<span><span class="co">#&gt; "Intro"      NA      NA      NA      NA      NA </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt;      h1      h2      h3      h4      h5      h6 </span></span>
+<span><span class="co">#&gt; "Intro"      NA      NA      NA      NA      NA </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[3]]</span></span>
+<span><span class="co">#&gt;      h1      h2      h3      h4      h5      h6 </span></span>
+<span><span class="co">#&gt; "Intro"      NA      NA      NA      NA      NA </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[4]]</span></span>
+<span><span class="co">#&gt;           h1           h2           h3           h4           h5           h6 </span></span>
+<span><span class="co">#&gt;      "Intro" "Conclusion"           NA           NA           NA           NA </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[5]]</span></span>
+<span><span class="co">#&gt;           h1           h2           h3           h4           h5           h6 </span></span>
+<span><span class="co">#&gt;      "Intro" "Conclusion"           NA           NA           NA           NA</span></span></code></pre></div>
+</div>
+<p>Two predicate helpers extend the selection mask with the same flavour as <code><a href="../reference/ast_attr.html">has_class()</a></code>. <code>has_text()</code> greps a node’s flattened <code><a href="../reference/ast_text.html">ast_text()</a></code>, and <code>has_label()</code> glob-matches its <code>@attr@id</code> (where Quarto labels live).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/select_nodes.html">select_nodes</a></span><span class="op">(</span><span class="va">doc</span>, <span class="fu">is</span><span class="op">(</span><span class="va">pandoc_header</span><span class="op">)</span> <span class="op">&amp;</span> <span class="fu">has_text</span><span class="op">(</span><span class="st">"Watch"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; header level=2 (#watch-out)</span></span>
+<span><span class="co">#&gt; ├─str "Watch"</span></span>
+<span><span class="co">#&gt; ├─space</span></span>
+<span><span class="co">#&gt; └─str "out"</span></span></code></pre></div>
+</div>
+<p><code><a href="../reference/select_section.html">select_section()</a></code> slices the contiguous run of blocks under a heading, up to the next heading of equal or higher level. The <code>path</code> names the enclosing heading chain, outermost first, with glob matching.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">doc</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/select_section.html">select_section</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Intro"</span>, <span class="st">"Conclusion"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_chr</a></span><span class="op">(</span><span class="va">ast_text</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Conclusion"   "Final words."</span></span></code></pre></div>
+</div>
+<p>Finally, <code><a href="../reference/read_qmd.html">read_qmd()</a></code> / <code><a href="../reference/read_qmd.html">write_qmd()</a></code> / <code><a href="../reference/read_qmd.html">edit_qmd()</a></code> close the parse-edit-write loop over files. <code><a href="../reference/read_qmd.html">write_qmd()</a></code> renders with <code><a href="../reference/to_qmd.html">to_qmd()</a></code> and writes verbatim, so the round trip stays byte-faithful.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tmp</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".qmd"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/read_qmd.html">write_qmd</a></span><span class="op">(</span><span class="va">doc</span>, <span class="va">tmp</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="../reference/to_qmd.html">to_qmd</a></span><span class="op">(</span><span class="fu"><a href="../reference/read_qmd.html">read_qmd</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="../reference/to_qmd.html">to_qmd</a></span><span class="op">(</span><span class="va">doc</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+</div>
+<p><code>edit_qmd(path, .f)</code> is the in-place shorthand for <code>write_qmd(.f(read_qmd(path)), path)</code>.</p>
 </section><section class="level2"><h2 id="recipes-porting-pandoc-quarto-lua-filters">Recipes: porting Pandoc / Quarto Lua filters<a class="anchor" aria-label="anchor" href="#recipes-porting-pandoc-quarto-lua-filters"></a>
 </h2>
 <p>The verbs above are general purpose, but most Lua filters in the wild follow a handful of recognisable shapes. The recipes below pair the Lua original with its q2r translation so the mapping is obvious.</p>
@@ -442,22 +513,20 @@
 <section class="level3"><h3 id="open-external-links-in-a-new-tab">Open external links in a new tab<a class="anchor" aria-label="anchor" href="#open-external-links-in-a-new-tab"></a>
 </h3>
 <p>A staple of HTML-rendering Lua filters. The Pandoc version sets two attributes on every <code>Link</code> whose target is an absolute URL:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode lua"><code class="sourceCode lua"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> Link<span class="op">(</span><span class="va">l</span><span class="op">)</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="va">l</span><span class="op">.</span><span class="va">target</span><span class="op">:</span><span class="fu">match</span><span class="op">(</span><span class="st">'^https?://'</span><span class="op">)</span> <span class="cf">then</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">l</span><span class="op">.</span><span class="va">attributes</span><span class="op">[</span><span class="st">'target'</span><span class="op">]</span> <span class="op">=</span> <span class="st">'_blank'</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">l</span><span class="op">.</span><span class="va">attributes</span><span class="op">[</span><span class="st">'rel'</span><span class="op">]</span>    <span class="op">=</span> <span class="st">'noopener'</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="va">l</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode lua"><code class="sourceCode lua"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> Link<span class="op">(</span><span class="va">l</span><span class="op">)</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="va">l</span><span class="op">.</span><span class="va">target</span><span class="op">:</span><span class="fu">match</span><span class="op">(</span><span class="st">'^https?://'</span><span class="op">)</span> <span class="cf">then</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">l</span><span class="op">.</span><span class="va">attributes</span><span class="op">[</span><span class="st">'target'</span><span class="op">]</span> <span class="op">=</span> <span class="st">'_blank'</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">l</span><span class="op">.</span><span class="va">attributes</span><span class="op">[</span><span class="st">'rel'</span><span class="op">]</span>    <span class="op">=</span> <span class="st">'noopener'</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="va">l</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <p>The q2r translation is a single <code>ast_filter</code> handler keyed on <code>pandoc_link</code>, using <code><a href="../reference/ast_attr.html">set_attr()</a></code> immutably:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span> <span class="op">=</span> <span class="va">doc</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/ast_filter.html">ast_filter</a></span><span class="op">(</span></span>
 <span>  pandoc_link <span class="op">=</span> \<span class="op">(</span><span class="va">l</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"^https?://"</span>, <span class="va">l</span><span class="op">@</span><span class="va">url</span><span class="op">)</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">l</span><span class="op">)</span></span>
-<span>    <span class="va">l</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu"><a href="../reference/ast_attr.html">set_attr</a></span><span class="op">(</span><span class="st">"target"</span>, <span class="st">"_blank"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu"><a href="../reference/ast_attr.html">set_attr</a></span><span class="op">(</span><span class="st">"rel"</span>, <span class="st">"noopener"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/ast_attr.html">set_attr</a></span><span class="op">(</span><span class="va">l</span>, target <span class="op">=</span> <span class="st">"_blank"</span>, rel <span class="op">=</span> <span class="st">"noopener"</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -471,14 +540,14 @@
 </section><section class="level3"><h3 id="auto-anchor-headings">Auto-anchor headings<a class="anchor" aria-label="anchor" href="#auto-anchor-headings"></a>
 </h3>
 <p>A common Pandoc recipe that wraps each heading’s content in a link pointing at its own id, so readers can grab a permalink by clicking the heading:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode lua"><code class="sourceCode lua"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> Header<span class="op">(</span><span class="va">h</span><span class="op">)</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="va">h</span><span class="op">.</span><span class="va">identifier</span> <span class="op">==</span> <span class="st">''</span> <span class="cf">then</span> <span class="cf">return</span> <span class="va">h</span> <span class="cf">end</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">local</span> <span class="va">link</span> <span class="op">=</span> <span class="va">pandoc</span><span class="op">.</span>Link<span class="op">(</span><span class="va">h</span><span class="op">.</span><span class="va">content</span><span class="op">,</span> <span class="st">'#'</span> <span class="op">..</span> <span class="va">h</span><span class="op">.</span><span class="va">identifier</span><span class="op">)</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="va">pandoc</span><span class="op">.</span>Header<span class="op">(</span><span class="va">h</span><span class="op">.</span><span class="va">level</span><span class="op">,</span> <span class="va">link</span><span class="op">,</span> <span class="va">h</span><span class="op">.</span><span class="va">attr</span><span class="op">)</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode lua"><code class="sourceCode lua"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> Header<span class="op">(</span><span class="va">h</span><span class="op">)</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="va">h</span><span class="op">.</span><span class="va">identifier</span> <span class="op">==</span> <span class="st">''</span> <span class="cf">then</span> <span class="cf">return</span> <span class="va">h</span> <span class="cf">end</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">local</span> <span class="va">link</span> <span class="op">=</span> <span class="va">pandoc</span><span class="op">.</span>Link<span class="op">(</span><span class="va">h</span><span class="op">.</span><span class="va">content</span><span class="op">,</span> <span class="st">'#'</span> <span class="op">..</span> <span class="va">h</span><span class="op">.</span><span class="va">identifier</span><span class="op">)</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="va">pandoc</span><span class="op">.</span>Header<span class="op">(</span><span class="va">h</span><span class="op">.</span><span class="va">level</span><span class="op">,</span> <span class="va">link</span><span class="op">,</span> <span class="va">h</span><span class="op">.</span><span class="va">attr</span><span class="op">)</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <p>pampa applies pandoc’s auto-identifier rules during parsing, so the headings in <code>doc</code> already have ids; the translation reads them with <code><a href="../reference/ast_attr.html">get_id()</a></code> and rebuilds the inline content with <code><a href="../reference/ast_construct.html">as_inlines()</a></code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span> <span class="op">=</span> <span class="va">doc</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/ast_filter.html">ast_filter</a></span><span class="op">(</span></span>
 <span>  pandoc_header <span class="op">=</span> \<span class="op">(</span><span class="va">h</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">id</span> <span class="op">=</span> <span class="fu"><a href="../reference/ast_attr.html">get_id</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span></span>
@@ -515,17 +584,17 @@
 </section><section class="level3"><h3 id="force-every-callout-to-caution">Force every callout to “caution”<a class="anchor" aria-label="anchor" href="#force-every-callout-to-caution"></a>
 </h3>
 <p>Straight from the Quarto docs: rewrite the class of every callout <code>Div</code> so the whole document renders as caution callouts.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode lua"><code class="sourceCode lua"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> Div<span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="va">i</span><span class="op">,</span> <span class="va">c</span> <span class="kw">in</span> <span class="fu">ipairs</span><span class="op">(</span><span class="va">d</span><span class="op">.</span><span class="va">classes</span><span class="op">)</span> <span class="cf">do</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="va">c</span><span class="op">:</span><span class="fu">match</span><span class="op">(</span><span class="st">'^callout%-'</span><span class="op">)</span> <span class="cf">then</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>      <span class="va">d</span><span class="op">.</span><span class="va">classes</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">=</span> <span class="st">'callout-caution'</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="va">d</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode lua"><code class="sourceCode lua"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> Div<span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="va">i</span><span class="op">,</span> <span class="va">c</span> <span class="kw">in</span> <span class="fu">ipairs</span><span class="op">(</span><span class="va">d</span><span class="op">.</span><span class="va">classes</span><span class="op">)</span> <span class="cf">do</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="va">c</span><span class="op">:</span><span class="fu">match</span><span class="op">(</span><span class="st">'^callout%-'</span><span class="op">)</span> <span class="cf">then</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>      <span class="va">d</span><span class="op">.</span><span class="va">classes</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">=</span> <span class="st">'callout-caution'</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">end</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="va">d</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <p><code><a href="../reference/ast_attr.html">remove_class()</a></code> accepts a vector, so the entire callout-prefixed sublist can be dropped in one call before adding the replacement:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span> <span class="op">=</span> <span class="va">doc</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/ast_filter.html">ast_filter</a></span><span class="op">(</span></span>
 <span>  pandoc_div <span class="op">=</span> \<span class="op">(</span><span class="va">d</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">callout</span> <span class="op">=</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/keep.html" class="external-link">keep</a></span><span class="op">(</span></span>
@@ -548,14 +617,14 @@
 </section><section class="level3"><h3 id="count-words">Count words<a class="anchor" aria-label="anchor" href="#count-words"></a>
 </h3>
 <p>A read-only traversal: count every <code>Str</code> that contains a non-punctuation character. The Lua version accumulates into a file-level local because Lua filters return one element at a time and have no first-class way to fold across calls.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode lua"><code class="sourceCode lua"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> <span class="va">n</span> <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> Str<span class="op">(</span><span class="va">s</span><span class="op">)</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="va">s</span><span class="op">.</span><span class="va">text</span><span class="op">:</span><span class="fu">match</span><span class="op">(</span><span class="st">'%P'</span><span class="op">)</span> <span class="cf">then</span> <span class="va">n</span> <span class="op">=</span> <span class="va">n</span> <span class="op">+</span> <span class="dv">1</span> <span class="cf">end</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> Pandoc<span class="op">(</span><span class="cn">_</span><span class="op">)</span> <span class="fu">print</span><span class="op">(</span><span class="va">n</span> <span class="op">..</span> <span class="st">' words'</span><span class="op">)</span> <span class="kw">end</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode lua"><code class="sourceCode lua"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> <span class="va">n</span> <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> Str<span class="op">(</span><span class="va">s</span><span class="op">)</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="va">s</span><span class="op">.</span><span class="va">text</span><span class="op">:</span><span class="fu">match</span><span class="op">(</span><span class="st">'%P'</span><span class="op">)</span> <span class="cf">then</span> <span class="va">n</span> <span class="op">=</span> <span class="va">n</span> <span class="op">+</span> <span class="dv">1</span> <span class="cf">end</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> Pandoc<span class="op">(</span><span class="cn">_</span><span class="op">)</span> <span class="fu">print</span><span class="op">(</span><span class="va">n</span> <span class="op">..</span> <span class="st">' words'</span><span class="op">)</span> <span class="kw">end</span></span></code></pre></div>
 <p>In R the natural shape is just <code><a href="../reference/select_nodes.html">select_nodes()</a></code> + <code>map_lgl()</code> + <code><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum()</a></code> – no accumulator, no side effects:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">doc</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/select_nodes.html">select_nodes</a></span><span class="op">(</span><span class="fu">is</span><span class="op">(</span><span class="va">pandoc_str</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_lgl</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"[^[:punct:][:space:]]"</span>, <span class="va">s</span><span class="op">@</span><span class="va">text</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -565,12 +634,12 @@
 </section><section class="level3"><h3 id="extract-a-link-inventory">Extract a link inventory<a class="anchor" aria-label="anchor" href="#extract-a-link-inventory"></a>
 </h3>
 <p>When the goal is to <em>collect</em> rather than to rewrite, <code><a href="../reference/select_nodes.html">select_nodes()</a></code> plus <code>purrr</code> is usually shorter than an <code>ast_filter</code> handler with a side-effecting accumulator:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode lua"><code class="sourceCode lua"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> <span class="va">links</span> <span class="op">=</span> <span class="op">{}</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> Link<span class="op">(</span><span class="va">l</span><span class="op">)</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="va">links</span><span class="op">[#</span><span class="va">links</span> <span class="op">+</span> <span class="dv">1</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span> <span class="va">text</span> <span class="op">=</span> <span class="va">pandoc</span><span class="op">.</span><span class="va">utils</span><span class="op">.</span>stringify<span class="op">(</span><span class="va">l</span><span class="op">),</span> <span class="va">url</span> <span class="op">=</span> <span class="va">l</span><span class="op">.</span><span class="va">target</span> <span class="op">}</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode lua"><code class="sourceCode lua"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> <span class="va">links</span> <span class="op">=</span> <span class="op">{}</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> Link<span class="op">(</span><span class="va">l</span><span class="op">)</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="va">links</span><span class="op">[#</span><span class="va">links</span> <span class="op">+</span> <span class="dv">1</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span> <span class="va">text</span> <span class="op">=</span> <span class="va">pandoc</span><span class="op">.</span><span class="va">utils</span><span class="op">.</span>stringify<span class="op">(</span><span class="va">l</span><span class="op">),</span> <span class="va">url</span> <span class="op">=</span> <span class="va">l</span><span class="op">.</span><span class="va">target</span> <span class="op">}</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code></pre></div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">links</span> <span class="op">=</span> <span class="fu"><a href="../reference/select_nodes.html">select_nodes</a></span><span class="op">(</span><span class="va">doc</span>, <span class="fu">is</span><span class="op">(</span><span class="va">pandoc_link</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
@@ -584,7 +653,7 @@
 </h2>
 <p>Pandoc constructors are strictly typed, so even a simple emphasised phrase requires a few layers of wrapping. <code><a href="../reference/ast_construct.html">as_inlines()</a></code> and <code><a href="../reference/ast_construct.html">as_blocks()</a></code> accept strings (whitespace is converted to spaces, newlines to soft breaks), single nodes, lists, or existing wrappers, and produce the canonical wrapper type. Use them inside an <code><a href="../reference/ast_filter.html">ast_filter()</a></code> handler to keep the body terse.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Append a "[Edited]" tag to every paragraph.</span></span>
 <span><span class="va">out</span> <span class="op">=</span> <span class="va">doc</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/ast_filter.html">ast_filter</a></span><span class="op">(</span>pandoc_paragraph <span class="op">=</span> \<span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="../reference/pandoc_block_constructors.html">pandoc_paragraph</a></span><span class="op">(</span>content <span class="op">=</span> <span class="fu"><a href="../reference/ast_construct.html">as_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -600,7 +669,7 @@
 </div>
 <p><code><a href="../reference/ast_construct.html">as_blocks()</a></code> makes the multi-paragraph case equally short:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">note</span> <span class="op">=</span> <span class="fu"><a href="../reference/ast_construct.html">as_blocks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"First paragraph of an appended note."</span>,</span>
 <span>  <span class="st">"Second paragraph with more detail."</span></span>
@@ -632,9 +701,9 @@
 </div>
 </section><section class="level2"><h2 id="the-tree-sitter-side">The tree-sitter side<a class="anchor" aria-label="anchor" href="#the-tree-sitter-side"></a>
 </h2>
-<p>Every verb above works on a [<code>ts_tree</code>] too. The mask exposes the ts-specific slots (<code>kind</code>, <code>is_named</code>, <code>field_name</code>, <code>text</code>):</p>
+<p>The node-tree verbs (<code><a href="../reference/select_nodes.html">select_nodes()</a></code>, <code><a href="../reference/select_nodes.html">select_descendants()</a></code>, <code><a href="../reference/select_nodes.html">select_children()</a></code>, <code><a href="../reference/select_nodes.html">select_first()</a></code>, <code><a href="../reference/select_nodes.html">walk_nodes()</a></code>, and the mutators) dispatch on a [<code>ts_tree</code>] too. The mask exposes the ts-specific slots (<code>kind</code>, <code>is_named</code>, <code>field_name</code>, <code>text</code>), but the attribute/text mask helpers (<code><a href="../reference/ast_attr.html">has_class()</a></code>, <code>has_id()</code>, <code>has_attr()</code>, <code>has_text()</code>, <code>has_label()</code>) and the document-level helpers (<code><a href="../reference/ast_summary.html">ast_summary()</a></code>, <code><a href="../reference/ast_sections.html">ast_sections()</a></code>, <code><a href="../reference/select_section.html">select_section()</a></code>, <code><a href="../reference/ast_toc.html">ast_toc()</a></code>, <code><a href="../reference/split_sections.html">split_sections()</a></code>) are pandoc-only - on a <code>ts_tree</code> the mask helpers are a silent no-match and the document-level helpers have no method:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ts</span> <span class="op">=</span> <span class="fu"><a href="../reference/parse_qmd.html">parse_qmd</a></span><span class="op">(</span><span class="va">src</span>, ast <span class="op">=</span> <span class="st">"ts"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/select_nodes.html">select_nodes</a></span><span class="op">(</span><span class="va">ts</span>, <span class="va">kind</span> <span class="op">==</span> <span class="st">"atx_heading"</span><span class="op">)</span></span>
@@ -658,7 +727,7 @@
 </div>
 <p>For full structural pattern matching, captures, and predicates (<code>#eq?</code>, <code>#match?</code>, …) there’s a [<code><a href="../reference/ts_query.html">ts_query()</a></code>] escape hatch that runs a tree-sitter <code>.scm</code> query directly:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">matches</span> <span class="op">=</span> <span class="fu"><a href="../reference/ts_query.html">ts_query</a></span><span class="op">(</span><span class="va">ts</span>, <span class="st">"(atx_heading) @h"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">matches</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 3</span></span>
@@ -671,7 +740,7 @@
 </h2>
 <p>Rewriting produces a new AST of the same class as the input, so the result feeds straight back into the renderer:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span> <span class="op">=</span> <span class="va">doc</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/select_nodes.html">map_nodes</a></span><span class="op">(</span></span>
 <span>    <span class="fu">is</span><span class="op">(</span><span class="va">pandoc_header</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">level</span> <span class="op">==</span> <span class="fl">1L</span>,</span>

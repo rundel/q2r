@@ -39,7 +39,9 @@ insert_after(x, ..., .what)
   [`ts_tree`](https://rundel.github.io/q2r/reference/ts_point.md),
   [`ts_node`](https://rundel.github.io/q2r/reference/ts_point.md),
   [`ts_nodes`](https://rundel.github.io/q2r/reference/ts_point.md), or a
-  plain `list` of nodes from a previous selection.
+  plain `list` of nodes from a previous selection. For a plain list,
+  each mutation verb is applied to every element in turn (insert and
+  splice flatten their multi-node results back into one list).
 
 - ...:
 
@@ -72,11 +74,11 @@ node types; the same verb name works on both ASTs.
 
 Predicates are unquoted R expressions evaluated against each candidate
 node with a per-AST data mask. The mask exposes the node's S7 slots as
-bare names (`level`, `url`, `text`, `kind`, ...) plus a set of helper
-functions (`is()`,
+bare names (`level`, `url`, `text`, `kind`, `is_named`, ...) plus a set
+of helper functions (`is()`,
 [`has_class()`](https://rundel.github.io/q2r/reference/ast_attr.md),
-`has_id()`, `has_attr()`, `is_leaf()`, `is_named()`). Multiple
-predicates are combined with `&` (logical AND).
+`has_id()`, `has_attr()`, `has_text()`, `has_label()`, `is_leaf()`).
+Multiple predicates are combined with `&` (logical AND).
 
 ## Selection verbs
 
@@ -97,8 +99,10 @@ predicates are combined with `&` (logical AND).
 
 - `map_nodes()` rewrites every match via `.f`. The function may return a
   single node (in-place replacement), a list of nodes (spliced in at the
-  match site), `NULL` (delete), or the original node (no-op). The new
-  tree has the same class as the input.
+  match site), `NULL` (delete), or the original node (no-op). Applied to
+  a document / tree / wrapper the result is the same class as the input;
+  applied to a bare node the result follows the mutation contract
+  directly (it may be a node, a list, or `NULL`).
 
 - `replace_nodes()` is `map_nodes()` with a constant replacement.
 
@@ -127,6 +131,11 @@ The mutation walker traverses bottom-up (post-order), so when a parent
 is checked its children have already been rewritten. This matches Pandoc
 Lua filters' default.
 
+On a `ts_tree`, the three grammar-gap *content* kinds (`pandoc_math`,
+`pandoc_display_math`, `code_fence_content`) round-trip through their
+verbatim source bytes, so mutating *their* children is a no-op on
+[`to_qmd()`](https://rundel.github.io/q2r/reference/to_qmd.md) output.
+
 ## Predicate helpers (only available inside `...`)
 
 These shadow nothing in the global R namespace because they are
@@ -134,23 +143,52 @@ installed into the predicate's data mask, not the package namespace.
 Outside a `select_*`/`map_nodes`/etc. predicate they are unavailable.
 
 - `is(<S7 class>)` honours S7 inheritance, so `is(pandoc_block)` matches
-  any block.
+  any block. The attribute- and text-based helpers (`has_class`,
+  `has_id`, `has_attr`, `has_text`, `has_label`) resolve `@attr` /
+  [`ast_text()`](https://rundel.github.io/q2r/reference/ast_text.md),
+  which exist only on the pandoc AST, so on a `ts_tree` they are a
+  silent no-match. Use
+  [`ts_query()`](https://rundel.github.io/q2r/reference/ts_query.md) or
+  bare-slot predicates (`kind`, `text`) for tree-sitter queries.
 
 - `has_class("foo")` / `has_class(c("foo", "bar"))` test `@attr@classes`
   membership (pandoc only).
 
-- `has_id("intro")` tests `@attr@id`.
+- `has_id("intro")` tests `@attr@id` (pandoc only).
 
-- `has_attr("key")` / `has_attr("key", "val")` test `@attr@attributes`.
+- `has_attr("key")` / `has_attr("key", "val")` test `@attr@attributes`
+  (pandoc only).
+
+- `has_text("Exercise")` tests the node's flattened text
+  ([`ast_text()`](https://rundel.github.io/q2r/reference/ast_text.md))
+  against one or more regex patterns (`fixed = TRUE` for literal
+  matching); the analog of parsermd's `has_heading()` (pandoc only).
+
+- `has_label("fig-*")` glob-matches the node's `@attr@id`, where Quarto
+  labels surface as `#id`; for code cells without an attr id it falls
+  back to the cell's `label` option. The analog of parsermd's
+  `has_label()` (pandoc only).
+
+- [`is_code_cell()`](https://rundel.github.io/q2r/reference/code_cell.md)
+  matches an executable Quarto cell (see
+  [`code_cell`](https://rundel.github.io/q2r/reference/code_cell.md)).
+
+- `has_option("eval")` / `has_option("eval", FALSE)` test a cell's `#|`
+  options.
+
+- `has_engine("r")` / `has_engine(c("r", "python"))` test a cell's
+  engine
+  ([`cell_engine()`](https://rundel.github.io/q2r/reference/code_cell.md)).
 
 - `is_leaf()` matches nodes with no children.
 
-- `is_named()` is tree-sitter only.
+- `is_named` (a bare slot, tree-sitter only, not a function call) is the
+  `ts_node` named/anonymous flag.
 
-- `starts_with()`, `ends_with()`, `matches()`, `contains()` — string
+- `starts_with()`, `ends_with()`, `matches()`, `contains()` - string
   tests usable as e.g. `starts_with("http", url)`.
 
-- `any_of(x)` and `all_of(x)` — splice a character vector for use with
+- `any_of(x)` and `all_of(x)` - splice a character vector for use with
   `%in%`.
 
 - Bare slot access: `level`, `url`, `title`, `text`, `format`, `kind`,

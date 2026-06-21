@@ -13,8 +13,9 @@ parse_qmd(input, ast = c("pd", "ts"), quiet = FALSE, prune_errors = TRUE)
 - input:
 
   A single string. Treated as a file path if it does not contain
-  newlines and [`file.exists()`](https://rdrr.io/r/base/files.html)
-  returns TRUE; otherwise treated as raw text. To parse an R-held
+  newlines and names an existing file
+  ([`file.exists()`](https://rdrr.io/r/base/files.html) is TRUE and it
+  is not a directory); otherwise treated as raw text. To parse an R-held
   [`ts_tree`](https://rundel.github.io/q2r/reference/ts_point.md) as
   Pandoc, render it first with
   [`to_qmd()`](https://rundel.github.io/q2r/reference/to_qmd.md) and
@@ -31,9 +32,10 @@ parse_qmd(input, ast = c("pd", "ts"), quiet = FALSE, prune_errors = TRUE)
 
   If `FALSE` (the default) any error-kind diagnostics are raised as R
   errors (after attaching diagnostics to the result), and warning-kind
-  diagnostics are emitted as R warnings. If `TRUE` no signal is raised;
-  diagnostics are still attached to the returned object's `@diagnostics`
-  slot.
+  diagnostics are emitted as R warnings. `info` and `note` diagnostics
+  are never signalled regardless of `quiet`. If `TRUE` no signal is
+  raised; diagnostics of every kind are still attached to the returned
+  object's `@diagnostics` slot.
 
 - prune_errors:
 

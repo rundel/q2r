@@ -20,6 +20,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/selecting-and-rewriting.html">Selecting and rewriting AST nodes</a></li>
   </ul></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/rundel/q2r/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -51,9 +52,10 @@
 
 <dl><dt id="arg-input">input<a class="anchor" aria-label="anchor" href="#arg-input"></a></dt>
 <dd><p>A single string. Treated as a file path if it does not
-contain newlines and <code><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists()</a></code> returns TRUE; otherwise
-treated as raw text. To parse an R-held <code><a href="ts_point.html">ts_tree</a></code> as Pandoc,
-render it first with <code><a href="to_qmd.html">to_qmd()</a></code> and feed the result back in.</p></dd>
+contain newlines and names an existing file (<code><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists()</a></code> is
+TRUE and it is not a directory); otherwise treated as raw text. To
+parse an R-held <code><a href="ts_point.html">ts_tree</a></code> as Pandoc, render it first with
+<code><a href="to_qmd.html">to_qmd()</a></code> and feed the result back in.</p></dd>
 
 
 <dt id="arg-ast">ast<a class="anchor" aria-label="anchor" href="#arg-ast"></a></dt>
@@ -65,9 +67,10 @@ as a <code><a href="pandoc.html">pandoc</a></code> object, or <code>"ts"</code> 
 <dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
 <dd><p>If <code>FALSE</code> (the default) any error-kind diagnostics are
 raised as R errors (after attaching diagnostics to the result),
-and warning-kind diagnostics are emitted as R warnings. If <code>TRUE</code>
-no signal is raised; diagnostics are still attached to the
-returned object's <code>@diagnostics</code> slot.</p></dd>
+and warning-kind diagnostics are emitted as R warnings. <code>info</code> and
+<code>note</code> diagnostics are never signalled regardless of <code>quiet</code>. If
+<code>TRUE</code> no signal is raised; diagnostics of every kind are still
+attached to the returned object's <code>@diagnostics</code> slot.</p></dd>
 
 
 <dt id="arg-prune-errors">prune_errors<a class="anchor" aria-label="anchor" href="#arg-prune-errors"></a></dt>

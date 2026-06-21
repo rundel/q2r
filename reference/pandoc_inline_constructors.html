@@ -24,6 +24,7 @@ hierarchy and pandoc_block_constructors for the block-level nodes."></head><body
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/selecting-and-rewriting.html">Selecting and rewriting AST nodes</a></li>
   </ul></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/rundel/q2r/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -48,77 +49,39 @@ hierarchy and <a href="pandoc_block_constructors.html">pandoc_block_constructors
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pandoc_str</span><span class="op">(</span>source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>, text <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pandoc_str</span><span class="op">(</span>text <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_emph</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">pandoc_emph</span><span class="op">(</span>content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_underline</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">pandoc_underline</span><span class="op">(</span>content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_strong</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">pandoc_strong</span><span class="op">(</span>content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_strikeout</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">pandoc_strikeout</span><span class="op">(</span>content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_superscript</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">pandoc_superscript</span><span class="op">(</span>content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_subscript</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">pandoc_subscript</span><span class="op">(</span>content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_small_caps</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">pandoc_small_caps</span><span class="op">(</span>content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_quoted</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  quote_type <span class="op">=</span> <span class="st">"double"</span>,</span>
-<span>  content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">pandoc_quoted</span><span class="op">(</span>quote_type <span class="op">=</span> <span class="st">"double"</span>, content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_cite</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  citations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">pandoc_cite</span><span class="op">(</span>citations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_code</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  text <span class="op">=</span> <span class="st">""</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">pandoc_code</span><span class="op">(</span>attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span>, text <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_space</span><span class="op">(</span>source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">pandoc_space</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_soft_break</span><span class="op">(</span>source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">pandoc_soft_break</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_line_break</span><span class="op">(</span>source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">pandoc_line_break</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_math</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  math_type <span class="op">=</span> <span class="st">"inline"</span>,</span>
-<span>  text <span class="op">=</span> <span class="st">""</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">pandoc_math</span><span class="op">(</span>math_type <span class="op">=</span> <span class="st">"inline"</span>, text <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_raw_inline</span><span class="op">(</span>source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>, format <span class="op">=</span> <span class="st">""</span>, text <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span><span class="fu">pandoc_raw_inline</span><span class="op">(</span>format <span class="op">=</span> <span class="st">""</span>, text <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">pandoc_link</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  url <span class="op">=</span> <span class="st">""</span>,</span>
@@ -126,66 +89,36 @@ hierarchy and <a href="pandoc_block_constructors.html">pandoc_block_constructors
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">pandoc_image</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  url <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">""</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_note</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_blocks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">pandoc_note</span><span class="op">(</span>content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_blocks</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_span</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">pandoc_span</span><span class="op">(</span>attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span>, content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">pandoc_shortcode</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  name <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  is_escaped <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  positional_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  keyword_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_note_reference</span><span class="op">(</span>source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>, id <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span><span class="fu">pandoc_note_reference</span><span class="op">(</span>id <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_attr_inline</span><span class="op">(</span>source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>, attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">pandoc_attr_inline</span><span class="op">(</span>attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_insert</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">pandoc_insert</span><span class="op">(</span>attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span>, content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_delete</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">pandoc_delete</span><span class="op">(</span>attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span>, content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_highlight</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">pandoc_highlight</span><span class="op">(</span>attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span>, content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_edit_comment</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="fu">pandoc_edit_comment</span><span class="op">(</span>attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span>, content <span class="op">=</span> <span class="fu"><a href="pandoc_blocks.html">pandoc_inlines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">pandoc_custom_inline</span><span class="op">(</span></span>
-<span>  source_info <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_source_info</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  type_name <span class="op">=</span> <span class="st">""</span>,</span>
-<span>  slots <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">pandoc_custom_inline</span><span class="op">(</span>type_name <span class="op">=</span> <span class="st">""</span>, slots <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, attr <span class="op">=</span> <span class="fu"><a href="pandoc_support_types.html">pandoc_attr</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">

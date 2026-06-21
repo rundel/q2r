@@ -20,6 +20,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/selecting-and-rewriting.html">Selecting and rewriting AST nodes</a></li>
   </ul></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/rundel/q2r/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -72,7 +73,9 @@
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>A <code><a href="pandoc.html">pandoc</a></code>, <code><a href="pandoc_node.html">pandoc_node</a></code>, <code><a href="pandoc_blocks.html">pandoc_blocks</a></code>,
 <code><a href="pandoc_blocks.html">pandoc_inlines</a></code>, <code><a href="ts_point.html">ts_tree</a></code>, <code><a href="ts_point.html">ts_node</a></code>, <code><a href="ts_point.html">ts_nodes</a></code>, or a
-plain <code>list</code> of nodes from a previous selection.</p></dd>
+plain <code>list</code> of nodes from a previous selection. For a plain list,
+each mutation verb is applied to every element in turn (insert and
+splice flatten their multi-node results back into one list).</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -102,10 +105,10 @@ two AST representations: the <code><a href="pandoc.html">pandoc</a></code> S7 hi
 on the relevant node types; the same verb name works on both ASTs.</p>
 <p>Predicates are unquoted R expressions evaluated against each candidate
 node with a per-AST data mask. The mask exposes the node's S7 slots
-as bare names (<code>level</code>, <code>url</code>, <code>text</code>, <code>kind</code>, ...) plus a set of
-helper functions (<code>is()</code>, <code><a href="ast_attr.html">has_class()</a></code>, <code>has_id()</code>, <code>has_attr()</code>,
-<code>is_leaf()</code>, <code>is_named()</code>). Multiple predicates are combined with
-<code>&amp;</code> (logical AND).</p>
+as bare names (<code>level</code>, <code>url</code>, <code>text</code>, <code>kind</code>, <code>is_named</code>, ...) plus a
+set of helper functions (<code>is()</code>, <code><a href="ast_attr.html">has_class()</a></code>, <code>has_id()</code>,
+<code>has_attr()</code>, <code>has_text()</code>, <code>has_label()</code>, <code>is_leaf()</code>). Multiple
+predicates are combined with <code>&amp;</code> (logical AND).</p>
     </div>
     <div class="section level2">
     <h2 id="selection-verbs">Selection verbs<a class="anchor" aria-label="anchor" href="#selection-verbs"></a></h2>
@@ -127,7 +130,10 @@ returns its input invisibly.</p></li>
 <li><p><code>map_nodes()</code> rewrites every match via <code>.f</code>. The function may
 return a single node (in-place replacement), a list of nodes
 (spliced in at the match site), <code>NULL</code> (delete), or the original
-node (no-op). The new tree has the same class as the input.</p></li>
+node (no-op). Applied to a document / tree / wrapper the result is
+the same class as the input; applied to a bare node the result
+follows the mutation contract directly (it may be a node, a list, or
+<code>NULL</code>).</p></li>
 <li><p><code>replace_nodes()</code> is <code>map_nodes()</code> with a constant replacement.</p></li>
 <li><p><code>delete_nodes()</code> is <code>map_nodes()</code> with <code>\(x) NULL</code>.</p></li>
 <li><p><code>splice_nodes()</code> is <code>map_nodes()</code> whose <code>.f</code> must return a list.</p></li>
@@ -147,6 +153,10 @@ match's position.</p></li>
 </ul><p>The mutation walker traverses bottom-up (post-order), so when a
 parent is checked its children have already been rewritten. This
 matches Pandoc Lua filters' default.</p>
+<p>On a <code>ts_tree</code>, the three grammar-gap <em>content</em> kinds (<code>pandoc_math</code>,
+<code>pandoc_display_math</code>, <code>code_fence_content</code>) round-trip through their
+verbatim source bytes, so mutating <em>their</em> children is a no-op on
+<code><a href="to_qmd.html">to_qmd()</a></code> output.</p>
     </div>
     <div class="section level2">
     <h2 id="predicate-helpers-only-available-inside-">Predicate helpers (only available inside <code>...</code>)<a class="anchor" aria-label="anchor" href="#predicate-helpers-only-available-inside-"></a></h2>
@@ -156,17 +166,37 @@ matches Pandoc Lua filters' default.</p>
 installed into the predicate's data mask, not the package
 namespace. Outside a <code>select_*</code>/<code>map_nodes</code>/etc. predicate they
 are unavailable.</p><ul><li><p><code>is(&lt;S7 class&gt;)</code> honours S7 inheritance, so <code>is(pandoc_block)</code>
-matches any block.</p></li>
+matches any block.
+The attribute- and text-based helpers (<code>has_class</code>, <code>has_id</code>,
+<code>has_attr</code>, <code>has_text</code>, <code>has_label</code>) resolve <code>@attr</code> / <code><a href="ast_text.html">ast_text()</a></code>,
+which exist only on the pandoc AST, so on a <code>ts_tree</code> they are a silent
+no-match. Use <code><a href="ts_query.html">ts_query()</a></code> or bare-slot predicates (<code>kind</code>, <code>text</code>)
+for tree-sitter queries.</p></li>
 <li><p><code>has_class("foo")</code> / <code>has_class(c("foo", "bar"))</code> test
 <code>@attr@classes</code> membership (pandoc only).</p></li>
-<li><p><code>has_id("intro")</code> tests <code>@attr@id</code>.</p></li>
+<li><p><code>has_id("intro")</code> tests <code>@attr@id</code> (pandoc only).</p></li>
 <li><p><code>has_attr("key")</code> / <code>has_attr("key", "val")</code> test
-<code>@attr@attributes</code>.</p></li>
+<code>@attr@attributes</code> (pandoc only).</p></li>
+<li><p><code>has_text("Exercise")</code> tests the node's flattened text
+(<code><a href="ast_text.html">ast_text()</a></code>) against one or more regex patterns (<code>fixed = TRUE</code>
+for literal matching); the analog of parsermd's <code>has_heading()</code>
+(pandoc only).</p></li>
+<li><p><code>has_label("fig-*")</code> glob-matches the node's <code>@attr@id</code>, where
+Quarto labels surface as <code>#id</code>; for code cells without an attr id it
+falls back to the cell's <code>label</code> option. The analog of parsermd's
+<code>has_label()</code> (pandoc only).</p></li>
+<li><p><code><a href="code_cell.html">is_code_cell()</a></code> matches an executable Quarto cell (see
+<code><a href="code_cell.html">code_cell</a></code>).</p></li>
+<li><p><code>has_option("eval")</code> / <code>has_option("eval", FALSE)</code> test a cell's
+<code>#|</code> options.</p></li>
+<li><p><code>has_engine("r")</code> / <code>has_engine(c("r", "python"))</code> test a cell's
+engine (<code><a href="code_cell.html">cell_engine()</a></code>).</p></li>
 <li><p><code>is_leaf()</code> matches nodes with no children.</p></li>
-<li><p><code>is_named()</code> is tree-sitter only.</p></li>
-<li><p><code>starts_with()</code>, <code>ends_with()</code>, <code>matches()</code>, <code>contains()</code> — string
+<li><p><code>is_named</code> (a bare slot, tree-sitter only, not a function call)
+is the <code>ts_node</code> named/anonymous flag.</p></li>
+<li><p><code>starts_with()</code>, <code>ends_with()</code>, <code>matches()</code>, <code>contains()</code> - string
 tests usable as e.g. <code>starts_with("http", url)</code>.</p></li>
-<li><p><code>any_of(x)</code> and <code>all_of(x)</code> — splice a character vector for use
+<li><p><code>any_of(x)</code> and <code>all_of(x)</code> - splice a character vector for use
 with <code>%in%</code>.</p></li>
 <li><p>Bare slot access: <code>level</code>, <code>url</code>, <code>title</code>, <code>text</code>, <code>format</code>,
 <code>kind</code>, <code>class</code>, <code>quote_type</code>, <code>math_type</code>, etc. Missing slots

@@ -7,9 +7,9 @@ concrete variants extend one of these.
 ## Usage
 
 ``` r
-pandoc_node(source_info = pandoc_source_info())
+pandoc_node()
 
-pandoc_block(source_info = pandoc_source_info())
+pandoc_block()
 
-pandoc_inline(source_info = pandoc_source_info())
+pandoc_inline()
 ```

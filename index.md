@@ -56,6 +56,7 @@ Some *emphasized* text with a [link](https://example.com).
 pd = parse_qmd(qmd)
 pd
 #> pandoc
+#> ├─meta: map
 #> ├─header level=1 (#heading)
 #> │ └─str "Heading"
 #> └─paragraph
@@ -122,6 +123,10 @@ recovered from its source bytes.
 ``` r
 
 cat(to_qmd(pd))
+#> ---
+#> title: Example
+#> ---
+#> 
 #> # Heading
 #> 
 #> Some *emphasized* text with a [link](https://example.com).
@@ -162,7 +167,44 @@ See [my page](https://example.com/some path) for details.
 #> ───╯
 ```
 
+## Working with the AST
+
+Beyond
+[`parse_qmd()`](https://rundel.github.io/q2r/reference/parse_qmd.md) /
+[`to_qmd()`](https://rundel.github.io/q2r/reference/to_qmd.md), q2r
+ships a tidyselect-style vocabulary for querying and rewriting either
+AST
+([`select_nodes()`](https://rundel.github.io/q2r/reference/select_nodes.md),
+[`select_descendants()`](https://rundel.github.io/q2r/reference/select_nodes.md),
+[`map_nodes()`](https://rundel.github.io/q2r/reference/select_nodes.md),
+[`replace_nodes()`](https://rundel.github.io/q2r/reference/select_nodes.md),
+[`delete_nodes()`](https://rundel.github.io/q2r/reference/select_nodes.md),
+[`insert_before()`](https://rundel.github.io/q2r/reference/select_nodes.md),
+…), an
+[`ast_filter()`](https://rundel.github.io/q2r/reference/ast_filter.md)
+Lua-filter-style walker, document-level helpers
+([`ast_summary()`](https://rundel.github.io/q2r/reference/ast_summary.md),
+[`select_section()`](https://rundel.github.io/q2r/reference/select_section.md),
+[`ast_toc()`](https://rundel.github.io/q2r/reference/ast_toc.md),
+[`split_sections()`](https://rundel.github.io/q2r/reference/split_sections.md)),
+code-cell helpers
+([`cell_options()`](https://rundel.github.io/q2r/reference/code_cell.md),
+[`set_cell_options()`](https://rundel.github.io/q2r/reference/code_cell.md),
+[`collect_code()`](https://rundel.github.io/q2r/reference/code_cell.md)),
+table bridges
+([`as_df()`](https://rundel.github.io/q2r/reference/table_df.md) /
+[`as_table()`](https://rundel.github.io/q2r/reference/table_df.md)),
+file round-trip sugar
+([`read_qmd()`](https://rundel.github.io/q2r/reference/read_qmd.md),
+[`write_qmd()`](https://rundel.github.io/q2r/reference/read_qmd.md),
+[`edit_qmd()`](https://rundel.github.io/q2r/reference/read_qmd.md)), and
+multi-document collections
+([`parse_qmd_dir()`](https://rundel.github.io/q2r/reference/qmd_collection.md)).
+See the
+[`vignette("selecting-and-rewriting")`](https://rundel.github.io/q2r/articles/selecting-and-rewriting.md)
+for a tour.
+
 ## Related
 
-- [`quarto-dev/q2`](https://github.com/quarto-dev/q2) — upstream Rust
+- [`quarto-dev/q2`](https://github.com/quarto-dev/q2) - upstream Rust
   workspace containing `pampa` and the tree-sitter-qmd grammar.

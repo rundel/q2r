@@ -13,8 +13,13 @@ ast_filter(x, ...)
 - x:
 
   A [`pandoc`](https://rundel.github.io/q2r/reference/pandoc.md)
-  document or any
-  [`pandoc_node`](https://rundel.github.io/q2r/reference/pandoc_node.md).
+  document, any
+  [`pandoc_node`](https://rundel.github.io/q2r/reference/pandoc_node.md),
+  a
+  [`pandoc_blocks`](https://rundel.github.io/q2r/reference/pandoc_blocks.md)
+  /
+  [`pandoc_inlines`](https://rundel.github.io/q2r/reference/pandoc_blocks.md)
+  wrapper, or a plain `list` of nodes.
 
 - ...:
 
@@ -82,15 +87,24 @@ stringifying a subtree.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 doc = parse_qmd("# Hello\n\n**bold** and *italic*\n")
 doc |> ast_filter(
-  pandoc_strong = \(el) pandoc_small_caps(el@content),
+  pandoc_strong = \(el) pandoc_small_caps(content = el@content),
   pandoc_header = \(el) {
     if (el@level == 1L) {
       pandoc_header(level = 2L, content = el@content, attr = el@attr)
     } else el
   }
 )
-} # }
+#> pandoc
+#> ├─header level=2 (#hello)
+#> │ └─str "Hello"
+#> └─paragraph
+#>   ├─small_caps
+#>   │ └─str "bold"
+#>   ├─space
+#>   ├─str "and"
+#>   ├─space
+#>   └─emph
+#>     └─str "italic"
 ```

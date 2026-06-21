@@ -11,77 +11,39 @@ for the block-level nodes.
 ## Usage
 
 ``` r
-pandoc_str(source_info = pandoc_source_info(), text = "")
+pandoc_str(text = "")
 
-pandoc_emph(
-  source_info = pandoc_source_info(),
-  content = pandoc_inlines(list())
-)
+pandoc_emph(content = pandoc_inlines(list()))
 
-pandoc_underline(
-  source_info = pandoc_source_info(),
-  content = pandoc_inlines(list())
-)
+pandoc_underline(content = pandoc_inlines(list()))
 
-pandoc_strong(
-  source_info = pandoc_source_info(),
-  content = pandoc_inlines(list())
-)
+pandoc_strong(content = pandoc_inlines(list()))
 
-pandoc_strikeout(
-  source_info = pandoc_source_info(),
-  content = pandoc_inlines(list())
-)
+pandoc_strikeout(content = pandoc_inlines(list()))
 
-pandoc_superscript(
-  source_info = pandoc_source_info(),
-  content = pandoc_inlines(list())
-)
+pandoc_superscript(content = pandoc_inlines(list()))
 
-pandoc_subscript(
-  source_info = pandoc_source_info(),
-  content = pandoc_inlines(list())
-)
+pandoc_subscript(content = pandoc_inlines(list()))
 
-pandoc_small_caps(
-  source_info = pandoc_source_info(),
-  content = pandoc_inlines(list())
-)
+pandoc_small_caps(content = pandoc_inlines(list()))
 
-pandoc_quoted(
-  source_info = pandoc_source_info(),
-  quote_type = "double",
-  content = pandoc_inlines(list())
-)
+pandoc_quoted(quote_type = "double", content = pandoc_inlines(list()))
 
-pandoc_cite(
-  source_info = pandoc_source_info(),
-  citations = list(),
-  content = pandoc_inlines(list())
-)
+pandoc_cite(citations = list(), content = pandoc_inlines(list()))
 
-pandoc_code(
-  source_info = pandoc_source_info(),
-  attr = pandoc_attr(),
-  text = ""
-)
+pandoc_code(attr = pandoc_attr(), text = "")
 
-pandoc_space(source_info = pandoc_source_info())
+pandoc_space()
 
-pandoc_soft_break(source_info = pandoc_source_info())
+pandoc_soft_break()
 
-pandoc_line_break(source_info = pandoc_source_info())
+pandoc_line_break()
 
-pandoc_math(
-  source_info = pandoc_source_info(),
-  math_type = "inline",
-  text = ""
-)
+pandoc_math(math_type = "inline", text = "")
 
-pandoc_raw_inline(source_info = pandoc_source_info(), format = "", text = "")
+pandoc_raw_inline(format = "", text = "")
 
 pandoc_link(
-  source_info = pandoc_source_info(),
   attr = pandoc_attr(),
   content = pandoc_inlines(list()),
   url = "",
@@ -89,66 +51,36 @@ pandoc_link(
 )
 
 pandoc_image(
-  source_info = pandoc_source_info(),
   attr = pandoc_attr(),
   content = pandoc_inlines(list()),
   url = "",
   title = ""
 )
 
-pandoc_note(
-  source_info = pandoc_source_info(),
-  content = pandoc_blocks(list())
-)
+pandoc_note(content = pandoc_blocks(list()))
 
-pandoc_span(
-  source_info = pandoc_source_info(),
-  attr = pandoc_attr(),
-  content = pandoc_inlines(list())
-)
+pandoc_span(attr = pandoc_attr(), content = pandoc_inlines(list()))
 
 pandoc_shortcode(
-  source_info = pandoc_source_info(),
   name = "",
   is_escaped = FALSE,
   positional_args = list(),
   keyword_args = list()
 )
 
-pandoc_note_reference(source_info = pandoc_source_info(), id = "")
+pandoc_note_reference(id = "")
 
-pandoc_attr_inline(source_info = pandoc_source_info(), attr = pandoc_attr())
+pandoc_attr_inline(attr = pandoc_attr())
 
-pandoc_insert(
-  source_info = pandoc_source_info(),
-  attr = pandoc_attr(),
-  content = pandoc_inlines(list())
-)
+pandoc_insert(attr = pandoc_attr(), content = pandoc_inlines(list()))
 
-pandoc_delete(
-  source_info = pandoc_source_info(),
-  attr = pandoc_attr(),
-  content = pandoc_inlines(list())
-)
+pandoc_delete(attr = pandoc_attr(), content = pandoc_inlines(list()))
 
-pandoc_highlight(
-  source_info = pandoc_source_info(),
-  attr = pandoc_attr(),
-  content = pandoc_inlines(list())
-)
+pandoc_highlight(attr = pandoc_attr(), content = pandoc_inlines(list()))
 
-pandoc_edit_comment(
-  source_info = pandoc_source_info(),
-  attr = pandoc_attr(),
-  content = pandoc_inlines(list())
-)
+pandoc_edit_comment(attr = pandoc_attr(), content = pandoc_inlines(list()))
 
-pandoc_custom_inline(
-  source_info = pandoc_source_info(),
-  type_name = "",
-  slots = list(),
-  attr = pandoc_attr()
-)
+pandoc_custom_inline(type_name = "", slots = list(), attr = pandoc_attr())
 ```
 
 ## Notes

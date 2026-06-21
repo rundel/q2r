@@ -93,6 +93,25 @@ AST back to QMD (pandoc → pampa writer; ts → byte-walk over `@text`).
   `pandoc_to_r`. Used only by `pampa_write_qmd_ast_impl` to drive
   pampa’s QMD writer from an R-constructed AST (e.g. a `pandoc` S7
   object converted via `pandoc_to_list()`).
+- Document metadata (`Pandoc.meta`, i.e. YAML frontmatter) round-trips
+  through both converters as a value-only tagged list mirroring
+  `ConfigValueKind` (`config_value_to_r` in `pd_ast_to_r.rs`,
+  `config_value_from_r` in `r_to_pd_ast.rs`), surfaced in R as a nested
+  [`pandoc_meta_value`](https://rundel.github.io/q2r/R/pd-ast-support.R)
+  tree. Its `kind` is one of
+  `string`/`int`/`real`/`bool`/`null`/`inlines`/`blocks`/`list`/`map`/`path`/`glob`/`expr`;
+  a `map`’s `@value` is a named list of child values, a `list`’s is
+  unnamed. `source_info`, `key_source`, and `merge_op` are intentionally
+  dropped (the writer ignores them, and dropping them keeps the
+  round-trip AST comparison in `expect_pd_ast_equal` stable). Scalars
+  cross the FFI via `serde_json` (a direct Cargo dep) to avoid a fragile
+  direct `yaml_rust2` dependency. Two notes: the reader parses
+  string-valued fields such as `title` as markdown `inlines` rather than
+  plain `string` scalars; and a YAML real written with an explicit `.0`
+  and no fractional part (e.g. `1.0`) reconstructs as `Yaml::Real("1")`
+  and re-parses as an integer, so the value survives but the int/real
+  distinction does not (no quarto-web fixture hits this; pinned in
+  `test-meta-roundtrip.R`).
 - [src/rust/src/ts_query.rs](https://rundel.github.io/q2r/src/rust/src/ts_query.rs)
   implements `run_ts_query`: parse `text` with tree-sitter-qmd, compile
   a `.scm` query against the grammar, and serialize each match’s
@@ -177,15 +196,24 @@ are S7 generics so the same call works on either representation.
   `map_nodes` / `replace_nodes` / `delete_nodes` / `splice_nodes` /
   `insert_before` / `insert_after` — plus the predicate data mask:
   predicates in `...` are tidy-evaluated against each node with `@`-slot
-  bindings and helpers (`has_class`, `get_id`, …) exposed as active
-  bindings over a per-evaluation node.
+  bindings and helpers (`has_class`, `has_id`, `has_attr`, `has_text`,
+  `has_label`, `is`, `is_leaf`, …) exposed over a per-evaluation node
+  (`has_text` greps the node’s flattened
+  [`ast_text()`](https://rundel.github.io/q2r/reference/ast_text.md);
+  `has_label` glob-matches `@attr@id`).
   [R/select-pd.R](https://rundel.github.io/q2r/R/select-pd.R) and
   [R/select-ts.R](https://rundel.github.io/q2r/R/select-ts.R) supply the
   per-AST methods (pandoc walks the S7 block/inline tree; ts walks
   `ts_node` children and rebuilds via `ts_rebuild_node`, which preserves
   `@text` for grammar-gap kinds — see the byte-recovery contract below).
-  [R/select-mutate.R](https://rundel.github.io/q2r/R/select-mutate.R)
-  holds the shared post-order rewrite machinery.
+  The genuinely shared piece is the predicate data mask in
+  [R/select.R](https://rundel.github.io/q2r/R/select.R); the post-order
+  rewrite walkers are per-AST: `pd_rewrite_node` / `pd_finalize_root`
+  (descending via `pandoc_modify_children`) in
+  [R/select-pd.R](https://rundel.github.io/q2r/R/select-pd.R) and
+  `ts_rewrite_node` / `ts_finalize_root` (rebuilding via
+  `ts_rebuild_node`) in
+  [R/select-ts.R](https://rundel.github.io/q2r/R/select-ts.R).
 - [R/ast-filter.R](https://rundel.github.io/q2r/R/ast-filter.R) is a
   Lua-filter-style
   [`ast_filter()`](https://rundel.github.io/q2r/reference/ast_filter.md)
@@ -203,13 +231,83 @@ are S7 generics so the same call works on either representation.
   [R/pandoc-modify-children.R](https://rundel.github.io/q2r/R/pandoc-modify-children.R)
   (`pandoc_modify_children` generic) are the construction/attribute/text
   helpers these verbs build on.
+- Document-level (top-level block stream) helpers, modeled on parsermd’s
+  author-altitude verbs:
+  [R/ast-sections.R](https://rundel.github.io/q2r/R/ast-sections.R)
+  ([`ast_sections()`](https://rundel.github.io/q2r/reference/ast_sections.md)
+  — per-block enclosing heading-title chain `h1`..`h6`, via a `@level`
+  stack scan, the analog of `rmd_node_sections`),
+  [R/select-section.R](https://rundel.github.io/q2r/R/select-section.R)
+  ([`select_section()`](https://rundel.github.io/q2r/reference/select_section.md)
+  — the contiguous block run under a glob-matched heading path up to the
+  next equal-or-higher heading, analog of `by_section`; a dedicated verb
+  rather than a mask helper because section membership needs document
+  order),
+  [R/ast-summary.R](https://rundel.github.io/q2r/R/ast-summary.R)
+  ([`ast_summary()`](https://rundel.github.io/q2r/reference/ast_summary.md)
+  — one-row-per-top-level-block `data.frame` with a `node` list-column
+  of live S7 objects; the column displays as `<type>` via the
+  `format(pandoc_node)` method in
+  [R/pd-ast-print.R](https://rundel.github.io/q2r/R/pd-ast-print.R)),
+  and [R/io.R](https://rundel.github.io/q2r/R/io.R)
+  (`read_qmd`/`write_qmd`/`edit_qmd` file round-trip sugar over
+  `parse_qmd`/`to_qmd`).
+- [R/cell.R](https://rundel.github.io/q2r/R/cell.R) holds the Quarto
+  code-cell helpers over a \[`pandoc_code_block`\] (engine carried as a
+  braced class, options in leading `#|`/`//|`/`--|` lines inside
+  `@text`): `is_code_cell`, `cell_engine`, `cell_label`, `cell_code`,
+  `cell_options`, `set_cell_options`/`set_cell_label`, and
+  `collect_code` (tangle), plus the mask predicates
+  [`is_code_cell()`](https://rundel.github.io/q2r/reference/code_cell.md)/`has_option()`/`has_engine()`.
+- [R/table.R](https://rundel.github.io/q2r/R/table.R) bridges a
+  \[`pandoc_table`\] and a base `data.frame`:
+  [`as_df()`](https://rundel.github.io/q2r/reference/table_df.md)
+  flattens a table (header row to names, cells via `ast_text`;
+  alignment/caption/id ride along as `q2r_*` attributes) and
+  [`as_table()`](https://rundel.github.io/q2r/reference/table_df.md)
+  rebuilds one (round-tripping those attributes).
+- [R/toc.R](https://rundel.github.io/q2r/R/toc.R) holds two
+  document-order helpers:
+  [`ast_toc()`](https://rundel.github.io/q2r/reference/ast_toc.md) (a
+  nested \[`pandoc_bullet_list`\] of heading links, anchors from
+  `@attr@id` or an approximate `pandoc_slug`) and
+  [`split_sections()`](https://rundel.github.io/q2r/reference/split_sections.md)
+  (partition the top-level block stream at a heading level into a named
+  list of `pandoc` sub-documents).
+- [R/render.R](https://rundel.github.io/q2r/R/render.R) defines
+  [`render_qmd()`](https://rundel.github.io/q2r/reference/render_qmd.md)
+  — the q2r analog of parsermd’s `render()`: write `to_qmd(x)` into a
+  temp dir,
+  [`quarto::quarto_render`](https://quarto-dev.github.io/quarto-r/reference/quarto_render.html)
+  it, copy the artifacts out, and return the output path; `quarto` is in
+  `Suggests`.
+- Multi-document helpers, modeled on parsermd’s collections:
+  [R/collection.R](https://rundel.github.io/q2r/R/collection.R) defines
+  the S7 [`qmd_collection`](https://rundel.github.io/q2r/R/collection.R)
+  class (`@docs` named list of `pandoc` + `@paths`),
+  [`parse_qmd_dir()`](https://rundel.github.io/q2r/reference/qmd_collection.md)
+  (regex-filter a directory via base `list.files`,
+  [`purrr::map`](https://purrr.tidyverse.org/reference/map.html)
+  `parse_qmd` over it),
+  [`write_qmd_dir()`](https://rundel.github.io/q2r/reference/qmd_collection.md)
+  (write each doc back in place or under a new dir), and the batch verb
+  methods — the selection verbs
+  (`select_nodes`/`select_descendants`/`select_children`/`select_first`)
+  return a per-document named list, the mutation verbs
+  (`map_nodes`/`replace_nodes`/`delete_nodes`/`splice_nodes`/`insert_before`/`insert_after`)
+  return a new collection, and `ast_summary(qmd_collection)` binds the
+  per-doc summaries with a leading `doc` column. The not-yet-built
+  merge-into-one-document feature (parsermd’s `as_ast`) is tracked in
+  `notes/parsermd_gap.md`.
 - [R/ts-query.R](https://rundel.github.io/q2r/R/ts-query.R) exposes
   [`ts_query()`](https://rundel.github.io/q2r/reference/ts_query.md), a
   tree-sitter `.scm` query escape hatch backed by `ts_query_impl` /
   `ts_query.rs`.
-- [R/tests.R](https://rundel.github.io/q2r/R/tests.R) holds the two
-  `gen_*_rt_test` factories (`gen_ts_rt_test`, `gen_pd_rt_test`) and the
-  `QUARTO_WEB_SKIP` skip-map that `helper-quarto-web.R` uses to
+- [tests/testthat/\_gen-quarto-web.R](https://rundel.github.io/q2r/tests/testthat/_gen-quarto-web.R)
+  holds the two `gen_*_rt_test` factories (`gen_ts_rt_test`,
+  `gen_pd_rt_test`) and the `QUARTO_WEB_SKIP` skip-map that
+  `helper-quarto-web.R` sources (it lives under `tests/` rather than
+  `R/` because it is dev-time test scaffolding, not package code) to
   (re)generate the sweep test files. Per-fixture skip lists are keyed by
   upstream q2 issue: each entry’s reason is
   `"q2#NNN (short description)"`, and the test surfaces it as
@@ -294,7 +392,7 @@ rename without updating `configure`.
 - A whole-repo git dep is required because `pampa` has ~15
   workspace-local `path = "../quarto-*"` sibling crates; vendoring or
   depending on `pampa` alone does not resolve.
-- Current pinned commit: `3451f64f7996ed820ad76baff752fd3d84135fa9`.
+- Current pinned commit: `3cae615020958f3f724e1c2833cbe44c3dee35b0`.
   Bumps are deliberate: update the `rev` **and** regenerate
   `Cargo.lock`. All four q2 deps (`pampa`, `tree-sitter-qmd`,
   `quarto-source-map`, `quarto-error-reporting`) must be bumped
@@ -314,6 +412,35 @@ rename without updating `configure`.
 - `quarto-error-reporting` is a direct dep because we need
   `TextRenderOptions` (hyperlink toggle) and to
   `Deserialize`/reconstruct `DiagnosticMessage` values.
+
+## Reverse dependency: markermd
+
+- [`markermd`](https://rundel.github.io/markermd) (sibling checkout at
+  `/Users/rundel/Desktop/Projects/markermd`, `rundel/markermd`) is the
+  primary downstream consumer of q2r: a Shiny-based interactive grading
+  interface for R Markdown / Quarto assignments. It lists q2r under
+  `Imports` with `Remotes: rundel/q2r`.
+- It uses q2r’s public API:
+  [`parse_qmd()`](https://rundel.github.io/q2r/reference/parse_qmd.md),
+  [`to_qmd()`](https://rundel.github.io/q2r/reference/to_qmd.md), the
+  `pandoc_*` block/inline constructors, `pandoc` / `pandoc_blocks` /
+  `pandoc_attr`,
+  [`ast_text()`](https://rundel.github.io/q2r/reference/ast_text.md),
+  [`select_children()`](https://rundel.github.io/q2r/reference/select_nodes.md),
+  the predicate-mask helpers inside quoted filter expressions (`is()`,
+  [`is_code_cell()`](https://rundel.github.io/q2r/reference/code_cell.md),
+  `has_*()`), and the cell accessors
+  ([`cell_engine()`](https://rundel.github.io/q2r/reference/code_cell.md),
+  [`cell_label()`](https://rundel.github.io/q2r/reference/code_cell.md),
+  [`cell_code()`](https://rundel.github.io/q2r/reference/code_cell.md)).
+  It does not touch the internals q2r drops (e.g. `pandoc_source_info`).
+- Treat it as the reverse-dependency check for q2r’s exported surface: a
+  breaking change to a q2r public symbol or to `parse_qmd` / `to_qmd` /
+  `ast_text` behaviour should be validated by installing q2r
+  (`devtools::install(quick = TRUE, upgrade = FALSE)`) and running
+  `devtools::test()` in `../markermd`. Behaviour-only changes
+  (e.g. `ast_text` of a citation) are the likeliest source of silent
+  breakage since markermd builds its grading UI on the AST shape.
 
 ## ts_ast byte-recovery contract
 
@@ -337,15 +464,21 @@ rename without updating `configure`.
   Extending to a new kind: run a few parses, observe how that kind’s
   children map to source bytes, and add a handler. When adjusting a
   handler, verify the round-trip property holds.
-- `@text` on non-leaves is the escape hatch for grammar gaps and is
-  **the only place** handlers read `@text` directly. Handlers that use
-  it: `pandoc_math`, `pandoc_display_math`, `code_fence_content`. Treat
-  any other use of `@text` as a bug — all other kinds must emit by
-  walking children, because `@text` is `NULL` on them. If upstream
-  tree-sitter-qmd promotes those anonymous regexes to named nodes, these
-  three fallbacks (and the corresponding Rust exporter logic in
-  [ts_ast_to_r.rs](https://rundel.github.io/q2r/src/rust/src/ts_ast_to_r.rs))
-  can be removed.
+- `@text` is read first by every `ts_text_or(...)` handler, not just
+  three kinds. The behaviour is two-phase. On a fresh parse `@text` is
+  present on leaves and on any non-leaf with a child-coverage gap (the
+  byte-coverage rule in
+  [ts_ast_to_r.rs](https://rundel.github.io/q2r/src/rust/src/ts_ast_to_r.rs)),
+  so those handlers emit the verbatim span, and it is `NULL` elsewhere
+  (so the handler walks children). After a mutation, `ts_rebuild_node`
+  ([R/select-ts.R](https://rundel.github.io/q2r/R/select-ts.R))
+  recomputes the inter-child gap whitespace for gap *containers*
+  (section / block_quote / list) and keeps verbatim `@text` only for the
+  three grammar-gap *content* kinds (`pandoc_math`,
+  `pandoc_display_math`, `code_fence_content`), where editing children
+  is a no-op on output. If upstream tree-sitter-qmd promotes those
+  anonymous regexes to named nodes, those three content fallbacks (and
+  the corresponding Rust exporter logic) can be removed.
 
 ## Diagnostic rendering contract
 
@@ -390,11 +523,12 @@ disambiguates.
 `notes/done/` holds issue drafts that have been **filed upstream** (a q2
 issue number now exists), regardless of whether they have since been
 resolved. The skip reason in
-[R/tests.R](https://rundel.github.io/q2r/R/tests.R) is the authoritative
-source of truth for whether a given upstream issue is still affecting
-q2r tests — when an issue closes, drop its entries from
-`QUARTO_WEB_SKIP` and verify the previously-skipped fixtures pass, but
-leave the corresponding note in `notes/done/` as a historical record.
+[tests/testthat/\_gen-quarto-web.R](https://rundel.github.io/q2r/tests/testthat/_gen-quarto-web.R)
+is the authoritative source of truth for whether a given upstream issue
+is still affecting q2r tests — when an issue closes, drop its entries
+from `QUARTO_WEB_SKIP` and verify the previously-skipped fixtures pass,
+but leave the corresponding note in `notes/done/` as a historical
+record.
 
 ## Filing q2 issues
 
@@ -438,9 +572,15 @@ rename to `notes/done/GH#NNN-<short-name>.md` once filed). Format:
   can see the source bytes before the pampa commands run on them.
 - After the reprex, list 1-3 in-the-wild occurrences in the
   `tests/fixtures/quarto-web/` submodule as GitHub permalinks. Use
-  `https://github.com/quarto-dev/quarto-web/blob/<submodule-HEAD-sha>/<path>#L<line>`
+  `https://github.com/quarto-dev/quarto-web/blob/<upstream-sha>/<path>#L<line>`
   so the line numbers stay valid as upstream evolves. Get the SHA with
-  `git -C tests/fixtures/quarto-web rev-parse HEAD`.
+  `git -C tests/fixtures/quarto-web rev-parse origin/main` - **not**
+  `rev-parse HEAD`: the submodule sits on the local `q2r-corrections`
+  branch, whose `HEAD` is a local commit that was never pushed upstream,
+  so a permalink built from it 404s on GitHub. Always pin permalinks to
+  an `origin/main` ancestor (a real upstream commit), and confirm the
+  cited path/line resolve there (a fixture may have moved - e.g. the
+  blog `docs/blog/posts/*` → `docs/blog/_archive/posts/*` reorg).
 - No bolding, no decorative prose. Target under 20 lines (excluding the
   in-the-wild list).
 

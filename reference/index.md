@@ -9,6 +9,8 @@ render an AST back to QMD source.
   **\[experimental\]** : Parse QMD input with pampa
 - [`to_qmd()`](https://rundel.github.io/q2r/reference/to_qmd.md)
   **\[experimental\]** : Render an R-side AST back to QMD text
+- [`render_qmd()`](https://rundel.github.io/q2r/reference/render_qmd.md)
+  **\[experimental\]** : Render an AST to an output document with Quarto
 
 ## Diagnostics
 
@@ -18,6 +20,23 @@ renderer used by [`print()`](https://rdrr.io/r/base/print.html) /
 
 - [`pampa_diagnostic()`](https://rundel.github.io/q2r/reference/pampa_diagnostic.md)
   : Parse diagnostic produced by the pampa parser
+
+## Files and collections
+
+File round-trip sugar over
+[`parse_qmd()`](https://rundel.github.io/q2r/reference/parse_qmd.md) /
+[`to_qmd()`](https://rundel.github.io/q2r/reference/to_qmd.md), and a
+lightweight container for parsing and writing back a whole directory of
+QMD documents at once.
+
+- [`read_qmd()`](https://rundel.github.io/q2r/reference/read_qmd.md)
+  [`write_qmd()`](https://rundel.github.io/q2r/reference/read_qmd.md)
+  [`edit_qmd()`](https://rundel.github.io/q2r/reference/read_qmd.md)
+  **\[experimental\]** : Read, write, and edit QMD files
+- [`qmd_collection()`](https://rundel.github.io/q2r/reference/qmd_collection.md)
+  [`parse_qmd_dir()`](https://rundel.github.io/q2r/reference/qmd_collection.md)
+  [`write_qmd_dir()`](https://rundel.github.io/q2r/reference/qmd_collection.md)
+  **\[experimental\]** : A collection of QMD documents
 
 ## Querying and rewriting the AST
 
@@ -97,7 +116,6 @@ friends.
   [`set_id()`](https://rundel.github.io/q2r/reference/ast_attr.md)
   [`get_attr()`](https://rundel.github.io/q2r/reference/ast_attr.md)
   [`set_attr()`](https://rundel.github.io/q2r/reference/ast_attr.md)
-  [`remove_attr()`](https://rundel.github.io/q2r/reference/ast_attr.md)
   **\[experimental\]** : Attribute manipulation helpers
 
 ## Constructing content
@@ -109,6 +127,55 @@ and produce the canonical `pandoc_inlines` / `pandoc_blocks` wrappers.
   [`as_blocks()`](https://rundel.github.io/q2r/reference/ast_construct.md)
   **\[experimental\]** : Coerce flexible input into pandoc_inlines or
   pandoc_blocks
+
+## Tables
+
+Convert between a `pandoc_table` and a `data.frame`: flatten a parsed
+table to columns, or build a renderable table from a data frame
+(alignment, caption, and id ride along as attributes).
+
+- [`as_df()`](https://rundel.github.io/q2r/reference/table_df.md)
+  [`as_table()`](https://rundel.github.io/q2r/reference/table_df.md)
+  **\[experimental\]** : Convert between pandoc tables and data frames
+
+## Code cells
+
+Read and edit Quarto executable cells: engine, label, body, and `#|`
+options on a `pandoc_code_block`, plus
+[`collect_code()`](https://rundel.github.io/q2r/reference/code_cell.md)
+to tangle a document’s cells. Inside a predicate the mask also exposes
+[`is_code_cell()`](https://rundel.github.io/q2r/reference/code_cell.md)
+and `has_option()`.
+
+- [`is_code_cell()`](https://rundel.github.io/q2r/reference/code_cell.md)
+  [`cell_engine()`](https://rundel.github.io/q2r/reference/code_cell.md)
+  [`cell_options()`](https://rundel.github.io/q2r/reference/code_cell.md)
+  [`cell_code()`](https://rundel.github.io/q2r/reference/code_cell.md)
+  [`cell_label()`](https://rundel.github.io/q2r/reference/code_cell.md)
+  [`set_cell_options()`](https://rundel.github.io/q2r/reference/code_cell.md)
+  [`set_cell_label()`](https://rundel.github.io/q2r/reference/code_cell.md)
+  [`collect_code()`](https://rundel.github.io/q2r/reference/code_cell.md)
+  **\[experimental\]** : Quarto code-cell helpers
+
+## Document structure
+
+Author-altitude helpers over the top-level block stream: the
+enclosing-heading chain, section slicing and splitting, a tabular
+overview, and a generated table of contents.
+
+- [`ast_sections()`](https://rundel.github.io/q2r/reference/ast_sections.md)
+  **\[experimental\]** : Heading-section path for each top-level block
+- [`select_section()`](https://rundel.github.io/q2r/reference/select_section.md)
+  **\[experimental\]** : Select the blocks belonging to a heading
+  section
+- [`ast_summary()`](https://rundel.github.io/q2r/reference/ast_summary.md)
+  **\[experimental\]** : Tabular overview of a document's top-level
+  blocks
+- [`ast_toc()`](https://rundel.github.io/q2r/reference/ast_toc.md)
+  **\[experimental\]** : Build a table of contents from a document's
+  headings
+- [`split_sections()`](https://rundel.github.io/q2r/reference/split_sections.md)
+  **\[experimental\]** : Split a document into per-section sub-documents
 
 ## Tree-sitter queries
 
@@ -221,8 +288,7 @@ page (one alias and usage entry per constructor).
 Helper types that appear inside concrete nodes: attributes, table
 substructures, citations, captions, metadata.
 
-- [`pandoc_source_info()`](https://rundel.github.io/q2r/reference/pandoc_support_types.md)
-  [`pandoc_attr()`](https://rundel.github.io/q2r/reference/pandoc_support_types.md)
+- [`pandoc_attr()`](https://rundel.github.io/q2r/reference/pandoc_support_types.md)
   [`pandoc_list_attributes()`](https://rundel.github.io/q2r/reference/pandoc_support_types.md)
   [`pandoc_citation()`](https://rundel.github.io/q2r/reference/pandoc_support_types.md)
   [`pandoc_caption()`](https://rundel.github.io/q2r/reference/pandoc_support_types.md)

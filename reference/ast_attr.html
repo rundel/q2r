@@ -20,6 +20,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/selecting-and-rewriting.html">Selecting and rewriting AST nodes</a></li>
   </ul></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/rundel/q2r/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -54,9 +55,7 @@
 <span></span>
 <span><span class="fu">get_attr</span><span class="op">(</span><span class="va">x</span>, <span class="va">key</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">set_attr</span><span class="op">(</span><span class="va">x</span>, <span class="va">key</span>, <span class="va">value</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">remove_attr</span><span class="op">(</span><span class="va">x</span>, <span class="va">key</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">set_attr</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -76,11 +75,14 @@
 
 
 <dt id="arg-key">key<a class="anchor" aria-label="anchor" href="#arg-key"></a></dt>
-<dd><p>A single string naming an attribute.</p></dd>
+<dd><p>A single string naming an attribute (for <code>get_attr()</code>).</p></dd>
 
 
-<dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
-<dd><p>A single string value.</p></dd>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>For <code>set_attr()</code>, named <code>key = value</code> pairs; each <code>value</code>
+is a single string, or <code>NULL</code> to remove that key. Quote names that
+are not syntactic R identifiers (e.g. <code>"data-level" = "2"</code>), and
+use rlang's <code>!!!</code> / <code>:=</code> to supply dynamic keys.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -97,8 +99,10 @@ etc.). Modelled on Pandoc Lua filters' direct field access
 (<code>el.classes</code>, <code>el.identifier</code>, <code>el.attributes</code>) but using R's
 immutable value semantics: every setter returns a new node, the
 input is never modified.</p>
-<p>Nodes without an <code>@attr</code> slot are handled defensively: predicates
-return <code>FALSE</code> / <code>""</code> / <code>NA</code>, setters error with a clear message.</p>
+<p>Nodes without a standard <code>@attr</code> slot are handled defensively: the
+getters return <code>FALSE</code> / <code>""</code> / <code>NA</code> (including nodes such as ordered
+and bullet lists, whose <code>@attr</code> is a <code>pandoc_list_attributes</code> rather
+than a <code><a href="pandoc_support_types.html">pandoc_attr</a></code>), while setters error with a clear message.</p>
     </div>
     <div class="section level2">
     <h2 id="available-helpers">Available helpers<a class="anchor" aria-label="anchor" href="#available-helpers"></a></h2>
@@ -113,9 +117,13 @@ already present are not duplicated).</p></li>
 <li><p><code>remove_class(x, cls)</code> remove one or more classes; no-op on
 classes that are not present.</p></li>
 <li><p><code>get_id(x)</code> / <code>set_id(x, id)</code> read or replace <code>@attr@id</code>.</p></li>
-<li><p><code>get_attr(x, key)</code> / <code>set_attr(x, key, value)</code> /
-<code>remove_attr(x, key)</code> manipulate <code>@attr@attributes</code>. <code>get_attr()</code>
-returns <code>NA_character_</code> for missing keys.</p></li>
+<li><p><code>get_attr(x, key)</code> reads a single attribute, returning
+<code>NA_character_</code> for missing keys.</p></li>
+<li><p><code>set_attr(x, key = value, ...)</code> sets one or more attributes from
+named <code>key = value</code> pairs. A <code>value</code> of <code>NULL</code> removes that key
+(the named map's idiomatic R removal, mirroring Lua's
+<code>el.attributes[key] = nil</code>), so a single call can both set and
+drop: <code>set_attr(x, target = "_blank", lang = NULL)</code>.</p></li>
 </ul></div>
 
     <div class="section level2">

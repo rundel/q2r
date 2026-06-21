@@ -17,9 +17,7 @@ set_id(x, id)
 
 get_attr(x, key)
 
-set_attr(x, key, value)
-
-remove_attr(x, key)
+set_attr(x, ...)
 ```
 
 ## Arguments
@@ -40,11 +38,14 @@ remove_attr(x, key)
 
 - key:
 
-  A single string naming an attribute.
+  A single string naming an attribute (for `get_attr()`).
 
-- value:
+- ...:
 
-  A single string value.
+  For `set_attr()`, named `key = value` pairs; each `value` is a single
+  string, or `NULL` to remove that key. Quote names that are not
+  syntactic R identifiers (e.g. `"data-level" = "2"`), and use rlang's
+  `!!!` / `:=` to supply dynamic keys.
 
 ## Value
 
@@ -67,8 +68,12 @@ etc.). Modelled on Pandoc Lua filters' direct field access
 value semantics: every setter returns a new node, the input is never
 modified.
 
-Nodes without an `@attr` slot are handled defensively: predicates return
-`FALSE` / `""` / `NA`, setters error with a clear message.
+Nodes without a standard `@attr` slot are handled defensively: the
+getters return `FALSE` / `""` / `NA` (including nodes such as ordered
+and bullet lists, whose `@attr` is a `pandoc_list_attributes` rather
+than a
+[`pandoc_attr`](https://rundel.github.io/q2r/reference/pandoc_support_types.md)),
+while setters error with a clear message.
 
 ## Available helpers
 
@@ -89,9 +94,14 @@ Nodes without an `@attr` slot are handled defensively: predicates return
 
 - `get_id(x)` / `set_id(x, id)` read or replace `@attr@id`.
 
-- `get_attr(x, key)` / `set_attr(x, key, value)` / `remove_attr(x, key)`
-  manipulate `@attr@attributes`. `get_attr()` returns `NA_character_`
+- `get_attr(x, key)` reads a single attribute, returning `NA_character_`
   for missing keys.
+
+- `set_attr(x, key = value, ...)` sets one or more attributes from named
+  `key = value` pairs. A `value` of `NULL` removes that key (the named
+  map's idiomatic R removal, mirroring Lua's
+  `el.attributes[key] = nil`), so a single call can both set and drop:
+  `set_attr(x, target = "_blank", lang = NULL)`.
 
 ## Examples
 

@@ -14,8 +14,8 @@ indented tree.
 
 - position:
 
-  If `TRUE`, include each node's `(row, column)` byte range in the
-  label. Defaults to `FALSE`.
+  If `TRUE`, include each node's start-end `(row, column)` point range
+  in the label. Defaults to `FALSE`.
 
 - text:
 

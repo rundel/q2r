@@ -417,12 +417,13 @@ immutable getters/setters that read like Lua’s direct field access
 
 - `has_class(x, cls)` / `add_class(x, cls)` / `remove_class(x, cls)`
 - `get_id(x)` / `set_id(x, id)`
-- `get_attr(x, key)` / `set_attr(x, key, value)` / `remove_attr(x, key)`
+- `get_attr(x, key)` / `set_attr(x, key = value, ...)` (pass
+  `key = NULL` to remove it)
 
 ``` r
 
 out = doc |> ast_filter(pandoc_header = \(h) {
-  h |> add_class("section") |> set_attr("data-level", as.character(h@level))
+  h |> add_class("section") |> set_attr("data-level" = as.character(h@level))
 })
 
 out |> select_nodes(is(pandoc_header)) |> purrr::map(\(h) h@attr)
@@ -451,6 +452,114 @@ out |> select_nodes(is(pandoc_header)) |> purrr::map(\(h) h@attr)
 Nodes without an `@attr` slot degrade gracefully for predicates
 (`has_class(pandoc_str(...), "x")` returns `FALSE`) but error on setters
 with a clear message.
+
+## Document-level helpers
+
+The verbs above descend the whole nested tree. A second, complementary
+set of helpers works at the document author’s altitude: the flat stream
+of top-level blocks, where headings partition the document into
+sections. These mirror the section, label, and tabular conveniences from
+the parsermd package.
+
+[`ast_summary()`](https://rundel.github.io/q2r/reference/ast_summary.md)
+gives a one-row-per-top-level-block overview. The `node` column is a
+list-column of the live S7 objects, so a filtered frame can be fed
+straight back through the verbs.
+
+``` r
+
+ast_summary(doc)
+#>               type level         id    section
+#> 1    pandoc_header     1      intro      Intro
+#> 2 pandoc_paragraph    NA       <NA>      Intro
+#> 3       pandoc_div    NA       <NA>      Intro
+#> 4    pandoc_header     2 conclusion Conclusion
+#> 5 pandoc_paragraph    NA       <NA> Conclusion
+#>                                       text               node
+#> 1                                    Intro    <pandoc_header>
+#> 2             Some bold prose with a link. <pandoc_paragraph>
+#> 3 Watch out A callout with its own emphas…       <pandoc_div>
+#> 4                               Conclusion    <pandoc_header>
+#> 5                             Final words. <pandoc_paragraph>
+```
+
+[`ast_sections()`](https://rundel.github.io/q2r/reference/ast_sections.md)
+reports, for each top-level block, the chain of enclosing heading titles
+(`h1` through `h6`). A heading is part of the section it opens.
+
+``` r
+
+ast_sections(doc)
+#> [[1]]
+#>      h1      h2      h3      h4      h5      h6 
+#> "Intro"      NA      NA      NA      NA      NA 
+#> 
+#> [[2]]
+#>      h1      h2      h3      h4      h5      h6 
+#> "Intro"      NA      NA      NA      NA      NA 
+#> 
+#> [[3]]
+#>      h1      h2      h3      h4      h5      h6 
+#> "Intro"      NA      NA      NA      NA      NA 
+#> 
+#> [[4]]
+#>           h1           h2           h3           h4           h5           h6 
+#>      "Intro" "Conclusion"           NA           NA           NA           NA 
+#> 
+#> [[5]]
+#>           h1           h2           h3           h4           h5           h6 
+#>      "Intro" "Conclusion"           NA           NA           NA           NA
+```
+
+Two predicate helpers extend the selection mask with the same flavour as
+[`has_class()`](https://rundel.github.io/q2r/reference/ast_attr.md).
+`has_text()` greps a node’s flattened
+[`ast_text()`](https://rundel.github.io/q2r/reference/ast_text.md), and
+`has_label()` glob-matches its `@attr@id` (where Quarto labels live).
+
+``` r
+
+select_nodes(doc, is(pandoc_header) & has_text("Watch"))
+#> [[1]]
+#> header level=2 (#watch-out)
+#> ├─str "Watch"
+#> ├─space
+#> └─str "out"
+```
+
+[`select_section()`](https://rundel.github.io/q2r/reference/select_section.md)
+slices the contiguous run of blocks under a heading, up to the next
+heading of equal or higher level. The `path` names the enclosing heading
+chain, outermost first, with glob matching.
+
+``` r
+
+doc |>
+  select_section(c("Intro", "Conclusion")) |>
+  purrr::map_chr(ast_text)
+#> [1] "Conclusion"   "Final words."
+```
+
+Finally,
+[`read_qmd()`](https://rundel.github.io/q2r/reference/read_qmd.md) /
+[`write_qmd()`](https://rundel.github.io/q2r/reference/read_qmd.md) /
+[`edit_qmd()`](https://rundel.github.io/q2r/reference/read_qmd.md) close
+the parse-edit-write loop over files.
+[`write_qmd()`](https://rundel.github.io/q2r/reference/read_qmd.md)
+renders with
+[`to_qmd()`](https://rundel.github.io/q2r/reference/to_qmd.md) and
+writes verbatim, so the round trip stays byte-faithful.
+
+``` r
+
+tmp = tempfile(fileext = ".qmd")
+write_qmd(doc, tmp)
+identical(to_qmd(read_qmd(tmp)), to_qmd(doc))
+#> [1] TRUE
+```
+
+`edit_qmd(path, .f)` is the in-place shorthand for
+`write_qmd(.f(read_qmd(path)), path)`.
 
 ## Recipes: porting Pandoc / Quarto Lua filters
 
@@ -495,9 +604,7 @@ immutably:
 out = doc |> ast_filter(
   pandoc_link = \(l) {
     if (!grepl("^https?://", l@url)) return(l)
-    l |>
-      set_attr("target", "_blank") |>
-      set_attr("rel", "noopener")
+    set_attr(l, target = "_blank", rel = "noopener")
   }
 )
 
@@ -728,8 +835,25 @@ doc |>
 
 ## The tree-sitter side
 
-Every verb above works on a \[`ts_tree`\] too. The mask exposes the
-ts-specific slots (`kind`, `is_named`, `field_name`, `text`):
+The node-tree verbs
+([`select_nodes()`](https://rundel.github.io/q2r/reference/select_nodes.md),
+[`select_descendants()`](https://rundel.github.io/q2r/reference/select_nodes.md),
+[`select_children()`](https://rundel.github.io/q2r/reference/select_nodes.md),
+[`select_first()`](https://rundel.github.io/q2r/reference/select_nodes.md),
+[`walk_nodes()`](https://rundel.github.io/q2r/reference/select_nodes.md),
+and the mutators) dispatch on a \[`ts_tree`\] too. The mask exposes the
+ts-specific slots (`kind`, `is_named`, `field_name`, `text`), but the
+attribute/text mask helpers
+([`has_class()`](https://rundel.github.io/q2r/reference/ast_attr.md),
+`has_id()`, `has_attr()`, `has_text()`, `has_label()`) and the
+document-level helpers
+([`ast_summary()`](https://rundel.github.io/q2r/reference/ast_summary.md),
+[`ast_sections()`](https://rundel.github.io/q2r/reference/ast_sections.md),
+[`select_section()`](https://rundel.github.io/q2r/reference/select_section.md),
+[`ast_toc()`](https://rundel.github.io/q2r/reference/ast_toc.md),
+[`split_sections()`](https://rundel.github.io/q2r/reference/split_sections.md))
+are pandoc-only - on a `ts_tree` the mask helpers are a silent no-match
+and the document-level helpers have no method:
 
 ``` r
 
