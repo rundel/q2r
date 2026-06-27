@@ -60,8 +60,8 @@ test_that("get_id returns \"\" for nodes without @attr", {
 
 test_that("set_id rejects non-scalar / non-character ids", {
   h = make_header()
-  expect_error(set_id(h, c("a", "b")), "single string")
-  expect_error(set_id(h, 1L), "single string")
+  expect_error(set_id(h, c("a", "b")), "single non-NA string")
+  expect_error(set_id(h, 1L), "single non-NA string")
 })
 
 test_that("get_attr returns the value or NA_character_", {
@@ -114,7 +114,7 @@ test_that("set_attr rejects unnamed arguments", {
 
 test_that("set_attr rejects a non-string, non-NULL value", {
   h = make_header()
-  expect_error(set_attr(h, dir = 1L), "single string, or NULL")
+  expect_error(set_attr(h, dir = 1L), "single non-NA string, or NULL")
 })
 
 test_that("add_class on a node without @attr errors clearly", {

@@ -22,20 +22,20 @@ serde_json = '1'
 
 [dependencies.pampa]
 git = 'https://github.com/quarto-dev/q2'
-rev = '3cae615020958f3f724e1c2833cbe44c3dee35b0'
+rev = '76e69921baf5bfb0051467ce6a98025f2d79521f'
 default-features = false
 
 [dependencies.tree-sitter-qmd]
 git = 'https://github.com/quarto-dev/q2'
-rev = '3cae615020958f3f724e1c2833cbe44c3dee35b0'
+rev = '76e69921baf5bfb0051467ce6a98025f2d79521f'
 
 [dependencies.quarto-source-map]
 git = 'https://github.com/quarto-dev/q2'
-rev = '3cae615020958f3f724e1c2833cbe44c3dee35b0'
+rev = '76e69921baf5bfb0051467ce6a98025f2d79521f'
 
 [dependencies.quarto-error-reporting]
 git = 'https://github.com/quarto-dev/q2'
-rev = '3cae615020958f3f724e1c2833cbe44c3dee35b0'
+rev = '76e69921baf5bfb0051467ce6a98025f2d79521f'
 
 [profile.release]
 lto = true

@@ -79,10 +79,11 @@ test_that("parse_qmd treats a newline-free nonexistent string as inline text", {
 })
 
 test_that("parse_qmd treats a directory path as text, not a file to read", {
-  d = withr::local_tempdir()
-  res = parse_qmd(d)
+  withr::local_dir(withr::local_tempdir())
+  dir.create("subdir-as-text")
+  res = parse_qmd("subdir-as-text")
   expect_true(S7::S7_inherits(res, pandoc))
-  expect_match(ast_text(res), basename(d), fixed = TRUE)
+  expect_match(ast_text(res), "subdir-as-text", fixed = TRUE)
 })
 
 test_that("parse_qmd rejects an unknown ast value", {
