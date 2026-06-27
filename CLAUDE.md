@@ -392,7 +392,7 @@ rename without updating `configure`.
 - A whole-repo git dep is required because `pampa` has ~15
   workspace-local `path = "../quarto-*"` sibling crates; vendoring or
   depending on `pampa` alone does not resolve.
-- Current pinned commit: `3cae615020958f3f724e1c2833cbe44c3dee35b0`.
+- Current pinned commit: `76e69921baf5bfb0051467ce6a98025f2d79521f`.
   Bumps are deliberate: update the `rev` **and** regenerate
   `Cargo.lock`. All four q2 deps (`pampa`, `tree-sitter-qmd`,
   `quarto-source-map`, `quarto-error-reporting`) must be bumped
