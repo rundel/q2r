@@ -57,14 +57,50 @@ ts_recompute_gap_text = function(node, old_children, groups) {
     Encoding(out) = "UTF-8"
     out
   }
+  # Siblings created inside one group (insert_before/insert_after/splice) have
+  # no original gap between them; without a separator, inserted blocks are
+  # glued flush against their anchor and merge on reparse. Reuse the node's own
+  # observed inter-child spacing as the junction separator (so block children
+  # get their blank-line boundary and inline children stay flush), falling back
+  # to a newline for the known block containers when no gap is observable.
+  inner_gaps = if (length(old_children) > 1L) {
+    purrr::map_chr(seq_len(length(old_children) - 1L),
+                   function(i) gap(ends[i], starts[i + 1L]))
+  } else {
+    character(0)
+  }
+  sep = c(
+    inner_gaps[nzchar(inner_gaps)],
+    switch(node@kind, document = , section = , pandoc_block_quote = "\n", "")
+  )[[1L]]
   parts = character(0)
   prev = s
   for (i in seq_along(old_children)) {
     parts = c(parts, gap(prev, starts[i]),
-              purrr::map_chr(groups[[i]], to_qmd_ts_node))
+              ts_join_group(purrr::map_chr(groups[[i]], to_qmd_ts_node), sep))
     prev = ends[i]
   }
   paste0(c(parts, gap(prev, e)), collapse = "")
+}
+
+# Join the rendered members of one rewrite group. A newline-only separator is
+# applied as "ensure a blank-line boundary" (block siblings must not lazily
+# continue each other); any other non-empty separator (e.g. a block quote's
+# "\n> ") is inserted literally.
+ts_join_group = function(parts, sep) {
+  if (length(parts) <= 1L) return(paste0(parts, collapse = ""))
+  out = parts[[1L]]
+  for (p in parts[-1L]) {
+    pad = if (!nzchar(sep)) {
+      ""
+    } else if (grepl("^\n+$", sep)) {
+      if (grepl("\n\n$", out)) "" else if (grepl("\n$", out)) "\n" else "\n\n"
+    } else {
+      sep
+    }
+    out = paste0(out, pad, p)
+  }
+  out
 }
 
 ts_rebuild_node = function(node, new_children, old_children = NULL, groups = NULL) {
@@ -109,26 +145,36 @@ ts_rewrite_node = function(node, quos, mask, .f) {
   rebuilt
 }
 
-# Sentinel-free post-order walker used by `walk_nodes`.
+# Pre-order (document-order) walker used by `walk_nodes`, matching the pd
+# walker. The recursion must go through an anonymous function: passing the
+# user's callback as a named `.f` to purrr::walk() would bind it to walk's
+# own `.f` parameter and never recurse.
 ts_walk_node = function(node, quos, mask, .f) {
-  purrr::walk(node@children@content, ts_walk_node,
-              quos = quos, mask = mask, .f = .f)
   if (ast_eval_predicates(quos, node, mask)) .f(node)
+  purrr::walk(node@children@content, function(ch) ts_walk_node(ch, quos, mask, .f))
 }
 
 # Final commit of a rewritten root node into a tree, dropping NULL or
-# returning a synthetic empty document if .f killed the root.
+# returning a synthetic empty document if .f killed the root. The mutated
+# tree is rendered and reparsed before returning: a rebuilt node carries
+# recomputed `@text` but stale byte ranges, so handing it back as-is would
+# corrupt gap recomputation on the next mutation pass. Reparsing keeps every
+# returned ts_tree internally consistent (chained verbs are safe); the
+# ts_node-level verb methods have no document to reparse and keep the
+# single-pass guarantee.
 ts_finalize_root = function(orig_tree, rewritten) {
   if (is.null(rewritten)) {
     rewritten = ts_node(kind = orig_tree@root@kind)
   }
   if (is.list(rewritten) && !S7::S7_inherits(rewritten, ts_node)) {
-    stop("map_nodes on a ts_tree root returned a list; the document root ",
-         "cannot be spliced. Wrap the result in a single root node.",
-         call. = FALSE)
+    stop("a mutation verb returned a list of nodes for the ts_tree root; ",
+         "the document root cannot be spliced. Wrap the result in a single ",
+         "root node.", call. = FALSE)
   }
-  ts_tree(root = rewritten, language = orig_tree@language,
-          diagnostics = orig_tree@diagnostics)
+  staged = ts_tree(root = rewritten, language = orig_tree@language)
+  out = parse_qmd_text(to_qmd(staged), "<text>", ast = "ts", quiet = TRUE)
+  out@diagnostics = orig_tree@diagnostics
+  out
 }
 
 

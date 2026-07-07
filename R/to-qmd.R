@@ -178,6 +178,16 @@ ts_kind_handlers = list(
   pandoc_display_math = ts_text_or(NULL),
   pandoc_div          = ts_text_or(NULL),
   pipe_table          = ts_text_or(NULL),
+
+  # Pipe-table internals only render via child walks when a mutation rebuilds
+  # them (a fresh parse keeps the whole table verbatim); the `|` separators
+  # live in each row's gap `@text`.
+  pipe_table_header         = ts_text_or(),
+  pipe_table_row            = ts_text_or(),
+  pipe_table_delimiter_row  = ts_text_or(),
+  pipe_table_cell           = ts_text_or(),
+  pipe_table_delimiter_cell = ts_text_or(),
+
   grid_table          = ts_text_or(NULL),
   caption             = ts_text_or(NULL),
   shortcode           = ts_text_or(NULL),

@@ -107,3 +107,28 @@ test_that("ts_nodes wrapper supports select_first and the mutators", {
   expect_s7_class(out, ts_nodes)
   expect_length(out@content, 2L)
 })
+
+test_that("walk_nodes on a ts_tree visits matches in document order", {
+  ts = parse_qmd("# A\n\npara one\n", ast = "ts")
+  seen = character(0)
+  out = walk_nodes(ts, TRUE, .f = function(n) seen <<- c(seen, n@kind))
+  expect_identical(out, ts)
+  expect_identical(seen[1:3], c("document", "section", "atx_heading"))
+  expect_true("pandoc_paragraph" %in% seen)
+
+  filtered = character(0)
+  walk_nodes(ts, kind == "atx_heading", .f = function(n) filtered <<- c(filtered, n@kind))
+  expect_identical(filtered, "atx_heading")
+})
+
+test_that("walk_nodes dispatches on ts_node and ts_nodes", {
+  ts = parse_qmd("# A\n\n# B\n", ast = "ts")
+  n_node = 0L
+  walk_nodes(ts@root, kind == "atx_heading", .f = function(n) n_node <<- n_node + 1L)
+  expect_identical(n_node, 2L)
+
+  headings = q2r::ts_nodes(select_nodes(ts, kind == "atx_heading"))
+  n_wrap = 0L
+  walk_nodes(headings, kind == "atx_heading", .f = function(n) n_wrap <<- n_wrap + 1L)
+  expect_identical(n_wrap, 2L)
+})

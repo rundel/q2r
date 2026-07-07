@@ -26,7 +26,8 @@ NULL
 #' - [`select_first()`] returns the first match or `NULL`.
 #'
 #' @section Iteration and mutation verbs:
-#' - [`walk_nodes()`] applies a side-effect function to every match;
+#' - [`walk_nodes()`] applies a side-effect function to every match in
+#'   pre-order (document order, parent before children) on both ASTs;
 #'   returns its input invisibly.
 #' - [`map_nodes()`] rewrites every match via `.f`. The function may
 #'   return a single node (in-place replacement), a list of nodes
@@ -59,6 +60,14 @@ NULL
 #' `pandoc_display_math`, `code_fence_content`) round-trip through their
 #' verbatim source bytes, so mutating *their* children is a no-op on
 #' [`to_qmd()`] output.
+#'
+#' A mutation verb applied to a whole `ts_tree` renders and reparses the
+#' result before returning it, so the returned tree always carries
+#' internally consistent byte ranges and chained mutations are safe.
+#' Applied to a bare [`ts_node`] there is no document to reparse: the
+#' result is reliable for a single mutation pass, but should be
+#' re-rendered (or the chain restructured at the tree level) before
+#' further mutation.
 #'
 #' @section Predicate helpers (only available inside `...`):
 #' These shadow nothing in the global R namespace because they are

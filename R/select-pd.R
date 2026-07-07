@@ -104,13 +104,13 @@ pd_finalize_root = function(orig, result) {
                   diagnostics = orig@diagnostics))
   }
   if (is.list(result) && !S7::S7_inherits(result, pandoc_node)) {
-    stop("map_nodes on a pandoc document root returned a list; the document ",
-         "root cannot be spliced. Wrap the result in a single pandoc().",
-         call. = FALSE)
+    stop("a mutation verb returned a list of nodes for the pandoc document ",
+         "root; the document root cannot be spliced. Wrap the result in a ",
+         "single pandoc().", call. = FALSE)
   }
   if (!S7::S7_inherits(result, pandoc)) {
-    stop("map_nodes on a pandoc document root must return a `pandoc` object.",
-         call. = FALSE)
+    stop("a mutation verb applied to the pandoc document root must return ",
+         "a `pandoc` object.", call. = FALSE)
   }
   result
 }

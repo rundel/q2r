@@ -121,3 +121,46 @@ test_that("mutation verbs work on a list of ts nodes too", {
   expect_length(mapped, 2L)
   expect_true(all(purrr::map_lgl(mapped, S7::S7_inherits, ts_node)))
 })
+
+test_that("chained ts mutations preserve inter-block whitespace", {
+  ts = parse_qmd("# A\n\nfirst para\n\nsecond para\n", ast = "ts")
+  one = delete_nodes(ts, kind == "pandoc_space")
+  out = to_qmd(delete_nodes(one, kind == "atx_heading"))
+  expect_equal(out, "\nfirstpara\n\nsecondpara\n")
+})
+
+test_that("ts mutation verbs return a reparse-consistent tree", {
+  ts = parse_qmd("# A\n\nbody text\n", ast = "ts")
+  m = delete_nodes(ts, kind == "pandoc_space")
+  expect_ts_ast_equal(parse_qmd(to_qmd(m), ast = "ts"), m)
+})
+
+test_that("ts insert_after separates inserted blocks from their anchors", {
+  ts = parse_qmd("first para\n\nsecond para\n", ast = "ts")
+  new_para = select_first(parse_qmd("NEW\n", ast = "ts"), kind == "pandoc_paragraph")
+  out = to_qmd(insert_after(ts, kind == "pandoc_paragraph", .what = new_para))
+  expect_equal(out, "first para\n\nNEW\n\nsecond para\n\nNEW\n")
+  reparsed = parse_qmd(out, ast = "ts")
+  expect_length(select_nodes(reparsed, kind == "pandoc_paragraph"), 4L)
+})
+
+test_that("ts insert_after keeps list items separate", {
+  lst = parse_qmd("- a\n- b\n", ast = "ts")
+  item = select_first(parse_qmd("- c\n", ast = "ts"), kind == "list_item")
+  out = to_qmd(insert_after(lst, kind == "list_item", .what = item))
+  expect_equal(out, "- a\n- c\n- b\n- c\n")
+  expect_length(select_nodes(parse_qmd(out, ast = "ts"), kind == "list_item"), 4L)
+})
+
+test_that("ts splice_nodes separates duplicated blocks", {
+  ts = parse_qmd("aaa\n\nbbb\n", ast = "ts")
+  out = to_qmd(splice_nodes(ts, kind == "pandoc_paragraph", .f = function(n) list(n, n)))
+  expect_equal(out, "aaa\n\naaa\n\nbbb\n\nbbb\n")
+  expect_length(select_nodes(parse_qmd(out, ast = "ts"), kind == "pandoc_paragraph"), 4L)
+})
+
+test_that("mutating inside a pipe table emits no handler warnings", {
+  tbl = parse_qmd("| a b | c |\n|---|---|\n| d e | f |\n", ast = "ts")
+  expect_no_warning(out <- to_qmd(delete_nodes(tbl, kind == "pandoc_space")))
+  expect_equal(out, "| ab | c |\n|---|---|\n| de | f |\n")
+})
