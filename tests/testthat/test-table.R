@@ -115,3 +115,15 @@ test_that("as_table rejects a zero-column data frame and invalid alignment", {
   expect_error(as_table(data.frame(a = 1), align = "middle"), "align")
   expect_error(as_table(data.frame(a = 1), align = NA_character_), "align")
 })
+
+test_that("as_df falls back to V-names for empty header cells", {
+  df = as_df(parse_qmd("|  | b |\n|---|---|\n| 1 | 2 |\n| 3 | 4 |\n"))[[1]]
+  expect_identical(names(df), c("V1", "b"))
+  expect_identical(df$V1, c("1", "3"))
+})
+
+test_that("as_table formats numerics without scientific notation", {
+  t = as_table(data.frame(x = c(1e6, 1e-5)))
+  df = as_df(t)
+  expect_identical(df$x, c("1000000", "0.00001"))
+})

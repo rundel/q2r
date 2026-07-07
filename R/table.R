@@ -98,6 +98,10 @@ S7::method(as_df, pandoc_table) = function(x) {
   nms = if (length(header_cells)) purrr::map_chr(header_cells, ast_text) else character()
   if (length(nms) < ncol) nms = c(nms, paste0("V", (length(nms) + 1L):ncol))
   nms = nms[seq_len(ncol)]
+  # An empty-text header cell must fall back like a missing one: an empty
+  # name makes as.data.frame() substitute the deparsed column data.
+  blank = !nzchar(nms)
+  nms[blank] = paste0("V", which(blank))
 
   cols = purrr::map(seq_len(ncol), function(j) {
     purrr::map_chr(body_rows, function(r) {
@@ -197,9 +201,18 @@ table_cell_from_text = function(text) {
 
 # Render a single data-frame cell to plain text: a length-1 NA becomes "", a
 # length-1 value its string form, and a longer value (list-column entry or
-# vector cell) its elements joined with ", " (NA elements blanked).
+# vector cell) its elements joined with ", " (NA elements blanked). Numerics
+# are formatted without scientific notation (mirroring cell_yaml_scalar) so
+# 1e6 writes as 1000000 rather than "1e+06".
 table_cell_value = function(v) {
+  as_chr = function(x) {
+    if (is.numeric(x)) {
+      format(x, trim = TRUE, scientific = FALSE, digits = 15)
+    } else {
+      as.character(x)
+    }
+  }
   if (length(v) == 0L) return("")
-  if (length(v) == 1L) return(if (is.na(v)) "" else as.character(v))
-  paste0(ifelse(is.na(v), "", as.character(v)), collapse = ", ")
+  if (length(v) == 1L) return(if (is.na(v)) "" else as_chr(v))
+  paste0(ifelse(is.na(v), "", as_chr(v)), collapse = ", ")
 }

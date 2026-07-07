@@ -26,7 +26,7 @@ NULL
 #' \dontrun{
 #' doc = parse_qmd("# A\n\n## B\n\ntext\n\n# C\n")
 #' toc = ast_toc(doc)
-#' doc |> insert_before(is(pandoc_header), .what = toc)
+#' doc@blocks@content = c(list(toc), doc@blocks@content)
 #' }
 #'
 #' @export
@@ -77,11 +77,13 @@ toc_link = function(it) {
 # space/hyphen/underscore/period, replace spaces with hyphens, lower-case, then
 # remove everything up to the first letter (ids must begin with a letter) and
 # any trailing hyphens, falling back to "section" when nothing is left.
+# Unicode letters/digits are kept (pandoc keeps them), so a constructed
+# "# Résumé" slugs to "résumé", matching the id pampa assigns on parse.
 pandoc_slug = function(text) {
-  s = tolower(text)
-  s = gsub("[^a-z0-9 _.-]", "", s)
+  s = stringr::str_to_lower(text)
+  s = gsub("[^\\p{L}\\p{N} _.-]", "", s, perl = TRUE)
   s = gsub("[[:space:]]+", "-", trimws(s))
-  s = sub("^[^a-z]+", "", s)
+  s = sub("^[^\\p{L}]+", "", s, perl = TRUE)
   s = sub("-+$", "", s)
   if (nzchar(s)) s else "section"
 }
@@ -108,7 +110,9 @@ pandoc_slug = function(text) {
 #' @param ... Unused; for future extension.
 #' @return A named `list` of [`pandoc`] documents. Names follow the heading
 #'   text, so two headings sharing a title yield repeated names; index by
-#'   position to keep such sections distinct.
+#'   position to keep such sections distinct. When `x` is a [`pandoc`]
+#'   document every part carries its full `@meta`, so frontmatter survives
+#'   into rendered parts.
 #'
 #' @examples
 #' \dontrun{
@@ -123,11 +127,18 @@ split_sections = S7::new_generic("split_sections", "x", function(x, level = 1L, 
 })
 
 S7::method(split_sections, pd_block_source) = function(x, level = 1L, ...) {
-  split_sections_of_blocks(as_block_list(x), level)
+  meta = if (S7::S7_inherits(x, pandoc)) x@meta else pandoc_meta_value()
+  split_sections_of_blocks(as_block_list(x), level, meta)
 }
 
-split_sections_of_blocks = function(blocks, level) {
+split_sections_of_blocks = function(blocks, level, meta = pandoc_meta_value()) {
+  if (length(level) != 1L || is.na(suppressWarnings(as.integer(level)))) {
+    cli::cli_abort("{.arg level} must be a single heading level (1-6).")
+  }
   level = as.integer(level)
+  # Every part carries the source document's full @meta, so frontmatter
+  # (title, format, ...) survives into the split parts and render_qmd().
+  part = function(blks) pandoc(meta = meta, blocks = pandoc_blocks(blks))
   is_boundary = function(b) {
     S7::S7_inherits(b, pandoc_header) && length(b@level) == 1L &&
       !is.na(b@level) && b@level == level
@@ -136,19 +147,19 @@ split_sections_of_blocks = function(blocks, level) {
 
   bnd = which(purrr::map_lgl(blocks, is_boundary))
   if (length(bnd) == 0L) {
-    return(stats::setNames(list(pandoc(blocks = pandoc_blocks(blocks))), ""))
+    return(stats::setNames(list(part(blocks)), ""))
   }
 
   out = list()
   nms = character()
   if (bnd[[1L]] > 1L) {
-    out = c(out, list(pandoc(blocks = pandoc_blocks(blocks[seq_len(bnd[[1L]] - 1L)]))))
+    out = c(out, list(part(blocks[seq_len(bnd[[1L]] - 1L)])))
     nms = c(nms, "")
   }
   ends = c(bnd[-1L] - 1L, length(blocks))
   for (k in seq_along(bnd)) {
     grp = blocks[bnd[[k]]:ends[[k]]]
-    out = c(out, list(pandoc(blocks = pandoc_blocks(grp))))
+    out = c(out, list(part(grp)))
     nms = c(nms, ast_text(blocks[[bnd[[k]]]]))
   }
   stats::setNames(out, nms)

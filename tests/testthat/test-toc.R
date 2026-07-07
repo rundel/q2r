@@ -74,3 +74,24 @@ test_that("split_sections names follow heading text and may repeat", {
   expect_true(grepl("x", to_qmd(parts[[1]])))
   expect_true(grepl("y", to_qmd(parts[[2]])))
 })
+
+test_that("split_sections carries the document meta into every part", {
+  doc = parse_qmd("---\ntitle: My Doc\n---\n\nintro\n\n# A\n\na\n")
+  parts = split_sections(doc, level = 1)
+  expect_length(parts, 2L)
+  for (p in parts) {
+    expect_match(to_qmd(p), "title:", fixed = TRUE)
+  }
+})
+
+test_that("split_sections validates level", {
+  doc = parse_qmd("# A\n\na\n")
+  expect_error(split_sections(doc, level = c(1, 2)), "single heading level")
+  expect_error(split_sections(doc, level = "x"), "single heading level")
+})
+
+test_that("pandoc_slug keeps unicode letters", {
+  expect_identical(q2r:::pandoc_slug("Résumé"), "résumé")
+  expect_identical(q2r:::pandoc_slug("日本語 heading"), "日本語-heading")
+  expect_identical(q2r:::pandoc_slug("123!!"), "section")
+})
