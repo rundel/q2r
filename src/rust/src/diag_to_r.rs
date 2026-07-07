@@ -175,15 +175,47 @@ fn parse_content(r: &Robj) -> Option<MessageContent> {
     }
 }
 
+// Accept both R integers and R doubles (a bare `3` in R is a double); the
+// sibling converter r_to_pd_ast::opt_i32 does the same.
+fn loc_offset(v: &Robj) -> Option<i32> {
+    v.as_integer().or_else(|| v.as_real().map(|f| f as i32))
+}
+
 fn parse_location(r: &Robj) -> Option<SourceInfo> {
     let list = robj_as_list(r)?;
-    let start = list_get(&list, "start_offset").and_then(|v| v.as_integer())?;
-    let end = list_get(&list, "end_offset").and_then(|v| v.as_integer())?;
+    let start = list_get(&list, "start_offset").and_then(|v| loc_offset(&v))?;
+    let end = list_get(&list, "end_offset").and_then(|v| loc_offset(&v))?;
     Some(SourceInfo::Original {
         file_id: FileId(0),
         start_offset: start.max(0) as usize,
         end_offset: end.max(0) as usize,
     })
+}
+
+// Clamp an offset into the text and floor it to a char boundary, and force
+// start <= end, so ariadne's byte-indexed labels cannot panic on locations
+// reconstructed from R-side slot values (an inverted span or an offset
+// landing inside a multibyte character both panicked before).
+fn sanitize_offset(text: &str, off: usize) -> usize {
+    let mut o = off.min(text.len());
+    while o > 0 && !text.is_char_boundary(o) {
+        o -= 1;
+    }
+    o
+}
+
+fn sanitize_source_info(text: &str, si: &mut SourceInfo) {
+    if let SourceInfo::Original {
+        start_offset,
+        end_offset,
+        ..
+    } = si
+    {
+        let s = sanitize_offset(text, *start_offset);
+        let e = sanitize_offset(text, *end_offset).max(s);
+        *start_offset = s;
+        *end_offset = e;
+    }
 }
 
 fn parse_detail(r: &Robj) -> Option<DetailItem> {
@@ -250,7 +282,7 @@ pub fn format_diag(
     source_filename: &str,
     hyperlinks: bool,
 ) -> String {
-    let diag = reconstruct_diagnostic(kind, code, title, problem, details, hints, location);
+    let mut diag = reconstruct_diagnostic(kind, code, title, problem, details, hints, location);
 
     let mut ctx = SourceContext::new();
     // Pad to a trailing newline (as the parser did) so an offset at the
@@ -260,6 +292,14 @@ pub fn format_diag(
     } else {
         format!("{source_text}\n")
     };
+    if let Some(loc) = diag.location.as_mut() {
+        sanitize_source_info(&padded, loc);
+    }
+    for d in diag.details.iter_mut() {
+        if let Some(loc) = d.location.as_mut() {
+            sanitize_source_info(&padded, loc);
+        }
+    }
     ctx.add_file(source_filename.to_string(), Some(padded));
 
     let opts = TextRenderOptions {

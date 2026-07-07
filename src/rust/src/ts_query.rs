@@ -14,9 +14,23 @@ pub fn run_ts_query(text: &str, query_text: &str) -> List {
     let query = match Query::new(&language, query_text) {
         Ok(q) => q,
         Err(e) => {
-            return list!(matches = NULL, error = format!("{}", e));
+            return list!(matches = NULL, error = format!("{}", e), unsupported = NULL);
         }
     };
+
+    // The cursor only evaluates the text predicates the Rust binding
+    // implements (#eq?, #match?, #any-of? and their variants). Anything else
+    // compiles as a "general" predicate and is silently ignored by the
+    // matcher, so surface the names and let the R side warn.
+    let mut unsupported: Vec<String> = Vec::new();
+    for i in 0..query.pattern_count() {
+        for p in query.general_predicates(i) {
+            let name = format!("#{}", p.operator);
+            if !unsupported.contains(&name) {
+                unsupported.push(name);
+            }
+        }
+    }
 
     // `MarkdownParser::parse` sets the block grammar itself; `language` above
     // is kept only for `Query::new`.
@@ -28,7 +42,7 @@ pub fn run_ts_query(text: &str, query_text: &str) -> List {
     let tree = match parser.parse(bytes, None) {
         Some(t) => t,
         None => {
-            return list!(matches = List::new(0), error = NULL);
+            return list!(matches = List::new(0), error = NULL, unsupported = NULL);
         }
     };
 
@@ -56,5 +70,14 @@ pub fn run_ts_query(text: &str, query_text: &str) -> List {
         out_matches.push(entry.into());
     }
 
-    list!(matches = List::from_values(out_matches), error = NULL)
+    let unsupported_r: Robj = if unsupported.is_empty() {
+        ().into()
+    } else {
+        unsupported.into()
+    };
+    list!(
+        matches = List::from_values(out_matches),
+        error = NULL,
+        unsupported = unsupported_r
+    )
 }

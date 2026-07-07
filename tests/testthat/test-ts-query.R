@@ -44,3 +44,16 @@ test_that("ts_query accepts a raw string as input", {
 test_that("ts_query returns empty matches when the input cannot be parsed to a tree", {
   expect_length(ts_query("", "(atx_heading) @h"), 0L)
 })
+
+test_that("ts_query warns about predicates the matcher ignores", {
+  expect_warning(
+    m <- ts_query("# One\n\n# Two\n",
+                  '((atx_heading) @h (#nonexistent-predicate? @h "x"))'),
+    "nonexistent-predicate"
+  )
+  expect_length(m, 2L)
+  expect_silent(
+    m2 <- ts_query("# One\n\n# Two\n", '((atx_heading) @h (#match? @h "One"))')
+  )
+  expect_length(m2, 1L)
+})

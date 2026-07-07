@@ -8,10 +8,10 @@ NULL
 #' hierarchy and [pandoc_inline_constructors] for the inline nodes.
 #'
 #' @section Notes:
-#' `pandoc_block_metadata()` is parse-only and lossy: the reader never
-#' populates its `@meta` slot (it stays the empty default) and pampa's
-#' writer does not emit it, so it round-trips as an empty node. The slot
-#' is kept for forward compatibility.
+#' `pandoc_block_metadata()` carries a mid-document metadata block (e.g. a
+#' `---` fenced `_scope:` block) as a [`pandoc_meta_value`] tree in
+#' `@meta`, and round-trips through [`to_qmd()`] via pampa's metadata
+#' writer.
 #'
 #' `pandoc_custom_block()` (and `pandoc_custom_inline()`) `@slots` and
 #' `@attr` are never populated from a parse: the Rust exporter emits only

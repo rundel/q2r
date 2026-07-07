@@ -63,3 +63,21 @@ test_that("read_qmd reports a clear error on a NUL-containing (binary) file", {
   writeBin(as.raw(c(0x68, 0x00, 0x69)), tmp)
   expect_error(read_qmd(tmp), "NUL")
 })
+
+test_that("write_qmd and edit_qmd refuse error-parsed documents", {
+  p = withr::local_tempfile(fileext = ".qmd")
+  writeLines(c("---", "title: [broken", "---", "", "body text"), p)
+  before = readLines(p, warn = FALSE)
+  doc = read_qmd(p, quiet = TRUE)
+  expect_true(has_error_diagnostics(doc))
+  expect_error(write_qmd(doc, p), "error-kind parse diagnostics")
+  expect_identical(readLines(p, warn = FALSE), before)
+  expect_error(edit_qmd(p, identity, quiet = TRUE), "error-kind parse diagnostics")
+  expect_identical(readLines(p, warn = FALSE), before)
+  expect_no_error(write_qmd(doc, p, force = TRUE))
+})
+
+test_that("read_qmd names directories as such", {
+  d = withr::local_tempdir()
+  expect_error(read_qmd(d), "is a directory")
+})

@@ -12,7 +12,10 @@ NULL
 #' This bypasses the tidyselect-style mask entirely; use [`select_nodes()`]
 #' if a CSS/predicate query is enough. `ts_query()` is the right tool when
 #' you need full structural pattern matching, captures, or predicates
-#' (`#eq?`, `#match?`, ...) from the tree-sitter query language.
+#' from the tree-sitter query language. Only the `#eq?`, `#match?`, and
+#' `#any-of?` predicate families (and their `#not-`/`#any-` variants) are
+#' evaluated by the matcher; any other predicate compiles but is ignored,
+#' with a warning.
 #'
 #' @param input Either a [`ts_tree`] (re-renders to QMD via [`to_qmd()`]
 #'   then re-parses), a single string treated as text/file path (per
@@ -22,8 +25,10 @@ NULL
 #'   for live examples.
 #' @return A list with one element per match. Each match is itself a
 #'   named list whose names are the capture identifiers in `query_text`
-#'   and whose values are [`ts_node`] objects. Returns `list()` when no
-#'   matches are found.
+#'   and whose values are [`ts_node`] objects. A quantified capture
+#'   appears once per captured node, so a match can carry repeated
+#'   names; use `m[names(m) == "x"]` to collect them all. Returns
+#'   `list()` when no matches are found.
 #' @examples
 #' \dontrun{
 #' ts = parse_qmd("# Heading\n\nbody\n", ast = "ts")
@@ -45,6 +50,13 @@ ts_query = function(input, query_text) {
   raw = ts_query_impl(text, query_text)
   if (!is.null(raw$error)) {
     stop("ts_query(): query compilation failed: ", raw$error, call. = FALSE)
+  }
+  if (length(raw$unsupported)) {
+    rlang::warn(paste0(
+      "ts_query(): the matcher only evaluates the #eq?, #match?, and ",
+      "#any-of? predicate families; ignored: ",
+      paste(unlist(raw$unsupported), collapse = ", ")
+    ))
   }
 
   purrr::map(raw$matches %||% list(), function(m) {

@@ -185,7 +185,7 @@ block_from_list = function(x) {
       bodies  = lapply(x$bodies %||% list(), table_body_from_list),
       foot    = table_foot_from_list(x$foot)
     ),
-    BlockMetadata  = pd_fast(pandoc_block_metadata, meta = pandoc_meta_value()),
+    BlockMetadata  = pd_fast(pandoc_block_metadata, meta = meta_from_list(x$meta)),
     NoteDefinitionPara = pd_fast(pandoc_note_definition_para, id = x$id, content = inlines_from_list(x$content)),
     NoteDefinitionFencedBlock = pd_fast(pandoc_note_definition_fenced_block,
       id = x$id, content = blocks_from_list(x$content)

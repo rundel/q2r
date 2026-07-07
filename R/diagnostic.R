@@ -44,10 +44,19 @@ pampa_diagnostic = S7::new_class(
   }
 )
 
-# Whether a parsed object (pandoc / ts_tree) carries any error-kind
-# diagnostics. Used by write_qmd_dir() to refuse writing documents whose
-# source failed to parse.
-pampa_has_error_diagnostics = function(x) {
+#' Does a parsed document carry error-kind diagnostics?
+#'
+#' `r lifecycle::badge("experimental")`
+#'
+#' `TRUE` when any entry in the object's `@diagnostics` slot has
+#' `@kind == "error"`, i.e. the source did not fully parse and the AST is
+#' the parser's partial recovery. [`write_qmd()`] and [`write_qmd_dir()`]
+#' refuse (without `force = TRUE`) to write such documents.
+#'
+#' @param x A parsed [`pandoc`] or [`ts_tree`] object.
+#' @return A single logical.
+#' @export
+has_error_diagnostics = function(x) {
   any(purrr::map_lgl(x@diagnostics, function(d) identical(d@kind, "error")))
 }
 

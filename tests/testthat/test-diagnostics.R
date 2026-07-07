@@ -233,3 +233,22 @@ test_that("an at-EOF parser error still resolves a location and renders a caret"
   expect_false(is.na(d@location$start_offset))
   expect_match(format(d, color = FALSE), "[text](", fixed = TRUE)
 })
+
+test_that("format() survives malformed locations instead of panicking", {
+  inverted = pampa_diagnostic(kind = "error", title = "t",
+    location = list(start_offset = 5L, end_offset = 2L),
+    source_text = "hello world\n")
+  expect_no_error(format(inverted, color = FALSE))
+  midchar = pampa_diagnostic(kind = "error", title = "t",
+    location = list(start_offset = 1L, end_offset = 2L),
+    source_text = "Émile\n")
+  expect_no_error(format(midchar, color = FALSE))
+})
+
+test_that("format() accepts double-valued location offsets", {
+  d = pampa_diagnostic(kind = "error", title = "t",
+    problem = list(format = "plain", text = "p"),
+    location = list(start_offset = 3, end_offset = 5),
+    source_text = "hello world\n")
+  expect_match(format(d, color = FALSE), "hello", fixed = TRUE)
+})

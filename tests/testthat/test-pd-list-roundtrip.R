@@ -45,3 +45,14 @@ test_that("Figure caption short survives the converter round-trip", {
   expect_equal(ast_text(rt@caption@short), "Short")
   expect_equal(ast_text(rt@caption@long), "Long")
 })
+
+test_that("mid-document metadata blocks round-trip with their payload", {
+  src = "# A\n\ntext\n\n---\n_scope: lexical\nfoo: bar\n---\n\nmore\n"
+  pd = parse_qmd(src, quiet = TRUE)
+  expect_length(pd@diagnostics, 0L)
+  mb = purrr::detect(pd@blocks@content, S7::S7_inherits, pandoc_block_metadata)
+  expect_false(is.null(mb))
+  expect_identical(mb@meta@kind, "map")
+  expect_named(mb@meta@value, c("_scope", "foo"))
+  expect_identical(to_qmd(pd), src)
+})

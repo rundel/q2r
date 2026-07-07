@@ -151,10 +151,9 @@ block_to_list = function(x) {
     tag = "CaptionBlock", content = inlines_to_list(x@content)
   ))
   if (S7::S7_inherits(x, pandoc_table)) return(table_to_list(x))
-  if (S7::S7_inherits(x, pandoc_block_metadata)) {
-    stop("to_qmd(): pandoc_block_metadata is not yet supported by the QMD ",
-         "writer (pampa cannot render BlockMetadata back to QMD)", call. = FALSE)
-  }
+  if (S7::S7_inherits(x, pandoc_block_metadata)) return(list(
+    tag = "BlockMetadata", meta = meta_to_list(x@meta)
+  ))
   if (S7::S7_inherits(x, pandoc_custom_block)) {
     stop("to_qmd(): pandoc_custom_block is not yet supported by the QMD ",
          "writer (pampa cannot render CustomBlock back to QMD)", call. = FALSE)

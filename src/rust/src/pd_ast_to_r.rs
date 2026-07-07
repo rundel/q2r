@@ -330,7 +330,11 @@ fn block_to_r(b: &Block) -> Robj {
         )
         .into(),
         Block::Table(t) => table_to_r(t),
-        Block::BlockMetadata(_) => list!(tag = "BlockMetadata").into(),
+        Block::BlockMetadata(mb) => list!(
+            tag = "BlockMetadata",
+            meta = config_value_to_r(&mb.meta)
+        )
+        .into(),
         Block::NoteDefinitionPara(n) => list!(
             tag = "NoteDefinitionPara",
             id = n.id.as_str(),

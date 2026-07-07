@@ -8,8 +8,8 @@ use hashlink::LinkedHashMap;
 use pampa::pandoc::attr::{AttrSourceInfo, TargetSourceInfo, empty_attr};
 use pampa::pandoc::block::{
     BlockQuote, BulletList, CaptionBlock, CodeBlock, DefinitionList, Div, Figure, Header,
-    HorizontalRule, LineBlock, NoteDefinitionFencedBlock, NoteDefinitionPara, OrderedList,
-    Paragraph, Plain, RawBlock,
+    HorizontalRule, LineBlock, MetaBlock, NoteDefinitionFencedBlock, NoteDefinitionPara,
+    OrderedList, Paragraph, Plain, RawBlock,
 };
 use pampa::pandoc::caption::Caption;
 use pampa::pandoc::inline::{
@@ -815,7 +815,16 @@ fn block_from_list(list: List) -> ERResult<Block> {
             source_info: si,
         }),
         "Table" => Block::Table(table_from_list(list)?),
-        "BlockMetadata" | "CustomBlock" => {
+        "BlockMetadata" => {
+            let meta_obj = field(&list, "meta").ok_or_else(|| {
+                Error::Other("BlockMetadata: missing 'meta' field".to_string())
+            })?;
+            Block::BlockMetadata(MetaBlock {
+                meta: config_value_from_r(&meta_obj)?,
+                source_info: si,
+            })
+        }
+        "CustomBlock" => {
             return Err(Error::Other(format!(
                 "block tag '{}' is not yet supported by the R -> Rust converter",
                 tag

@@ -107,7 +107,7 @@ write_qmd_dir = function(x, dir = NULL, force = FALSE) {
     stop("`write_qmd_dir()`: `x` must be a qmd_collection.", call. = FALSE)
   }
   if (!isTRUE(force)) {
-    bad = purrr::map_lgl(x@docs, pampa_has_error_diagnostics)
+    bad = purrr::map_lgl(x@docs, has_error_diagnostics)
     if (any(bad)) {
       bad_names = (names(x@docs) %||% basename(x@paths))[bad]
       cli::cli_abort(c(
@@ -132,7 +132,9 @@ write_qmd_dir = function(x, dir = NULL, force = FALSE) {
   purrr::walk2(x@docs, targets, function(d, path) {
     pdir = dirname(path)
     if (!dir.exists(pdir)) dir.create(pdir, recursive = TRUE)
-    write_qmd(d, path)
+    # The collection-level guard above already vetted (or force-overrode)
+    # error-parsed docs; skip write_qmd's per-document re-check.
+    write_qmd(d, path, force = TRUE)
   })
   invisible(x)
 }
