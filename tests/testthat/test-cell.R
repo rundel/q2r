@@ -167,3 +167,79 @@ test_that("the mask exposes is_code_cell() and has_option()", {
   expect_length(select_nodes(doc, is_code_cell() & has_option("echo", FALSE)), 1L)
   expect_length(select_nodes(doc, has_option("echo")), 2L)
 })
+
+test_that("set_cell_options serializes embedded newlines as block scalars", {
+  cell = parse_qmd("```{r}\nx = 1\n```\n", quiet = TRUE)@blocks@content[[1]]
+  out = set_cell_options(cell, cap = "line1\nline2", echo = TRUE)
+  expect_identical(cell_options(out)$cap, "line1\nline2")
+  expect_true(isTRUE(cell_options(out)$echo))
+  expect_identical(cell_code(out), "x = 1")
+})
+
+test_that("set_cell_options escapes backslashes and quotes numeric-looking strings", {
+  cell = parse_qmd("```{r}\nx = 1\n```\n", quiet = TRUE)@blocks@content[[1]]
+  out = set_cell_options(cell, path = "C:\\dir\\file", version = "1.10", tag = "+5")
+  opts = cell_options(out)
+  expect_identical(opts$path, "C:\\dir\\file")
+  expect_identical(opts$version, "1.10")
+  expect_identical(opts$tag, "+5")
+})
+
+test_that("set_cell_options aborts on an unreadable option block", {
+  bad = parse_qmd("```{r}\n#| fig-cap: 'unclosed\n#| echo: false\nx\n```\n", quiet = TRUE)@blocks@content[[1]]
+  expect_error(set_cell_options(bad, eval = TRUE), "not valid YAML")
+  expect_identical(cell_options(bad), list())
+})
+
+test_that("!expr option values keep their tag and never warn", {
+  ex = parse_qmd("```{r}\n#| eval: !expr nrow(df) > 0\nx\n```\n", quiet = TRUE)@blocks@content[[1]]
+  expect_no_warning(o <- cell_options(ex))
+  expect_s3_class(o$eval, "q2r_yaml_expr")
+  out = set_cell_options(ex, echo = FALSE)
+  expect_match(out@text, "#\\| eval: !expr nrow\\(df\\) > 0", fixed = FALSE)
+})
+
+test_that("verbatim {{r}} cells are not code cells", {
+  vb = parse_qmd("```{{r}}\nx = 1\n```\n", quiet = TRUE)@blocks@content[[1]]
+  expect_false(is_code_cell(vb))
+  expect_identical(cell_engine(vb), NA_character_)
+  expect_error(set_cell_options(vb, echo = TRUE), "executable cell")
+})
+
+test_that("has_option compares numerics across integer/double", {
+  doc = parse_qmd("```{r}\n#| fig-width: 5\nplot(1)\n```\n", quiet = TRUE)
+  expect_length(select_nodes(doc, has_option("fig-width", 5)), 1L)
+  expect_length(select_nodes(doc, has_option("fig-width", 5L)), 1L)
+  expect_length(select_nodes(doc, has_option("fig-width", 6)), 0L)
+})
+
+test_that("only line-start '#| ' lines are option lines (knitr parity)", {
+  cell = parse_qmd("```{r}\n#| echo: false\n  #| eval: true\n#|label: x\ny = 1\n```\n", quiet = TRUE)@blocks@content[[1]]
+  expect_named(cell_options(cell), "echo")
+  expect_identical(cell_code(cell), "  #| eval: true\n#|label: x\ny = 1")
+})
+
+test_that("set_cell_options keeps CRLF cells CRLF", {
+  crlf = pandoc_code_block(attr = pandoc_attr(classes = "{r}"),
+                           text = "#| echo: false\r\nx = 1\r\ny = 2")
+  out = set_cell_options(crlf, eval = TRUE)
+  expect_false(grepl("[^\r]\n", out@text))
+  expect_identical(cell_code(out), "x = 1\ny = 2")
+})
+
+test_that("set_cell_engine swaps the engine and keeps other classes", {
+  cell = parse_qmd("```{r}\n#| echo: false\nx = 1\n```\n", quiet = TRUE)@blocks@content[[1]]
+  out = set_cell_engine(cell, "python")
+  expect_identical(cell_engine(out), "python")
+  expect_identical(cell_options(out)$echo, FALSE)
+  expect_error(set_cell_engine(cell, "two words"), "single engine name")
+})
+
+test_that("set_cell_code replaces the body and keeps the option block", {
+  cell = parse_qmd("```{r}\n#| echo: false\nx = 1\n```\n", quiet = TRUE)@blocks@content[[1]]
+  out = set_cell_code(cell, c("a = 1", "b = 2"))
+  expect_identical(cell_code(out), "a = 1\nb = 2")
+  expect_identical(cell_options(out)$echo, FALSE)
+  out2 = set_cell_code(cell, "single\nstring")
+  expect_identical(cell_code(out2), "single\nstring")
+})

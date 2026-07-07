@@ -28,11 +28,18 @@ NULL
 #'   list.
 #' - `set_cell_options(x, ...)` returns a new cell with options set from
 #'   named `key = value` pairs (a `NULL` value removes that option,
-#'   mirroring [`set_attr()`]).
+#'   mirroring [`set_attr()`]). The option block is reserialized as a
+#'   whole, so `#|` comment lines inside it are not preserved; `!expr`
+#'   values keep their tag. If the existing block is not valid YAML the
+#'   setter aborts rather than silently dropping the unreadable options.
 #' - `set_cell_label(x, value)` convenience for `set_cell_options(x,
 #'   label = value)`.
-#' - `collect_code(x, ...)` tangles the code of every cell under `x` into
-#'   one string.
+#' - `set_cell_engine(x, engine)` swaps the braced engine class (e.g.
+#'   `{r}` to `{python}`), keeping any other classes and options.
+#' - `set_cell_code(x, code)` replaces the cell body, keeping the option
+#'   block; `code` is a single string or a character vector of lines.
+#' - `collect_code(x, engine = NULL, eval_only = FALSE, label_comments =
+#'   TRUE)` tangles the code of every cell under `x` into one string.
 #'
 #' Inside a [`select_nodes()`] / [`map_nodes()`] predicate the mask also
 #' exposes `is_code_cell()` (zero-argument, tests the current node) and
@@ -70,17 +77,23 @@ NULL
 # ---- option-line parsing ------------------------------------------------
 
 # A Quarto cell-option directive: the engine comment chars followed by a
-# pipe, at the start of a line. Covers #| (r/python/julia/...), //| (ojs,
-# js, c, ...) and --| (sql, haskell, ...).
-cell_directive_re = "^[[:space:]]*(#\\||//\\||--\\|)[[:space:]]?"
+# pipe and one space, at the very start of a line (matching knitr, which
+# treats indented or space-less `#|` lines as code). Covers #|
+# (r/python/julia/...), //| (ojs, js, c, ...) and --| (sql, haskell, ...).
+cell_directive_re = "^(#\\||//\\||--\\|) "
 
 # Split a code-block @text into the leading run of option lines and the
-# remaining code lines, returning the detected comment prefix too.
+# remaining code lines, returning the detected comment prefix, the raw
+# (unstripped) option lines, and the cell's line ending so setters can
+# rebuild without mixing endings.
 cell_split_text = function(text) {
   if (length(text) != 1L) text = paste(text, collapse = "\n")
+  eol = if (grepl("\r\n", text, fixed = TRUE)) "\r\n" else "\n"
+  if (eol == "\r\n") text = gsub("\r\n", "\n", text, fixed = TRUE)
   lines = strsplit(text, "\n", fixed = TRUE)[[1L]]
   if (length(lines) == 0L) {
-    return(list(prefix = NA_character_, opts = character(), code = character()))
+    return(list(prefix = NA_character_, opts = character(),
+                opt_lines = character(), code = character(), eol = eol))
   }
   is_opt = grepl(cell_directive_re, lines)
   first_code = match(FALSE, is_opt)
@@ -88,11 +101,12 @@ cell_split_text = function(text) {
   opt_lines = if (k >= 1L) lines[seq_len(k)] else character()
   code_lines = if (k < length(lines)) lines[(k + 1L):length(lines)] else character()
   prefix = if (length(opt_lines)) {
-    sub("^[[:space:]]*(#\\||//\\||--\\|).*$", "\\1", opt_lines[[1L]])
+    sub("^(#\\||//\\||--\\|).*$", "\\1", opt_lines[[1L]])
   } else {
     NA_character_
   }
-  list(prefix = prefix, opts = sub(cell_directive_re, "", opt_lines), code = code_lines)
+  list(prefix = prefix, opts = sub(cell_directive_re, "", opt_lines),
+       opt_lines = opt_lines, code = code_lines, eol = eol)
 }
 
 # Map an engine to its option-comment prefix when a cell has no existing
@@ -107,6 +121,9 @@ cell_comment_prefix = function(engine) {
 }
 
 cell_yaml_scalar = function(v) {
+  # A `!expr` value captured by cell_options() re-emits with its tag so the
+  # expression survives a set_cell_options() round trip.
+  if (inherits(v, "q2r_yaml_expr")) return(paste0("!expr ", unclass(v)))
   if (length(v) != 1L) return(NULL)
   # NA of any type serializes as YAML null (round-trips to R NULL); without this
   # a logical NA became "false" and a character NA the bare token "NA".
@@ -117,15 +134,32 @@ cell_yaml_scalar = function(v) {
   # 7-digit format() silently rounds (e.g. 1.234568e+14).
   if (is.numeric(v)) return(format(v, trim = TRUE, scientific = FALSE, digits = 15))
   if (is.character(v)) {
+    # An embedded newline cannot survive as a single-line scalar (everything
+    # after it would be injected into the cell as code); fall through to the
+    # yaml::as.yaml block-scalar path.
+    if (grepl("\n", v, fixed = TRUE)) return(NULL)
     reserved = c("yes", "no", "true", "false", "on", "off", "null", "~")
     indicators = c("-", "?", ":", ",", "[", "]", "{", "}", "#", "&",
                    "*", "!", "|", ">", "'", "\"", "%", "@", "`")
+    # Numeric-looking strings (YAML 1.1 int/float grammar, incl. underscores,
+    # hex/octal, and .inf/.nan) must be quoted or they re-parse as numbers.
+    numberish =
+      grepl("^[+-]?([0-9_]+\\.?[0-9_]*|\\.[0-9_]+)([eE][+-]?[0-9]+)?$", v) ||
+      grepl("^[+-]?0[xo]?[0-9a-fA-F_]+$", v) ||
+      tolower(v) %in% c(".inf", "-.inf", "+.inf", ".nan")
     needs_quote = !nzchar(v) ||
       grepl("[:#]", v) ||
       grepl("^[[:space:]]|[[:space:]]$", v) ||
       tolower(v) %in% reserved ||
+      numberish ||
       substr(v, 1L, 1L) %in% indicators
-    if (needs_quote) return(paste0("\"", gsub("\"", "\\\\\"", v), "\""))
+    if (needs_quote) {
+      # Backslashes must be escaped before quotes: inside a YAML double-quoted
+      # scalar a bare backslash starts an escape sequence, and an invalid one
+      # makes the whole option block unparseable.
+      esc = gsub("\"", "\\\\\"", gsub("\\\\", "\\\\\\\\", v))
+      return(paste0("\"", esc, "\""))
+    }
     return(v)
   }
   NULL
@@ -156,7 +190,9 @@ cell_serialize_options = function(opts, prefix) {
 
 cell_braced_class = function(x) {
   if (!S7::S7_inherits(x, pandoc_code_block)) return(NA_character_)
-  m = x@attr@classes[grepl("^\\{.*\\}$", x@attr@classes)]
+  # `{{r}}` is Quarto's verbatim-echo syntax (display, don't execute): not a
+  # cell, so it must not be tangled by collect_code() or edited by the setters.
+  m = x@attr@classes[grepl("^\\{[^{].*\\}$", x@attr@classes)]
   if (length(m)) m[[1L]] else NA_character_
 }
 
@@ -175,16 +211,31 @@ cell_engine = function(x) {
   strsplit(inside, "[[:space:],]+")[[1L]][[1L]]
 }
 
+# Parse the `#|` option block. Returns a named list, or NULL when the block
+# exists but is not readable as a YAML map (callers that rebuild the block
+# must abort rather than silently dropping the unreadable options). `!expr`
+# values are captured verbatim with a `q2r_yaml_expr` class instead of being
+# evaluated, so they round-trip through set_cell_options() with their tag
+# (and the yaml package's eval.expr warning never fires).
+cell_parse_options = function(x) {
+  sp = cell_split_text(x@text)
+  if (length(sp$opts) == 0L) return(list())
+  parsed = tryCatch(
+    yaml::yaml.load(
+      paste(sp$opts, collapse = "\n"),
+      handlers = list(expr = function(v) structure(v, class = "q2r_yaml_expr"))
+    ),
+    error = function(e) NULL
+  )
+  if (!is.list(parsed)) return(NULL)
+  parsed
+}
+
 #' @rdname code_cell
 #' @export
 cell_options = function(x) {
   if (!is_code_cell(x)) return(list())
-  sp = cell_split_text(x@text)
-  if (length(sp$opts) == 0L) return(list())
-  parsed = tryCatch(yaml::yaml.load(paste(sp$opts, collapse = "\n")),
-                    error = function(e) NULL)
-  if (!is.list(parsed)) return(list())
-  parsed
+  cell_parse_options(x) %||% list()
 }
 
 #' @rdname code_cell
@@ -227,13 +278,19 @@ set_cell_options = function(x, ...) {
          call. = FALSE)
   }
   sp = cell_split_text(x@text)
-  opts = cell_options(x)
+  opts = cell_parse_options(x)
+  if (is.null(opts)) {
+    cli::cli_abort(c(
+      "The cell's existing `#|` option block is not valid YAML, so editing it would silently drop the unreadable options.",
+      "i" = "Fix the option lines first (inspect them with {.code x@text})."
+    ))
+  }
   for (i in seq_along(pairs)) {
     if (is.null(pairs[[i]])) opts[[nms[[i]]]] = NULL else opts[[nms[[i]]]] = pairs[[i]]
   }
   prefix = if (!is.na(sp$prefix)) sp$prefix else cell_comment_prefix(cell_engine(x))
   opt_lines = cell_serialize_options(opts, prefix)
-  S7::prop(x, "text") = paste(c(opt_lines, sp$code), collapse = "\n")
+  S7::prop(x, "text") = paste(c(opt_lines, sp$code), collapse = sp$eol)
   x
 }
 
@@ -244,6 +301,48 @@ set_cell_label = function(x, value) {
     stop("`set_cell_label()`: `value` must be a single string.", call. = FALSE)
   }
   set_cell_options(x, label = value)
+}
+
+#' @rdname code_cell
+#' @export
+set_cell_engine = function(x, engine) {
+  if (!is_code_cell(x)) {
+    stop("`set_cell_engine()`: `x` must be an executable cell ",
+         "(a pandoc_code_block with a braced engine class such as `{r}`).",
+         call. = FALSE)
+  }
+  if (length(engine) != 1L || !is.character(engine) || is.na(engine) ||
+      !nzchar(engine) || grepl("[[:space:],{}]", engine)) {
+    stop("`set_cell_engine()`: `engine` must be a single engine name ",
+         "such as \"r\" or \"python\".", call. = FALSE)
+  }
+  bc = cell_braced_class(x)
+  inside = sub("\\}$", "", sub("^\\{", "", bc))
+  new_inside = sub("^([[:space:]]*)[^[:space:],]+", paste0("\\1", engine), inside)
+  attr = x@attr
+  attr@classes[match(bc, attr@classes)] = paste0("{", new_inside, "}")
+  S7::prop(x, "attr") = attr
+  x
+}
+
+#' @rdname code_cell
+#' @export
+set_cell_code = function(x, code) {
+  if (!is_code_cell(x)) {
+    stop("`set_cell_code()`: `x` must be an executable cell ",
+         "(a pandoc_code_block with a braced engine class such as `{r}`).",
+         call. = FALSE)
+  }
+  if (!is.character(code) || anyNA(code)) {
+    stop("`set_cell_code()`: `code` must be a character vector without NAs.",
+         call. = FALSE)
+  }
+  if (length(code) == 1L && grepl("\n", code, fixed = TRUE)) {
+    code = strsplit(code, "\n", fixed = TRUE)[[1L]]
+  }
+  sp = cell_split_text(x@text)
+  S7::prop(x, "text") = paste(c(sp$opt_lines, code), collapse = sp$eol)
+  x
 }
 
 

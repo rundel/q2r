@@ -277,7 +277,18 @@ mask_has_option = function(key, value) {
   opts = cell_options(node)
   if (!(key %in% names(opts))) return(FALSE)
   if (missing(value)) return(TRUE)
-  identical(opts[[key]], value)
+  cell_option_value_equal(opts[[key]], value)
+}
+
+# Value equality for cell options: yaml parses whole numbers as integer while
+# R literals are double, so numerics compare numerically; everything else is
+# identical().
+cell_option_value_equal = function(a, b) {
+  if (is.numeric(a) && is.numeric(b)) {
+    length(a) == length(b) && isTRUE(all(a == b))
+  } else {
+    identical(a, b)
+  }
 }
 
 mask_has_engine = function(...) {
