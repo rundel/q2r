@@ -43,6 +43,13 @@ pampa_diagnostic = S7::new_class(
   }
 )
 
+# Whether a parsed object (pandoc / ts_tree) carries any error-kind
+# diagnostics. Used by write_qmd_dir() to refuse writing documents whose
+# source failed to parse.
+pampa_has_error_diagnostics = function(x) {
+  any(purrr::map_lgl(x@diagnostics, function(d) identical(d@kind, "error")))
+}
+
 diagnostic_from_list = function(x, source_text, source_filename) {
   pampa_diagnostic(
     kind            = x$kind %||% "error",

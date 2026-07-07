@@ -39,6 +39,11 @@ NULL
 #' @param quiet Suppress per-file diagnostic signaling (default `TRUE`;
 #'   diagnostics are still attached to each document's `@diagnostics`).
 #' @param prune_errors Passed to [`parse_qmd()`].
+#' @param force For `write_qmd_dir()`, write even when some documents in
+#'   the collection carry error-kind parse diagnostics. By default the
+#'   write aborts before touching any file, because writing an
+#'   error-parsed document replaces whatever pampa could not parse with
+#'   the partial AST it recovered.
 #' @param x A `qmd_collection`.
 #' @return `parse_qmd_dir()` returns a `qmd_collection`. `write_qmd_dir()`
 #'   returns its input invisibly.
@@ -81,6 +86,10 @@ parse_qmd_dir = function(dir = ".", pattern = "\\.qmd$", recurse = TRUE,
     stop("`parse_qmd_dir()`: directory not found: ", dir, call. = FALSE)
   }
   rel = list.files(dir, pattern = pattern, recursive = recurse, full.names = FALSE)
+  # Non-recursive list.files() also returns directories; a directory whose
+  # name matches the pattern must not be handed to parse_qmd (its heuristic
+  # would parse the directory name as literal text).
+  rel = rel[!dir.exists(file.path(dir, rel))]
   abs = file.path(dir, rel)
   docs = purrr::map(abs, parse_qmd, quiet = quiet, prune_errors = prune_errors)
   names(docs) = rel
@@ -89,14 +98,32 @@ parse_qmd_dir = function(dir = ".", pattern = "\\.qmd$", recurse = TRUE,
 
 #' @rdname qmd_collection
 #' @export
-write_qmd_dir = function(x, dir = NULL) {
+write_qmd_dir = function(x, dir = NULL, force = FALSE) {
   if (!S7::S7_inherits(x, qmd_collection)) {
     stop("`write_qmd_dir()`: `x` must be a qmd_collection.", call. = FALSE)
+  }
+  if (!isTRUE(force)) {
+    bad = purrr::map_lgl(x@docs, pampa_has_error_diagnostics)
+    if (any(bad)) {
+      bad_names = (names(x@docs) %||% basename(x@paths))[bad]
+      cli::cli_abort(c(
+        "{sum(bad)} document{?s} in the collection had parse errors: {.file {bad_names}}",
+        "x" = "Writing would replace the unparseable source content with the partial AST pampa recovered.",
+        "i" = "Fix the source and re-parse, or pass {.code force = TRUE} to write anyway."
+      ))
+    }
   }
   targets = if (is.null(dir)) {
     x@paths
   } else {
     file.path(dir, names(x@docs) %||% basename(x@paths))
+  }
+  dup = unique(targets[duplicated(targets)])
+  if (length(dup)) {
+    cli::cli_abort(c(
+      "several documents in the collection resolve to the same target file: {.file {dup}}",
+      "i" = "Give the collection unique document names before writing to a new directory."
+    ))
   }
   purrr::walk2(x@docs, targets, function(d, path) {
     pdir = dirname(path)

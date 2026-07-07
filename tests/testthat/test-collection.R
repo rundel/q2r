@@ -158,3 +158,35 @@ test_that("as_df dispatches on a collection, returning per-document tables", {
   expect_length(res[["n.qmd"]], 0L)
   expect_equal(names(res[["t.qmd"]][[1]]), c("a", "b"))
 })
+
+test_that("write_qmd_dir refuses to overwrite error-parsed documents", {
+  d = withr::local_tempdir()
+  writeLines(c("---", "title: [", "---", "", "real content here"), file.path(d, "broken.qmd"))
+  writeLines("plain body", file.path(d, "ok.qmd"))
+  before = readLines(file.path(d, "broken.qmd"), warn = FALSE)
+  coll = parse_qmd_dir(d)
+  expect_error(write_qmd_dir(coll), "parse errors")
+  expect_identical(readLines(file.path(d, "broken.qmd"), warn = FALSE), before)
+  expect_no_error(write_qmd_dir(coll, force = TRUE))
+})
+
+test_that("parse_qmd_dir skips directories matching the pattern", {
+  d = withr::local_tempdir()
+  dir.create(file.path(d, "weird.qmd"))
+  writeLines("# real", file.path(d, "real.qmd"))
+  coll = parse_qmd_dir(d, recurse = FALSE)
+  expect_named(coll@docs, "real.qmd")
+})
+
+test_that("write_qmd_dir aborts on colliding target basenames", {
+  d = withr::local_tempdir()
+  dir.create(file.path(d, "a")); dir.create(file.path(d, "b"))
+  writeLines("# from A", file.path(d, "a", "x.qmd"))
+  writeLines("# from B", file.path(d, "b", "x.qmd"))
+  coll = qmd_collection(
+    docs  = list(parse_qmd(file.path(d, "a", "x.qmd")), parse_qmd(file.path(d, "b", "x.qmd"))),
+    paths = c(file.path(d, "a", "x.qmd"), file.path(d, "b", "x.qmd"))
+  )
+  out = withr::local_tempdir()
+  expect_error(write_qmd_dir(coll, dir = out), "same target")
+})
