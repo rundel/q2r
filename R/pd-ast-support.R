@@ -9,6 +9,30 @@
 #' For [pandoc_caption], `short` is either `NULL` or a [pandoc_inlines] and
 #' `long` is a [pandoc_blocks].
 #'
+#' @param id Identifier string (`pandoc_attr`, `pandoc_citation`).
+#' @param classes Character vector of classes (`pandoc_attr`).
+#' @param attributes Named character vector of key = value attributes
+#'   (`pandoc_attr`).
+#' @param start,style,delim Ordered-list numbering: start index (>= 0),
+#'   style (`"Default"`, `"Example"`, `"Decimal"`, `"LowerRoman"`,
+#'   `"UpperRoman"`, `"LowerAlpha"`, `"UpperAlpha"`), and delimiter
+#'   (`"Default"`, `"Period"`, `"OneParen"`, `"TwoParens"`).
+#' @param mode Citation mode: `"NormalCitation"`, `"AuthorInText"`, or
+#'   `"SuppressAuthor"`.
+#' @param prefix,suffix Citation affixes as [`pandoc_inlines`].
+#' @param note_num,hash Citation bookkeeping integers (>= 0).
+#' @param short `NULL` or a [`pandoc_inlines`] (`pandoc_caption`).
+#' @param long A [`pandoc_blocks`] (`pandoc_caption`).
+#' @param term A [`pandoc_inlines`] (`pandoc_definition_item`).
+#' @param defs A list of [`pandoc_blocks`] (`pandoc_definition_item`).
+#' @param alignment Column/cell alignment: `"Default"`, `"Left"`,
+#'   `"Center"`, or `"Right"`.
+#' @param width `NULL` or a relative column width (`pandoc_col_spec`).
+#' @param attr A [`pandoc_attr`] (`pandoc_cell`, `pandoc_row`).
+#' @param row_span,col_span Cell spans (>= 1).
+#' @param content Cell content as a [`pandoc_blocks`] (`pandoc_cell`).
+#' @param cells A list of [`pandoc_cell`] objects (`pandoc_row`).
+#' @return An S7 object of the named support type.
 #' @name pandoc_support_types
 #' @seealso [pandoc_node], [pandoc_block_constructors], [pandoc_inline_constructors]
 NULL
@@ -55,6 +79,8 @@ validate_enum = function(x, what, allowed) {
 #' extends it. `pandoc_block` and `pandoc_inline` are abstract too; concrete
 #' variants extend one of these.
 #'
+#' @return These classes are abstract and cannot be instantiated; they
+#'   exist for `is()` predicates and S7 method dispatch.
 #' @export
 pandoc_node = S7::new_class(
   "pandoc_node",
@@ -121,6 +147,9 @@ pandoc_attr_is_empty = function(attr) {
 #' lists for the common verbs: `length()`, `[[`, `[` (re-wrapped), and
 #' `as.list()` all delegate to `@content`.
 #'
+#' @param content A list of [`pandoc_block`] (for `pandoc_blocks()`) or
+#'   [`pandoc_inline`] (for `pandoc_inlines()`) objects.
+#' @return A `pandoc_blocks` / `pandoc_inlines` wrapper object.
 #' @export
 pandoc_blocks = S7::new_class(
   "pandoc_blocks",
@@ -164,6 +193,7 @@ S7::method(as.list, pandoc_inlines) = function(x, ...) x@content
 #' @param value The payload, whose R type depends on `kind` (a scalar for
 #'   the scalar kinds, a named list for `"map"`, an unnamed list for
 #'   `"list"`, a [pandoc_inlines] / [pandoc_blocks] for those kinds).
+#' @return A `pandoc_meta_value` S7 object.
 #' @export
 pandoc_meta_value = S7::new_class(
   "pandoc_meta_value",
@@ -351,6 +381,13 @@ pandoc_row = S7::new_class(
 
 #' Table head / body / foot
 #'
+#' @param attr A [`pandoc_attr`].
+#' @param rows For the head and foot, a list of [`pandoc_row`] objects.
+#' @param row_head_columns For a body, the number of leading row-header
+#'   columns.
+#' @param head_rows,body_rows For a body, lists of [`pandoc_row`] objects.
+#' @return A `pandoc_table_head` / `pandoc_table_body` /
+#'   `pandoc_table_foot` S7 object.
 #' @export
 pandoc_table_head = S7::new_class(
   "pandoc_table_head",

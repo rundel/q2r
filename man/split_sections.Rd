@@ -18,7 +18,9 @@ other levels stay inside their enclosing section.}
 \value{
 A named \code{list} of \code{\link{pandoc}} documents. Names follow the heading
 text, so two headings sharing a title yield repeated names; index by
-position to keep such sections distinct.
+position to keep such sections distinct. When \code{x} is a \code{\link{pandoc}}
+document every part carries its full \verb{@meta}, so frontmatter survives
+into rendered parts.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

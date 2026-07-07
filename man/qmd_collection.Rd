@@ -16,9 +16,15 @@ parse_qmd_dir(
   prune_errors = TRUE
 )
 
-write_qmd_dir(x, dir = NULL)
+write_qmd_dir(x, dir = NULL, force = FALSE)
 }
 \arguments{
+\item{docs}{For the \code{qmd_collection()} constructor, a named list of
+parsed \code{\link{pandoc}} documents.}
+
+\item{paths}{For the constructor, the source file path of each
+document (same length as \code{docs}).}
+
 \item{dir}{For \code{parse_qmd_dir()}, the directory to scan. For
 \code{write_qmd_dir()}, the destination directory; \code{NULL} (the default)
 writes each document back to the path it was read from.}
@@ -34,6 +40,12 @@ diagnostics are still attached to each document's \verb{@diagnostics}).}
 \item{prune_errors}{Passed to \code{\link[=parse_qmd]{parse_qmd()}}.}
 
 \item{x}{A \code{qmd_collection}.}
+
+\item{force}{For \code{write_qmd_dir()}, write even when some documents in
+the collection carry error-kind parse diagnostics. By default the
+write aborts before touching any file, because writing an
+error-parsed document replaces whatever pampa could not parse with
+the partial AST it recovered.}
 }
 \value{
 \code{parse_qmd_dir()} returns a \code{qmd_collection}. \code{write_qmd_dir()}

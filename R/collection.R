@@ -45,6 +45,10 @@ NULL
 #'   error-parsed document replaces whatever pampa could not parse with
 #'   the partial AST it recovered.
 #' @param x A `qmd_collection`.
+#' @param docs For the `qmd_collection()` constructor, a named list of
+#'   parsed [`pandoc`] documents.
+#' @param paths For the constructor, the source file path of each
+#'   document (same length as `docs`).
 #' @return `parse_qmd_dir()` returns a `qmd_collection`. `write_qmd_dir()`
 #'   returns its input invisibly.
 #'

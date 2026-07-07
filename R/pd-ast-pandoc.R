@@ -3,6 +3,12 @@ NULL
 
 #' Top-level Pandoc document
 #'
+#' @param meta Document metadata as a [`pandoc_meta_value`] tree (the
+#'   parsed YAML frontmatter).
+#' @param blocks The document's top-level blocks as a [`pandoc_blocks`].
+#' @param diagnostics List of [`pampa_diagnostic`] records attached by
+#'   [`parse_qmd()`].
+#' @return A `pandoc` S7 object.
 #' @export
 pandoc = S7::new_class(
   "pandoc",

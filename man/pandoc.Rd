@@ -10,6 +10,18 @@ pandoc(
   diagnostics = list()
 )
 }
+\arguments{
+\item{meta}{Document metadata as a \code{\link{pandoc_meta_value}} tree (the
+parsed YAML frontmatter).}
+
+\item{blocks}{The document's top-level blocks as a \code{\link{pandoc_blocks}}.}
+
+\item{diagnostics}{List of \code{\link{pampa_diagnostic}} records attached by
+\code{\link[=parse_qmd]{parse_qmd()}}.}
+}
+\value{
+A \code{pandoc} S7 object.
+}
 \description{
 Top-level Pandoc document
 }

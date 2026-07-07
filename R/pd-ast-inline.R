@@ -21,6 +21,24 @@ NULL
 #' (another arg record); `kv_group` carries `value` as a list of `kv` records
 #' (used for positional KeyValue bundles).
 #'
+#' @param text Verbatim text content (strings, code spans, math, raw
+#'   inlines).
+#' @param content The node's inline children as a [`pandoc_inlines`]
+#'   (block children as a [`pandoc_blocks`] for `pandoc_note()`).
+#' @param quote_type `"single"` or `"double"`.
+#' @param citations A list of [`pandoc_citation`] objects.
+#' @param attr A [`pandoc_attr`].
+#' @param math_type `"inline"` or `"display"`.
+#' @param format Output format name of a raw inline (e.g. `"html"`).
+#' @param url,title Link / image target and title.
+#' @param name Shortcode name (e.g. `"video"`).
+#' @param is_escaped Whether the shortcode was the escaped
+#'   (verbatim-display) form.
+#' @param positional_args,keyword_args Shortcode arg records (see Notes).
+#' @param id Note-reference identifier.
+#' @param type_name Custom node type name (parse-only, see Notes).
+#' @param slots Custom node payload (never populated, see Notes).
+#' @return An S7 object of the named inline class.
 #' @name pandoc_inline_constructors
 #' @seealso [pandoc_block_constructors], [pandoc_node], [pandoc_support_types]
 NULL

@@ -5,20 +5,21 @@
 #' by the `format()`/`print()` methods (which hand the structured
 #' fields back to the Rust renderer).
 #'
-#' @slot kind One of `"error"`, `"warning"`, `"info"`, `"note"`.
-#' @slot code Optional error code (e.g. `"Q-1-1"`), or `NA`.
-#' @slot title Brief title.
-#' @slot problem Optional problem statement as a list
+#' @param kind One of `"error"`, `"warning"`, `"info"`, `"note"`.
+#' @param code Optional error code (e.g. `"Q-1-1"`), or `NA`.
+#' @param title Brief title.
+#' @param problem Optional problem statement as a list
 #'   `list(format = "plain" | "markdown", text = <chr>)`, or `NULL`.
-#' @slot details List of detail records, each a list with `kind`,
+#' @param details List of detail records, each a list with `kind`,
 #'   `content` (same shape as `problem`), and optional `location`.
-#' @slot hints Character vector of hint strings.
-#' @slot location Optional source location, a named list with
+#' @param hints Character vector of hint strings.
+#' @param location Optional source location, a named list with
 #'   `file`, `start_offset`, `start_row`, `start_column`, `end_offset`,
 #'   `end_row`, `end_column`. `NULL` if no location is attached.
-#' @slot source_text Original input text the parser saw. Carried so
+#' @param source_text Original input text the parser saw. Carried so
 #'   the diagnostic can be re-rendered against its source.
-#' @slot source_filename Filename shown in the rendered output.
+#' @param source_filename Filename shown in the rendered output.
+#' @return A `pampa_diagnostic` S7 object.
 #' @export
 pampa_diagnostic = S7::new_class(
   "pampa_diagnostic",

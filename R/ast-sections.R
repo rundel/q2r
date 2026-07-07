@@ -21,6 +21,7 @@ NULL
 #'
 #' @param x A [`pandoc`] document, a [`pandoc_blocks`] wrapper, or a
 #'   plain `list` of top-level blocks.
+#' @param ... Unused; for future extension.
 #' @return A `list` with one element per top-level block, each a named
 #'   character vector `c(h1, h2, h3, h4, h5, h6)` with `NA` where no
 #'   heading at that level is in scope.

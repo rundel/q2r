@@ -15,6 +15,8 @@ as_table(df, caption = NULL, align = NULL, id = "")
 \code{\link{pandoc}} / \code{\link{pandoc_blocks}} / list of blocks (returns a list of
 \code{data.frame}s, one per table found in document order).}
 
+\item{...}{Unused; for future extension.}
+
 \item{df}{A \code{data.frame} (or object coercible to one).}
 
 \item{caption}{Table caption as a string, or \code{NULL} for none. Defaults
@@ -30,7 +32,10 @@ columns). Defaults to the \code{"q2r_align"} attribute of \code{df}, else
 }
 \value{
 \code{as_df()} returns a \code{data.frame} (or list thereof);
-\code{as_table()} returns a \code{\link{pandoc_table}}.
+\code{as_table()} returns a \code{\link{pandoc_table}}. (Known naming wart:
+\code{as_table()} is a plain function whose first argument is \code{df},
+unlike the \code{x}-first generics elsewhere; kept for backward
+compatibility.)
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

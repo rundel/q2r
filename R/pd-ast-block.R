@@ -18,6 +18,23 @@ NULL
 #' the node's `type_name`, so custom-node content is currently invisible
 #' to the R side, and [`to_qmd()`] cannot write custom nodes back.
 #'
+#' @param content The node's children: a [`pandoc_inlines`] or
+#'   [`pandoc_blocks`] wrapper, or a list of wrappers for the multi-item
+#'   containers (lists, line blocks, definition lists).
+#' @param attr A [`pandoc_attr`] (a [`pandoc_list_attributes`] for
+#'   `pandoc_ordered_list()`).
+#' @param text Verbatim text content (code blocks, raw blocks).
+#' @param format Output format name of a raw block (e.g. `"html"`).
+#' @param level Heading level, 1-6.
+#' @param caption A [`pandoc_caption`].
+#' @param colspec A list of [`pandoc_col_spec`] objects, one per column.
+#' @param head,foot A [`pandoc_table_head`] / [`pandoc_table_foot`].
+#' @param bodies A list of [`pandoc_table_body`] objects.
+#' @param meta A [`pandoc_meta_value`] (parse-only, see Notes).
+#' @param id Note-definition identifier.
+#' @param type_name Custom node type name (parse-only, see Notes).
+#' @param slots Custom node payload (never populated, see Notes).
+#' @return An S7 object of the named block class.
 #' @name pandoc_block_constructors
 #' @seealso [pandoc_inline_constructors], [pandoc_node], [pandoc_support_types]
 NULL

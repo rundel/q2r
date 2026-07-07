@@ -12,9 +12,8 @@ ast_filter(x, ...)
 nodes.}
 
 \item{...}{Named functions, where each name is an exported S7 class
-(e.g. \code{pandoc_strong}, \code{pandoc_header}, \code{pandoc_block}).}
-
-\item{.order}{Traversal direction: \code{"post"} (default, children
+(e.g. \code{pandoc_strong}, \code{pandoc_header}, \code{pandoc_block}).
+\code{.order} selects the traversal direction: \code{"post"} (default, children
 rewritten before parent's handler runs) or \code{"pre"} (parent's
 handler runs first; wrap the return value with \code{\link[=ast_skip]{ast_skip()}} to
 skip descent).}

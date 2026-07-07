@@ -16,36 +16,36 @@ pampa_diagnostic(
   source_filename = "<text>"
 )
 }
+\arguments{
+\item{kind}{One of \code{"error"}, \code{"warning"}, \code{"info"}, \code{"note"}.}
+
+\item{code}{Optional error code (e.g. \code{"Q-1-1"}), or \code{NA}.}
+
+\item{title}{Brief title.}
+
+\item{problem}{Optional problem statement as a list
+\verb{list(format = "plain" | "markdown", text = <chr>)}, or \code{NULL}.}
+
+\item{details}{List of detail records, each a list with \code{kind},
+\code{content} (same shape as \code{problem}), and optional \code{location}.}
+
+\item{hints}{Character vector of hint strings.}
+
+\item{location}{Optional source location, a named list with
+\code{file}, \code{start_offset}, \code{start_row}, \code{start_column}, \code{end_offset},
+\code{end_row}, \code{end_column}. \code{NULL} if no location is attached.}
+
+\item{source_text}{Original input text the parser saw. Carried so
+the diagnostic can be re-rendered against its source.}
+
+\item{source_filename}{Filename shown in the rendered output.}
+}
+\value{
+A \code{pampa_diagnostic} S7 object.
+}
 \description{
 Structured representation of a single diagnostic message returned
 by the Quarto parser. Pretty-printed output is generated on demand
 by the \code{format()}/\code{print()} methods (which hand the structured
 fields back to the Rust renderer).
 }
-\section{Slots}{
-
-\describe{
-\item{\code{kind}}{One of \code{"error"}, \code{"warning"}, \code{"info"}, \code{"note"}.}
-
-\item{\code{code}}{Optional error code (e.g. \code{"Q-1-1"}), or \code{NA}.}
-
-\item{\code{title}}{Brief title.}
-
-\item{\code{problem}}{Optional problem statement as a list
-\verb{list(format = "plain" | "markdown", text = <chr>)}, or \code{NULL}.}
-
-\item{\code{details}}{List of detail records, each a list with \code{kind},
-\code{content} (same shape as \code{problem}), and optional \code{location}.}
-
-\item{\code{hints}}{Character vector of hint strings.}
-
-\item{\code{location}}{Optional source location, a named list with
-\code{file}, \code{start_offset}, \code{start_row}, \code{start_column}, \code{end_offset},
-\code{end_row}, \code{end_column}. \code{NULL} if no location is attached.}
-
-\item{\code{source_text}}{Original input text the parser saw. Carried so
-the diagnostic can be re-rendered against its source.}
-
-\item{\code{source_filename}}{Filename shown in the rendered output.}
-}}
-

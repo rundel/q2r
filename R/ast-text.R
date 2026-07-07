@@ -38,6 +38,7 @@ NULL
 #'
 #' @param x A [`pandoc`], [`pandoc_node`], [`pandoc_blocks`],
 #'   [`pandoc_inlines`], or list thereof.
+#' @param ... Unused; for future extension.
 #' @return A single character string.
 #'
 #' @examples

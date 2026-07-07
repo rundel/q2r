@@ -18,6 +18,9 @@ pandoc_config_value(kind = "map", value = list())
 the scalar kinds, a named list for \code{"map"}, an unnamed list for
 \code{"list"}, a \link{pandoc_inlines} / \link{pandoc_blocks} for those kinds).}
 }
+\value{
+A \code{pandoc_meta_value} S7 object.
+}
 \description{
 Pandoc meta / config value
 }

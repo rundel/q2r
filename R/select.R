@@ -139,6 +139,11 @@ NULL
 #' @param .what The siblings to insert. May be a single node, a list of
 #'   nodes, or a function called as `.what(node)`.
 #'
+#' @return The selection verbs return a plain list of matching nodes
+#'   (`select_first()` a single node or `NULL`). The mutation verbs
+#'   return a rewritten object of the same class as `x` (a bare node may
+#'   instead yield a list or `NULL` per the mutation contract).
+#'   `walk_nodes()` returns `x` invisibly.
 #' @name select_nodes
 NULL
 

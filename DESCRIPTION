@@ -18,15 +18,19 @@ Depends:
     R (>= 4.2)
 Imports:
     cli,
-    lifecycle,
     purrr,
     rlang,
     S7,
+    stats,
     stringr,
+    tools,
+    utils,
     withr,
     yaml
 Suggests:
     diffobj,
+    knitr,
+    lifecycle,
     quarto,
     testthat (>= 3.0.0)
 VignetteBuilder: quarto
@@ -62,6 +66,7 @@ Collate:
     'select-section.R'
     'select-ts.R'
     'toc.R'
+    'ts-guards.R'
     'ts-query.R'
     'zzz.R'
 Config/roxygen2/version: 8.0.0

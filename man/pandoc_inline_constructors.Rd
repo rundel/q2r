@@ -103,6 +103,41 @@ pandoc_edit_comment(attr = pandoc_attr(), content = pandoc_inlines(list()))
 
 pandoc_custom_inline(type_name = "", slots = list(), attr = pandoc_attr())
 }
+\arguments{
+\item{text}{Verbatim text content (strings, code spans, math, raw
+inlines).}
+
+\item{content}{The node's inline children as a \code{\link{pandoc_inlines}}
+(block children as a \code{\link{pandoc_blocks}} for \code{pandoc_note()}).}
+
+\item{quote_type}{\code{"single"} or \code{"double"}.}
+
+\item{citations}{A list of \code{\link{pandoc_citation}} objects.}
+
+\item{attr}{A \code{\link{pandoc_attr}}.}
+
+\item{math_type}{\code{"inline"} or \code{"display"}.}
+
+\item{format}{Output format name of a raw inline (e.g. \code{"html"}).}
+
+\item{url, title}{Link / image target and title.}
+
+\item{name}{Shortcode name (e.g. \code{"video"}).}
+
+\item{is_escaped}{Whether the shortcode was the escaped
+(verbatim-display) form.}
+
+\item{positional_args, keyword_args}{Shortcode arg records (see Notes).}
+
+\item{id}{Note-reference identifier.}
+
+\item{type_name}{Custom node type name (parse-only, see Notes).}
+
+\item{slots}{Custom node payload (never populated, see Notes).}
+}
+\value{
+An S7 object of the named inline class.
+}
 \description{
 Constructors for the concrete Pandoc inline node classes. Each returns an
 S7 object extending \link{pandoc_inline}. See \link{pandoc_node} for the abstract

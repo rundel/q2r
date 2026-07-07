@@ -41,7 +41,7 @@ NULL
 #'   nodes.
 #' @param ... Named functions, where each name is an exported S7 class
 #'   (e.g. `pandoc_strong`, `pandoc_header`, `pandoc_block`).
-#' @param .order Traversal direction: `"post"` (default, children
+#'   `.order` selects the traversal direction: `"post"` (default, children
 #'   rewritten before parent's handler runs) or `"pre"` (parent's
 #'   handler runs first; wrap the return value with [`ast_skip()`] to
 #'   skip descent).

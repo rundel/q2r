@@ -9,6 +9,8 @@ ast_text(x, ...)
 \arguments{
 \item{x}{A \code{\link{pandoc}}, \code{\link{pandoc_node}}, \code{\link{pandoc_blocks}},
 \code{\link{pandoc_inlines}}, or list thereof.}
+
+\item{...}{Unused; for future extension.}
 }
 \value{
 A single character string.
@@ -42,9 +44,15 @@ Container rules:
 list types, etc.) join children with two newlines.
 \item Inline containers (\code{\link{pandoc_emph}}, \code{\link{pandoc_strong}},
 \code{\link{pandoc_link}}, etc.) concatenate children without separator.
+\item \code{\link{pandoc_quoted}} wraps its content in typographic quote marks,
+matching \code{pandoc.utils.stringify()}.
 \item \code{\link{pandoc_note}} emits its block content (joined with newlines)
 wrapped in \verb{[^...]} to flag it; rarely useful in match logic.
 }
+
+\code{ast_text(pandoc)} covers the document's block tree only: \verb{@meta}
+values (e.g. the title) and the args of nested shortcodes are not
+included.
 }
 \examples{
 \dontrun{

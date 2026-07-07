@@ -8,6 +8,11 @@ pandoc_children(x, ...)
 }
 \arguments{
 \item{x}{An AST node.}
+
+\item{...}{Unused; for future extension.}
+}
+\value{
+A named list of child subtrees (possibly empty).
 }
 \description{
 Generic returning a named list of child subtrees. A child may be a

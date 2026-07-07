@@ -57,6 +57,9 @@ ts_tree(root = ts_node(), language = "qmd", diagnostics = list())
 
 \item{diagnostics}{For \link{ts_tree}, a list of \link{pampa_diagnostic}s.}
 }
+\value{
+An S7 object of the corresponding class.
+}
 \description{
 S7 classes representing the tree-sitter (\code{tree-sitter-qmd}) AST
 produced by pampa for a QMD document. Unlike the Pandoc AST,

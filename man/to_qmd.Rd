@@ -8,6 +8,8 @@ to_qmd(x, ...)
 }
 \arguments{
 \item{x}{A \code{\link{pandoc}}, \code{\link{ts_tree}}, or \code{\link{ts_node}} object.}
+
+\item{...}{Unused; for future extension.}
 }
 \value{
 A single string with the rendered QMD.
@@ -20,7 +22,7 @@ A single string with the rendered QMD.
 into QMD source text. Two top-level methods are defined:
 \itemize{
 \item \code{to_qmd(pandoc)} rebuilds pampa's \code{Pandoc} value in Rust from the
-tagged-list shape produced by \code{\link[=pandoc_to_list]{pandoc_to_list()}} and runs
+tagged-list shape produced by the internal \code{pandoc_to_list()} and runs
 \verb{pampa::writers::qmd::write} on it. Pampa is the sole source of
 truth for QMD writing.
 \item \code{to_qmd(ts_tree)} recovers source bytes by walking the tree-sitter

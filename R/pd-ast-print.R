@@ -7,6 +7,8 @@ NULL
 #' to include node-specific summary information (level, url, type, ...).
 #'
 #' @param x An AST node.
+#' @param ... Unused; for future extension.
+#' @return A single-line label string.
 #' @export
 pandoc_format_label = S7::new_generic("pandoc_format_label", "x")
 
@@ -18,6 +20,8 @@ pandoc_format_label = S7::new_generic("pandoc_format_label", "x")
 #' `NULL` entries are skipped.
 #'
 #' @param x An AST node.
+#' @param ... Unused; for future extension.
+#' @return A named list of child subtrees (possibly empty).
 #' @export
 pandoc_children = S7::new_generic("pandoc_children", "x")
 

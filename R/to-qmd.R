@@ -9,7 +9,7 @@ NULL
 #' into QMD source text. Two top-level methods are defined:
 #'
 #' * `to_qmd(pandoc)` rebuilds pampa's `Pandoc` value in Rust from the
-#'   tagged-list shape produced by [`pandoc_to_list()`] and runs
+#'   tagged-list shape produced by the internal `pandoc_to_list()` and runs
 #'   `pampa::writers::qmd::write` on it. Pampa is the sole source of
 #'   truth for QMD writing.
 #' * `to_qmd(ts_tree)` recovers source bytes by walking the tree-sitter
@@ -25,6 +25,7 @@ NULL
 #' pure byte-recovery, so it also dispatches on a single [`ts_node`].
 #'
 #' @param x A [`pandoc`], [`ts_tree`], or [`ts_node`] object.
+#' @param ... Unused; for future extension.
 #' @return A single string with the rendered QMD.
 #' @export
 to_qmd = S7::new_generic("to_qmd", "x")

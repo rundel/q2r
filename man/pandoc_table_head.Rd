@@ -17,6 +17,20 @@ pandoc_table_body(
 
 pandoc_table_foot(attr = pandoc_attr(), rows = list())
 }
+\arguments{
+\item{attr}{A \code{\link{pandoc_attr}}.}
+
+\item{rows}{For the head and foot, a list of \code{\link{pandoc_row}} objects.}
+
+\item{row_head_columns}{For a body, the number of leading row-header
+columns.}
+
+\item{head_rows, body_rows}{For a body, lists of \code{\link{pandoc_row}} objects.}
+}
+\value{
+A \code{pandoc_table_head} / \code{pandoc_table_body} /
+\code{pandoc_table_foot} S7 object.
+}
 \description{
 Table head / body / foot
 }

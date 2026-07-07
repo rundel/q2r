@@ -12,8 +12,8 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
-q2r exposes two ASTs for a QMD document: the high-level [`pandoc`] S7
-hierarchy and the [`ts_tree`] tree-sitter concrete syntax tree. The
+q2r exposes two ASTs for a QMD document: the high-level `pandoc` S7
+hierarchy and the `ts_tree` tree-sitter concrete syntax tree. The
 `select_*` / `map_nodes` / `*_nodes` API lets you query and rewrite
 either one with the same vocabulary.
 
@@ -555,7 +555,7 @@ doc |>
 
 The node-tree verbs (`select_nodes()`, `select_descendants()`,
 `select_children()`, `select_first()`, `walk_nodes()`, and the mutators)
-dispatch on a [`ts_tree`] too. The mask exposes the ts-specific slots
+dispatch on a `ts_tree` too. The mask exposes the ts-specific slots
 (`kind`, `is_named`, `field_name`, `text`), but the attribute/text mask
 helpers (`has_class()`, `has_id()`, `has_attr()`, `has_text()`,
 `has_label()`) and the document-level helpers (`ast_summary()`,
@@ -570,7 +570,7 @@ select_nodes(ts, kind == "atx_heading")
 ```
 
 For full structural pattern matching, captures, and predicates
-(`#eq?`, `#match?`, ...) there's a [`ts_query()`] escape hatch that
+(`#eq?`, `#match?`, ...) there's a `ts_query()` escape hatch that
 runs a tree-sitter `.scm` query directly:
 
 ```{r}

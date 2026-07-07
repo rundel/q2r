@@ -41,6 +41,50 @@ pandoc_cell(
 
 pandoc_row(attr = pandoc_attr(), cells = list())
 }
+\arguments{
+\item{id}{Identifier string (\code{pandoc_attr}, \code{pandoc_citation}).}
+
+\item{classes}{Character vector of classes (\code{pandoc_attr}).}
+
+\item{attributes}{Named character vector of key = value attributes
+(\code{pandoc_attr}).}
+
+\item{start, style, delim}{Ordered-list numbering: start index (>= 0),
+style (\code{"Default"}, \code{"Example"}, \code{"Decimal"}, \code{"LowerRoman"},
+\code{"UpperRoman"}, \code{"LowerAlpha"}, \code{"UpperAlpha"}), and delimiter
+(\code{"Default"}, \code{"Period"}, \code{"OneParen"}, \code{"TwoParens"}).}
+
+\item{mode}{Citation mode: \code{"NormalCitation"}, \code{"AuthorInText"}, or
+\code{"SuppressAuthor"}.}
+
+\item{prefix, suffix}{Citation affixes as \code{\link{pandoc_inlines}}.}
+
+\item{note_num, hash}{Citation bookkeeping integers (>= 0).}
+
+\item{short}{\code{NULL} or a \code{\link{pandoc_inlines}} (\code{pandoc_caption}).}
+
+\item{long}{A \code{\link{pandoc_blocks}} (\code{pandoc_caption}).}
+
+\item{term}{A \code{\link{pandoc_inlines}} (\code{pandoc_definition_item}).}
+
+\item{defs}{A list of \code{\link{pandoc_blocks}} (\code{pandoc_definition_item}).}
+
+\item{alignment}{Column/cell alignment: \code{"Default"}, \code{"Left"},
+\code{"Center"}, or \code{"Right"}.}
+
+\item{width}{\code{NULL} or a relative column width (\code{pandoc_col_spec}).}
+
+\item{attr}{A \code{\link{pandoc_attr}} (\code{pandoc_cell}, \code{pandoc_row}).}
+
+\item{row_span, col_span}{Cell spans (>= 1).}
+
+\item{content}{Cell content as a \code{\link{pandoc_blocks}} (\code{pandoc_cell}).}
+
+\item{cells}{A list of \code{\link{pandoc_cell}} objects (\code{pandoc_row}).}
+}
+\value{
+An S7 object of the named support type.
+}
 \description{
 Helper value types that appear inside concrete block and inline nodes:
 attributes, ordered-list attributes, citations, captions,

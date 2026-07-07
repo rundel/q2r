@@ -5,10 +5,14 @@
 \alias{is_code_cell}
 \alias{cell_engine}
 \alias{cell_options}
+\alias{has_option}
+\alias{has_engine}
 \alias{cell_code}
 \alias{cell_label}
 \alias{set_cell_options}
 \alias{set_cell_label}
+\alias{set_cell_engine}
+\alias{set_cell_code}
 \alias{collect_code}
 \title{Quarto code-cell helpers}
 \usage{
@@ -18,6 +22,10 @@ cell_engine(x)
 
 cell_options(x)
 
+has_option(x, key, value)
+
+has_engine(x, ...)
+
 cell_code(x)
 
 cell_label(x)
@@ -25,6 +33,10 @@ cell_label(x)
 set_cell_options(x, ...)
 
 set_cell_label(x, value)
+
+set_cell_engine(x, engine)
+
+set_cell_code(x, code)
 
 collect_code(x, engine = NULL, eval_only = FALSE, label_comments = TRUE)
 }
@@ -34,11 +46,20 @@ accessors return empty / \code{NA} on a non-cell, and the setters require
 an executable cell (braced engine). For \code{collect_code()}, any node or
 document to gather cells from.}
 
-\item{...}{For \code{set_cell_options()}, named \code{key = value} option pairs.}
+\item{key}{For \code{has_option()}, the option name to look up.}
 
-\item{value}{For \code{set_cell_label()}, the new label string.}
+\item{value}{For \code{set_cell_label()}, the new label string; for
+\code{has_option()}, the expected option value (missing tests presence
+only).}
 
-\item{engine}{For \code{collect_code()}, keep only cells with this engine.}
+\item{...}{For \code{set_cell_options()}, named \code{key = value} option pairs;
+for \code{has_engine()}, one or more engine names.}
+
+\item{engine}{For \code{collect_code()}, keep only cells with this engine;
+for \code{set_cell_engine()}, the new engine name.}
+
+\item{code}{For \code{set_cell_code()}, the new cell body: a single string
+or a character vector of lines.}
 
 \item{eval_only}{For \code{collect_code()}, drop cells whose \code{eval} option
 is \code{FALSE}.}
@@ -80,10 +101,20 @@ a cell: \code{is_code_cell()} is \code{FALSE}, \code{cell_engine()} is \code{NA}
 list.
 \item \code{set_cell_options(x, ...)} returns a new cell with options set from
 named \code{key = value} pairs (a \code{NULL} value removes that option,
-mirroring \code{\link[=set_attr]{set_attr()}}).
+mirroring \code{\link[=set_attr]{set_attr()}}). The option block is reserialized as a
+whole, so \verb{#|} comment lines inside it are not preserved; \code{!expr}
+values keep their tag. If the existing block is not valid YAML the
+setter aborts rather than silently dropping the unreadable options.
 \item \code{set_cell_label(x, value)} convenience for \code{set_cell_options(x, label = value)}.
-\item \code{collect_code(x, ...)} tangles the code of every cell under \code{x} into
-one string.
+\item \code{set_cell_engine(x, engine)} swaps the braced engine class (e.g.
+\code{{r}} to \code{{python}}), keeping any other classes and options.
+\item \code{set_cell_code(x, code)} replaces the cell body, keeping the option
+block; \code{code} is a single string or a character vector of lines.
+\item \code{collect_code(x, engine = NULL, eval_only = FALSE, label_comments = TRUE)} tangles the code of every cell under \code{x} into one string.
+\item \code{has_option(x, key)} / \code{has_option(x, key, value)} and
+\code{has_engine(x, engine)} test a cell's options and engine as ordinary
+node-first functions (numeric option values compare across
+integer/double).
 }
 
 Inside a \code{\link[=select_nodes]{select_nodes()}} / \code{\link[=map_nodes]{map_nodes()}} predicate the mask also

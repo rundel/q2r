@@ -9,7 +9,16 @@ pandoc_blocks(content = list())
 
 pandoc_inlines(content = list())
 }
+\arguments{
+\item{content}{A list of \code{\link{pandoc_block}} (for \code{pandoc_blocks()}) or
+\code{\link{pandoc_inline}} (for \code{pandoc_inlines()}) objects.}
+}
+\value{
+A \code{pandoc_blocks} / \code{pandoc_inlines} wrapper object.
+}
 \description{
 \code{pandoc_blocks()} and \code{pandoc_inlines()} validate that every element of
-the supplied list is of the appropriate kind.
+the supplied list is of the appropriate kind. The wrappers behave like
+lists for the common verbs: \code{length()}, \code{[[}, \code{[} (re-wrapped), and
+\code{as.list()} all delegate to \verb{@content}.
 }

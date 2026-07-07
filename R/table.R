@@ -39,6 +39,7 @@ NULL
 #'   `"default"`.
 #' @param id Table identifier (the Quarto `#tbl-` label). Defaults to the
 #'   `"q2r_id"` attribute of `df`, else `""`.
+#' @param ... Unused; for future extension.
 #' @return `as_df()` returns a `data.frame` (or list thereof);
 #'   `as_table()` returns a [`pandoc_table`]. (Known naming wart:
 #'   `as_table()` is a plain function whose first argument is `df`,

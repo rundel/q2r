@@ -36,7 +36,7 @@ text is used. Headings deeper than \code{max_level} are omitted.
 \dontrun{
 doc = parse_qmd("# A\n\n## B\n\ntext\n\n# C\n")
 toc = ast_toc(doc)
-doc |> insert_before(is(pandoc_header), .what = toc)
+doc@blocks@content = c(list(toc), doc@blocks@content)
 }
 
 }

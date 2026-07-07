@@ -9,6 +9,8 @@ ast_sections(x, ...)
 \arguments{
 \item{x}{A \code{\link{pandoc}} document, a \code{\link{pandoc_blocks}} wrapper, or a
 plain \code{list} of top-level blocks.}
+
+\item{...}{Unused; for future extension.}
 }
 \value{
 A \code{list} with one element per top-level block, each a named

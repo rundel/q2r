@@ -22,6 +22,7 @@ NULL
 #' @param language For [ts_tree], the grammar name (default `"qmd"`).
 #' @param diagnostics For [ts_tree], a list of [pampa_diagnostic]s.
 #'
+#' @return An S7 object of the corresponding class.
 #' @export
 ts_point = S7::new_class(
   "ts_point",

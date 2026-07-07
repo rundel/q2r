@@ -22,19 +22,19 @@ select_children(x, ...)
 
 select_first(x, ...)
 
-walk_nodes(x, ..., .f)
+walk_nodes(x, ..., .f = NULL)
 
-map_nodes(x, ..., .f)
+map_nodes(x, ..., .f = NULL)
 
-replace_nodes(x, ..., .with)
+replace_nodes(x, ..., .with = NULL)
 
 delete_nodes(x, ...)
 
-splice_nodes(x, ..., .f)
+splice_nodes(x, ..., .f = NULL)
 
-insert_before(x, ..., .what)
+insert_before(x, ..., .what = NULL)
 
-insert_after(x, ..., .what)
+insert_after(x, ..., .what = NULL)
 }
 \arguments{
 \item{x}{A \code{\link{pandoc}}, \code{\link{pandoc_node}}, \code{\link{pandoc_blocks}},
@@ -54,6 +54,13 @@ matching node. Return value follows the mutation contract above.}
 \item{.what}{The siblings to insert. May be a single node, a list of
 nodes, or a function called as \code{.what(node)}.}
 }
+\value{
+The selection verbs return a plain list of matching nodes
+(\code{select_first()} a single node or \code{NULL}). The mutation verbs
+return a rewritten object of the same class as \code{x} (a bare node may
+instead yield a list or \code{NULL} per the mutation contract).
+\code{walk_nodes()} returns \code{x} invisibly.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
@@ -70,6 +77,14 @@ set of helper functions (\code{is()}, \code{has_class()}, \code{has_id()},
 \code{has_attr()}, \code{has_text()}, \code{has_label()}, \code{is_leaf()}). Multiple
 predicates are combined with \code{&} (logical AND).
 }
+\section{Scope}{
+
+The verbs walk the document's block tree only. Document metadata
+(\verb{@meta}, including fields like \code{title} that parse as inline trees)
+and the args of nested shortcodes are not visited - a predicate can
+never match inside them, and \code{\link[=ast_text]{ast_text()}} does not include them.
+}
+
 \section{Selection verbs}{
 
 \itemize{
@@ -85,7 +100,8 @@ a list of nodes (so pipe chains work).
 \section{Iteration and mutation verbs}{
 
 \itemize{
-\item \code{\link[=walk_nodes]{walk_nodes()}} applies a side-effect function to every match;
+\item \code{\link[=walk_nodes]{walk_nodes()}} applies a side-effect function to every match in
+pre-order (document order, parent before children) on both ASTs;
 returns its input invisibly.
 \item \code{\link[=map_nodes]{map_nodes()}} rewrites every match via \code{.f}. The function may
 return a single node (in-place replacement), a list of nodes
@@ -118,18 +134,33 @@ The mutation walker traverses bottom-up (post-order), so when a
 parent is checked its children have already been rewritten. This
 matches Pandoc Lua filters' default.
 
+The singular support slots (a figure or table caption, a table's head
+and foot) are reachable by the mutation verbs but under a restricted
+contract: \code{.f} must return a node of the same class or \code{NULL}, which
+resets the slot to an empty instance (the slot itself cannot be
+removed or spliced).
+
 On a \code{ts_tree}, the three grammar-gap \emph{content} kinds (\code{pandoc_math},
 \code{pandoc_display_math}, \code{code_fence_content}) round-trip through their
 verbatim source bytes, so mutating \emph{their} children is a no-op on
 \code{\link[=to_qmd]{to_qmd()}} output.
+
+A mutation verb applied to a whole \code{ts_tree} renders and reparses the
+result before returning it, so the returned tree always carries
+internally consistent byte ranges and chained mutations are safe.
+Applied to a bare \code{\link{ts_node}} there is no document to reparse: the
+result is reliable for a single mutation pass, but should be
+re-rendered (or the chain restructured at the tree level) before
+further mutation.
 }
 
-\section{Predicate helpers (only available inside \code{...})}{
+\section{Predicate helpers (available inside \code{...})}{
 
-These shadow nothing in the global R namespace because they are
-installed into the predicate's data mask, not the package
-namespace. Outside a \verb{select_*}/\code{map_nodes}/etc. predicate they
-are unavailable.
+These are installed into the predicate's data mask, so inside a
+predicate they take the zero-node forms shown below (testing the
+current node). Most also exist as exported node-first functions -
+see \code{\link[=node_predicates]{has_id()}} and friends - for use on a node you
+already hold.
 \itemize{
 \item \verb{is(<S7 class>)} honours S7 inheritance, so \code{is(pandoc_block)}
 matches any block.

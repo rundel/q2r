@@ -12,6 +12,10 @@ pandoc_block()
 
 pandoc_inline()
 }
+\value{
+These classes are abstract and cannot be instantiated; they
+exist for \code{is()} predicates and S7 method dispatch.
+}
 \description{
 \code{pandoc_node} is the abstract root of the AST; every block and inline
 extends it. \code{pandoc_block} and \code{pandoc_inline} are abstract too; concrete

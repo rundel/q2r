@@ -76,6 +76,39 @@ pandoc_caption_block(content = pandoc_inlines(list()))
 
 pandoc_custom_block(type_name = "", slots = list(), attr = pandoc_attr())
 }
+\arguments{
+\item{content}{The node's children: a \code{\link{pandoc_inlines}} or
+\code{\link{pandoc_blocks}} wrapper, or a list of wrappers for the multi-item
+containers (lists, line blocks, definition lists).}
+
+\item{attr}{A \code{\link{pandoc_attr}} (a \code{\link{pandoc_list_attributes}} for
+\code{pandoc_ordered_list()}).}
+
+\item{text}{Verbatim text content (code blocks, raw blocks).}
+
+\item{format}{Output format name of a raw block (e.g. \code{"html"}).}
+
+\item{level}{Heading level, 1-6.}
+
+\item{caption}{A \code{\link{pandoc_caption}}.}
+
+\item{colspec}{A list of \code{\link{pandoc_col_spec}} objects, one per column.}
+
+\item{head, foot}{A \code{\link{pandoc_table_head}} / \code{\link{pandoc_table_foot}}.}
+
+\item{bodies}{A list of \code{\link{pandoc_table_body}} objects.}
+
+\item{meta}{A \code{\link{pandoc_meta_value}} (parse-only, see Notes).}
+
+\item{id}{Note-definition identifier.}
+
+\item{type_name}{Custom node type name (parse-only, see Notes).}
+
+\item{slots}{Custom node payload (never populated, see Notes).}
+}
+\value{
+An S7 object of the named block class.
+}
 \description{
 Constructors for the concrete Pandoc block-level node classes. Each returns
 an S7 object extending \link{pandoc_block}. See \link{pandoc_node} for the abstract
@@ -87,6 +120,11 @@ hierarchy and \link{pandoc_inline_constructors} for the inline nodes.
 populates its \verb{@meta} slot (it stays the empty default) and pampa's
 writer does not emit it, so it round-trips as an empty node. The slot
 is kept for forward compatibility.
+
+\code{pandoc_custom_block()} (and \code{pandoc_custom_inline()}) \verb{@slots} and
+\verb{@attr} are never populated from a parse: the Rust exporter emits only
+the node's \code{type_name}, so custom-node content is currently invisible
+to the R side, and \code{\link[=to_qmd]{to_qmd()}} cannot write custom nodes back.
 }
 
 \seealso{

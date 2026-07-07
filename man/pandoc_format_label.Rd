@@ -8,6 +8,11 @@ pandoc_format_label(x, ...)
 }
 \arguments{
 \item{x}{An AST node.}
+
+\item{...}{Unused; for future extension.}
+}
+\value{
+A single-line label string.
 }
 \description{
 Generic returning a single-line label for a node. Override per class
