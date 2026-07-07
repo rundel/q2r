@@ -1,9 +1,12 @@
-# Guards against the four quarto-dev/q2 git deps in src/rust/Cargo.toml
-# drifting to different revs, or the `Current pinned commit` line in CLAUDE.md
-# falling out of sync with them. Skips when the source files are not present
-# (e.g. tests run against an installed package), so it only fires in dev.
+# Guards against the two rev-pinned quarto-dev/q2 git deps in src/rust/Cargo.toml
+# (pampa, tree-sitter-qmd) drifting to different revs, or the `Current pinned
+# commit` line in CLAUDE.md falling out of sync with them. The other two q2
+# crates (quarto-source-map, quarto-error-reporting) are now consumed from
+# crates.io by version, not git rev, so they carry no 40-hex rev to guard here.
+# Skips when the source files are not present (e.g. tests run against an
+# installed package), so it only fires in dev.
 
-test_that("the four q2 Cargo revs are identical and match CLAUDE.md", {
+test_that("the q2 Cargo git revs are identical and match CLAUDE.md", {
   cargo = testthat::test_path("..", "..", "src", "rust", "Cargo.toml")
   skip_if_not(file.exists(cargo), "src/rust/Cargo.toml not available")
 
@@ -12,7 +15,7 @@ test_that("the four q2 Cargo revs are identical and match CLAUDE.md", {
     cargo_lines,
     regexpr("(?<=rev = ')[0-9a-f]{40}(?=')", cargo_lines, perl = TRUE)
   )
-  expect_length(revs, 4L)
+  expect_length(revs, 2L)
   expect_length(unique(revs), 1L)
 
   claude = testthat::test_path("..", "..", "CLAUDE.md")

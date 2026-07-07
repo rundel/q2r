@@ -289,7 +289,7 @@ test_that("_tools/screenshots/examples/quarto-demo/basics-jupyter.qmd", {
 })
 
 test_that("_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd", {
-  skip("Known failure: q2#TBD-pre-html-block (`<pre>...</pre>` not recognized as HTML block; see notes/pre_html_block_issue.md)")
+  skip("Known failure: q2#TBD-pre-html-block (`<pre>...</pre>` not recognized as HTML block; see notes/GH#TBD-pre-html-block.md)")
 })
 
 test_that("_tools/screenshots/examples/quarto-demo/layout-jupyter.qmd", {
@@ -477,7 +477,7 @@ test_that("docs/advanced/typst/typst-gather.qmd", {
 })
 
 test_that("docs/authoring/_brand-example.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/fenced_div_close_after_inner_block_issue.md)")
+  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
 })
 
 test_that("docs/authoring/_cross-reference-divs-diagram.qmd", {
@@ -553,7 +553,7 @@ test_that("docs/authoring/_cross-references-callouts.qmd", {
 })
 
 test_that("docs/authoring/_cross-references-listings.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/fenced_div_close_after_inner_block_issue.md)")
+  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
 })
 
 test_that("docs/authoring/_embed-examples/sample-notebook-view.qmd", {
@@ -1385,7 +1385,7 @@ test_that("docs/blog/_archive/posts/2024-07-11-1.5-release/index.qmd", {
 })
 
 test_that("docs/blog/_archive/posts/2024-10-15-conf-workshops-materials/index.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/fenced_div_close_after_inner_block_issue.md)")
+  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
 })
 
 test_that("docs/blog/_archive/posts/2024-11-06-conf-talks/index.qmd", {
@@ -1485,7 +1485,7 @@ test_that("docs/blog/_archive/posts/2025-05-19-quarto-codespaces/index.qmd", {
 })
 
 test_that("docs/blog/_archive/posts/2025-07-24-parameterized-reports-python/index.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/fenced_div_close_after_inner_block_issue.md)")
+  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
 })
 
 test_that("docs/blog/_archive/posts/2025-07-28-R-package-release-1.5/index.qmd", {
@@ -1621,7 +1621,7 @@ test_that("docs/books/_book-vs-website-key.qmd", {
 })
 
 test_that("docs/books/book-basics.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/fenced_div_close_after_inner_block_issue.md)")
+  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
 })
 
 test_that("docs/books/book-crossrefs.qmd", {
@@ -1649,7 +1649,7 @@ test_that("docs/books/book-output.qmd", {
 })
 
 test_that("docs/books/book-structure.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/fenced_div_close_after_inner_block_issue.md)")
+  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
 })
 
 test_that("docs/cli/add.qmd", {
@@ -2625,11 +2625,11 @@ test_that("docs/download/changelog/1.8/index.qmd", {
 })
 
 test_that("docs/download/index.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/fenced_div_close_after_inner_block_issue.md)")
+  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
 })
 
 test_that("docs/download/prerelease.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/fenced_div_close_after_inner_block_issue.md)")
+  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
 })
 
 test_that("docs/download/release.qmd", {
@@ -2757,7 +2757,7 @@ test_that("docs/extensions/creating.qmd", {
 })
 
 test_that("docs/extensions/distributing.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/fenced_div_close_after_inner_block_issue.md)")
+  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
 })
 
 test_that("docs/extensions/engine.qmd", {
@@ -2857,7 +2857,7 @@ test_that("docs/extensions/listing-revealjs.qmd", {
 })
 
 test_that("docs/extensions/lua-api.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/fenced_div_close_after_inner_block_issue.md)")
+  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
 })
 
 test_that("docs/extensions/lua.qmd", {
@@ -3277,7 +3277,7 @@ test_that("docs/get-started/hello/neovim.qmd", {
 })
 
 test_that("docs/get-started/hello/positron.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/fenced_div_close_after_inner_block_issue.md)")
+  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
 })
 
 test_that("docs/get-started/hello/rstudio.qmd", {
@@ -4293,7 +4293,7 @@ test_that("docs/output-formats/typst-custom.qmd", {
 })
 
 test_that("docs/output-formats/typst.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/fenced_div_close_after_inner_block_issue.md)")
+  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
 })
 
 test_that("docs/prerelease/1.10/_highlights.qmd", {
@@ -6261,7 +6261,7 @@ test_that("docs/websites/website-about.qmd", {
 })
 
 test_that("docs/websites/website-basics.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/fenced_div_close_after_inner_block_issue.md)")
+  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
 })
 
 test_that("docs/websites/website-blog.qmd", {
@@ -6269,7 +6269,7 @@ test_that("docs/websites/website-blog.qmd", {
 })
 
 test_that("docs/websites/website-drafts.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/fenced_div_close_after_inner_block_issue.md)")
+  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
 })
 
 test_that("docs/websites/website-listings-custom.qmd", {
@@ -6301,7 +6301,7 @@ test_that("docs/websites/website-llms.qmd", {
 })
 
 test_that("docs/websites/website-navigation.qmd", {
-  skip("Known failure: q2#TBD-quoted-underscore (Q-2-11 fires on `\"_blank\"` inside pipe-table cell; see notes/quoted_underscore_word_issue.md)")
+  skip("Known failure: q2#TBD-quoted-underscore (Q-2-11 fires on `\"_blank\"` inside pipe-table cell; see notes/GH#TBD-quoted-underscore-word.md)")
 })
 
 test_that("docs/websites/website-search.qmd", {
