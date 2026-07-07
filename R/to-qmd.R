@@ -24,9 +24,12 @@ NULL
 #' minimal `pandoc` and route it through pampa). The tree-sitter side is
 #' pure byte-recovery, so it also dispatches on a single [`ts_node`].
 #'
-#' @param x A [`pandoc`], [`ts_tree`], or [`ts_node`] object.
+#' @param x A [`pandoc`], [`ts_tree`], or [`ts_node`] object; also a
+#'   [`ts_nodes`] wrapper or a plain list of `ts_node`s (e.g. a
+#'   selection), which render element-wise.
 #' @param ... Unused; for future extension.
-#' @return A single string with the rendered QMD.
+#' @return A single string with the rendered QMD; for `ts_nodes` / lists
+#'   of `ts_node`, a character vector with one string per node.
 #' @export
 to_qmd = S7::new_generic("to_qmd", "x")
 
@@ -60,6 +63,21 @@ S7::method(to_qmd, ts_tree) = function(x) to_qmd_ts_node(x@root)
 # ts_node renders on its own - unlike the pandoc path, which is intentionally
 # whole-document only.
 S7::method(to_qmd, ts_node) = function(x) to_qmd_ts_node(x)
+
+# Selections and children come back as ts_nodes wrappers or plain lists;
+# render each node (one string per node).
+S7::method(to_qmd, ts_nodes) = function(x) {
+  vapply(x@content, to_qmd_ts_node, character(1L))
+}
+
+S7::method(to_qmd, S7::class_list) = function(x) {
+  if (all(purrr::map_lgl(x, S7::S7_inherits, ts_node))) {
+    return(vapply(x, to_qmd_ts_node, character(1L)))
+  }
+  stop("to_qmd(): a list renders only when every element is a ts_node ",
+       "(byte recovery); render pandoc fragments by wrapping them in a ",
+       "pandoc() document.", call. = FALSE)
+}
 
 to_qmd_ts_node = function(x) {
   if (length(x@children@content) == 0L) {

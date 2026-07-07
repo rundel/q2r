@@ -99,3 +99,12 @@ test_that("a link parses to pandoc_link with url + content", {
   )[[1L]]
   expect_identical(link@url, "https://example.com")
 })
+
+test_that("parse_qmd input mistakes get friendly messages", {
+  expect_error(parse_qmd(c("# A", "text")), "collapse it first")
+  expect_error(parse_qmd(NA), "single non-NA string")
+  expect_error(parse_qmd(NA_character_), "single non-NA string")
+  x = "caf\xe9"
+  Encoding(x) = "bytes"
+  expect_error(parse_qmd(x), "bytes.*encoding", ignore.case = TRUE)
+})

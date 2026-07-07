@@ -173,6 +173,20 @@ pandoc_inlines = S7::new_class(
   }
 )
 
+# Subset a wrapper's @content, turning the NULL padding that list
+# subsetting produces for out-of-range (or unmatched) subscripts into a
+# real error instead of letting the wrapper validator complain about
+# "elements of @content".
+wrapper_subset = function(content, i) {
+  out = content[i]
+  if (any(purrr::map_lgl(out, is.null))) {
+    cli::cli_abort(
+      "subscript out of bounds: {length(content)} element{?s} available."
+    )
+  }
+  out
+}
+
 # Base-generic ergonomics for the typed wrappers: length / [[ / [ / as.list
 # delegate to @content, so `doc@blocks[[1]]`, `doc@blocks[2:3]`, and
 # `lapply(as.list(doc@blocks), ...)` work without reaching into @content.
@@ -180,8 +194,8 @@ S7::method(length, pandoc_blocks)  = function(x) length(x@content)
 S7::method(length, pandoc_inlines) = function(x) length(x@content)
 S7::method(`[[`, pandoc_blocks)  = function(x, i, ...) x@content[[i]]
 S7::method(`[[`, pandoc_inlines) = function(x, i, ...) x@content[[i]]
-S7::method(`[`, pandoc_blocks)  = function(x, i, ...) pandoc_blocks(x@content[i])
-S7::method(`[`, pandoc_inlines) = function(x, i, ...) pandoc_inlines(x@content[i])
+S7::method(`[`, pandoc_blocks)  = function(x, i, ...) pandoc_blocks(wrapper_subset(x@content, i))
+S7::method(`[`, pandoc_inlines) = function(x, i, ...) pandoc_inlines(wrapper_subset(x@content, i))
 S7::method(as.list, pandoc_blocks)  = function(x, ...) x@content
 S7::method(as.list, pandoc_inlines) = function(x, ...) x@content
 

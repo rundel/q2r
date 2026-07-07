@@ -11,18 +11,25 @@ parse_qmd(input, ast = c("pd", "ts"), quiet = FALSE, prune_errors = TRUE)
 contain newlines and names an existing file (\code{file.exists()} is
 TRUE and it is not a directory); otherwise treated as raw text. To
 parse an R-held \code{\link{ts_tree}} as Pandoc, render it first with
-\code{\link[=to_qmd]{to_qmd()}} and feed the result back in.}
+\code{\link[=to_qmd]{to_qmd()}} and feed the result back in. A leading UTF-8 byte-order
+mark parses fine but is not represented in either AST, so
+\code{\link[=to_qmd]{to_qmd()}} / \code{\link[=write_qmd]{write_qmd()}} output never carries one.}
 
 \item{ast}{The AST to return: \code{"pd"} (the default) for the Pandoc AST
 as a \code{\link{pandoc}} object, or \code{"ts"} for the tree-sitter AST as a
 \code{\link{ts_tree}}.}
 
 \item{quiet}{If \code{FALSE} (the default) any error-kind diagnostics are
-raised as R errors (after attaching diagnostics to the result),
-and warning-kind diagnostics are emitted as R warnings. \code{info} and
-\code{note} diagnostics are never signalled regardless of \code{quiet}. If
-\code{TRUE} no signal is raised; diagnostics of every kind are still
-attached to the returned object's \verb{@diagnostics} slot.}
+raised as a classed error (\code{q2r_parse_error}) whose condition
+carries the structured \code{\link{pampa_diagnostic}} records in
+\verb{$diagnostics} and the parsed object in \verb{$result} (so
+\code{tryCatch(parse_qmd(x), q2r_parse_error = function(e) e$result)}
+recovers the partial AST); warning-kind diagnostics are emitted as
+classed warnings (\code{q2r_parse_warning}, also carrying
+\verb{$diagnostics}). \code{info} and \code{note} diagnostics are never signalled
+regardless of \code{quiet}. If \code{TRUE} no signal is raised; diagnostics
+of every kind are still attached to the returned object's
+\verb{@diagnostics} slot.}
 
 \item{prune_errors}{If \code{TRUE} (the default, matching the pampa CLI)
 parser-error diagnostics are deduplicated by tree-sitter \code{ERROR}

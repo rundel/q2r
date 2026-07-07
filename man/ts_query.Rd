@@ -18,8 +18,10 @@ for live examples.}
 \value{
 A list with one element per match. Each match is itself a
 named list whose names are the capture identifiers in \code{query_text}
-and whose values are \code{\link{ts_node}} objects. Returns \code{list()} when no
-matches are found.
+and whose values are \code{\link{ts_node}} objects. A quantified capture
+appears once per captured node, so a match can carry repeated
+names; use \code{m[names(m) == "x"]} to collect them all. Returns
+\code{list()} when no matches are found.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -32,7 +34,10 @@ entry per match, with captures keyed by name.
 This bypasses the tidyselect-style mask entirely; use \code{\link[=select_nodes]{select_nodes()}}
 if a CSS/predicate query is enough. \code{ts_query()} is the right tool when
 you need full structural pattern matching, captures, or predicates
-(\verb{#eq?}, \verb{#match?}, ...) from the tree-sitter query language.
+from the tree-sitter query language. Only the \verb{#eq?}, \verb{#match?}, and
+\verb{#any-of?} predicate families (and their \verb{#not-}/\verb{#any-} variants) are
+evaluated by the matcher; any other predicate compiles but is ignored,
+with a warning.
 }
 \examples{
 \dontrun{

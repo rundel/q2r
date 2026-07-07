@@ -252,3 +252,13 @@ test_that("format() accepts double-valued location offsets", {
     source_text = "hello world\n")
   expect_match(format(d, color = FALSE), "hello", fixed = TRUE)
 })
+
+test_that("parse failures are classed conditions carrying diagnostics", {
+  bad = "---\ntitle: [broken\n---\n\nbody\n"
+  err = tryCatch(parse_qmd(bad), error = function(e) e)
+  expect_s3_class(err, "q2r_parse_error")
+  expect_true(length(err$diagnostics) >= 1L)
+  expect_s7_class(err$diagnostics[[1]], pampa_diagnostic)
+  expect_s7_class(err$result, pandoc)
+  expect_true(has_error_diagnostics(err$result))
+})

@@ -31,7 +31,10 @@ ts_node(
 ts_tree(root = ts_node(), language = "qmd", diagnostics = list())
 }
 \arguments{
-\item{row, column}{For \link{ts_point}, the 0-based row and column.}
+\item{row, column}{For \link{ts_point}, the 0-based row and column.
+Tree-sitter columns count bytes, not characters (a multibyte
+character advances the column by its byte length); diagnostic
+locations (\code{\link{pampa_diagnostic}}) count characters instead.}
 
 \item{start_byte, end_byte}{For \link{ts_range}, the byte offsets of the span.}
 

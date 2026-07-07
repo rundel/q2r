@@ -33,7 +33,9 @@ to_utf8_source = function(text) {
       call. = FALSE
     )
   }
-  text = enc2utf8(text)
+  # enc2utf8() warns "input string is invalid in this locale" on the same
+  # inputs the validUTF8() guard below rejects; one curated error is enough.
+  text = suppressWarnings(enc2utf8(text))
   if (!validUTF8(text)) {
     stop(
       "`input` is not valid UTF-8 after translation; pampa requires UTF-8 ",
@@ -45,7 +47,20 @@ to_utf8_source = function(text) {
 }
 
 pampa_read_input = function(input) {
-  stopifnot(is.character(input), length(input) == 1L, !is.na(input))
+  if (!is.character(input) || length(input) != 1L || is.na(input)) {
+    msg = "{.arg input} must be a single non-NA string (QMD text or a file path)."
+    if (is.character(input) && length(input) > 1L) {
+      msg = c(msg,
+        "i" = "For a vector of lines (e.g. from {.fn readLines}), collapse it first: {.code parse_qmd(paste(input, collapse = \"\\n\"))}.")
+    }
+    cli::cli_abort(msg)
+  }
+  # Route "bytes"-encoded input straight to the curated encoding error:
+  # grepl()/file.exists() on such a string throw base R's translation
+  # error before to_utf8_source() could explain what to do.
+  if (Encoding(input) == "bytes") {
+    return(list(text = to_utf8_source(input), filename = "<text>"))
+  }
   is_text = grepl("\n", input, fixed = TRUE)
   if (!is_text && file.exists(input) && !dir.exists(input)) {
     list(text = to_utf8_source(read_file_bytes(input)), filename = basename(input))
@@ -77,16 +92,23 @@ pampa_diagnostics_from_raw = function(raw, text, filename) {
 #'   contain newlines and names an existing file (`file.exists()` is
 #'   TRUE and it is not a directory); otherwise treated as raw text. To
 #'   parse an R-held [`ts_tree`] as Pandoc, render it first with
-#'   [`to_qmd()`] and feed the result back in.
+#'   [`to_qmd()`] and feed the result back in. A leading UTF-8 byte-order
+#'   mark parses fine but is not represented in either AST, so
+#'   [`to_qmd()`] / [`write_qmd()`] output never carries one.
 #' @param ast The AST to return: `"pd"` (the default) for the Pandoc AST
 #'   as a [`pandoc`] object, or `"ts"` for the tree-sitter AST as a
 #'   [`ts_tree`].
 #' @param quiet If `FALSE` (the default) any error-kind diagnostics are
-#'   raised as R errors (after attaching diagnostics to the result),
-#'   and warning-kind diagnostics are emitted as R warnings. `info` and
-#'   `note` diagnostics are never signalled regardless of `quiet`. If
-#'   `TRUE` no signal is raised; diagnostics of every kind are still
-#'   attached to the returned object's `@diagnostics` slot.
+#'   raised as a classed error (`q2r_parse_error`) whose condition
+#'   carries the structured [`pampa_diagnostic`] records in
+#'   `$diagnostics` and the parsed object in `$result` (so
+#'   `tryCatch(parse_qmd(x), q2r_parse_error = function(e) e$result)`
+#'   recovers the partial AST); warning-kind diagnostics are emitted as
+#'   classed warnings (`q2r_parse_warning`, also carrying
+#'   `$diagnostics`). `info` and `note` diagnostics are never signalled
+#'   regardless of `quiet`. If `TRUE` no signal is raised; diagnostics
+#'   of every kind are still attached to the returned object's
+#'   `@diagnostics` slot.
 #' @param prune_errors If `TRUE` (the default, matching the pampa CLI)
 #'   parser-error diagnostics are deduplicated by tree-sitter `ERROR`
 #'   node, keeping the earliest per node. Set to `FALSE` to see every
@@ -125,6 +147,6 @@ parse_qmd_text = function(text, filename, ast = c("pd", "ts"),
   }
 
   out@diagnostics = diagnostics
-  pampa_signal_diagnostics(diagnostics, quiet = quiet)
+  pampa_signal_diagnostics(diagnostics, quiet = quiet, result = out)
   out
 }

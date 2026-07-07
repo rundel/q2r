@@ -2,6 +2,20 @@
 
 ## Fixes and behavior changes (2026-07 review)
 
+* Follow-up review fixes: single-file `write_qmd()` / `edit_qmd()` now refuse
+  (override with `force = TRUE`) to overwrite documents that carry error-kind
+  parse diagnostics, and `has_error_diagnostics()` is exported. Mid-document
+  metadata blocks (`pandoc_block_metadata`) now round-trip through `to_qmd()`
+  with their payload instead of erroring on a cleanly parsed document.
+  `format()` on a `pampa_diagnostic` no longer panics on inverted or
+  mid-character location offsets and accepts double-valued offsets.
+  `ts_query()` warns about predicates the matcher ignores. Parse failures are
+  now classed conditions (`q2r_parse_error` / `q2r_parse_warning`) carrying
+  the structured diagnostics (and, for errors, the parsed object in
+  `$result`). `to_qmd()` renders `ts_nodes` wrappers and lists of `ts_node`
+  element-wise. Wrapper `[` subscripts out of range now error clearly, and
+  `parse_qmd()` input mistakes (vectors of lines, NA) get friendly messages.
+
 * `walk_nodes()` on a tree-sitter AST now works (it previously errored or
   silently mis-fired) and visits in pre-order (document order) on both ASTs.
 * Mutation verbs applied to a whole `ts_tree` render and reparse the result,

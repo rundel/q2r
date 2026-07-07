@@ -129,3 +129,10 @@ test_that("typed wrappers behave like lists", {
   expect_identical(as.list(b), b@content)
   expect_length(lapply(b, class), 2L)
 })
+
+test_that("wrapper [ rejects out-of-range subscripts clearly", {
+  doc = parse_qmd("a\n\nb\n")
+  expect_error(doc@blocks[5], "out of bounds")
+  expect_error(doc@blocks[c(1, 4)], "out of bounds")
+  expect_no_error(doc@blocks[2:1])
+})

@@ -33,7 +33,9 @@ pampa_diagnostic(
 
 \item{location}{Optional source location, a named list with
 \code{file}, \code{start_offset}, \code{start_row}, \code{start_column}, \code{end_offset},
-\code{end_row}, \code{end_column}. \code{NULL} if no location is attached.}
+\code{end_row}, \code{end_column}. \code{NULL} if no location is attached.
+Offsets are 0-based bytes; rows/columns are 1-based and count
+characters (unlike \code{\link{ts_point}}, whose columns count bytes).}
 
 \item{source_text}{Original input text the parser saw. Carried so
 the diagnostic can be re-rendered against its source.}

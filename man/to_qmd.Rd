@@ -7,12 +7,15 @@
 to_qmd(x, ...)
 }
 \arguments{
-\item{x}{A \code{\link{pandoc}}, \code{\link{ts_tree}}, or \code{\link{ts_node}} object.}
+\item{x}{A \code{\link{pandoc}}, \code{\link{ts_tree}}, or \code{\link{ts_node}} object; also a
+\code{\link{ts_nodes}} wrapper or a plain list of \code{ts_node}s (e.g. a
+selection), which render element-wise.}
 
 \item{...}{Unused; for future extension.}
 }
 \value{
-A single string with the rendered QMD.
+A single string with the rendered QMD; for \code{ts_nodes} / lists
+of \code{ts_node}, a character vector with one string per node.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

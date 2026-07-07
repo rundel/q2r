@@ -16,6 +16,8 @@
 #' @param location Optional source location, a named list with
 #'   `file`, `start_offset`, `start_row`, `start_column`, `end_offset`,
 #'   `end_row`, `end_column`. `NULL` if no location is attached.
+#'   Offsets are 0-based bytes; rows/columns are 1-based and count
+#'   characters (unlike [`ts_point`], whose columns count bytes).
 #' @param source_text Original input text the parser saw. Carried so
 #'   the diagnostic can be re-rendered against its source.
 #' @param source_filename Filename shown in the rendered output.
@@ -92,22 +94,41 @@ format_pampa_diagnostic = function(x, color = cli::num_ansi_colors() > 1L, ...) 
   txt
 }
 
-pampa_signal_diagnostics = function(diagnostics, quiet = FALSE) {
+# Raise classed conditions so callers can tryCatch by class
+# (q2r_parse_error / q2r_parse_warning) and read the structured
+# diagnostics (and the parsed result, whose @diagnostics the error would
+# otherwise make unreachable) off the condition itself.
+pampa_signal_diagnostics = function(diagnostics, quiet = FALSE, result = NULL) {
   if (isTRUE(quiet) || !length(diagnostics)) return(invisible())
 
   color = cli::num_ansi_colors() > 1L
 
-  render = function(kind) {
-    matched = purrr::keep(diagnostics, function(d) identical(d@kind, kind))
-    if (!length(matched)) return(NULL)
-    paste(purrr::map_chr(matched, format_pampa_diagnostic, color = color), collapse = "\n")
+  matched_of = function(kind) {
+    purrr::keep(diagnostics, function(d) identical(d@kind, kind))
+  }
+  render = function(matched) {
+    paste(purrr::map_chr(matched, format_pampa_diagnostic, color = color),
+          collapse = "\n")
   }
 
   # Flush warnings before raising the error, so a single call surfaces both.
-  w = render("warning")
-  if (!is.null(w)) warning(w, call. = FALSE)
-  e = render("error")
-  if (!is.null(e)) stop(e, call. = FALSE)
+  w = matched_of("warning")
+  if (length(w)) {
+    warning(warningCondition(
+      render(w),
+      class = "q2r_parse_warning",
+      diagnostics = w
+    ))
+  }
+  e = matched_of("error")
+  if (length(e)) {
+    stop(errorCondition(
+      render(e),
+      class = "q2r_parse_error",
+      diagnostics = e,
+      result = result
+    ))
+  }
 
   invisible()
 }

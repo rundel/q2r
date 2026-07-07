@@ -81,3 +81,11 @@ test_that("ts byte-walker warns on unknown kinds and concatenates children", {
   expect_warning(out <- q2r:::to_qmd_ts_node(fake), "__not_a_real_kind__")
   expect_identical(out, "ab")
 })
+
+test_that("to_qmd renders ts_nodes wrappers and lists element-wise", {
+  ts = parse_qmd("first para\n\nsecond para\n", ast = "ts")
+  sel = select_nodes(ts, kind == "pandoc_paragraph")
+  expect_identical(to_qmd(sel), c("first para\n", "second para\n"))
+  expect_identical(to_qmd(ts_nodes(sel)), c("first para\n", "second para\n"))
+  expect_error(to_qmd(list(pandoc_str(text = "x"))), "pandoc\\(\\) document")
+})

@@ -8,9 +8,9 @@
 \usage{
 read_qmd(path, ast = c("pd", "ts"), ...)
 
-write_qmd(x, path)
+write_qmd(x, path, force = FALSE)
 
-edit_qmd(path, .f, ...)
+edit_qmd(path, .f, ..., force = FALSE)
 }
 \arguments{
 \item{path}{Path to a \code{.qmd} file.}
@@ -21,6 +21,9 @@ edit_qmd(path, .f, ...)
 \item{...}{Further arguments passed to \code{\link[=parse_qmd]{parse_qmd()}}.}
 
 \item{x}{A \code{\link{pandoc}} or \code{\link{ts_tree}} object to render.}
+
+\item{force}{Write even when the AST carries error-kind parse
+diagnostics.}
 
 \item{.f}{A function (or rlang formula) taking the parsed AST and
 returning the edited AST.}
@@ -42,6 +45,11 @@ if the path does not exist rather than treating it as inline text).
 \item \code{write_qmd()} renders an AST with \code{\link[=to_qmd]{to_qmd()}} and writes it
 verbatim, with no added trailing newline so the round trip stays
 byte-faithful. Returns its input invisibly so it can end a pipe.
+When the AST carries error-kind parse diagnostics
+(\code{\link[=has_error_diagnostics]{has_error_diagnostics()}}) it aborts instead of writing, because
+rendering an error-parsed document replaces whatever the parser
+could not read with the partial AST it recovered; pass
+\code{force = TRUE} to write anyway.
 \item \code{edit_qmd()} is the in-place one-liner: read, apply \code{.f}, write back.
 }
 }

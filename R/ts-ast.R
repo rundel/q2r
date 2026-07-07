@@ -9,6 +9,9 @@ NULL
 #' single `ts_node` class with a `kind` string property is used.
 #'
 #' @param row,column For [ts_point], the 0-based row and column.
+#'   Tree-sitter columns count bytes, not characters (a multibyte
+#'   character advances the column by its byte length); diagnostic
+#'   locations ([`pampa_diagnostic`]) count characters instead.
 #' @param start_byte,end_byte For [ts_range], the byte offsets of the span.
 #' @param start_point,end_point For [ts_range], the start/end [ts_point]s.
 #' @param kind For [ts_node], the grammar node kind (a string).
@@ -62,7 +65,7 @@ ts_nodes = S7::new_class(
 # wrappers: length / [[ / [ / as.list delegate to @content.
 S7::method(length, ts_nodes) = function(x) length(x@content)
 S7::method(`[[`, ts_nodes) = function(x, i, ...) x@content[[i]]
-S7::method(`[`, ts_nodes) = function(x, i, ...) ts_nodes(x@content[i])
+S7::method(`[`, ts_nodes) = function(x, i, ...) ts_nodes(wrapper_subset(x@content, i))
 S7::method(as.list, ts_nodes) = function(x, ...) x@content
 
 #' @rdname ts_point
