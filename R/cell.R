@@ -40,6 +40,10 @@ NULL
 #'   block; `code` is a single string or a character vector of lines.
 #' - `collect_code(x, engine = NULL, eval_only = FALSE, label_comments =
 #'   TRUE)` tangles the code of every cell under `x` into one string.
+#' - `has_option(x, key)` / `has_option(x, key, value)` and
+#'   `has_engine(x, engine)` test a cell's options and engine as ordinary
+#'   node-first functions (numeric option values compare across
+#'   integer/double).
 #'
 #' Inside a [`select_nodes()`] / [`map_nodes()`] predicate the mask also
 #' exposes `is_code_cell()` (zero-argument, tests the current node) and
@@ -50,13 +54,20 @@ NULL
 #'   accessors return empty / `NA` on a non-cell, and the setters require
 #'   an executable cell (braced engine). For `collect_code()`, any node or
 #'   document to gather cells from.
-#' @param value For `set_cell_label()`, the new label string.
-#' @param engine For `collect_code()`, keep only cells with this engine.
+#' @param value For `set_cell_label()`, the new label string; for
+#'   `has_option()`, the expected option value (missing tests presence
+#'   only).
+#' @param key For `has_option()`, the option name to look up.
+#' @param code For `set_cell_code()`, the new cell body: a single string
+#'   or a character vector of lines.
+#' @param engine For `collect_code()`, keep only cells with this engine;
+#'   for `set_cell_engine()`, the new engine name.
 #' @param eval_only For `collect_code()`, drop cells whose `eval` option
 #'   is `FALSE`.
 #' @param label_comments For `collect_code()`, prefix each cell's code
 #'   with a `# <label>` comment when it has a label.
-#' @param ... For `set_cell_options()`, named `key = value` option pairs.
+#' @param ... For `set_cell_options()`, named `key = value` option pairs;
+#'   for `has_engine()`, one or more engine names.
 #' @return Accessors return a scalar (or named list, for
 #'   `cell_options()`); setters return a new [`pandoc_code_block`];
 #'   `collect_code()` returns a single string.
@@ -236,6 +247,27 @@ cell_parse_options = function(x) {
 cell_options = function(x) {
   if (!is_code_cell(x)) return(list())
   cell_parse_options(x) %||% list()
+}
+
+#' @rdname code_cell
+#' @export
+has_option = function(x, key, value) {
+  if (!S7::S7_inherits(x, pandoc_code_block)) return(FALSE)
+  opts = cell_options(x)
+  if (!(key %in% names(opts))) return(FALSE)
+  if (missing(value)) return(TRUE)
+  cell_option_value_equal(opts[[key]], value)
+}
+
+#' @rdname code_cell
+#' @export
+has_engine = function(x, ...) {
+  engines = unlist(c(...), use.names = FALSE)
+  if (length(engines) == 0L) return(FALSE)
+  if (!S7::S7_inherits(x, pandoc_code_block)) return(FALSE)
+  eng = cell_engine(x)
+  if (length(eng) != 1L || is.na(eng)) return(FALSE)
+  eng %in% engines
 }
 
 #' @rdname code_cell

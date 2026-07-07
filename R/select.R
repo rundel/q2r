@@ -17,6 +17,12 @@ NULL
 #' `has_attr()`, `has_text()`, `has_label()`, `is_leaf()`). Multiple
 #' predicates are combined with `&` (logical AND).
 #'
+#' @section Scope:
+#' The verbs walk the document's block tree only. Document metadata
+#' (`@meta`, including fields like `title` that parse as inline trees)
+#' and the args of nested shortcodes are not visited - a predicate can
+#' never match inside them, and [`ast_text()`] does not include them.
+#'
 #' @section Selection verbs:
 #' - [`select_nodes()`] descends the whole tree (including the root)
 #'   and returns a flat list of matching nodes.
@@ -56,6 +62,12 @@ NULL
 #' parent is checked its children have already been rewritten. This
 #' matches Pandoc Lua filters' default.
 #'
+#' The singular support slots (a figure or table caption, a table's head
+#' and foot) are reachable by the mutation verbs but under a restricted
+#' contract: `.f` must return a node of the same class or `NULL`, which
+#' resets the slot to an empty instance (the slot itself cannot be
+#' removed or spliced).
+#'
 #' On a `ts_tree`, the three grammar-gap *content* kinds (`pandoc_math`,
 #' `pandoc_display_math`, `code_fence_content`) round-trip through their
 #' verbatim source bytes, so mutating *their* children is a no-op on
@@ -69,11 +81,12 @@ NULL
 #' re-rendered (or the chain restructured at the tree level) before
 #' further mutation.
 #'
-#' @section Predicate helpers (only available inside `...`):
-#' These shadow nothing in the global R namespace because they are
-#' installed into the predicate's data mask, not the package
-#' namespace. Outside a `select_*`/`map_nodes`/etc. predicate they
-#' are unavailable.
+#' @section Predicate helpers (available inside `...`):
+#' These are installed into the predicate's data mask, so inside a
+#' predicate they take the zero-node forms shown below (testing the
+#' current node). Most also exist as exported node-first functions -
+#' see [`has_id()`][node_predicates] and friends - for use on a node you
+#' already hold.
 #'
 #' - `is(<S7 class>)` honours S7 inheritance, so `is(pandoc_block)`
 #'   matches any block.
@@ -207,6 +220,7 @@ insert_after = S7::new_generic("insert_after", "x", function(x, ..., .what) {
 select_state = local({
   st = new.env(parent = emptyenv())
   st$node = NULL
+  st$warned = character(0)
   st
 })
 
@@ -237,47 +251,22 @@ mask_has_class = function(...) {
   attr_has_class(ast_attr(ast_current_node()), unlist(c(...), use.names = FALSE))
 }
 
-mask_has_id = function(id) {
-  a = ast_attr(ast_current_node())
-  S7::S7_inherits(a, pandoc_attr) && identical(a@id, id)
-}
+mask_has_id = function(id) has_id(ast_current_node(), id)
 
 mask_has_attr = function(key, value) {
-  if (!is.character(key) || length(key) != 1L) {
-    cli::cli_abort("{.arg key} in {.fn has_attr} must be a single string.")
-  }
-  v = attr_get(ast_attr(ast_current_node()), key)
-  if (is.na(v)) return(FALSE)
-  if (missing(value)) return(TRUE)
-  identical(v, value)
+  if (missing(value)) return(has_attr(ast_current_node(), key))
+  has_attr(ast_current_node(), key, value)
 }
 
 mask_has_text = function(pattern, fixed = FALSE) {
-  txt = tryCatch(ast_text(ast_current_node()), error = function(e) NA_character_)
-  if (length(txt) != 1L || is.na(txt)) return(FALSE)
-  any(purrr::map_lgl(pattern, function(p) grepl(p, txt, fixed = fixed)))
+  has_text(ast_current_node(), pattern, fixed = fixed)
 }
 
-mask_has_label = function(pattern) {
-  node = ast_current_node()
-  id = attr_get_id(ast_attr(node))
-  # A code cell's label lives in its `#|` options, not its attr id (it only
-  # becomes an id in rendered output), so fall back to it for parsermd parity.
-  if ((length(id) != 1L || !nzchar(id)) && S7::S7_inherits(node, pandoc_code_block)) {
-    label = cell_options(node)$label
-    if (!is.null(label)) id = as.character(label)
-  }
-  if (length(id) != 1L || !nzchar(id)) return(FALSE)
-  any(purrr::map_lgl(utils::glob2rx(pattern), function(p) grepl(p, id)))
-}
+mask_has_label = function(pattern) has_label(ast_current_node(), pattern)
 
 mask_has_option = function(key, value) {
-  node = ast_current_node()
-  if (!S7::S7_inherits(node, pandoc_code_block)) return(FALSE)
-  opts = cell_options(node)
-  if (!(key %in% names(opts))) return(FALSE)
-  if (missing(value)) return(TRUE)
-  cell_option_value_equal(opts[[key]], value)
+  if (missing(value)) return(has_option(ast_current_node(), key))
+  has_option(ast_current_node(), key, value)
 }
 
 # Value equality for cell options: yaml parses whole numbers as integer while
@@ -291,14 +280,76 @@ cell_option_value_equal = function(a, b) {
   }
 }
 
-mask_has_engine = function(...) {
-  engines = unlist(c(...), use.names = FALSE)
-  if (length(engines) == 0L) return(FALSE)
-  node = ast_current_node()
-  if (!S7::S7_inherits(node, pandoc_code_block)) return(FALSE)
-  eng = cell_engine(node)
-  if (length(eng) != 1L || is.na(eng)) return(FALSE)
-  eng %in% engines
+mask_has_engine = function(...) has_engine(ast_current_node(), ...)
+
+
+# ---- exported node-first predicate helpers -------------------------------
+
+#' Node-level predicate helpers
+#'
+#' `r lifecycle::badge("experimental")`
+#'
+#' Node-first versions of the predicate-mask helpers from
+#' [`select_nodes()`], usable as ordinary functions on a node you already
+#' hold (the zero-node forms of the same names remain available inside
+#' predicates). All return a single `TRUE`/`FALSE`, and are silently
+#' `FALSE` on nodes without the relevant slot (including the whole
+#' tree-sitter AST). `has_option()` / `has_engine()` are documented with
+#' the other cell helpers in [`is_code_cell()`].
+#'
+#' @param x A pandoc AST node.
+#' @param id The expected `@attr@id` string.
+#' @param key The attribute key to look up.
+#' @param value The expected attribute value; when missing, tests for
+#'   presence of the key only.
+#' @param pattern For `has_text()`, regular expression(s) matched against
+#'   the node's [`ast_text()`]; for `has_label()`, glob pattern(s) matched
+#'   against the node's label (`@attr@id`, or a code cell's `label`
+#'   option).
+#' @param fixed Treat `pattern` as a literal string.
+#' @return A single logical.
+#' @name node_predicates
+NULL
+
+#' @rdname node_predicates
+#' @export
+has_id = function(x, id) {
+  a = ast_attr(x)
+  S7::S7_inherits(a, pandoc_attr) && identical(a@id, id)
+}
+
+#' @rdname node_predicates
+#' @export
+has_attr = function(x, key, value) {
+  if (!is.character(key) || length(key) != 1L) {
+    cli::cli_abort("{.arg key} in {.fn has_attr} must be a single string.")
+  }
+  v = attr_get(ast_attr(x), key)
+  if (is.na(v)) return(FALSE)
+  if (missing(value)) return(TRUE)
+  identical(v, value)
+}
+
+#' @rdname node_predicates
+#' @export
+has_text = function(x, pattern, fixed = FALSE) {
+  txt = tryCatch(ast_text(x), error = function(e) NA_character_)
+  if (length(txt) != 1L || is.na(txt)) return(FALSE)
+  any(purrr::map_lgl(pattern, function(p) grepl(p, txt, fixed = fixed)))
+}
+
+#' @rdname node_predicates
+#' @export
+has_label = function(x, pattern) {
+  id = attr_get_id(ast_attr(x))
+  # A code cell's label lives in its `#|` options, not its attr id (it only
+  # becomes an id in rendered output), so fall back to it for parsermd parity.
+  if ((length(id) != 1L || !nzchar(id)) && S7::S7_inherits(x, pandoc_code_block)) {
+    label = cell_options(x)$label
+    if (!is.null(label)) id = as.character(label)
+  }
+  if (length(id) != 1L || !nzchar(id)) return(FALSE)
+  any(purrr::map_lgl(utils::glob2rx(pattern), function(p) grepl(p, id)))
 }
 
 mask_is_code_cell = function() {
@@ -391,6 +442,7 @@ ast_helper_env = function() {
 }
 
 pd_slot_names = c(
+  "blocks",
   "level", "url", "title", "text", "format", "id", "math_type",
   "quote_type", "name", "is_escaped", "type_name", "alignment",
   "row_span", "col_span", "attr", "content", "citations",
@@ -428,11 +480,23 @@ ast_install_class_binding = function(env) {
 # responsible for setting it before each `eval_tidy` call.
 ast_make_mask = function(kind = c("pandoc", "ts")) {
   kind = match.arg(kind)
+  # Mask construction marks the start of a query: reset the per-query
+  # warning dedup set so a later query with the same mistake still warns.
+  select_state$warned = character(0)
   env = ast_helper_env()
   slot_names = if (kind == "pandoc") pd_slot_names else ts_slot_names
   ast_install_slot_bindings(env, slot_names)
   ast_install_class_binding(env)
   rlang::new_data_mask(env)
+}
+
+# Warn once per query (not once per session): the dedup set is reset by
+# ast_make_mask at the start of every verb call, so genuine mistakes do not
+# go dark after their first occurrence in a session.
+ast_predicate_warn = function(msg) {
+  if (msg %in% select_state$warned) return(invisible())
+  select_state$warned = c(select_state$warned, msg)
+  rlang::warn(msg, class = "q2r_predicate_error")
 }
 
 ast_eval_predicates = function(quos, node, mask) {
@@ -445,19 +509,43 @@ ast_eval_predicates = function(quos, node, mask) {
       rlang::eval_tidy(q, mask),
       # A predicate that errors is treated as no-match (so a slot only some
       # node types carry does not abort the whole query), but the error is
-      # surfaced once per unique message so genuine mistakes - a mistyped
-      # helper, an unknown slot, a bad regex - do not fail silently.
+      # surfaced so genuine mistakes - a mistyped helper, an unknown slot, a
+      # bad regex - do not fail silently.
       error = function(e) {
-        rlang::warn(
+        ast_predicate_warn(
           paste0("select predicate errored and was treated as no-match: ",
-                 conditionMessage(e)),
-          class = "q2r_predicate_error",
-          .frequency = "once",
-          .frequency_id = paste0("q2r-pred-", conditionMessage(e))
+                 conditionMessage(e))
         )
         FALSE
       }
     )
+    # A length-0 logical is the documented missing-slot idiom (a bare-slot
+    # comparison like `text == "x"` on a node whose slot binds NULL): a
+    # silent no-match, not a mistake.
+    if (is.logical(res) && length(res) == 0L) return(FALSE)
+    # A longer or non-logical result silently dropping nodes is the
+    # subtlest way to get a wrong selection (e.g. `attr@classes == "x"` on a
+    # two-class node yields length-2 logical); surface it and treat as
+    # no-match.
+    if (!is.logical(res) || length(res) != 1L) {
+      what = if (is.logical(res)) {
+        paste0("a length-", length(res), " logical")
+      } else {
+        paste0("a ", class(res)[[1L]], " value")
+      }
+      ast_predicate_warn(
+        paste0("select predicate returned ", what, " and was treated as ",
+               "no-match; predicates must return a single TRUE/FALSE ",
+               "(use %in% or any() to collapse vectors)")
+      )
+      return(FALSE)
+    }
+    if (is.na(res)) {
+      ast_predicate_warn(
+        "select predicate returned NA and was treated as no-match"
+      )
+      return(FALSE)
+    }
     if (!isTRUE(res)) return(FALSE)
   }
   TRUE

@@ -164,3 +164,26 @@ test_that("mutating inside a pipe table emits no handler warnings", {
   expect_no_warning(out <- to_qmd(delete_nodes(tbl, kind == "pandoc_space")))
   expect_equal(out, "| ab | c |\n|---|---|\n| de | f |\n")
 })
+
+test_that("mutation verbs reach figure/table captions and table head/foot", {
+  tbl_doc = parse_qmd("| a | b |\n|---|---|\n| 1 | 2 |\n\n: My caption\n")
+  hits = 0L
+  map_nodes(tbl_doc, is(pandoc_caption), .f = function(n) { hits <<- hits + 1L; n })
+  expect_identical(hits, 1L)
+
+  cleared = map_nodes(tbl_doc, is(pandoc_caption), .f = function(n) NULL)
+  expect_length(cleared@blocks@content[[1]]@caption@long@content, 0L)
+
+  replaced = map_nodes(tbl_doc, is(pandoc_caption),
+                       .f = function(n) pandoc_caption(long = as_blocks("New caption")))
+  expect_match(to_qmd(replaced), "New caption", fixed = TRUE)
+
+  head_hits = 0L
+  map_nodes(tbl_doc, is(pandoc_table_head), .f = function(n) { head_hits <<- head_hits + 1L; n })
+  expect_identical(head_hits, 1L)
+
+  expect_error(
+    map_nodes(tbl_doc, is(pandoc_table_head), .f = function(n) list(n, n)),
+    "cannot be spliced"
+  )
+})

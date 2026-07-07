@@ -27,8 +27,14 @@ NULL
 #'   list types, etc.) join children with two newlines.
 #' - Inline containers ([`pandoc_emph`], [`pandoc_strong`],
 #'   [`pandoc_link`], etc.) concatenate children without separator.
+#' - [`pandoc_quoted`] wraps its content in typographic quote marks,
+#'   matching `pandoc.utils.stringify()`.
 #' - [`pandoc_note`] emits its block content (joined with newlines)
 #'   wrapped in `[^...]` to flag it; rarely useful in match logic.
+#'
+#' `ast_text(pandoc)` covers the document's block tree only: `@meta`
+#' values (e.g. the title) and the args of nested shortcodes are not
+#' included.
 #'
 #' @param x A [`pandoc`], [`pandoc_node`], [`pandoc_blocks`],
 #'   [`pandoc_inlines`], or list thereof.
@@ -104,7 +110,11 @@ S7::method(ast_text, pandoc_strikeout)   = function(x) ast_text(x@content)
 S7::method(ast_text, pandoc_superscript) = function(x) ast_text(x@content)
 S7::method(ast_text, pandoc_subscript)   = function(x) ast_text(x@content)
 S7::method(ast_text, pandoc_small_caps)  = function(x) ast_text(x@content)
-S7::method(ast_text, pandoc_quoted)      = function(x) ast_text(x@content)
+S7::method(ast_text, pandoc_quoted)      = function(x) {
+  # Include the quote marks, matching pandoc.utils.stringify.
+  q = if (identical(x@quote_type, "single")) "‘’" else "“”"
+  paste0(substr(q, 1L, 1L), ast_text(x@content), substr(q, 2L, 2L))
+}
 S7::method(ast_text, pandoc_link)        = function(x) ast_text(x@content)
 S7::method(ast_text, pandoc_image)       = function(x) ast_text(x@content)
 S7::method(ast_text, pandoc_span)        = function(x) ast_text(x@content)

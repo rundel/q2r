@@ -104,3 +104,49 @@ test_that("has_attr surfaces a non-scalar key as a warning, not a silent match",
   expect_warning(res <- select_nodes(doc, has_attr(c("k", "k2"))), "single string")
   expect_length(res, 0L)
 })
+
+test_that("non-scalar predicate results warn and count as no-match", {
+  doc = parse_qmd("::: {.note .warning}\nx\n:::\n\n::: {.note}\ny\n:::\n")
+  expect_warning(
+    n <- length(select_nodes(doc, is(pandoc_div), attr@classes == "note")),
+    "length-2 logical"
+  )
+  expect_identical(n, 1L)
+  expect_silent(
+    expect_length(select_nodes(doc, is(pandoc_div), "note" %in% attr@classes), 2L)
+  )
+})
+
+test_that("missing-slot comparisons stay a silent no-match", {
+  doc = parse_qmd("plain body\n")
+  expect_silent(select_nodes(doc, text == "body"))
+  expect_silent(select_nodes(doc, level > 2))
+})
+
+test_that("predicate warnings fire once per query, not once per session", {
+  doc = parse_qmd("body\n")
+  expect_warning(select_nodes(doc, no_such_fn_xyz()), "no-match")
+  expect_warning(select_nodes(doc, no_such_fn_xyz()), "no-match")
+})
+
+test_that("the pandoc root's blocks slot binds in the mask", {
+  doc = parse_qmd("a\n\nb\n")
+  expect_silent(
+    expect_length(select_nodes(doc, is(pandoc), length(blocks@content) == 2L), 1L)
+  )
+})
+
+test_that("node-first predicate helpers are exported", {
+  doc = parse_qmd("# Title {#sec-x k=v}\n\n```{r}\n#| label: fig-1\n#| eval: false\nplot(1)\n```\n")
+  hdr = doc@blocks@content[[1]]
+  cell = doc@blocks@content[[2]]
+  expect_true(has_id(hdr, "sec-x"))
+  expect_true(has_attr(hdr, "k", "v"))
+  expect_false(has_attr(hdr, "k", "w"))
+  expect_true(has_text(hdr, "Title"))
+  expect_true(has_label(cell, "fig-*"))
+  expect_true(has_option(cell, "eval", FALSE))
+  expect_false(has_option(cell, "echo"))
+  expect_true(has_engine(cell, "r"))
+  expect_false(has_engine(hdr, "r"))
+})

@@ -64,3 +64,10 @@ test_that("ast_text flattens a parsed citation key so it is matchable", {
   expect_equal(ast_text(select_first(doc, is(pandoc_cite) & has_text("knuth1984"))), "@knuth1984")
   expect_length(select_nodes(doc, is(pandoc_cite) & has_text("smith2000")), 1L)
 })
+
+test_that("ast_text includes typographic quote marks for pandoc_quoted", {
+  q = pandoc_quoted(quote_type = "double", content = as_inlines("hi"))
+  expect_identical(ast_text(q), "“hi”")
+  s = pandoc_quoted(quote_type = "single", content = as_inlines("hi"))
+  expect_identical(ast_text(s), "‘hi’")
+})

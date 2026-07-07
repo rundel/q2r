@@ -5,10 +5,10 @@ NULL
 # node by applying `.f` to each one and reassembling. Selectable children
 # are pandoc_node descendants and any support type that lives in a list
 # slot (pandoc_citation, pandoc_definition_item, pandoc_table_body,
-# pandoc_row, pandoc_cell, pandoc_col_spec). Singular support-type
-# slots (pandoc_caption, pandoc_table_head, pandoc_table_foot, the
-# pandoc_blocks/inlines wrappers themselves) are not exposed to `.f`;
-# the walker descends through them but their contents are what .f sees.
+# pandoc_row, pandoc_cell, pandoc_col_spec). Singular support-type slots
+# (pandoc_caption, pandoc_table_head, pandoc_table_foot) also pass through
+# `.f`, but with a restricted contract (see pd_rewrite_singular); the
+# pandoc_blocks/inlines wrappers themselves stay transparent.
 #
 # `.f` may return a single node (replace), a list of nodes (splice),
 # or NULL (delete). The flattened result must satisfy the parent slot's
@@ -21,6 +21,19 @@ pandoc_modify_children = S7::new_generic("pandoc_modify_children", "x")
 
 pd_flatten_results = function(results) {
   purrr::list_flatten(purrr::map(results, ast_to_node_list))
+}
+
+# Route a singular support slot through `.f` like any other child, so nodes
+# that select_nodes() can match are also reachable by the mutation verbs.
+# The slot cannot hold a splice and cannot be removed: NULL resets it to an
+# empty instance of its class, and a replacement must keep the class.
+pd_rewrite_singular = function(value, .f, cls, what) {
+  out = .f(value)
+  if (is.null(out)) return(cls())
+  if (S7::S7_inherits(out, cls)) return(out)
+  stop("a mutation of a ", what, " must return a ", cls@name,
+       " or NULL (the slot cannot be spliced); got ", class(out)[[1L]],
+       call. = FALSE)
 }
 
 pd_rewrite_inlines_content = function(wrapper, .f) {
@@ -130,7 +143,7 @@ S7::method(pandoc_modify_children, pandoc_line_block) = function(x, .f) {
 S7::method(pandoc_modify_children, pandoc_figure) = function(x, .f) {
   pandoc_figure(
     attr    = x@attr,
-    caption = pandoc_modify_children(x@caption, .f),
+    caption = pd_rewrite_singular(x@caption, .f, pandoc_caption, "figure caption"),
     content = pd_rewrite_blocks_content(x@content, .f)
   )
 }
@@ -138,16 +151,17 @@ S7::method(pandoc_modify_children, pandoc_figure) = function(x, .f) {
 
 # ---- pandoc_table -------------------------------------------------------
 # Bodies are a list slot, so .f IS invoked on each pandoc_table_body.
-# Head, foot, and caption are singular and pass through pandoc_modify_children.
+# Head, foot, and caption are singular: .f sees them too, but under the
+# restricted replace-or-reset contract of pd_rewrite_singular.
 
 S7::method(pandoc_modify_children, pandoc_table) = function(x, .f) {
   pandoc_table(
     attr    = x@attr,
-    caption = pandoc_modify_children(x@caption, .f),
+    caption = pd_rewrite_singular(x@caption, .f, pandoc_caption, "table caption"),
     colspec = x@colspec,
-    head    = pandoc_modify_children(x@head, .f),
+    head    = pd_rewrite_singular(x@head, .f, pandoc_table_head, "table head"),
     bodies  = pd_flatten_results(purrr::map(x@bodies, .f)),
-    foot    = pandoc_modify_children(x@foot, .f)
+    foot    = pd_rewrite_singular(x@foot, .f, pandoc_table_foot, "table foot")
   )
 }
 
