@@ -176,16 +176,16 @@ S7::method(select_first, qmd_collection) = function(x, ...) {
   coll_query(x, function(d) select_first(d, ...))
 }
 
-S7::method(walk_nodes, qmd_collection) = function(x, ..., .f) {
+S7::method(walk_nodes, qmd_collection) = function(x, ..., .f = NULL) {
   purrr::walk(x@docs, function(d) walk_nodes(d, ..., .f = .f))
   invisible(x)
 }
 
-S7::method(map_nodes, qmd_collection) = function(x, ..., .f) {
+S7::method(map_nodes, qmd_collection) = function(x, ..., .f = NULL) {
   coll_rewrite(x, function(d) map_nodes(d, ..., .f = .f))
 }
 
-S7::method(replace_nodes, qmd_collection) = function(x, ..., .with) {
+S7::method(replace_nodes, qmd_collection) = function(x, ..., .with = NULL) {
   coll_rewrite(x, function(d) replace_nodes(d, ..., .with = .with))
 }
 
@@ -193,15 +193,15 @@ S7::method(delete_nodes, qmd_collection) = function(x, ...) {
   coll_rewrite(x, function(d) delete_nodes(d, ...))
 }
 
-S7::method(splice_nodes, qmd_collection) = function(x, ..., .f) {
+S7::method(splice_nodes, qmd_collection) = function(x, ..., .f = NULL) {
   coll_rewrite(x, function(d) splice_nodes(d, ..., .f = .f))
 }
 
-S7::method(insert_before, qmd_collection) = function(x, ..., .what) {
+S7::method(insert_before, qmd_collection) = function(x, ..., .what = NULL) {
   coll_rewrite(x, function(d) insert_before(d, ..., .what = .what))
 }
 
-S7::method(insert_after, qmd_collection) = function(x, ..., .what) {
+S7::method(insert_after, qmd_collection) = function(x, ..., .what = NULL) {
   coll_rewrite(x, function(d) insert_after(d, ..., .what = .what))
 }
 

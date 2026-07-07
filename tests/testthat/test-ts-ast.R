@@ -82,3 +82,24 @@ test_that("ts_tree prints without error and includes root kind", {
   out = utils::capture.output(print(res))
   expect_true(any(grepl("document", out)))
 })
+
+test_that("ts_nodes behaves like a list", {
+  ts = parse_qmd("a b\n", ast = "ts")
+  tn = ts_nodes(select_nodes(ts, kind == "pandoc_str"))
+  expect_identical(length(tn), 2L)
+  expect_s7_class(tn[[1]], ts_node)
+  expect_s7_class(tn[1], ts_nodes)
+  expect_identical(as.list(tn), tn@content)
+})
+
+test_that("pandoc-only verbs give a friendly error on a ts_tree", {
+  ts = parse_qmd("# A\n\nbody\n", ast = "ts")
+  for (call in list(
+    function() ast_text(ts), function() ast_summary(ts),
+    function() ast_sections(ts), function() select_section(ts, "A"),
+    function() split_sections(ts), function() ast_toc(ts),
+    function() ast_filter(ts), function() as_df(ts)
+  )) {
+    expect_error(call(), "works on the pandoc AST")
+  }
+})

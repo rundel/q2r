@@ -187,3 +187,13 @@ test_that("mutation verbs reach figure/table captions and table head/foot", {
     "cannot be spliced"
   )
 })
+
+test_that("mutation verbs hint when the payload argument is passed positionally", {
+  doc = parse_qmd("body\n")
+  expect_error(map_nodes(doc, is(pandoc_str), function(n) n), "Pass it by name")
+  expect_error(walk_nodes(doc, function(n) n), "Pass it by name")
+  expect_error(splice_nodes(doc, is(pandoc_str)), "Pass it by name")
+  expect_error(replace_nodes(doc, is(pandoc_str)), "Pass it by name")
+  expect_error(insert_before(doc, is(pandoc_paragraph)), "Pass it by name")
+  expect_error(insert_after(doc, is(pandoc_paragraph)), "Pass it by name")
+})

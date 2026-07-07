@@ -117,7 +117,9 @@ pandoc_attr_is_empty = function(attr) {
 #' Typed list wrappers
 #'
 #' `pandoc_blocks()` and `pandoc_inlines()` validate that every element of
-#' the supplied list is of the appropriate kind.
+#' the supplied list is of the appropriate kind. The wrappers behave like
+#' lists for the common verbs: `length()`, `[[`, `[` (re-wrapped), and
+#' `as.list()` all delegate to `@content`.
 #'
 #' @export
 pandoc_blocks = S7::new_class(
@@ -141,6 +143,18 @@ pandoc_inlines = S7::new_class(
       "all elements of @content must be pandoc_inline objects")
   }
 )
+
+# Base-generic ergonomics for the typed wrappers: length / [[ / [ / as.list
+# delegate to @content, so `doc@blocks[[1]]`, `doc@blocks[2:3]`, and
+# `lapply(as.list(doc@blocks), ...)` work without reaching into @content.
+S7::method(length, pandoc_blocks)  = function(x) length(x@content)
+S7::method(length, pandoc_inlines) = function(x) length(x@content)
+S7::method(`[[`, pandoc_blocks)  = function(x, i, ...) x@content[[i]]
+S7::method(`[[`, pandoc_inlines) = function(x, i, ...) x@content[[i]]
+S7::method(`[`, pandoc_blocks)  = function(x, i, ...) pandoc_blocks(x@content[i])
+S7::method(`[`, pandoc_inlines) = function(x, i, ...) pandoc_inlines(x@content[i])
+S7::method(as.list, pandoc_blocks)  = function(x, ...) x@content
+S7::method(as.list, pandoc_inlines) = function(x, ...) x@content
 
 #' Pandoc meta / config value
 #'

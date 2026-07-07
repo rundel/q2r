@@ -271,7 +271,7 @@ S7::method(select_first, pandoc_node) = function(x, ...) {
 
 # ---- walk_nodes ---------------------------------------------------------
 
-S7::method(walk_nodes, pandoc) = function(x, ..., .f) {
+S7::method(walk_nodes, pandoc) = function(x, ..., .f = NULL) {
   fn = ast_as_fn(.f)
   if (is.null(fn)) stop("walk_nodes requires .f", call. = FALSE)
   quos = ast_quos(...)
@@ -282,7 +282,7 @@ S7::method(walk_nodes, pandoc) = function(x, ..., .f) {
   invisible(x)
 }
 
-S7::method(walk_nodes, pandoc_node) = function(x, ..., .f) {
+S7::method(walk_nodes, pandoc_node) = function(x, ..., .f = NULL) {
   fn = ast_as_fn(.f)
   if (is.null(fn)) stop("walk_nodes requires .f", call. = FALSE)
   quos = ast_quos(...)
@@ -296,7 +296,7 @@ S7::method(walk_nodes, pandoc_node) = function(x, ..., .f) {
 
 # ---- map_nodes ----------------------------------------------------------
 
-S7::method(map_nodes, pandoc) = function(x, ..., .f) {
+S7::method(map_nodes, pandoc) = function(x, ..., .f = NULL) {
   fn = ast_as_fn(.f)
   if (is.null(fn)) stop("map_nodes requires .f", call. = FALSE)
   quos = ast_quos(...)
@@ -304,7 +304,7 @@ S7::method(map_nodes, pandoc) = function(x, ..., .f) {
   pd_finalize_root(x, out)
 }
 
-S7::method(map_nodes, pandoc_node) = function(x, ..., .f) {
+S7::method(map_nodes, pandoc_node) = function(x, ..., .f = NULL) {
   fn = ast_as_fn(.f)
   if (is.null(fn)) stop("map_nodes requires .f", call. = FALSE)
   quos = ast_quos(...)
@@ -314,14 +314,14 @@ S7::method(map_nodes, pandoc_node) = function(x, ..., .f) {
 
 # ---- replace_nodes / delete_nodes / splice_nodes ------------------------
 
-S7::method(replace_nodes, pandoc) = function(x, ..., .with) {
+S7::method(replace_nodes, pandoc) = function(x, ..., .with = NULL) {
   quos = ast_quos(...)
   fn = function(node) ast_resolve_what(.with, node)
   out = pd_rewrite_node(x, quos, ast_make_mask("pandoc"), fn)
   pd_finalize_root(x, out)
 }
 
-S7::method(replace_nodes, pandoc_node) = function(x, ..., .with) {
+S7::method(replace_nodes, pandoc_node) = function(x, ..., .with = NULL) {
   quos = ast_quos(...)
   fn = function(node) ast_resolve_what(.with, node)
   pd_rewrite_node(x, quos, ast_make_mask("pandoc"), fn)
@@ -340,7 +340,7 @@ S7::method(delete_nodes, pandoc_node) = function(x, ...) {
   pd_rewrite_node(x, quos, ast_make_mask("pandoc"), fn)
 }
 
-S7::method(splice_nodes, pandoc) = function(x, ..., .f) {
+S7::method(splice_nodes, pandoc) = function(x, ..., .f = NULL) {
   user_fn = ast_as_fn(.f)
   if (is.null(user_fn)) stop("splice_nodes requires .f", call. = FALSE)
   fn = function(node) {
@@ -356,7 +356,7 @@ S7::method(splice_nodes, pandoc) = function(x, ..., .f) {
   pd_finalize_root(x, out)
 }
 
-S7::method(splice_nodes, pandoc_node) = function(x, ..., .f) {
+S7::method(splice_nodes, pandoc_node) = function(x, ..., .f = NULL) {
   user_fn = ast_as_fn(.f)
   if (is.null(user_fn)) stop("splice_nodes requires .f", call. = FALSE)
   fn = function(node) {
@@ -374,27 +374,27 @@ S7::method(splice_nodes, pandoc_node) = function(x, ..., .f) {
 
 # ---- insert_before / insert_after ---------------------------------------
 
-S7::method(insert_before, pandoc) = function(x, ..., .what) {
+S7::method(insert_before, pandoc) = function(x, ..., .what = NULL) {
   quos = ast_quos(...)
   fn = function(node) c(ast_resolve_what(.what, node), list(node))
   out = pd_rewrite_node(x, quos, ast_make_mask("pandoc"), fn)
   pd_finalize_root(x, out)
 }
 
-S7::method(insert_before, pandoc_node) = function(x, ..., .what) {
+S7::method(insert_before, pandoc_node) = function(x, ..., .what = NULL) {
   quos = ast_quos(...)
   fn = function(node) c(ast_resolve_what(.what, node), list(node))
   pd_rewrite_node(x, quos, ast_make_mask("pandoc"), fn)
 }
 
-S7::method(insert_after, pandoc) = function(x, ..., .what) {
+S7::method(insert_after, pandoc) = function(x, ..., .what = NULL) {
   quos = ast_quos(...)
   fn = function(node) c(list(node), ast_resolve_what(.what, node))
   out = pd_rewrite_node(x, quos, ast_make_mask("pandoc"), fn)
   pd_finalize_root(x, out)
 }
 
-S7::method(insert_after, pandoc_node) = function(x, ..., .what) {
+S7::method(insert_after, pandoc_node) = function(x, ..., .what = NULL) {
   quos = ast_quos(...)
   fn = function(node) c(list(node), ast_resolve_what(.what, node))
   pd_rewrite_node(x, quos, ast_make_mask("pandoc"), fn)
@@ -410,32 +410,32 @@ S7::method(insert_after, pandoc_node) = function(x, ..., .what) {
 S7::method(select_first, pandoc_blocks)  = function(x, ...) select_first(x@content, ...)
 S7::method(select_first, pandoc_inlines) = function(x, ...) select_first(x@content, ...)
 
-S7::method(walk_nodes, pandoc_blocks) = function(x, ..., .f) {
+S7::method(walk_nodes, pandoc_blocks) = function(x, ..., .f = NULL) {
   walk_nodes(x@content, ..., .f = .f)
   invisible(x)
 }
-S7::method(walk_nodes, pandoc_inlines) = function(x, ..., .f) {
+S7::method(walk_nodes, pandoc_inlines) = function(x, ..., .f = NULL) {
   walk_nodes(x@content, ..., .f = .f)
   invisible(x)
 }
 
-S7::method(map_nodes, pandoc_blocks)  = function(x, ..., .f) pandoc_blocks(map_nodes(x@content, ..., .f = .f))
-S7::method(map_nodes, pandoc_inlines) = function(x, ..., .f) pandoc_inlines(map_nodes(x@content, ..., .f = .f))
+S7::method(map_nodes, pandoc_blocks)  = function(x, ..., .f = NULL) pandoc_blocks(map_nodes(x@content, ..., .f = .f))
+S7::method(map_nodes, pandoc_inlines) = function(x, ..., .f = NULL) pandoc_inlines(map_nodes(x@content, ..., .f = .f))
 
-S7::method(replace_nodes, pandoc_blocks)  = function(x, ..., .with) pandoc_blocks(replace_nodes(x@content, ..., .with = .with))
-S7::method(replace_nodes, pandoc_inlines) = function(x, ..., .with) pandoc_inlines(replace_nodes(x@content, ..., .with = .with))
+S7::method(replace_nodes, pandoc_blocks)  = function(x, ..., .with = NULL) pandoc_blocks(replace_nodes(x@content, ..., .with = .with))
+S7::method(replace_nodes, pandoc_inlines) = function(x, ..., .with = NULL) pandoc_inlines(replace_nodes(x@content, ..., .with = .with))
 
 S7::method(delete_nodes, pandoc_blocks)  = function(x, ...) pandoc_blocks(delete_nodes(x@content, ...))
 S7::method(delete_nodes, pandoc_inlines) = function(x, ...) pandoc_inlines(delete_nodes(x@content, ...))
 
-S7::method(splice_nodes, pandoc_blocks)  = function(x, ..., .f) pandoc_blocks(splice_nodes(x@content, ..., .f = .f))
-S7::method(splice_nodes, pandoc_inlines) = function(x, ..., .f) pandoc_inlines(splice_nodes(x@content, ..., .f = .f))
+S7::method(splice_nodes, pandoc_blocks)  = function(x, ..., .f = NULL) pandoc_blocks(splice_nodes(x@content, ..., .f = .f))
+S7::method(splice_nodes, pandoc_inlines) = function(x, ..., .f = NULL) pandoc_inlines(splice_nodes(x@content, ..., .f = .f))
 
-S7::method(insert_before, pandoc_blocks)  = function(x, ..., .what) pandoc_blocks(insert_before(x@content, ..., .what = .what))
-S7::method(insert_before, pandoc_inlines) = function(x, ..., .what) pandoc_inlines(insert_before(x@content, ..., .what = .what))
+S7::method(insert_before, pandoc_blocks)  = function(x, ..., .what = NULL) pandoc_blocks(insert_before(x@content, ..., .what = .what))
+S7::method(insert_before, pandoc_inlines) = function(x, ..., .what = NULL) pandoc_inlines(insert_before(x@content, ..., .what = .what))
 
-S7::method(insert_after, pandoc_blocks)  = function(x, ..., .what) pandoc_blocks(insert_after(x@content, ..., .what = .what))
-S7::method(insert_after, pandoc_inlines) = function(x, ..., .what) pandoc_inlines(insert_after(x@content, ..., .what = .what))
+S7::method(insert_after, pandoc_blocks)  = function(x, ..., .what = NULL) pandoc_blocks(insert_after(x@content, ..., .what = .what))
+S7::method(insert_after, pandoc_inlines) = function(x, ..., .what = NULL) pandoc_inlines(insert_after(x@content, ..., .what = .what))
 
 
 # ---- list-of-nodes dispatch (chained selection) -------------------------
@@ -525,11 +525,11 @@ ast_map_list_mutation = function(x, verb) {
   out
 }
 
-S7::method(map_nodes, S7::class_list) = function(x, ..., .f) {
+S7::method(map_nodes, S7::class_list) = function(x, ..., .f = NULL) {
   ast_map_list_mutation(x, function(n) map_nodes(n, ..., .f = .f))
 }
 
-S7::method(replace_nodes, S7::class_list) = function(x, ..., .with) {
+S7::method(replace_nodes, S7::class_list) = function(x, ..., .with = NULL) {
   ast_map_list_mutation(x, function(n) replace_nodes(n, ..., .with = .with))
 }
 
@@ -537,19 +537,19 @@ S7::method(delete_nodes, S7::class_list) = function(x, ...) {
   ast_map_list_mutation(x, function(n) delete_nodes(n, ...))
 }
 
-S7::method(splice_nodes, S7::class_list) = function(x, ..., .f) {
+S7::method(splice_nodes, S7::class_list) = function(x, ..., .f = NULL) {
   ast_map_list_mutation(x, function(n) splice_nodes(n, ..., .f = .f))
 }
 
-S7::method(insert_before, S7::class_list) = function(x, ..., .what) {
+S7::method(insert_before, S7::class_list) = function(x, ..., .what = NULL) {
   ast_map_list_mutation(x, function(n) insert_before(n, ..., .what = .what))
 }
 
-S7::method(insert_after, S7::class_list) = function(x, ..., .what) {
+S7::method(insert_after, S7::class_list) = function(x, ..., .what = NULL) {
   ast_map_list_mutation(x, function(n) insert_after(n, ..., .what = .what))
 }
 
-S7::method(walk_nodes, S7::class_list) = function(x, ..., .f) {
+S7::method(walk_nodes, S7::class_list) = function(x, ..., .f = NULL) {
   purrr::walk(x, function(n) walk_nodes(n, ..., .f = .f))
   invisible(x)
 }

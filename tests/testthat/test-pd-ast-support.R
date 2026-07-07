@@ -118,3 +118,14 @@ test_that("pandoc_meta_value validates value shape against kind", {
   expect_no_error(pandoc_meta_value(kind = "map", value = list(a = pandoc_meta_value(kind = "null", value = NULL))))
   expect_no_error(pandoc_meta_value(kind = "list", value = list(pandoc_meta_value(kind = "int", value = 1L))))
 })
+
+test_that("typed wrappers behave like lists", {
+  doc = parse_qmd("a\n\nb\n")
+  b = doc@blocks
+  expect_identical(length(b), 2L)
+  expect_s7_class(b[[1]], pandoc_paragraph)
+  expect_s7_class(b[1], pandoc_blocks)
+  expect_identical(length(b[1]), 1L)
+  expect_identical(as.list(b), b@content)
+  expect_length(lapply(b, class), 2L)
+})

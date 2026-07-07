@@ -145,6 +145,21 @@ NULL
 
 # ---- generic declarations -----------------------------------------------
 
+# The mutation verbs take their payload as a named argument after the
+# predicate dots; a payload passed positionally is silently swallowed as a
+# predicate, so a missing named argument gets an explicit hint.
+ast_check_verb_arg = function(value, name, verb) {
+  if (is.null(value)) {
+    cli::cli_abort(c(
+      "{.arg {name}} is missing.",
+      "i" = paste0("Pass it by name, e.g. {.code ", verb,
+                   "(x, <predicates>, ", name,
+                   " = ...)}; a positional argument is treated as a predicate.")
+    ), call = NULL)
+  }
+  invisible(value)
+}
+
 #' @rdname select_nodes
 #' @export
 select_nodes = S7::new_generic("select_nodes", "x", function(x, ...) {
@@ -171,19 +186,22 @@ select_first = S7::new_generic("select_first", "x", function(x, ...) {
 
 #' @rdname select_nodes
 #' @export
-walk_nodes = S7::new_generic("walk_nodes", "x", function(x, ..., .f) {
+walk_nodes = S7::new_generic("walk_nodes", "x", function(x, ..., .f = NULL) {
+  ast_check_verb_arg(.f, ".f", "walk_nodes")
   S7::S7_dispatch()
 })
 
 #' @rdname select_nodes
 #' @export
-map_nodes = S7::new_generic("map_nodes", "x", function(x, ..., .f) {
+map_nodes = S7::new_generic("map_nodes", "x", function(x, ..., .f = NULL) {
+  ast_check_verb_arg(.f, ".f", "map_nodes")
   S7::S7_dispatch()
 })
 
 #' @rdname select_nodes
 #' @export
-replace_nodes = S7::new_generic("replace_nodes", "x", function(x, ..., .with) {
+replace_nodes = S7::new_generic("replace_nodes", "x", function(x, ..., .with = NULL) {
+  ast_check_verb_arg(.with, ".with", "replace_nodes")
   S7::S7_dispatch()
 })
 
@@ -195,19 +213,22 @@ delete_nodes = S7::new_generic("delete_nodes", "x", function(x, ...) {
 
 #' @rdname select_nodes
 #' @export
-splice_nodes = S7::new_generic("splice_nodes", "x", function(x, ..., .f) {
+splice_nodes = S7::new_generic("splice_nodes", "x", function(x, ..., .f = NULL) {
+  ast_check_verb_arg(.f, ".f", "splice_nodes")
   S7::S7_dispatch()
 })
 
 #' @rdname select_nodes
 #' @export
-insert_before = S7::new_generic("insert_before", "x", function(x, ..., .what) {
+insert_before = S7::new_generic("insert_before", "x", function(x, ..., .what = NULL) {
+  ast_check_verb_arg(.what, ".what", "insert_before")
   S7::S7_dispatch()
 })
 
 #' @rdname select_nodes
 #' @export
-insert_after = S7::new_generic("insert_after", "x", function(x, ..., .what) {
+insert_after = S7::new_generic("insert_after", "x", function(x, ..., .what = NULL) {
+  ast_check_verb_arg(.what, ".what", "insert_after")
   S7::S7_dispatch()
 })
 

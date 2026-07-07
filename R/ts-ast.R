@@ -57,6 +57,13 @@ ts_nodes = S7::new_class(
   }
 )
 
+# Base-generic ergonomics mirroring the pandoc_blocks/pandoc_inlines
+# wrappers: length / [[ / [ / as.list delegate to @content.
+S7::method(length, ts_nodes) = function(x) length(x@content)
+S7::method(`[[`, ts_nodes) = function(x, i, ...) x@content[[i]]
+S7::method(`[`, ts_nodes) = function(x, i, ...) ts_nodes(x@content[i])
+S7::method(as.list, ts_nodes) = function(x, ...) x@content
+
 #' @rdname ts_point
 #' @export
 ts_node = S7::new_class(

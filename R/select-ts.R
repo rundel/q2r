@@ -290,7 +290,7 @@ S7::method(select_first, ts_nodes) = function(x, ...) select_first(x@content, ..
 
 # ---- walk_nodes ---------------------------------------------------------
 
-S7::method(walk_nodes, ts_tree) = function(x, ..., .f) {
+S7::method(walk_nodes, ts_tree) = function(x, ..., .f = NULL) {
   fn = ast_as_fn(.f)
   if (is.null(fn)) stop("walk_nodes requires .f", call. = FALSE)
   quos = ast_quos(...)
@@ -298,7 +298,7 @@ S7::method(walk_nodes, ts_tree) = function(x, ..., .f) {
   invisible(x)
 }
 
-S7::method(walk_nodes, ts_node) = function(x, ..., .f) {
+S7::method(walk_nodes, ts_node) = function(x, ..., .f = NULL) {
   fn = ast_as_fn(.f)
   if (is.null(fn)) stop("walk_nodes requires .f", call. = FALSE)
   quos = ast_quos(...)
@@ -309,21 +309,21 @@ S7::method(walk_nodes, ts_node) = function(x, ..., .f) {
 # ---- ts_nodes wrapper: round out the verb set (delegate to @content) ----
 # The three selection verbs already dispatch on ts_nodes; mirror the pandoc
 # wrappers for the rest, re-wrapping mutator results back in ts_nodes.
-S7::method(walk_nodes, ts_nodes) = function(x, ..., .f) {
+S7::method(walk_nodes, ts_nodes) = function(x, ..., .f = NULL) {
   walk_nodes(x@content, ..., .f = .f)
   invisible(x)
 }
-S7::method(map_nodes, ts_nodes)     = function(x, ..., .f) ts_nodes(map_nodes(x@content, ..., .f = .f))
-S7::method(replace_nodes, ts_nodes) = function(x, ..., .with) ts_nodes(replace_nodes(x@content, ..., .with = .with))
+S7::method(map_nodes, ts_nodes)     = function(x, ..., .f = NULL) ts_nodes(map_nodes(x@content, ..., .f = .f))
+S7::method(replace_nodes, ts_nodes) = function(x, ..., .with = NULL) ts_nodes(replace_nodes(x@content, ..., .with = .with))
 S7::method(delete_nodes, ts_nodes)  = function(x, ...) ts_nodes(delete_nodes(x@content, ...))
-S7::method(splice_nodes, ts_nodes)  = function(x, ..., .f) ts_nodes(splice_nodes(x@content, ..., .f = .f))
-S7::method(insert_before, ts_nodes) = function(x, ..., .what) ts_nodes(insert_before(x@content, ..., .what = .what))
-S7::method(insert_after, ts_nodes)  = function(x, ..., .what) ts_nodes(insert_after(x@content, ..., .what = .what))
+S7::method(splice_nodes, ts_nodes)  = function(x, ..., .f = NULL) ts_nodes(splice_nodes(x@content, ..., .f = .f))
+S7::method(insert_before, ts_nodes) = function(x, ..., .what = NULL) ts_nodes(insert_before(x@content, ..., .what = .what))
+S7::method(insert_after, ts_nodes)  = function(x, ..., .what = NULL) ts_nodes(insert_after(x@content, ..., .what = .what))
 
 
 # ---- map_nodes ----------------------------------------------------------
 
-S7::method(map_nodes, ts_tree) = function(x, ..., .f) {
+S7::method(map_nodes, ts_tree) = function(x, ..., .f = NULL) {
   fn = ast_as_fn(.f)
   if (is.null(fn)) stop("map_nodes requires .f", call. = FALSE)
   quos = ast_quos(...)
@@ -331,7 +331,7 @@ S7::method(map_nodes, ts_tree) = function(x, ..., .f) {
   ts_finalize_root(x, out)
 }
 
-S7::method(map_nodes, ts_node) = function(x, ..., .f) {
+S7::method(map_nodes, ts_node) = function(x, ..., .f = NULL) {
   fn = ast_as_fn(.f)
   if (is.null(fn)) stop("map_nodes requires .f", call. = FALSE)
   quos = ast_quos(...)
@@ -341,14 +341,14 @@ S7::method(map_nodes, ts_node) = function(x, ..., .f) {
 
 # ---- replace_nodes / delete_nodes / splice_nodes ------------------------
 
-S7::method(replace_nodes, ts_tree) = function(x, ..., .with) {
+S7::method(replace_nodes, ts_tree) = function(x, ..., .with = NULL) {
   quos = ast_quos(...)
   fn = function(node) ast_resolve_what(.with, node)
   out = ts_rewrite_node(x@root, quos, ast_make_mask("ts"), fn)
   ts_finalize_root(x, out)
 }
 
-S7::method(replace_nodes, ts_node) = function(x, ..., .with) {
+S7::method(replace_nodes, ts_node) = function(x, ..., .with = NULL) {
   quos = ast_quos(...)
   fn = function(node) ast_resolve_what(.with, node)
   ts_rewrite_node(x, quos, ast_make_mask("ts"), fn)
@@ -367,7 +367,7 @@ S7::method(delete_nodes, ts_node) = function(x, ...) {
   ts_rewrite_node(x, quos, ast_make_mask("ts"), fn)
 }
 
-S7::method(splice_nodes, ts_tree) = function(x, ..., .f) {
+S7::method(splice_nodes, ts_tree) = function(x, ..., .f = NULL) {
   user_fn = ast_as_fn(.f)
   if (is.null(user_fn)) stop("splice_nodes requires .f", call. = FALSE)
   fn = function(node) {
@@ -383,7 +383,7 @@ S7::method(splice_nodes, ts_tree) = function(x, ..., .f) {
   ts_finalize_root(x, out)
 }
 
-S7::method(splice_nodes, ts_node) = function(x, ..., .f) {
+S7::method(splice_nodes, ts_node) = function(x, ..., .f = NULL) {
   user_fn = ast_as_fn(.f)
   if (is.null(user_fn)) stop("splice_nodes requires .f", call. = FALSE)
   fn = function(node) {
@@ -401,27 +401,27 @@ S7::method(splice_nodes, ts_node) = function(x, ..., .f) {
 
 # ---- insert_before / insert_after ---------------------------------------
 
-S7::method(insert_before, ts_tree) = function(x, ..., .what) {
+S7::method(insert_before, ts_tree) = function(x, ..., .what = NULL) {
   quos = ast_quos(...)
   fn = function(node) c(ast_resolve_what(.what, node), list(node))
   out = ts_rewrite_node(x@root, quos, ast_make_mask("ts"), fn)
   ts_finalize_root(x, out)
 }
 
-S7::method(insert_before, ts_node) = function(x, ..., .what) {
+S7::method(insert_before, ts_node) = function(x, ..., .what = NULL) {
   quos = ast_quos(...)
   fn = function(node) c(ast_resolve_what(.what, node), list(node))
   ts_rewrite_node(x, quos, ast_make_mask("ts"), fn)
 }
 
-S7::method(insert_after, ts_tree) = function(x, ..., .what) {
+S7::method(insert_after, ts_tree) = function(x, ..., .what = NULL) {
   quos = ast_quos(...)
   fn = function(node) c(list(node), ast_resolve_what(.what, node))
   out = ts_rewrite_node(x@root, quos, ast_make_mask("ts"), fn)
   ts_finalize_root(x, out)
 }
 
-S7::method(insert_after, ts_node) = function(x, ..., .what) {
+S7::method(insert_after, ts_node) = function(x, ..., .what = NULL) {
   quos = ast_quos(...)
   fn = function(node) c(list(node), ast_resolve_what(.what, node))
   ts_rewrite_node(x, quos, ast_make_mask("ts"), fn)
