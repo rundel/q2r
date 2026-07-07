@@ -71,3 +71,13 @@ test_that("pandoc_cite validates citations are pandoc_citation", {
   expect_silent(pandoc_cite(citations = list(cit)))
   expect_error(pandoc_cite(citations = list("not-a-citation")), "pandoc_citation")
 })
+
+test_that("single-string inline slots reject vectors and NA", {
+  expect_error(pandoc_str(text = c("a", "b")), "single non-NA string")
+  expect_error(pandoc_str(text = NA_character_), "single non-NA string")
+  expect_error(pandoc_str(text = character()), "single non-NA string")
+  expect_error(pandoc_code(text = c("x", "y")), "single non-NA string")
+  expect_error(pandoc_link(url = c("a", "b")), "single non-NA string")
+  expect_error(pandoc_math(text = NA_character_), "single non-NA string")
+  expect_no_error(pandoc_str(text = "ok"))
+})

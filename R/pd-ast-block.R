@@ -13,6 +13,11 @@ NULL
 #' writer does not emit it, so it round-trips as an empty node. The slot
 #' is kept for forward compatibility.
 #'
+#' `pandoc_custom_block()` (and `pandoc_custom_inline()`) `@slots` and
+#' `@attr` are never populated from a parse: the Rust exporter emits only
+#' the node's `type_name`, so custom-node content is currently invisible
+#' to the R side, and [`to_qmd()`] cannot write custom nodes back.
+#'
 #' @name pandoc_block_constructors
 #' @seealso [pandoc_inline_constructors], [pandoc_node], [pandoc_support_types]
 NULL
@@ -61,7 +66,12 @@ pandoc_code_block = S7::new_class(
   properties = list(
     attr = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
     text = S7::new_property(S7::class_character, default = "")
-  )
+  ),
+  validator = function(self) {
+    c(
+      validate_scalar_string(self@text, "@text")
+    )
+  }
 )
 
 #' @rdname pandoc_block_constructors
@@ -73,7 +83,13 @@ pandoc_raw_block = S7::new_class(
   properties = list(
     format = S7::new_property(S7::class_character, default = ""),
     text   = S7::new_property(S7::class_character, default = "")
-  )
+  ),
+  validator = function(self) {
+    c(
+      validate_scalar_string(self@format, "@format"),
+      validate_scalar_string(self@text, "@text")
+    )
+  }
 )
 
 #' @rdname pandoc_block_constructors
@@ -139,7 +155,13 @@ pandoc_header = S7::new_class(
     level   = S7::new_property(S7::class_integer, default = 1L),
     attr    = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
     content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list())))
-  )
+  ),
+  validator = function(self) {
+    # Markdown headings are 1-6; outside that range the written `#` run
+    # silently reparses as a paragraph (and a negative level would make
+    # pampa's writer loop ~2^64 times).
+    validate_scalar_int(self@level, "@level", min = 1L, max = 6L)
+  }
 )
 
 #' @rdname pandoc_block_constructors
@@ -218,7 +240,12 @@ pandoc_note_definition_para = S7::new_class(
   properties = list(
     id      = S7::new_property(S7::class_character, default = ""),
     content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list())))
-  )
+  ),
+  validator = function(self) {
+    c(
+      validate_scalar_string(self@id, "@id")
+    )
+  }
 )
 
 #' @rdname pandoc_block_constructors
@@ -230,7 +257,12 @@ pandoc_note_definition_fenced_block = S7::new_class(
   properties = list(
     id      = S7::new_property(S7::class_character, default = ""),
     content = S7::new_property(pandoc_blocks, default = quote(pandoc_blocks(list())))
-  )
+  ),
+  validator = function(self) {
+    c(
+      validate_scalar_string(self@id, "@id")
+    )
+  }
 )
 
 #' @rdname pandoc_block_constructors
@@ -254,5 +286,10 @@ pandoc_custom_block = S7::new_class(
     type_name = S7::new_property(S7::class_character, default = ""),
     slots     = S7::new_property(S7::class_list, default = list()),
     attr      = S7::new_property(pandoc_attr, default = quote(pandoc_attr()))
-  )
+  ),
+  validator = function(self) {
+    c(
+      validate_scalar_string(self@type_name, "@type_name")
+    )
+  }
 )

@@ -74,3 +74,47 @@ test_that("pandoc_list_attributes has sensible defaults", {
   expect_identical(la@style, "Decimal")
   expect_identical(la@delim, "Period")
 })
+
+test_that("integer slots reject negatives and non-scalars", {
+  expect_error(pandoc_list_attributes(start = -3L), ">= 0")
+  expect_error(pandoc_cell(row_span = -1L), ">= 1")
+  expect_error(pandoc_cell(col_span = 0L), ">= 1")
+  expect_error(pandoc_citation(note_num = -1L), ">= 0")
+  expect_error(pandoc_citation(hash = -5L), ">= 0")
+  expect_error(pandoc_list_attributes(start = NA_integer_), "non-NA")
+  expect_no_error(pandoc_list_attributes(start = 0L))
+  expect_no_error(pandoc_cell(row_span = 3L))
+})
+
+test_that("enum slots reject unknown values instead of silently defaulting", {
+  expect_error(pandoc_citation(mode = "SupressAuthor"), "must be one of")
+  expect_error(pandoc_cell(alignment = "Middle"), "must be one of")
+  expect_error(pandoc_col_spec(alignment = "wat"), "must be one of")
+  expect_error(pandoc_col_spec(width = "wide"), "single non-NA number")
+  expect_error(pandoc_list_attributes(style = "Fancy"), "must be one of")
+  expect_error(pandoc_list_attributes(delim = "Dash"), "must be one of")
+  expect_no_error(pandoc_citation(mode = "SuppressAuthor"))
+  expect_no_error(pandoc_col_spec(width = 0.5))
+})
+
+test_that("pandoc_attr enforces scalar id and well-formed attributes", {
+  expect_error(pandoc_attr(id = NA_character_), "non-NA")
+  expect_error(pandoc_attr(id = character()), "single")
+  expect_error(pandoc_attr(id = c("a", "b")), "single")
+  expect_error(pandoc_attr(classes = c("a", NA)), "must not contain NA")
+  expect_error(pandoc_attr(attributes = c("noname", "x")), "named")
+  expect_error(pandoc_attr(attributes = c(k = NA_character_)), "NA values")
+  expect_error(pandoc_attr(attributes = c(k = "1", k = "2")), "unique")
+  expect_no_error(pandoc_attr(id = "ok", classes = "c1", attributes = c(k = "v")))
+})
+
+test_that("pandoc_meta_value validates value shape against kind", {
+  expect_error(pandoc_meta_value(kind = "map", value = list(pandoc_meta_value(kind = "null", value = NULL))), "wrong shape")
+  expect_error(pandoc_meta_value(kind = "inlines", value = list("x")), "wrong shape")
+  expect_error(pandoc_meta_value(kind = "int", value = "5"), "wrong shape")
+  expect_error(pandoc_meta_value(kind = "bool", value = 1), "wrong shape")
+  expect_no_error(pandoc_meta_value(kind = "string", value = "x"))
+  expect_no_error(pandoc_meta_value(kind = "inlines", value = as_inlines("x")))
+  expect_no_error(pandoc_meta_value(kind = "map", value = list(a = pandoc_meta_value(kind = "null", value = NULL))))
+  expect_no_error(pandoc_meta_value(kind = "list", value = list(pandoc_meta_value(kind = "int", value = 1L))))
+})

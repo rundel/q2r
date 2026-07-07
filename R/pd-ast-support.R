@@ -20,6 +20,35 @@ validate_list_of = function(x, cls, msg) {
   if (!all(purrr::map_lgl(x, S7::S7_inherits, cls))) msg
 }
 
+# Shared slot validators. Each returns NULL when valid, a message otherwise,
+# so class validators can combine them with c(). Malformed values that these
+# reject would otherwise cross the FFI silently (a negative integer
+# sign-extends to ~1.8e19 via `as usize`, an unknown enum string silently
+# falls back to the Rust default) or break far away at print/write time.
+validate_scalar_string = function(x, what) {
+  if (length(x) != 1L || is.na(x)) {
+    paste0(what, " must be a single non-NA string")
+  }
+}
+
+validate_scalar_int = function(x, what, min = NULL, max = NULL) {
+  if (length(x) != 1L || is.na(x)) {
+    return(paste0(what, " must be a single non-NA integer"))
+  }
+  if (!is.null(min) && x < min) {
+    return(paste0(what, " must be >= ", min, "; got ", x))
+  }
+  if (!is.null(max) && x > max) {
+    paste0(what, " must be <= ", max, "; got ", x)
+  }
+}
+
+validate_enum = function(x, what, allowed) {
+  if (length(x) != 1L || is.na(x) || !x %in% allowed) {
+    cli::format_inline("{what} must be one of {.or {allowed}}")
+  }
+}
+
 #' Virtual parent classes
 #'
 #' `pandoc_node` is the abstract root of the AST; every block and inline
@@ -60,7 +89,25 @@ pandoc_attr = S7::new_class(
     id         = S7::new_property(S7::class_character, default = ""),
     classes    = S7::new_property(S7::class_character, default = character()),
     attributes = S7::new_property(S7::class_character, default = character())
-  )
+  ),
+  validator = function(self) {
+    c(
+      validate_scalar_string(self@id, "@id"),
+      if (anyNA(self@classes)) "@classes must not contain NA" else NULL,
+      if (anyNA(self@attributes)) "@attributes must not contain NA values" else NULL,
+      if (length(self@attributes) > 0L) {
+        nms = names(self@attributes)
+        # The Rust Attr is a key -> value map: unnamed entries are silently
+        # dropped at write time and only one value per key survives, so both
+        # are rejected here rather than lost later.
+        if (is.null(nms) || anyNA(nms) || !all(nzchar(nms))) {
+          "@attributes must be a named character vector (key = value pairs)"
+        } else if (anyDuplicated(nms) > 0L) {
+          "@attributes names must be unique"
+        }
+      }
+    )
+  }
 )
 
 pandoc_attr_is_empty = function(attr) {
@@ -117,7 +164,34 @@ pandoc_meta_value = S7::new_class(
       "list", "map", "path", "glob", "expr"
     )
     if (length(self@kind) != 1L || !self@kind %in% allowed) {
-      cli::format_inline("@kind must be one of {.or {allowed}}")
+      return(cli::format_inline("@kind must be one of {.or {allowed}}"))
+    }
+    # Validate @value against @kind at construction: a mismatch otherwise
+    # surfaces only at write time as an opaque S7 dispatch error from deep
+    # inside meta_to_list().
+    v = self@value
+    scalar = function(ok) ok && length(v) == 1L && !is.na(v)
+    bad = switch(self@kind,
+      string = ,
+      path   = ,
+      glob   = ,
+      expr   = !scalar(is.character(v)),
+      int    = ,
+      real   = !scalar(is.numeric(v)),
+      bool   = !scalar(is.logical(v)),
+      null   = !is.null(v),
+      inlines = !S7::S7_inherits(v, pandoc_inlines),
+      blocks  = !S7::S7_inherits(v, pandoc_blocks),
+      list = !is.list(v) || S7::S7_inherits(v) ||
+        !all(purrr::map_lgl(v, S7::S7_inherits, pandoc_meta_value)),
+      map = !is.list(v) || S7::S7_inherits(v) ||
+        !all(purrr::map_lgl(v, S7::S7_inherits, pandoc_meta_value)) ||
+        (length(v) > 0L && (is.null(names(v)) || !all(nzchar(names(v)))))
+    )
+    if (isTRUE(bad)) {
+      cli::format_inline(
+        "@value has the wrong shape for kind {.val {self@kind}} (see ?pandoc_meta_value)"
+      )
     }
   }
 )
@@ -135,7 +209,17 @@ pandoc_list_attributes = S7::new_class(
     start = S7::new_property(S7::class_integer, default = 1L),
     style = S7::new_property(S7::class_character, default = "Decimal"),
     delim = S7::new_property(S7::class_character, default = "Period")
-  )
+  ),
+  validator = function(self) {
+    c(
+      validate_scalar_int(self@start, "@start", min = 0L),
+      validate_enum(self@style, "@style",
+        c("Default", "Example", "Decimal", "LowerRoman", "UpperRoman",
+          "LowerAlpha", "UpperAlpha")),
+      validate_enum(self@delim, "@delim",
+        c("Default", "Period", "OneParen", "TwoParens"))
+    )
+  }
 )
 
 #' @rdname pandoc_support_types
@@ -150,7 +234,16 @@ pandoc_citation = S7::new_class(
     suffix   = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))),
     note_num = S7::new_property(S7::class_integer, default = 0L),
     hash     = S7::new_property(S7::class_integer, default = 0L)
-  )
+  ),
+  validator = function(self) {
+    c(
+      validate_scalar_string(self@id, "@id"),
+      validate_enum(self@mode, "@mode",
+        c("NormalCitation", "AuthorInText", "SuppressAuthor")),
+      validate_scalar_int(self@note_num, "@note_num", min = 0L),
+      validate_scalar_int(self@hash, "@hash", min = 0L)
+    )
+  }
 )
 
 #' @rdname pandoc_support_types
@@ -192,7 +285,17 @@ pandoc_col_spec = S7::new_class(
   properties = list(
     alignment = S7::new_property(S7::class_character, default = "Default"),
     width     = S7::new_property(S7::class_any, default = NULL)
-  )
+  ),
+  validator = function(self) {
+    c(
+      validate_enum(self@alignment, "@alignment",
+        c("Default", "Left", "Center", "Right")),
+      if (!is.null(self@width) &&
+          (!is.numeric(self@width) || length(self@width) != 1L || is.na(self@width))) {
+        "@width must be NULL or a single non-NA number"
+      }
+    )
+  }
 )
 
 #' @rdname pandoc_support_types
@@ -206,7 +309,15 @@ pandoc_cell = S7::new_class(
     row_span  = S7::new_property(S7::class_integer, default = 1L),
     col_span  = S7::new_property(S7::class_integer, default = 1L),
     content   = S7::new_property(pandoc_blocks, default = quote(pandoc_blocks(list())))
-  )
+  ),
+  validator = function(self) {
+    c(
+      validate_enum(self@alignment, "@alignment",
+        c("Default", "Left", "Center", "Right")),
+      validate_scalar_int(self@row_span, "@row_span", min = 1L),
+      validate_scalar_int(self@col_span, "@col_span", min = 1L)
+    )
+  }
 )
 
 #' @rdname pandoc_support_types

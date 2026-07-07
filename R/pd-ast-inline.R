@@ -33,7 +33,9 @@ pandoc_str = S7::new_class(
   parent = pandoc_inline,
   properties = list(text = S7::new_property(S7::class_character, default = "")),
   validator = function(self) {
-    if (length(self@text) == 1L && grepl("[ \t\r\n]", self@text)) {
+    msg = validate_scalar_string(self@text, "@text")
+    if (!is.null(msg)) return(msg)
+    if (grepl("[ \t\r\n]", self@text)) {
       paste0(
         "@text must not contain spaces, tabs, or line breaks (use ",
         "pandoc_space / pandoc_soft_break between words); got ",
@@ -148,7 +150,12 @@ pandoc_code = S7::new_class(
   properties = list(
     attr = S7::new_property(pandoc_attr, default = quote(pandoc_attr())),
     text = S7::new_property(S7::class_character, default = "")
-  )
+  ),
+  validator = function(self) {
+    c(
+      validate_scalar_string(self@text, "@text")
+    )
+  }
 )
 
 #' @rdname pandoc_inline_constructors
@@ -174,9 +181,12 @@ pandoc_math = S7::new_class(
     text      = S7::new_property(S7::class_character, default = "")
   ),
   validator = function(self) {
-    if (length(self@math_type) != 1L || !self@math_type %in% c("inline", "display")) {
-      "@math_type must be a single \"inline\" or \"display\""
-    }
+    c(
+      if (length(self@math_type) != 1L || !self@math_type %in% c("inline", "display")) {
+        "@math_type must be a single \"inline\" or \"display\""
+      },
+      validate_scalar_string(self@text, "@text")
+    )
   }
 )
 
@@ -189,7 +199,13 @@ pandoc_raw_inline = S7::new_class(
   properties = list(
     format = S7::new_property(S7::class_character, default = ""),
     text   = S7::new_property(S7::class_character, default = "")
-  )
+  ),
+  validator = function(self) {
+    c(
+      validate_scalar_string(self@format, "@format"),
+      validate_scalar_string(self@text, "@text")
+    )
+  }
 )
 
 #' @rdname pandoc_inline_constructors
@@ -203,7 +219,13 @@ pandoc_link = S7::new_class(
     content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))),
     url     = S7::new_property(S7::class_character, default = ""),
     title   = S7::new_property(S7::class_character, default = "")
-  )
+  ),
+  validator = function(self) {
+    c(
+      validate_scalar_string(self@url, "@url"),
+      validate_scalar_string(self@title, "@title")
+    )
+  }
 )
 
 #' @rdname pandoc_inline_constructors
@@ -217,7 +239,13 @@ pandoc_image = S7::new_class(
     content = S7::new_property(pandoc_inlines, default = quote(pandoc_inlines(list()))),
     url     = S7::new_property(S7::class_character, default = ""),
     title   = S7::new_property(S7::class_character, default = "")
-  )
+  ),
+  validator = function(self) {
+    c(
+      validate_scalar_string(self@url, "@url"),
+      validate_scalar_string(self@title, "@title")
+    )
+  }
 )
 
 #' @rdname pandoc_inline_constructors
@@ -252,7 +280,12 @@ pandoc_shortcode = S7::new_class(
     is_escaped      = S7::new_property(S7::class_logical,   default = FALSE),
     positional_args = S7::new_property(S7::class_list,      default = list()),
     keyword_args    = S7::new_property(S7::class_list,      default = list())
-  )
+  ),
+  validator = function(self) {
+    c(
+      validate_scalar_string(self@name, "@name")
+    )
+  }
 )
 
 #' @rdname pandoc_inline_constructors
@@ -261,7 +294,12 @@ pandoc_note_reference = S7::new_class(
   "pandoc_note_reference",
   package = "q2r",
   parent = pandoc_inline,
-  properties = list(id = S7::new_property(S7::class_character, default = ""))
+  properties = list(id = S7::new_property(S7::class_character, default = "")),
+  validator = function(self) {
+    c(
+      validate_scalar_string(self@id, "@id")
+    )
+  }
 )
 
 #' @rdname pandoc_inline_constructors
@@ -331,5 +369,10 @@ pandoc_custom_inline = S7::new_class(
     type_name = S7::new_property(S7::class_character, default = ""),
     slots     = S7::new_property(S7::class_list, default = list()),
     attr      = S7::new_property(pandoc_attr, default = quote(pandoc_attr()))
-  )
+  ),
+  validator = function(self) {
+    c(
+      validate_scalar_string(self@type_name, "@type_name")
+    )
+  }
 )

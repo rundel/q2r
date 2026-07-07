@@ -69,3 +69,16 @@ test_that("pandoc_horizontal_rule constructs empty and inherits pandoc_block", {
   hr = pandoc_horizontal_rule()
   expect_true(S7::S7_inherits(hr, pandoc_block))
 })
+
+test_that("pandoc_header level must be a scalar in 1..6", {
+  expect_error(pandoc_header(level = -1L), ">= 1")
+  expect_error(pandoc_header(level = 0L), ">= 1")
+  expect_error(pandoc_header(level = 7L), "<= 6")
+  expect_error(pandoc_header(level = integer()), "non-NA")
+  expect_no_error(pandoc_header(level = 6L))
+})
+
+test_that("single-string block slots reject vectors and NA", {
+  expect_error(pandoc_code_block(text = c("a", "b")), "single non-NA string")
+  expect_error(pandoc_raw_block(format = NA_character_), "single non-NA string")
+})
