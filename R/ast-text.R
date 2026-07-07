@@ -113,7 +113,7 @@ S7::method(ast_text, pandoc_subscript)   = function(x) ast_text(x@content)
 S7::method(ast_text, pandoc_small_caps)  = function(x) ast_text(x@content)
 S7::method(ast_text, pandoc_quoted)      = function(x) {
   # Include the quote marks, matching pandoc.utils.stringify.
-  q = if (identical(x@quote_type, "single")) "‘’" else "“”"
+  q = if (identical(x@quote_type, "single")) "\u2018\u2019" else "\u201c\u201d"
   paste0(substr(q, 1L, 1L), ast_text(x@content), substr(q, 2L, 2L))
 }
 S7::method(ast_text, pandoc_link)        = function(x) ast_text(x@content)

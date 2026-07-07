@@ -1,4 +1,4 @@
-# q2r (development version)
+# q2r 0.0.0.9000
 
 ## Fixes and behavior changes (2026-07 review)
 

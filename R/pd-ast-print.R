@@ -43,7 +43,7 @@ pandoc_truncate = function(text,
   side = match.arg(side, c("right", "left", "center"))
   s = encodeString(if (length(text) > 1L) paste(text, collapse = " ") else text)
   if (nchar(s) <= n) return(s)
-  stringr::str_trunc(s, width = n, side = side, ellipsis = "…")
+  stringr::str_trunc(s, width = n, side = side, ellipsis = "\u2026")
 }
 
 pandoc_quote = function(text) {
@@ -343,7 +343,7 @@ S7::method(pandoc_children, pandoc_cell) = children_content
 
 pandoc_tree_chars = function() {
   if (isTRUE(cli::is_utf8_output())) {
-    list(tee = "├─", ell = "└─", vbar = "│ ", blk = "  ")
+    list(tee = "\u251c\u2500", ell = "\u2514\u2500", vbar = "\u2502 ", blk = "  ")
   } else {
     list(tee = "+-", ell = "\\-", vbar = "| ", blk = "  ")
   }

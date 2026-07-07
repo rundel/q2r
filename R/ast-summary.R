@@ -48,7 +48,7 @@ ast_summary_text = function(node, max_text) {
   txt = tryCatch(ast_text(node), error = function(e) "")
   txt = gsub("[[:space:]]+", " ", trimws(txt))
   if (nchar(txt) > max_text) {
-    paste0(substr(txt, 1L, max_text - 1L), "…")
+    paste0(substr(txt, 1L, max_text - 1L), "\u2026")
   } else {
     txt
   }
