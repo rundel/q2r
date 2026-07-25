@@ -1,5 +1,14 @@
 # q2r 0.0.0.9000
 
+## Upstream sync
+
+* Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `65a888b0`, which adds
+  GFM task lists. A `- [ ]` / `- [x]` list item now parses with a ballot-box
+  `pandoc_str` (`"☐"` / `"☒"`) and a space at the head of its first
+  paragraph, so `ast_text()` on such an item includes that prefix; `to_qmd()`
+  writes the bracket syntax back. On the tree-sitter side the markers are
+  named leaves (`task_list_marker_checked` / `task_list_marker_unchecked`).
+
 ## Fixes and behavior changes (2026-07 review)
 
 * Follow-up review fixes: single-file `write_qmd()` / `edit_qmd()` now refuse
