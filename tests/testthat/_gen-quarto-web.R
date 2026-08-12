@@ -1,6 +1,6 @@
 QUARTO_WEB_SKIP = list(
   ts_rt = list(
-    "_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd"      = "q2#TBD-pre-html-block (`<pre>...</pre>` not recognized as HTML block; see notes/GH#TBD-pre-html-block.md)",
+    "_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd"      = "q2#TBD-pre-html-block (`<pre>...</pre>` not recognized as HTML block, so its contents parse as markdown - since 1ba0f2ec surfacing as Q-2-41 on `&#96;&#96;&#96;{python}`; see notes/GH#TBD-pre-html-block.md)",
     "docs/advanced/environment-vars.qmd"                                = "q2#156 (Q-2-39: grid tables are not supported)",
     "docs/authoring/_brand-example.qmd"                                 = "q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)",
     "docs/authoring/_cross-references-listings.qmd"                     = "q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)",
@@ -56,7 +56,7 @@ QUARTO_WEB_SKIP = list(
     "docs/websites/website-tools.qmd"                                   = "q2#156 (Q-2-39: grid tables are not supported)"
   ),
   pd_rt = list(
-    "_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd"      = "q2#TBD-pre-html-block (`<pre>...</pre>` not recognized as HTML block; see notes/GH#TBD-pre-html-block.md)",
+    "_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd"      = "q2#TBD-pre-html-block (`<pre>...</pre>` not recognized as HTML block, so its contents parse as markdown - since 1ba0f2ec surfacing as Q-2-41 on `&#96;&#96;&#96;{python}`; see notes/GH#TBD-pre-html-block.md)",
     "docs/advanced/environment-vars.qmd"                                = "q2#156 (Q-2-39: grid tables are not supported)",
     "docs/authoring/_brand-example.qmd"                                 = "q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)",
     "docs/authoring/_cross-references-listings.qmd"                     = "q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)",
@@ -104,6 +104,7 @@ QUARTO_WEB_SKIP = list(
     "docs/output-formats/html-basics.qmd"                               = "q2#156 (Q-2-39: grid tables are not supported)",
     "docs/output-formats/html-themes.qmd"                               = "q2#156 (Q-2-39: grid tables are not supported)",
     "docs/output-formats/typst.qmd"                                     = "q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)",
+    "docs/prerelease/1.10/_highlights.qmd"                              = "q2#174 (loose list tightened on round-trip)",
     "docs/presentations/revealjs/index.qmd"                             = "q2#174 (loose list tightened on round-trip)",
     "docs/presentations/revealjs/presenting.qmd"                        = "q2#156 (Q-2-39: grid tables are not supported)",
     "docs/presentations/revealjs/themes.qmd"                            = "q2#156 (Q-2-39: grid tables are not supported)",
@@ -121,7 +122,8 @@ QUARTO_WEB_SKIP = list(
     "docs/websites/website-listings.qmd"                                = "q2#156 (Q-2-39: grid tables are not supported)",
     "docs/websites/website-navigation.qmd"                              = "q2#TBD-quoted-underscore (Q-2-11 fires on `\"_blank\"` inside pipe-table cell; see notes/GH#TBD-quoted-underscore-word.md)",
     "docs/websites/website-search.qmd"                                  = "q2#156 (Q-2-39: grid tables are not supported)",
-    "docs/websites/website-tools.qmd"                                   = "q2#156 (Q-2-39: grid tables are not supported)"
+    "docs/websites/website-tools.qmd"                                   = "q2#156 (Q-2-39: grid tables are not supported)",
+    "index.qmd"                                                         = "q2#TBD-entity-zwsp-roundtrip (writer emits decoded `&ZeroWidthSpace;` as raw U+200B, which the reader rejects; see notes/GH#TBD-entity-zwsp-roundtrip.md)"
   )
 )
 

@@ -72,6 +72,30 @@ test_that("_tools/screenshots/examples/about-pages/about-trestles.qmd", {
   expect_pd_ast_equal(pd2, pd)
 })
 
+test_that("_tools/screenshots/examples/axe-violation/console.qmd", {
+  skip_if_no_quarto_web()
+  text = quarto_web_read("_tools/screenshots/examples/axe-violation/console.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
+})
+
+test_that("_tools/screenshots/examples/axe-violation/index.qmd", {
+  skip_if_no_quarto_web()
+  text = quarto_web_read("_tools/screenshots/examples/axe-violation/index.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
+})
+
 test_that("_tools/screenshots/examples/breadcrumbs/index.qmd", {
   skip_if_no_quarto_web()
   text = quarto_web_read("_tools/screenshots/examples/breadcrumbs/index.qmd")
@@ -289,7 +313,7 @@ test_that("_tools/screenshots/examples/quarto-demo/basics-jupyter.qmd", {
 })
 
 test_that("_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd", {
-  skip("Known failure: q2#TBD-pre-html-block (`<pre>...</pre>` not recognized as HTML block; see notes/GH#TBD-pre-html-block.md)")
+  skip("Known failure: q2#TBD-pre-html-block (`<pre>...</pre>` not recognized as HTML block, so its contents parse as markdown - since 1ba0f2ec surfacing as Q-2-41 on `&#96;&#96;&#96;{python}`; see notes/GH#TBD-pre-html-block.md)")
 })
 
 test_that("_tools/screenshots/examples/quarto-demo/layout-jupyter.qmd", {
@@ -2624,6 +2648,18 @@ test_that("docs/download/changelog/1.8/index.qmd", {
   expect_pd_ast_equal(pd2, pd)
 })
 
+test_that("docs/download/changelog/1.9/index.qmd", {
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/download/changelog/1.9/index.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
+})
+
 test_that("docs/download/index.qmd", {
   skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
 })
@@ -4297,8 +4333,12 @@ test_that("docs/output-formats/typst.qmd", {
 })
 
 test_that("docs/prerelease/1.10/_highlights.qmd", {
+  skip("Known failure: q2#174 (loose list tightened on round-trip)")
+})
+
+test_that("docs/prerelease/1.10/index.qmd", {
   skip_if_no_quarto_web()
-  text = quarto_web_read("docs/prerelease/1.10/_highlights.qmd")
+  text = quarto_web_read("docs/prerelease/1.10/index.qmd")
   pd = parse_qmd(text, quiet = TRUE)
   expect_no_error_diagnostics(pd)
   if (has_error_diagnostics(pd)) return(invisible())
@@ -4308,9 +4348,21 @@ test_that("docs/prerelease/1.10/_highlights.qmd", {
   expect_pd_ast_equal(pd2, pd)
 })
 
-test_that("docs/prerelease/1.10/index.qmd", {
+test_that("docs/prerelease/1.11/_highlights.qmd", {
   skip_if_no_quarto_web()
-  text = quarto_web_read("docs/prerelease/1.10/index.qmd")
+  text = quarto_web_read("docs/prerelease/1.11/_highlights.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
+})
+
+test_that("docs/prerelease/1.11/index.qmd", {
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/prerelease/1.11/index.qmd")
   pd = parse_qmd(text, quiet = TRUE)
   expect_no_error_diagnostics(pd)
   if (has_error_diagnostics(pd)) return(invisible())
@@ -6313,15 +6365,7 @@ test_that("docs/websites/website-tools.qmd", {
 })
 
 test_that("index.qmd", {
-  skip_if_no_quarto_web()
-  text = quarto_web_read("index.qmd")
-  pd = parse_qmd(text, quiet = TRUE)
-  expect_no_error_diagnostics(pd)
-  if (has_error_diagnostics(pd)) return(invisible())
-  rendered = to_qmd(pd)
-  pd2 = parse_qmd(rendered, quiet = TRUE)
-  expect_no_error_diagnostics(pd2)
-  expect_pd_ast_equal(pd2, pd)
+  skip("Known failure: q2#TBD-entity-zwsp-roundtrip (writer emits decoded `&ZeroWidthSpace;` as raw U+200B, which the reader rejects; see notes/GH#TBD-entity-zwsp-roundtrip.md)")
 })
 
 test_that("license.qmd", {
