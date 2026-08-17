@@ -73,18 +73,18 @@ toc_link = function(it) {
   pandoc_link(content = as_inlines(it$text), url = paste0("#", target), title = "")
 }
 
-# Approximate Pandoc's auto-identifier algorithm: drop punctuation other than
-# space/hyphen/underscore/period, replace spaces with hyphens, lower-case, then
-# remove everything up to the first letter (ids must begin with a letter) and
-# any trailing hyphens, falling back to "section" when nothing is left.
-# Unicode letters/digits are kept (pandoc keeps them), so a constructed
-# "# Résumé" slugs to "résumé", matching the id pampa assigns on parse.
+# Mirror pampa's auto_generated_id (crates/pampa/src/utils/autoid.rs, itself
+# Pandoc's inlineListToIdentifier): lower-case, whitespace to hyphens, keep
+# only letters/digits/`_`/`.`/`-`, collapse hyphen runs (dropping leading and
+# trailing ones), remove everything up to the first letter, and fall back to
+# "section" when nothing is left.
 pandoc_slug = function(text) {
   s = stringr::str_to_lower(text)
-  s = gsub("[^\\p{L}\\p{N} _.-]", "", s, perl = TRUE)
-  s = gsub("[[:space:]]+", "-", trimws(s))
-  s = sub("^[^\\p{L}]+", "", s, perl = TRUE)
-  s = sub("-+$", "", s)
+  s = stringr::str_replace_all(s, "\\s", "-")
+  s = stringr::str_remove_all(s, "[^\\p{L}\\p{N}_.-]")
+  s = stringr::str_replace_all(s, "-+", "-")
+  s = stringr::str_remove_all(s, "^-+|-+$")
+  s = stringr::str_remove(s, "^[^\\p{L}]+")
   if (nzchar(s)) s else "section"
 }
 

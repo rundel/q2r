@@ -38,6 +38,20 @@ test_that("pandoc_slug approximates Pandoc's auto-identifier algorithm", {
   expect_equal(slug("Hello, World!"), "hello-world")          # comma + ! dropped
   expect_equal(slug("Trailing -"), "trailing")               # drop trailing hyphen
   expect_equal(slug("!!!"), "section")                       # empty -> fallback
+  expect_equal(slug("a -- b"), "a-b")                        # collapse hyphen runs
+  expect_equal(slug("1.2 Numbered"), "numbered")             # leading trim is per char class
+})
+
+test_that("pandoc_slug matches the id pampa derives on parse", {
+  headings = c(
+    "Hello, World!", "123 Leading Number", "Section 2.1", "a -- b",
+    "Résumé", "日本語 heading", "snake_case words"
+  )
+  for (h in headings) {
+    doc = parse_qmd(paste0("# ", h, "\n"), quiet = TRUE)
+    hdr = select_first(doc, is(pandoc_header))
+    expect_identical(q2r:::pandoc_slug(ast_text(hdr)), hdr@attr@id, label = h)
+  }
 })
 
 test_that("split_sections partitions at the given heading level", {
