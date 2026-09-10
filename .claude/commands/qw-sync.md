@@ -5,7 +5,7 @@ allowed-tools: [Bash, Read, Edit, Write, Agent]
 
 Bring the `tests/fixtures/quarto-web` submodule up to date with upstream `origin/main` and replay the local-only `q2r-corrections` branch on top. Upstream always wins — corrections that cannot replay cleanly are dropped and surfaced to the user as separate re-fix work.
 
-Scope: this skill never touches the parent q2r repo's recorded submodule SHA, never pushes inside the submodule, and never overwrites upstream changes with old corrections. It only manages the local `q2r-corrections` branch and the `R/tests.R` `QUARTO_WEB_SKIP` map.
+Scope: this skill never touches the parent q2r repo's recorded submodule SHA, never pushes inside the submodule, and never overwrites upstream changes with old corrections. It only manages the local `q2r-corrections` branch and the `QUARTO_WEB_SKIP` map in `tests/testthat/_gen-quarto-web.R`.
 
 ## Phase 1: Setup and report
 
@@ -60,9 +60,9 @@ The user has authorized this strategy: upstream wins, corrections that conflict 
    - Show the new upstream text: `cat tests/fixtures/quarto-web/<path>`
    - Ask whether the original issue still exists in the new upstream:
      - If yes → re-apply the fix as a fresh commit on `q2r-corrections` using the standard message format `fix(qmd): <path> — <category>`
-     - If no (upstream fixed it independently) → also remove the matching row(s) from every suite in `QUARTO_WEB_SKIP` in [R/tests.R](R/tests.R) so the test starts running.
+     - If no (upstream fixed it independently) → also remove the matching row(s) from every suite in `QUARTO_WEB_SKIP` in [tests/testthat/_gen-quarto-web.R](tests/testthat/_gen-quarto-web.R) so the test starts running.
 3. Skip-map reconciliation against current q2 issue state (same idea as `/q2-sync` Phase 6):
-   - Extract referenced numbers: `grep -oE 'q2#[0-9]+' R/tests.R | sort -u`
+   - Extract referenced numbers: `grep -oE 'q2#[0-9]+' tests/testthat/_gen-quarto-web.R | sort -u`
    - Look up state: `gh issue list --repo quarto-dev/q2 --state all --limit 500 --json number,state,title`
    - For any closed issue, surface the matching skip rows to the user before editing. Remove them only with go-ahead.
 
@@ -83,5 +83,5 @@ The user has authorized this strategy: upstream wins, corrections that conflict 
 
 - Print the final corrections set: `git -C tests/fixtures/quarto-web log --oneline origin/main..q2r-corrections`
 - Tell the user the safety ref is left in place and can be deleted manually once they're satisfied.
-- Remind the user that this skill makes no commits in the parent q2r repo — any `R/tests.R` edits are uncommitted working-tree changes for them to review.
+- Remind the user that this skill makes no commits in the parent q2r repo — any `tests/testthat/_gen-quarto-web.R` edits are uncommitted working-tree changes for them to review.
 - The parent repo's recorded submodule SHA is unchanged. Bumping it is a separate decision (it requires the gitlink advance to match what other contributors / CI will see — out of scope for this skill).
