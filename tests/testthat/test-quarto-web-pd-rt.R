@@ -1629,7 +1629,7 @@ test_that("docs/blog/_archive/posts/2026-04-06-whats-next-quarto-2/index.qmd", {
 })
 
 test_that("docs/blog/_archive/posts/2026-04-14-chrome-headless-shell/index.qmd", {
-  skip("Known failure: q2#TBD-emdash-multiline-frontmatter (#290 dash canonicalization writes an em dash as `---` inside a double-quoted multi-line YAML frontmatter scalar, which then fails to re-parse; see notes/GH#TBD-emdash-multiline-frontmatter.md)")
+  skip("Known failure: q2#671 (frontmatter em dash written as `---`, which truncates the YAML on re-read)")
 })
 
 test_that("docs/blog/_archive/posts/2026-05-05-quarto-2-parsing/index.qmd", {
@@ -6437,7 +6437,7 @@ test_that("docs/websites/website-tools.qmd", {
 })
 
 test_that("index.qmd", {
-  skip("Known failure: q2#TBD-entity-zwsp-roundtrip (writer emits decoded `&ZeroWidthSpace;` as raw U+200B, which the reader rejects; see notes/GH#TBD-entity-zwsp-roundtrip.md)")
+  skip("Known failure: q2#672 (writer emits a decoded &ZeroWidthSpace; as raw U+200B, which the grammar rejects on re-read)")
 })
 
 test_that("license.qmd", {

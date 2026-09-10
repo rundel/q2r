@@ -56,7 +56,7 @@ QUARTO_WEB_SKIP = list(
     "docs/blog/_archive/posts/2024-04-01-manuscripts-rmedicine/index.qmd"        = "q2#174 (loose list tightened on round-trip)",
     "docs/blog/_archive/posts/2025-10-20-quarto-wizard-1-0-0/index.qmd"          = "q2#174 (loose list tightened on round-trip)",
     "docs/blog/_archive/posts/2025-11-24-conf-talk-videos/index.qmd"             = "q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)",
-    "docs/blog/_archive/posts/2026-04-14-chrome-headless-shell/index.qmd"        = "q2#TBD-emdash-multiline-frontmatter (#290 dash canonicalization writes an em dash as `---` inside a double-quoted multi-line YAML frontmatter scalar, which then fails to re-parse; see notes/GH#TBD-emdash-multiline-frontmatter.md)",
+    "docs/blog/_archive/posts/2026-04-14-chrome-headless-shell/index.qmd"        = "q2#671 (frontmatter em dash written as `---`, which truncates the YAML on re-read)",
     "docs/computations/caching.qmd"                                     = "q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)",
     "docs/computations/execution-options.qmd"                           = "q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)",
     "docs/computations/julia.qmd"                                       = "q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)",
@@ -100,7 +100,7 @@ QUARTO_WEB_SKIP = list(
     "docs/websites/website-navigation.qmd"                              = "q2#TBD-quoted-underscore (Q-2-11 fires on `\"_blank\"` inside pipe-table cell; see notes/GH#TBD-quoted-underscore-word.md)",
     "docs/websites/website-search.qmd"                                  = "q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)",
     "docs/websites/website-tools.qmd"                                   = "q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)",
-    "index.qmd"                                                         = "q2#TBD-entity-zwsp-roundtrip (writer emits decoded `&ZeroWidthSpace;` as raw U+200B, which the reader rejects; see notes/GH#TBD-entity-zwsp-roundtrip.md)"
+    "index.qmd"                                                         = "q2#672 (writer emits a decoded &ZeroWidthSpace; as raw U+200B, which the grammar rejects on re-read)"
   )
 )
 
