@@ -377,7 +377,7 @@ test_that("docs/_require-1.4.qmd", {
 })
 
 test_that("docs/advanced/environment-vars.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/advanced/html/external-sources.qmd", {
@@ -501,7 +501,15 @@ test_that("docs/advanced/typst/typst-gather.qmd", {
 })
 
 test_that("docs/authoring/_brand-example.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/_brand-example.qmd")
+  ts = parse_qmd(text, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts)
+  if (has_error_diagnostics(ts)) return(invisible())
+  rendered = to_qmd(ts)
+  ts2 = parse_qmd(rendered, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_cross-reference-divs-diagram.qmd", {
@@ -577,7 +585,15 @@ test_that("docs/authoring/_cross-references-callouts.qmd", {
 })
 
 test_that("docs/authoring/_cross-references-listings.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/_cross-references-listings.qmd")
+  ts = parse_qmd(text, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts)
+  if (has_error_diagnostics(ts)) return(invisible())
+  rendered = to_qmd(ts)
+  ts2 = parse_qmd(rendered, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
 })
 
 test_that("docs/authoring/_embed-examples/sample-notebook-view.qmd", {
@@ -797,11 +813,11 @@ test_that("docs/authoring/appendices.qmd", {
 })
 
 test_that("docs/authoring/article-layout.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/authoring/brand.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/authoring/callouts.qmd", {
@@ -817,7 +833,7 @@ test_that("docs/authoring/callouts.qmd", {
 })
 
 test_that("docs/authoring/citations.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/authoring/code-annotation-example/revealjs.qmd", {
@@ -869,7 +885,7 @@ test_that("docs/authoring/contents.qmd", {
 })
 
 test_that("docs/authoring/create-citeable-articles.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/authoring/cross-reference-options.qmd", {
@@ -945,7 +961,7 @@ test_that("docs/authoring/figures.qmd", {
 })
 
 test_that("docs/authoring/front-matter.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/authoring/includes.qmd", {
@@ -985,7 +1001,7 @@ test_that("docs/authoring/lipsum.qmd", {
 })
 
 test_that("docs/authoring/markdown-basics.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/authoring/notebook-embed.qmd", {
@@ -1037,7 +1053,7 @@ test_that("docs/authoring/shortcodes.qmd", {
 })
 
 test_that("docs/authoring/tables.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/authoring/title-blocks.qmd", {
@@ -1257,7 +1273,7 @@ test_that("docs/blog/_archive/posts/2023-05-22-quarto-for-academics/index.qmd", 
 })
 
 test_that("docs/blog/_archive/posts/2023-12-05-asa-traveling-courses/index.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/blog/_archive/posts/2023-12-07-quarto-dashboards-demo/index.qmd", {
@@ -1417,7 +1433,15 @@ test_that("docs/blog/_archive/posts/2024-07-11-1.5-release/index.qmd", {
 })
 
 test_that("docs/blog/_archive/posts/2024-10-15-conf-workshops-materials/index.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/_archive/posts/2024-10-15-conf-workshops-materials/index.qmd")
+  ts = parse_qmd(text, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts)
+  if (has_error_diagnostics(ts)) return(invisible())
+  rendered = to_qmd(ts)
+  ts2 = parse_qmd(rendered, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
 })
 
 test_that("docs/blog/_archive/posts/2024-11-06-conf-talks/index.qmd", {
@@ -1517,7 +1541,15 @@ test_that("docs/blog/_archive/posts/2025-05-19-quarto-codespaces/index.qmd", {
 })
 
 test_that("docs/blog/_archive/posts/2025-07-24-parameterized-reports-python/index.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/_archive/posts/2025-07-24-parameterized-reports-python/index.qmd")
+  ts = parse_qmd(text, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts)
+  if (has_error_diagnostics(ts)) return(invisible())
+  rendered = to_qmd(ts)
+  ts2 = parse_qmd(rendered, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
 })
 
 test_that("docs/blog/_archive/posts/2025-07-28-R-package-release-1.5/index.qmd", {
@@ -1569,7 +1601,7 @@ test_that("docs/blog/_archive/posts/2025-10-27-conf-workshops-materials/index.qm
 })
 
 test_that("docs/blog/_archive/posts/2025-11-24-conf-talk-videos/index.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/blog/_archive/posts/2026-03-05-pdf-accessibility-and-standards/index.qmd", {
@@ -1669,7 +1701,15 @@ test_that("docs/books/_book-vs-website-key.qmd", {
 })
 
 test_that("docs/books/book-basics.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/books/book-basics.qmd")
+  ts = parse_qmd(text, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts)
+  if (has_error_diagnostics(ts)) return(invisible())
+  rendered = to_qmd(ts)
+  ts2 = parse_qmd(rendered, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
 })
 
 test_that("docs/books/book-crossrefs.qmd", {
@@ -1697,7 +1737,15 @@ test_that("docs/books/book-output.qmd", {
 })
 
 test_that("docs/books/book-structure.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/books/book-structure.qmd")
+  ts = parse_qmd(text, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts)
+  if (has_error_diagnostics(ts)) return(invisible())
+  rendered = to_qmd(ts)
+  ts2 = parse_qmd(rendered, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
 })
 
 test_that("docs/cli/add.qmd", {
@@ -1965,11 +2013,11 @@ test_that("docs/cli/use.qmd", {
 })
 
 test_that("docs/computations/caching.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/computations/execution-options.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/computations/inline-code.qmd", {
@@ -1985,7 +2033,7 @@ test_that("docs/computations/inline-code.qmd", {
 })
 
 test_that("docs/computations/julia.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/computations/ojs.qmd", {
@@ -2685,11 +2733,27 @@ test_that("docs/download/changelog/1.9/index.qmd", {
 })
 
 test_that("docs/download/index.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/download/index.qmd")
+  ts = parse_qmd(text, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts)
+  if (has_error_diagnostics(ts)) return(invisible())
+  rendered = to_qmd(ts)
+  ts2 = parse_qmd(rendered, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
 })
 
 test_that("docs/download/prerelease.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/download/prerelease.qmd")
+  ts = parse_qmd(text, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts)
+  if (has_error_diagnostics(ts)) return(invisible())
+  rendered = to_qmd(ts)
+  ts2 = parse_qmd(rendered, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
 })
 
 test_that("docs/download/release.qmd", {
@@ -2825,7 +2889,15 @@ test_that("docs/extensions/creating.qmd", {
 })
 
 test_that("docs/extensions/distributing.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/extensions/distributing.qmd")
+  ts = parse_qmd(text, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts)
+  if (has_error_diagnostics(ts)) return(invisible())
+  rendered = to_qmd(ts)
+  ts2 = parse_qmd(rendered, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
 })
 
 test_that("docs/extensions/engine.qmd", {
@@ -2925,7 +2997,15 @@ test_that("docs/extensions/listing-revealjs.qmd", {
 })
 
 test_that("docs/extensions/lua-api.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/extensions/lua-api.qmd")
+  ts = parse_qmd(text, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts)
+  if (has_error_diagnostics(ts)) return(invisible())
+  rendered = to_qmd(ts)
+  ts2 = parse_qmd(rendered, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
 })
 
 test_that("docs/extensions/lua.qmd", {
@@ -3037,7 +3117,7 @@ test_that("docs/faq/index.qmd", {
 })
 
 test_that("docs/faq/rmarkdown.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/gallery/index.qmd", {
@@ -3089,7 +3169,7 @@ test_that("docs/get-started/authoring/index.qmd", {
 })
 
 test_that("docs/get-started/authoring/jupyter.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/get-started/authoring/neovim.qmd", {
@@ -3117,7 +3197,7 @@ test_that("docs/get-started/authoring/positron.qmd", {
 })
 
 test_that("docs/get-started/authoring/rstudio.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/get-started/authoring/text-editor.qmd", {
@@ -3241,7 +3321,7 @@ test_that("docs/get-started/computations/index.qmd", {
 })
 
 test_that("docs/get-started/computations/jupyter.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/get-started/computations/neovim.qmd", {
@@ -3257,7 +3337,7 @@ test_that("docs/get-started/computations/neovim.qmd", {
 })
 
 test_that("docs/get-started/computations/positron.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/get-started/computations/rstudio.qmd", {
@@ -3285,7 +3365,7 @@ test_that("docs/get-started/computations/text-editor.qmd", {
 })
 
 test_that("docs/get-started/computations/vscode.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/get-started/hello/_hello.qmd", {
@@ -3337,15 +3417,23 @@ test_that("docs/get-started/hello/index.qmd", {
 })
 
 test_that("docs/get-started/hello/jupyter.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/get-started/hello/neovim.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/get-started/hello/positron.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/get-started/hello/positron.qmd")
+  ts = parse_qmd(text, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts)
+  if (has_error_diagnostics(ts)) return(invisible())
+  rendered = to_qmd(ts)
+  ts2 = parse_qmd(rendered, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
 })
 
 test_that("docs/get-started/hello/rstudio.qmd", {
@@ -3373,11 +3461,11 @@ test_that("docs/get-started/hello/rstudio/_hello.qmd", {
 })
 
 test_that("docs/get-started/hello/text-editor.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/get-started/hello/vscode.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/get-started/index.qmd", {
@@ -4137,7 +4225,7 @@ test_that("docs/manuscripts/index.qmd", {
 })
 
 test_that("docs/manuscripts/next-steps.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/manuscripts/publishing.qmd", {
@@ -4249,7 +4337,7 @@ test_that("docs/output-formats/html-accessibility.qmd", {
 })
 
 test_that("docs/output-formats/html-basics.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/output-formats/html-code.qmd", {
@@ -4313,7 +4401,7 @@ test_that("docs/output-formats/html-themes-more.qmd", {
 })
 
 test_that("docs/output-formats/html-themes.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/output-formats/hugo.qmd", {
@@ -4401,7 +4489,7 @@ test_that("docs/output-formats/typst-custom.qmd", {
 })
 
 test_that("docs/output-formats/typst.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/prerelease/1.10/_highlights.qmd", {
@@ -5317,11 +5405,11 @@ test_that("docs/presentations/revealjs/index.qmd", {
 })
 
 test_that("docs/presentations/revealjs/presenting.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/presentations/revealjs/themes.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/projects/binder.qmd", {
@@ -5373,7 +5461,7 @@ test_that("docs/projects/profiles.qmd", {
 })
 
 test_that("docs/projects/quarto-projects.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/projects/scripts.qmd", {
@@ -5389,7 +5477,7 @@ test_that("docs/projects/scripts.qmd", {
 })
 
 test_that("docs/projects/virtual-environments.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/publishing/_confluence_examples/confluence-demo.qmd", {
@@ -5429,7 +5517,7 @@ test_that("docs/publishing/confluence.qmd", {
 })
 
 test_that("docs/publishing/github-pages.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/publishing/hugging-face.qmd", {
@@ -6201,15 +6289,15 @@ test_that("docs/tools/_examples/python.qmd", {
 })
 
 test_that("docs/tools/_jupyter-lab-extension-install.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/tools/jupyter-lab-extension.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/tools/jupyter-lab.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/tools/neovim.qmd", {
@@ -6381,7 +6469,15 @@ test_that("docs/visual-editor/markdown.qmd", {
 })
 
 test_that("docs/visual-editor/options.qmd", {
-  skip("Known failure: q2#TBD-kbd-shortcode-backslash (kbd shortcode rejects `\\\\` in param values; misleading Q-2-34 diagnostic)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/visual-editor/options.qmd")
+  ts = parse_qmd(text, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts)
+  if (has_error_diagnostics(ts)) return(invisible())
+  rendered = to_qmd(ts)
+  ts2 = parse_qmd(rendered, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
 })
 
 test_that("docs/visual-editor/technical.qmd", {
@@ -6409,7 +6505,15 @@ test_that("docs/websites/website-about.qmd", {
 })
 
 test_that("docs/websites/website-basics.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/websites/website-basics.qmd")
+  ts = parse_qmd(text, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts)
+  if (has_error_diagnostics(ts)) return(invisible())
+  rendered = to_qmd(ts)
+  ts2 = parse_qmd(rendered, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
 })
 
 test_that("docs/websites/website-blog.qmd", {
@@ -6425,7 +6529,15 @@ test_that("docs/websites/website-blog.qmd", {
 })
 
 test_that("docs/websites/website-drafts.qmd", {
-  skip("Known failure: q2#TBD-fenced-div-close-after-block (q2#206 fix introduced regression: closing `:::` of a fenced div containing a child block fails to parse; see notes/GH#TBD-fenced-div-close-after-inner-block.md)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/websites/website-drafts.qmd")
+  ts = parse_qmd(text, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts)
+  if (has_error_diagnostics(ts)) return(invisible())
+  rendered = to_qmd(ts)
+  ts2 = parse_qmd(rendered, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
 })
 
 test_that("docs/websites/website-listings-custom.qmd", {
@@ -6441,7 +6553,7 @@ test_that("docs/websites/website-listings-custom.qmd", {
 })
 
 test_that("docs/websites/website-listings.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/websites/website-llms.qmd", {
@@ -6461,11 +6573,11 @@ test_that("docs/websites/website-navigation.qmd", {
 })
 
 test_that("docs/websites/website-search.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("docs/websites/website-tools.qmd", {
-  skip("Known failure: q2#156 (Q-2-39: grid tables are not supported)")
+  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
 })
 
 test_that("index.qmd", {

@@ -381,7 +381,7 @@ fn config_value_to_r(cv: &ConfigValue) -> Robj {
         ConfigValueKind::Path(s) => list!(kind = "path", value = s.as_str()).into(),
         ConfigValueKind::Glob(s) => list!(kind = "glob", value = s.as_str()).into(),
         ConfigValueKind::Expr(s) => list!(kind = "expr", value = s.as_str()).into(),
-        ConfigValueKind::Scalar(_) => {
+        ConfigValueKind::Scalar { .. } => {
             let inner = serde_json::to_value(&cv.value)
                 .ok()
                 .and_then(|v| v.get("Scalar").cloned())

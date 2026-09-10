@@ -2,6 +2,55 @@
 
 ## Upstream sync
 
+* Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `5a12a773` (past the
+  v0.30.0 tag). None of the crates q2r links changed in this range, so
+  `parse_qmd()`, `to_qmd()`, and the diagnostic surface are unchanged; the
+  bump only restamps the git-sourced q2 crates to 0.30.0 in `Cargo.lock`.
+
+* Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `b7e7c96a`. A
+  paragraph opening with a block-level raw HTML tag is now split rather than
+  kept verbatim: runs of block tags become one `pandoc_raw_block` joined by
+  newlines and the prose between them parses as a `pandoc_plain` with full
+  inline markup, so a tight `<div>` around a line of prose yields three
+  blocks and an HTML comment followed by text on the same line yields two.
+  `<pre>`, `<script>`, `<style>`, and `<textarea>` stay one verbatim raw
+  block. `to_qmd()` writes block-level raw HTML (tag runs, raw-text
+  elements, comments) bare instead of inside a `{=html}` fence and keeps the
+  fence for anything else. Because blocks are written blank-line separated, a
+  split interior re-reads as a `pandoc_paragraph`; the shape is stable from
+  the first write on. Known upstream regression: an authored `{=html}` fence
+  around a `<style>` or `<script>` element is also written bare, and when its
+  content contains braces the output does not re-parse.
+
+* Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `914f2069` (v0.29.0).
+  A paragraph that opens with a block-level raw HTML tag (`<div>`,
+  `<details>`, `<pre>`, an HTML comment, ...) now parses as a
+  `pandoc_raw_block` holding the paragraph verbatim instead of a paragraph of
+  `pandoc_raw_inline`s, and `to_qmd()` writes an HTML-comment raw block
+  natively rather than as a `{=html}` fence. Fenced-div openers with no space
+  after the colons (`:::{.foo}`, `:::foo`) now parse on both ASTs. A
+  shortcode delimiter missing its space is reported as a single Q-2-52 error
+  that suppresses any later diagnostics (with a hint saying so), and Q-2-50
+  also fires on a doubled-brace opener nested inside a display fence.
+
+* The pins between `65a888b0` and `914f2069` (`1ba0f2ec`, `f8df9521`,
+  `fdf55e77`, `596ceb57`, `eda49bc4`) also changed what `parse_qmd()` and
+  `to_qmd()` produce. Reserved `id=` / `class=` key-value attributes are
+  promoted into the id and class slots (a later `id=` overrides `#id`), and
+  an id the `#id` shorthand cannot spell writes back as `id="..."`. Values
+  under `brand:` in front matter arrive as plain `string` scalars rather than
+  markdown inlines, so `brand: _brand.yml` no longer warns. A metadata value
+  that fails to parse as markdown (Q-1-20) now carries the child parse's
+  diagnostics as located details. Naked shortcode values accept backslash
+  escapes, non-ASCII, `*`, `^`, and `|`, with a decoded `>` written back
+  quoted. A braced language with extra classes writes as `{python .marimo}`.
+  `...` is an ellipsis at every position, `--` / `---` and straight quotes
+  canonicalize on read and write, adjacent footnote definitions no longer
+  merge, named entities decode in prose (a decoded `"` writes back as `\"`),
+  and `<user@example.com>` parses as a mailto link with the `email` class.
+  Literal braces raise Q-2-41 inside emphasis, strong, quotes, superscript,
+  and pipe-table cells as well as in plain prose.
+
 * Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `65a888b0`, which adds
   GFM task lists. A `- [ ]` / `- [x]` list item now parses with a ballot-box
   `pandoc_str` (`"☐"` / `"☒"`) and a space at the head of its first
