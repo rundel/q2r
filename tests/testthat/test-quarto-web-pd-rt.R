@@ -313,7 +313,7 @@ test_that("_tools/screenshots/examples/quarto-demo/basics-jupyter.qmd", {
 })
 
 test_that("_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd", {
-  skip("Known failure: q2#TBD-pre-html-block (`<pre>...</pre>` not recognized as HTML block, so its contents parse as markdown - since 1ba0f2ec surfacing as Q-2-41 on `&#96;&#96;&#96;{python}`; see notes/GH#TBD-pre-html-block.md)")
+  skip("Known failure: q2#674 (bare `<pre>` contents are tokenized as markdown before the verbatim lift, so `{python}` after entity backticks fails with Q-2-41)")
 })
 
 test_that("_tools/screenshots/examples/quarto-demo/layout-jupyter.qmd", {
@@ -377,7 +377,7 @@ test_that("docs/_require-1.4.qmd", {
 })
 
 test_that("docs/advanced/environment-vars.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)")
 })
 
 test_that("docs/advanced/html/external-sources.qmd", {
@@ -813,11 +813,11 @@ test_that("docs/authoring/appendices.qmd", {
 })
 
 test_that("docs/authoring/article-layout.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#TBD-list-table-hard-break (the writer emits the line after a hard line break inside a list-table cell at column 0, so the div re-reads as Q-2-35 Invalid List-Table Structure; see notes/GH#TBD-list-table-hard-break.md)")
 })
 
 test_that("docs/authoring/brand.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)")
 })
 
 test_that("docs/authoring/callouts.qmd", {
@@ -833,7 +833,7 @@ test_that("docs/authoring/callouts.qmd", {
 })
 
 test_that("docs/authoring/citations.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)")
 })
 
 test_that("docs/authoring/code-annotation-example/revealjs.qmd", {
@@ -885,7 +885,7 @@ test_that("docs/authoring/contents.qmd", {
 })
 
 test_that("docs/authoring/create-citeable-articles.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)")
 })
 
 test_that("docs/authoring/cross-reference-options.qmd", {
@@ -961,11 +961,11 @@ test_that("docs/authoring/figures.qmd", {
 })
 
 test_that("docs/authoring/front-matter.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#TBD-list-table-hard-break (the writer emits the line after a hard line break inside a list-table cell at column 0, so the div re-reads as Q-2-35 Invalid List-Table Structure; see notes/GH#TBD-list-table-hard-break.md)")
 })
 
 test_that("docs/authoring/includes.qmd", {
-  skip("Known failure: q2#TBD-raw-text-fence-dropped (since b7e7c96a the writer emits a `<style>`/`<script>` RawBlock bare because its opening tag is a raw-text element, but naked CSS/JS braces lex as an attribute block and the re-parse errors; see notes/GH#TBD-raw-text-fence-dropped.md)")
+  skip("Known failure: q2#674 (writer strips the `{=html}` fence from a `<style>` RawBlock and the bare CSS braces fail to re-read)")
 })
 
 test_that("docs/authoring/language.qmd", {
@@ -993,7 +993,7 @@ test_that("docs/authoring/lipsum.qmd", {
 })
 
 test_that("docs/authoring/markdown-basics.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#TBD-list-table-hard-break (the writer emits the line after a hard line break inside a list-table cell at column 0, so the div re-reads as Q-2-35 Invalid List-Table Structure; see notes/GH#TBD-list-table-hard-break.md)")
 })
 
 test_that("docs/authoring/notebook-embed.qmd", {
@@ -1045,7 +1045,7 @@ test_that("docs/authoring/shortcodes.qmd", {
 })
 
 test_that("docs/authoring/tables.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)")
 })
 
 test_that("docs/authoring/title-blocks.qmd", {
@@ -1265,7 +1265,7 @@ test_that("docs/blog/_archive/posts/2023-05-22-quarto-for-academics/index.qmd", 
 })
 
 test_that("docs/blog/_archive/posts/2023-12-05-asa-traveling-courses/index.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#TBD-list-table-hard-break (the writer emits the line after a hard line break inside a list-table cell at column 0, so the div re-reads as Q-2-35 Invalid List-Table Structure; see notes/GH#TBD-list-table-hard-break.md)")
 })
 
 test_that("docs/blog/_archive/posts/2023-12-07-quarto-dashboards-demo/index.qmd", {
@@ -1577,7 +1577,15 @@ test_that("docs/blog/_archive/posts/2025-10-27-conf-workshops-materials/index.qm
 })
 
 test_that("docs/blog/_archive/posts/2025-11-24-conf-talk-videos/index.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/_archive/posts/2025-11-24-conf-talk-videos/index.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/_archive/posts/2026-03-05-pdf-accessibility-and-standards/index.qmd", {
@@ -1629,7 +1637,15 @@ test_that("docs/blog/_archive/posts/2026-04-06-whats-next-quarto-2/index.qmd", {
 })
 
 test_that("docs/blog/_archive/posts/2026-04-14-chrome-headless-shell/index.qmd", {
-  skip("Known failure: q2#671 (frontmatter em dash written as `---`, which truncates the YAML on re-read)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/blog/_archive/posts/2026-04-14-chrome-headless-shell/index.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/blog/_archive/posts/2026-05-05-quarto-2-parsing/index.qmd", {
@@ -1981,11 +1997,19 @@ test_that("docs/cli/use.qmd", {
 })
 
 test_that("docs/computations/caching.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/computations/caching.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/computations/execution-options.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)")
 })
 
 test_that("docs/computations/inline-code.qmd", {
@@ -2001,7 +2025,15 @@ test_that("docs/computations/inline-code.qmd", {
 })
 
 test_that("docs/computations/julia.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/computations/julia.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/computations/ojs.qmd", {
@@ -2437,11 +2469,11 @@ test_that("docs/dashboards/data-display.qmd", {
 })
 
 test_that("docs/dashboards/deployment.qmd", {
-  skip("Known failure: q2#TBD-raw-text-fence-dropped (since b7e7c96a the writer emits a `<style>`/`<script>` RawBlock bare because its opening tag is a raw-text element, but naked CSS/JS braces lex as an attribute block and the re-parse errors; see notes/GH#TBD-raw-text-fence-dropped.md)")
+  skip("Known failure: q2#674 (writer strips the `{=html}` fence from a `<style>` RawBlock and the bare CSS braces fail to re-read)")
 })
 
 test_that("docs/dashboards/index.qmd", {
-  skip("Known failure: q2#TBD-raw-text-fence-dropped (since b7e7c96a the writer emits a `<style>`/`<script>` RawBlock bare because its opening tag is a raw-text element, but naked CSS/JS braces lex as an attribute block and the re-parse errors; see notes/GH#TBD-raw-text-fence-dropped.md)")
+  skip("Known failure: q2#674 (writer strips the `{=html}` fence from a `<style>` RawBlock and the bare CSS braces fail to re-read)")
 })
 
 test_that("docs/dashboards/inputs.qmd", {
@@ -3061,7 +3093,15 @@ test_that("docs/faq/index.qmd", {
 })
 
 test_that("docs/faq/rmarkdown.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/faq/rmarkdown.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/gallery/index.qmd", {
@@ -3113,7 +3153,15 @@ test_that("docs/get-started/authoring/index.qmd", {
 })
 
 test_that("docs/get-started/authoring/jupyter.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/get-started/authoring/jupyter.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/get-started/authoring/neovim.qmd", {
@@ -3141,7 +3189,15 @@ test_that("docs/get-started/authoring/positron.qmd", {
 })
 
 test_that("docs/get-started/authoring/rstudio.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/get-started/authoring/rstudio.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/get-started/authoring/text-editor.qmd", {
@@ -3265,7 +3321,15 @@ test_that("docs/get-started/computations/index.qmd", {
 })
 
 test_that("docs/get-started/computations/jupyter.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/get-started/computations/jupyter.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/get-started/computations/neovim.qmd", {
@@ -3281,7 +3345,15 @@ test_that("docs/get-started/computations/neovim.qmd", {
 })
 
 test_that("docs/get-started/computations/positron.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/get-started/computations/positron.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/get-started/computations/rstudio.qmd", {
@@ -3309,7 +3381,15 @@ test_that("docs/get-started/computations/text-editor.qmd", {
 })
 
 test_that("docs/get-started/computations/vscode.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/get-started/computations/vscode.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/get-started/hello/_hello.qmd", {
@@ -3361,11 +3441,19 @@ test_that("docs/get-started/hello/index.qmd", {
 })
 
 test_that("docs/get-started/hello/jupyter.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/get-started/hello/jupyter.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/get-started/hello/neovim.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#174 (loose list tightened on round-trip; a list table nested in a list item)")
 })
 
 test_that("docs/get-started/hello/positron.qmd", {
@@ -3397,11 +3485,11 @@ test_that("docs/get-started/hello/rstudio/_hello.qmd", {
 })
 
 test_that("docs/get-started/hello/text-editor.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#174 (loose list tightened on round-trip; a list table nested in a list item)")
 })
 
 test_that("docs/get-started/hello/vscode.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#174 (loose list tightened on round-trip; a list table nested in a list item)")
 })
 
 test_that("docs/get-started/index.qmd", {
@@ -4117,11 +4205,19 @@ test_that("docs/manuscripts/components.qmd", {
 })
 
 test_that("docs/manuscripts/index.qmd", {
-  skip("Known failure: q2#TBD-raw-text-fence-dropped (since b7e7c96a the writer emits a `<style>`/`<script>` RawBlock bare because its opening tag is a raw-text element, but naked CSS/JS braces lex as an attribute block and the re-parse errors; see notes/GH#TBD-raw-text-fence-dropped.md)")
+  skip("Known failure: q2#674 (writer strips the `{=html}` fence from a `<style>` RawBlock and the bare CSS braces fail to re-read)")
 })
 
 test_that("docs/manuscripts/next-steps.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/manuscripts/next-steps.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/manuscripts/publishing.qmd", {
@@ -4233,7 +4329,15 @@ test_that("docs/output-formats/html-accessibility.qmd", {
 })
 
 test_that("docs/output-formats/html-basics.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/html-basics.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/output-formats/html-code.qmd", {
@@ -4297,7 +4401,7 @@ test_that("docs/output-formats/html-themes-more.qmd", {
 })
 
 test_that("docs/output-formats/html-themes.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)")
 })
 
 test_that("docs/output-formats/hugo.qmd", {
@@ -4385,7 +4489,15 @@ test_that("docs/output-formats/typst-custom.qmd", {
 })
 
 test_that("docs/output-formats/typst.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/output-formats/typst.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/prerelease/1.10/_highlights.qmd", {
@@ -5285,11 +5397,19 @@ test_that("docs/presentations/revealjs/index.qmd", {
 })
 
 test_that("docs/presentations/revealjs/presenting.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)")
 })
 
 test_that("docs/presentations/revealjs/themes.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/presentations/revealjs/themes.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/projects/binder.qmd", {
@@ -5333,7 +5453,7 @@ test_that("docs/projects/profiles.qmd", {
 })
 
 test_that("docs/projects/quarto-projects.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)")
 })
 
 test_that("docs/projects/scripts.qmd", {
@@ -5349,7 +5469,7 @@ test_that("docs/projects/scripts.qmd", {
 })
 
 test_that("docs/projects/virtual-environments.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#TBD-list-table-hard-break (the writer emits the line after a hard line break inside a list-table cell at column 0, so the div re-reads as Q-2-35 Invalid List-Table Structure; see notes/GH#TBD-list-table-hard-break.md)")
 })
 
 test_that("docs/publishing/_confluence_examples/confluence-demo.qmd", {
@@ -5389,7 +5509,15 @@ test_that("docs/publishing/confluence.qmd", {
 })
 
 test_that("docs/publishing/github-pages.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/publishing/github-pages.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/publishing/hugging-face.qmd", {
@@ -6161,15 +6289,31 @@ test_that("docs/tools/_examples/python.qmd", {
 })
 
 test_that("docs/tools/_jupyter-lab-extension-install.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/tools/_jupyter-lab-extension-install.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/tools/jupyter-lab-extension.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#174 (loose list tightened on round-trip; a list table nested in a list item)")
 })
 
 test_that("docs/tools/jupyter-lab.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/tools/jupyter-lab.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/tools/neovim.qmd", {
@@ -6409,7 +6553,7 @@ test_that("docs/websites/website-listings-custom.qmd", {
 })
 
 test_that("docs/websites/website-listings.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)")
 })
 
 test_that("docs/websites/website-llms.qmd", {
@@ -6429,15 +6573,23 @@ test_that("docs/websites/website-navigation.qmd", {
 })
 
 test_that("docs/websites/website-search.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/websites/website-search.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/websites/website-tools.qmd", {
-  skip("Known failure: q2#TBD-grid-tables-unsupported (Q-2-39: grid tables are not supported; q2#156 closed 2026-08-28 as completed by the Q-2-39 detection diagnostic itself, no upstream issue tracks grid-table support)")
+  skip("Known failure: q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)")
 })
 
 test_that("index.qmd", {
-  skip("Known failure: q2#672 (writer emits a decoded &ZeroWidthSpace; as raw U+200B, which the grammar rejects on re-read)")
+  skip("Known failure: q2#TBD-html-split-plain-paragraph (the html-block lift parses the `<button>` labels in the nav-pills `<ul>` as Plain between raw tag runs; the writer blank-line separates blocks so they re-read as Paragraph, a `<p>` inside a phrasing element on render; upstream bd-8md6k9dv; fixed point after one write; see notes/GH#TBD-html-split-plain-paragraph.md)")
 })
 
 test_that("license.qmd", {

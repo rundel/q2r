@@ -217,7 +217,8 @@
     Output
       ts_tree language=qmd
       └─document
-        ├─metadata "---\ntitle: Demo\nauthor: A\n---\n"
+        ├─metadata
+        │ └─body: yaml "title: Demo\nauthor: A\n"
         ├─section "\n"
         └─section
           ├─atx_heading
@@ -381,7 +382,8 @@
     Output
       ts_tree language=qmd
       \-document
-        +-metadata "---\ntitle: Demo\nauthor: A\n---\n"
+        +-metadata
+        | \-body: yaml "title: Demo\nauthor: A\n"
         +-section "\n"
         \-section
           +-atx_heading

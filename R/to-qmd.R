@@ -119,7 +119,8 @@ ts_text_or = function(fallback = ts_concat) {
 ts_kind_handlers = list(
   document = ts_concat,
   section  = ts_text_or(ts_concat),
-  metadata = ts_concat,
+  # The `---` delimiter lines are hidden tokens, so only `@text` carries them.
+  metadata = ts_text_or(function(x) paste0("---\n", ts_concat(x), "---\n")),
 
   atx_heading = ts_text_or(function(x) {
     parts = ts_children_qmd(x)

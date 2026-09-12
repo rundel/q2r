@@ -2,6 +2,28 @@
 
 ## Upstream sync
 
+* Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `890b3755` (q2#672).
+  Unicode format characters (zero width space, soft hyphen, bidi marks and
+  controls, word joiner, the MathML invisible operators, U+FEFF, and the rest
+  of category Cf) now parse raw in prose on both ASTs instead of raising a
+  parse error, and `to_qmd()` spells them as character references (the
+  preferred WHATWG name such as `&ZeroWidthSpace;` or `&shy;`, otherwise
+  `&#xXXXX;`); ZWNJ / ZWJ still parse and write raw. `to_qmd()` also escapes
+  a literal `&` that would lex as a named or numeric character reference, so
+  a `str` holding `&copy;` writes as `\&copy;` and re-reads as text rather
+  than as `©`; `AT&T` and `a & b` are untouched.
+
+* Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `c1d23393`. A `---`
+  inside a YAML frontmatter value no longer truncates the metadata: every
+  later key survives in `@meta`, a quoted `"a --- b"` no longer raises
+  Q-0-99, and an em dash in a frontmatter string (which `to_qmd()` spells
+  `---`) now round-trips. On the tree-sitter AST the `metadata` node gains a
+  `yaml` child (field `body`) holding the YAML between the delimiters; the
+  delimiter lines stay hidden, so `metadata` keeps its verbatim `@text` and
+  `to_qmd()` still reproduces the block byte for byte. Editing that `yaml`
+  leaf with the mutation verbs rewrites the frontmatter, and `ts_query()`
+  can capture it as `(metadata body: (yaml) @body)`.
+
 * Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `5a12a773` (past the
   v0.30.0 tag). None of the crates q2r links changed in this range, so
   `parse_qmd()`, `to_qmd()`, and the diagnostic surface are unchanged; the

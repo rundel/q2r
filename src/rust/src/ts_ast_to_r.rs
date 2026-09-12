@@ -31,6 +31,7 @@ fn node_to_r(cursor: &mut TreeCursor, src: &[u8]) -> Robj {
     // Leaves always carry their source text; additionally, any non-leaf
     // whose children do not cover every byte of its range (a grammar
     // "gap" - e.g. `pandoc_math`, `pandoc_display_math` inner content,
+    // the hidden `---` delimiter lines of `metadata`,
     // or `code_fence_content`'s body) also carries the full source span.
     // This lets `to_qmd()` on the R side reconstruct bytes that
     // tree-sitter-qmd parses via anonymous regexes and therefore never
