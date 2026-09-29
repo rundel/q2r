@@ -313,7 +313,15 @@ test_that("_tools/screenshots/examples/quarto-demo/basics-jupyter.qmd", {
 })
 
 test_that("_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd", {
-  skip("Known failure: q2#674 (bare `<pre>` contents are tokenized as markdown before the verbatim lift, so `{python}` after entity backticks fails with Q-2-41)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd")
+  ts = parse_qmd(text, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts)
+  if (has_error_diagnostics(ts)) return(invisible())
+  rendered = to_qmd(ts)
+  ts2 = parse_qmd(rendered, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
 })
 
 test_that("_tools/screenshots/examples/quarto-demo/layout-jupyter.qmd", {

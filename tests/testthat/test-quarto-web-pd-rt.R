@@ -313,7 +313,15 @@ test_that("_tools/screenshots/examples/quarto-demo/basics-jupyter.qmd", {
 })
 
 test_that("_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd", {
-  skip("Known failure: q2#674 (bare `<pre>` contents are tokenized as markdown before the verbatim lift, so `{python}` after entity backticks fails with Q-2-41)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("_tools/screenshots/examples/quarto-demo/layout-jupyter.qmd", {
@@ -965,7 +973,15 @@ test_that("docs/authoring/front-matter.qmd", {
 })
 
 test_that("docs/authoring/includes.qmd", {
-  skip("Known failure: q2#674 (writer strips the `{=html}` fence from a `<style>` RawBlock and the bare CSS braces fail to re-read)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/authoring/includes.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/authoring/language.qmd", {
@@ -2469,11 +2485,27 @@ test_that("docs/dashboards/data-display.qmd", {
 })
 
 test_that("docs/dashboards/deployment.qmd", {
-  skip("Known failure: q2#674 (writer strips the `{=html}` fence from a `<style>` RawBlock and the bare CSS braces fail to re-read)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/dashboards/deployment.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/dashboards/index.qmd", {
-  skip("Known failure: q2#674 (writer strips the `{=html}` fence from a `<style>` RawBlock and the bare CSS braces fail to re-read)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/dashboards/index.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/dashboards/inputs.qmd", {
@@ -4205,7 +4237,15 @@ test_that("docs/manuscripts/components.qmd", {
 })
 
 test_that("docs/manuscripts/index.qmd", {
-  skip("Known failure: q2#674 (writer strips the `{=html}` fence from a `<style>` RawBlock and the bare CSS braces fail to re-read)")
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/manuscripts/index.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
 })
 
 test_that("docs/manuscripts/next-steps.qmd", {

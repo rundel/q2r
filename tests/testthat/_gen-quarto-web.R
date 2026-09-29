@@ -1,25 +1,20 @@
 QUARTO_WEB_SKIP = list(
   ts_rt = list(
-    "_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd" = "q2#674 (bare `<pre>` contents are tokenized as markdown before the verbatim lift, so `{python}` after entity backticks fails with Q-2-41)",
     "docs/websites/website-navigation.qmd"                         = "q2#TBD-quoted-underscore (Q-2-11 fires on `\"_blank\"` inside pipe-table cell; see notes/GH#TBD-quoted-underscore-word.md)"
   ),
   pd_rt = list(
-    "_tools/screenshots/examples/quarto-demo/crossref-jupyter.qmd"        = "q2#674 (bare `<pre>` contents are tokenized as markdown before the verbatim lift, so `{python}` after entity backticks fails with Q-2-41)",
     "docs/advanced/environment-vars.qmd"                                  = "q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)",
     "docs/authoring/article-layout.qmd"                                   = "q2#TBD-list-table-hard-break (the writer emits the line after a hard line break inside a list-table cell at column 0, so the div re-reads as Q-2-35 Invalid List-Table Structure; see notes/GH#TBD-list-table-hard-break.md)",
     "docs/authoring/brand.qmd"                                            = "q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)",
     "docs/authoring/citations.qmd"                                        = "q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)",
     "docs/authoring/create-citeable-articles.qmd"                         = "q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)",
     "docs/authoring/front-matter.qmd"                                     = "q2#TBD-list-table-hard-break (the writer emits the line after a hard line break inside a list-table cell at column 0, so the div re-reads as Q-2-35 Invalid List-Table Structure; see notes/GH#TBD-list-table-hard-break.md)",
-    "docs/authoring/includes.qmd"                                         = "q2#674 (writer strips the `{=html}` fence from a `<style>` RawBlock and the bare CSS braces fail to re-read)",
     "docs/authoring/markdown-basics.qmd"                                  = "q2#TBD-list-table-hard-break (the writer emits the line after a hard line break inside a list-table cell at column 0, so the div re-reads as Q-2-35 Invalid List-Table Structure; see notes/GH#TBD-list-table-hard-break.md)",
     "docs/authoring/tables.qmd"                                           = "q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)",
     "docs/blog/_archive/posts/2023-12-05-asa-traveling-courses/index.qmd" = "q2#TBD-list-table-hard-break (the writer emits the line after a hard line break inside a list-table cell at column 0, so the div re-reads as Q-2-35 Invalid List-Table Structure; see notes/GH#TBD-list-table-hard-break.md)",
     "docs/blog/_archive/posts/2024-04-01-manuscripts-rmedicine/index.qmd" = "q2#174 (loose list tightened on round-trip)",
     "docs/blog/_archive/posts/2025-10-20-quarto-wizard-1-0-0/index.qmd"   = "q2#174 (loose list tightened on round-trip)",
     "docs/computations/execution-options.qmd"                             = "q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)",
-    "docs/dashboards/deployment.qmd"                                      = "q2#674 (writer strips the `{=html}` fence from a `<style>` RawBlock and the bare CSS braces fail to re-read)",
-    "docs/dashboards/index.qmd"                                           = "q2#674 (writer strips the `{=html}` fence from a `<style>` RawBlock and the bare CSS braces fail to re-read)",
     "docs/extensions/_shortcode-escaping.qmd"                             = "q2#174 (loose list tightened on round-trip)",
     "docs/get-started/hello/neovim.qmd"                                   = "q2#174 (loose list tightened on round-trip; a list table nested in a list item)",
     "docs/get-started/hello/rstudio.qmd"                                  = "q2#174 (loose list tightened on round-trip)",
@@ -29,7 +24,6 @@ QUARTO_WEB_SKIP = list(
     "docs/journals/authors.qmd"                                           = "q2#174 (loose list tightened on round-trip)",
     "docs/journals/formats.qmd"                                           = "q2#174 (loose list tightened on round-trip)",
     "docs/manuscripts/authoring/_setup.qmd"                               = "q2#174 (loose list tightened on round-trip)",
-    "docs/manuscripts/index.qmd"                                          = "q2#674 (writer strips the `{=html}` fence from a `<style>` RawBlock and the bare CSS braces fail to re-read)",
     "docs/output-formats/html-themes.qmd"                                 = "q2#TBD-list-table-widths (list-table `widths` do not round-trip: the writer drops them when it emits a pipe table and the reader rounds them non-idempotently otherwise; see notes/GH#TBD-list-table-widths.md)",
     "docs/prerelease/1.10/_highlights.qmd"                                = "q2#174 (loose list tightened on round-trip)",
     "docs/presentations/revealjs/index.qmd"                               = "q2#174 (loose list tightened on round-trip)",

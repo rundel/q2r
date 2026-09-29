@@ -61,23 +61,33 @@ ts_recompute_gap_text = function(node, old_children, groups) {
   # no original gap between them; without a separator, inserted blocks are
   # glued flush against their anchor and merge on reparse. Reuse the node's own
   # observed inter-child spacing as the junction separator (so block children
-  # get their blank-line boundary and inline children stay flush), falling back
-  # to a newline for the known block containers when no gap is observable.
+  # get their blank-line boundary and inline children stay flush), preferring
+  # the gaps on either side of the anchor child: a container whose opener is
+  # several tokens (`::: ++ {.x}`) has a lone space between them that must not
+  # become the separator between block children further down. Fall back to the
+  # first observed gap, then to a newline for the known block containers.
   inner_gaps = if (length(old_children) > 1L) {
     purrr::map_chr(seq_len(length(old_children) - 1L),
                    function(i) gap(ends[i], starts[i + 1L]))
   } else {
     character(0)
   }
-  sep = c(
+  fallback = c(
     inner_gaps[nzchar(inner_gaps)],
     switch(node@kind, document = , section = , pandoc_block_quote = "\n", "")
   )[[1L]]
+  sep_for = function(i) {
+    local = c(
+      if (i < length(old_children)) inner_gaps[[i]],
+      if (i > 1L) inner_gaps[[i - 1L]]
+    )
+    c(local[nzchar(local)], fallback)[[1L]]
+  }
   parts = character(0)
   prev = s
   for (i in seq_along(old_children)) {
     parts = c(parts, gap(prev, starts[i]),
-              ts_join_group(purrr::map_chr(groups[[i]], to_qmd_ts_node), sep))
+              ts_join_group(purrr::map_chr(groups[[i]], to_qmd_ts_node), sep_for(i)))
     prev = ends[i]
   }
   paste0(c(parts, gap(prev, e)), collapse = "")

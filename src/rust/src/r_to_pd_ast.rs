@@ -562,6 +562,7 @@ fn inline_from_list(list: List) -> ERResult<Inline> {
                 math_type,
                 text: need_str(&list, "text")?,
                 source_info: si,
+                text_source: None,
             })
         }
         "RawInline" => Inline::RawInline(RawInline {

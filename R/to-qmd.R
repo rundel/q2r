@@ -197,6 +197,7 @@ ts_kind_handlers = list(
   pandoc_math         = ts_text_or(NULL),
   pandoc_display_math = ts_text_or(NULL),
   pandoc_div          = ts_text_or(NULL),
+  editorial_div       = ts_text_or(NULL),
   pipe_table          = ts_text_or(NULL),
 
   # Pipe-table internals only render via child walks when a mutation rebuilds

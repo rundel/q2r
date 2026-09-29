@@ -2,6 +2,51 @@
 
 ## Upstream sync
 
+* Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `10e16e0c` (211
+  commits after v0.32.0: bd-an9gkxnp, bd-star-as-str-qigl02pz,
+  bd-bare-at-literal-w3ytmu8e, bd-angle-bracket-u27e8, bd-nycn85a8,
+  bd-html-element-runaway-k1eo50h8, bd-ieldbghj; quarto-source-map 0.3.0,
+  quarto-error-reporting 0.3.2). Block-level editorial marks `::: ++` /
+  `::: --` / `::: >>` / `::: !!` now parse: on the pandoc path as a
+  `pandoc_div` whose first class is `quarto-insert` / `quarto-delete` /
+  `quarto-edit-comment` / `quarto-highlight` followed by the user's own
+  attributes, on the tree-sitter path as a new `editorial_div` node with an
+  `insert_delimiter` / `delete_delimiter` / `edit_comment_delimiter` /
+  `highlight_delimiter` leaf. `to_qmd()` writes any div whose first class is
+  one of the four with the block marker, so `::: {.quarto-delete .x}`
+  canonicalizes to `::: -- {.x}`; a bare div info string may no longer start
+  with `-` (`::: --foo` raises the new Q-2-53). Whitespace-adjacent `*` `_`
+  `~` `^` runs (`a * b`, `~5`, `2^10`), a bare or word-internal `@` (`a @ b`,
+  `user@example.com`), every non-ASCII punctuation or symbol character
+  (`⟨hunk⟩`, `「引用」`), and a `<` that cannot start a tag (`<6.1`, `<-`,
+  `<5>`) now parse as `pandoc_str` instead of raising a parse error, and
+  `to_qmd()` escapes them (`a \* b`, `a \@ b`, `\<5\>`). A tag candidate no
+  longer crosses a blank line, a backtick run inside a code span no longer
+  closes it early (`` `x``y` `` is one `pandoc_code`), and a literal token
+  at the start of an ATX heading no longer leaves a leading `pandoc_space`.
+  Because `~a b~` no longer reads back as a subscript, `to_qmd()` writes
+  every space or soft break inside a `pandoc_subscript` / `pandoc_superscript`
+  as `\ `, which re-reads as a no-break space. `Smith@{key}` now raises
+  Q-2-41 instead of reading as a str plus a braced citation.
+
+* The tree-sitter rebuild path now takes the junction separator for siblings
+  created by `insert_before()` / `insert_after()` / `splice_nodes()` from the
+  gaps on either side of the anchor child instead of the container's first
+  inter-child gap, so a block inserted into an `editorial_div` (whose opener
+  `::: ++ {.x}` has a lone space between its first two tokens) gets its
+  blank-line boundary instead of being glued onto the previous paragraph.
+
+* Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `c406ce5c` (v0.32.0,
+  bd-t7i6oanu / bd-khect2gq / bd-w0x91nmh, quarto-source-map 0.2.0,
+  quarto-error-reporting 0.3.0). The reader no longer dumps the concrete
+  syntax tree on every parse and folds its nesting-depth guard into the
+  conversion walk, so `parse_qmd()` is cheaper and holds up to deeper
+  nesting before the R stack runs out. The set of accepted documents is
+  unchanged (a concrete tree deeper than 99 nodes is still rejected with
+  Q-0-99), but that diagnostic now reads "too deeply nested (more than 99
+  levels)" instead of quoting the measured depth against 100. No AST or
+  `to_qmd()` change.
+
 * Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `890b3755` (q2#672).
   Unicode format characters (zero width space, soft hyphen, bidi marks and
   controls, word joiner, the MathML invisible operators, U+FEFF, and the rest
