@@ -127,14 +127,20 @@ S7::method(ast_text, pandoc_note)        = function(x) {
   paste0("[^", ast_text(x@content), "]")
 }
 S7::method(ast_text, pandoc_cite)        = function(x) {
-  content = ast_text(x@content)
-  if (nzchar(content)) return(content)
-  # A parsed citation keeps its keys in @citations, not @content; flatten
-  # prefix / @id / suffix (which carry their own spacing) so the citation is
-  # matchable via has_text() / ast_summary() rather than invisible.
-  paste(purrr::map_chr(x@citations, function(cit) {
-    paste0(ast_text(cit@prefix), "@", cit@id, ast_text(cit@suffix))
-  }), collapse = "; ")
+  # `@content` is the citation's source text on some reader paths and empty
+  # on others (pampa fills it for an in-text `-@ref` but not for `[-@ref]`),
+  # so it is not a stable carrier. Flatten the keys from @citations instead,
+  # keeping the suppress-author sign and the prefix / suffix (which carry
+  # their own spacing), so has_text() / ast_summary() see the same text
+  # whichever spelling the source used.
+  if (length(x@citations) == 0L) return(ast_text(x@content))
+  keys = purrr::map_chr(x@citations, function(cit) {
+    sign = if (identical(cit@mode, "SuppressAuthor")) "-@" else "@"
+    paste0(ast_text(cit@prefix), sign, cit@id, ast_text(cit@suffix))
+  })
+  # A later citation's prefix keeps the space that followed the source `;`.
+  keys[-1L] = trimws(keys[-1L], which = "left")
+  paste(keys, collapse = "; ")
 }
 
 

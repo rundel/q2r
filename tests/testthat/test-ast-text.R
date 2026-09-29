@@ -65,6 +65,18 @@ test_that("ast_text flattens a parsed citation key so it is matchable", {
   expect_length(select_nodes(doc, is(pandoc_cite) & has_text("smith2000")), 1L)
 })
 
+test_that("ast_text of a citation does not depend on its spelling", {
+  expect_identical(ast_text(parse_qmd("a -@ref b\n", quiet = TRUE)), "a -@ref b")
+  expect_identical(ast_text(parse_qmd("a [-@ref] b\n", quiet = TRUE)), "a -@ref b")
+  expect_identical(ast_text(parse_qmd("a @ref b\n", quiet = TRUE)), "a @ref b")
+  expect_identical(ast_text(parse_qmd("a [@ref] b\n", quiet = TRUE)), "a @ref b")
+  expect_identical(ast_text(parse_qmd("[see @ref; -@other]\n", quiet = TRUE)), "see @ref; -@other")
+
+  # an R-built citation with no keys keeps its content
+  cite = pandoc_cite(citations = list(), content = pandoc_inlines(list(pandoc_str("raw"))))
+  expect_identical(ast_text(cite), "raw")
+})
+
 test_that("ast_text includes typographic quote marks for pandoc_quoted", {
   q = pandoc_quoted(quote_type = "double", content = as_inlines("hi"))
   expect_identical(ast_text(q), "“hi”")

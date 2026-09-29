@@ -92,12 +92,21 @@ test_that("citations are unchanged", {
     expect_no_error_diagnostics(pd)
     expect_identical(first_shape(pd), cites[[src]], info = src)
   }
-  # A bare `-@ref` writes as `[-@ref]`, whose citation carries no content
-  # inlines where the bare form keeps its source text, so that one is not
-  # AST-identical after a round trip (pre-existing, unrelated to this change).
-  for (src in setdiff(names(cites), "a -@ref b\n")) {
+  # A bare `-@ref` writes as `[-@ref]`; pampa keeps the source text in the
+  # citation's @content for the in-text form and leaves it empty for the
+  # bracketed one, so compare with @content blanked (it is source text, not
+  # structure) and check the flattened text is the same either way.
+  blank_cite_content = function(pd) {
+    map_nodes(pd, is(pandoc_cite), .f = function(x) {
+      x@content = pandoc_inlines(list())
+      x
+    })
+  }
+  for (src in names(cites)) {
     pd = parse_qmd(src, quiet = TRUE)
-    expect_pd_ast_equal(parse_qmd(to_qmd(pd), quiet = TRUE), pd)
+    pd2 = parse_qmd(to_qmd(pd), quiet = TRUE)
+    expect_pd_ast_equal(blank_cite_content(pd2), blank_cite_content(pd))
+    expect_identical(ast_text(pd2), ast_text(pd), info = src)
   }
 })
 

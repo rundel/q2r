@@ -125,6 +125,18 @@
   writes the bracket syntax back. On the tree-sitter side the markers are
   named leaves (`task_list_marker_checked` / `task_list_marker_unchecked`).
 
+## Fixes and behavior changes
+
+* `ast_text()` on a `pandoc_cite` now always flattens `@citations` (prefix,
+  `@id` or `-@id` for a suppress-author citation, suffix) and ignores
+  `@content`. pampa fills `@content` with the source text for an in-text
+  citation (`-@ref`) but leaves it empty for a bracketed one (`[-@ref]`), so
+  the text of a citation used to depend on which spelling the author chose:
+  `-@ref` gave `-@ref` while `[-@ref]` gave `@ref`. Both now give `-@ref`,
+  and `has_text()` / `ast_summary()` see the same text after a `to_qmd()`
+  round trip, which canonicalizes the bare form to `[-@ref]`. An R-built
+  citation with no `@citations` still falls back to its `@content`.
+
 ## Fixes and behavior changes (2026-07 review)
 
 * Follow-up review fixes: single-file `write_qmd()` / `edit_qmd()` now refuse
