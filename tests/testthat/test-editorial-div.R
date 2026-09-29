@@ -108,6 +108,7 @@ test_that("a rebuilt editorial div keeps its opener and blank-line boundaries", 
   expect_identical(out, "::: ++ {.x}\n\nAdded.\n\nNew.\n\nMore.\n\n:::\n")
 
   out = to_qmd(delete_nodes(ts, kind == "pandoc_paragraph" & range@start_byte == paras[[2]]@range@start_byte))
+  expect_identical(out, "::: ++ {.x}\n\nAdded.\n\n:::\n")
   pd = parse_qmd(out, quiet = TRUE)
   expect_no_error_diagnostics(pd)
   expect_identical(pd@blocks[[1]]@attr@classes, c("quarto-insert", "x"))

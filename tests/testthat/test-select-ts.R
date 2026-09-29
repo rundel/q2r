@@ -57,6 +57,41 @@ test_that("delete_nodes drops matching nodes from the tree", {
   expect_true(grepl("last", qmd))
 })
 
+test_that("delete_nodes keeps a single gap where a block was removed", {
+  del_nth = function(ts, kind, n) {
+    nodes = as.list(select_nodes(ts, kind == !!kind))
+    delete_nodes(ts, kind == !!kind & range@start_byte == nodes[[n]]@range@start_byte)
+  }
+  div = parse_qmd("::: {.x}\n\na\n\nb\n\nc\n\n:::\n", ast = "ts")
+  expect_identical(to_qmd(del_nth(div, "pandoc_paragraph", 1L)), "::: {.x}\n\nb\n\nc\n\n:::\n")
+  expect_identical(to_qmd(del_nth(div, "pandoc_paragraph", 2L)), "::: {.x}\n\na\n\nc\n\n:::\n")
+  expect_identical(to_qmd(del_nth(div, "pandoc_paragraph", 3L)), "::: {.x}\n\na\n\nb\n\n:::\n")
+  only = parse_qmd("::: {.x}\n\nonly\n\n:::\n", ast = "ts")
+  expect_identical(to_qmd(delete_nodes(only, kind == "pandoc_paragraph")), "::: {.x}\n\n:::\n")
+
+  sec = parse_qmd("# A\n\nfirst\n\nsecond\n\nthird\n", ast = "ts")
+  expect_identical(to_qmd(delete_nodes(sec, kind == "atx_heading")), "first\n\nsecond\n\nthird\n")
+  expect_identical(to_qmd(del_nth(sec, "pandoc_paragraph", 1L)), "# A\n\nsecond\n\nthird\n")
+  expect_identical(to_qmd(del_nth(sec, "pandoc_paragraph", 2L)), "# A\n\nfirst\n\nthird\n")
+  expect_identical(to_qmd(del_nth(sec, "pandoc_paragraph", 3L)), "# A\n\nfirst\n\nsecond\n")
+
+  # A block quote paragraph's range absorbs the next blank line's `>`, so the
+  # gaps around it are uneven; the deleted paragraph takes its part with it.
+  bq = parse_qmd("> a\n>\n> b\n>\n> c\n", ast = "ts")
+  expect_identical(to_qmd(del_nth(bq, "pandoc_paragraph", 1L)), "> b\n>\n> c\n")
+  expect_identical(to_qmd(del_nth(bq, "pandoc_paragraph", 2L)), "> a\n>\n> c\n")
+
+  loose = parse_qmd("- a\n\n- b\n\n- c\n", ast = "ts")
+  expect_identical(to_qmd(del_nth(loose, "list_item", 2L)), "- a\n\n- c\n")
+
+  doc = parse_qmd("---\ntitle: x\n---\n\n# A\n\npara\n\n# B\n\nmore\n", ast = "ts")
+  expect_identical(to_qmd(del_nth(doc, "section", 2L)), "---\ntitle: x\n---\n\n# B\n\nmore\n")
+
+  for (m in list(del_nth(div, "pandoc_paragraph", 2L), del_nth(bq, "pandoc_paragraph", 1L), del_nth(sec, "pandoc_paragraph", 2L))) {
+    expect_ts_ast_equal(parse_qmd(to_qmd(m), ast = "ts"), m)
+  }
+})
+
 test_that("multiple predicates are combined with AND", {
   ts = parse_qmd("# H1\n\n## H2\n\nbody\n", ast = "ts")
   m = select_nodes(ts, kind == "atx_heading", isTRUE(is_named))

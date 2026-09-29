@@ -126,7 +126,7 @@ test_that("chained ts mutations preserve inter-block whitespace", {
   ts = parse_qmd("# A\n\nfirst para\n\nsecond para\n", ast = "ts")
   one = delete_nodes(ts, kind == "pandoc_space")
   out = to_qmd(delete_nodes(one, kind == "atx_heading"))
-  expect_equal(out, "\nfirstpara\n\nsecondpara\n")
+  expect_equal(out, "firstpara\n\nsecondpara\n")
 })
 
 test_that("ts mutation verbs return a reparse-consistent tree", {

@@ -127,6 +127,14 @@
 
 ## Fixes and behavior changes
 
+* Deleting a block from a tree-sitter container (`delete_nodes()` on a
+  `ts_tree`, or a `splice_nodes()` / `map_nodes()` that drops a child) no
+  longer keeps both blank-line gaps around the removed node, so `to_qmd()`
+  output has a single blank line where the block was instead of two. The
+  container's lead and trailer (`::: `, `\n:::\n`) always stay; between two
+  inner gaps the shorter one stays, since tree-sitter attaches absorbed
+  whitespace (a block quote paragraph's trailing `\n>`) to the node itself.
+
 * `ast_text()` on a `pandoc_cite` now always flattens `@citations` (prefix,
   `@id` or `-@id` for a suppress-author citation, suffix) and ignores
   `@content`. pampa fills `@content` with the source text for an in-text

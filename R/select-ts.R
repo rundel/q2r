@@ -38,6 +38,15 @@ ts_gap_text_kinds = c("code_fence_content", "pandoc_math", "pandoc_display_math"
 # and splice them around the rewritten children's rendered text. `groups[[i]]`
 # is the list of new nodes the original child `i` produced - empty for a
 # deletion, several for a splice - so gaps stay anchored to surviving children.
+# A deleted child takes one of its two flanking gaps with it (otherwise the
+# blank line before it and the one after it both survive and the output grows
+# a doubled blank line). The lead (before the first child: a div's `::: `) and
+# the trailer (after the last: a div's `\n:::\n`) are structural and always
+# stay, so a deletion next to one drops the inner gap. Between two inner gaps
+# the shorter one stays: tree-sitter attaches absorbed whitespace to a node
+# (a block quote paragraph ends in `\n>`, the next blank line's marker), so
+# the gap next to that node is the short one and the deleted node carries
+# its absorbed part away with it.
 # Returns NULL (clear `@text`; let to_qmd() walk children) when the node has no
 # gap, or as a safe fallback when the byte span and `@text` disagree.
 ts_recompute_gap_text = function(node, old_children, groups) {
@@ -83,14 +92,32 @@ ts_recompute_gap_text = function(node, old_children, groups) {
     )
     c(local[nzchar(local)], fallback)[[1L]]
   }
+  n = length(old_children)
+  gaps = c(gap(s, starts[1L]), inner_gaps, gap(ends[n], e))
   parts = character(0)
-  prev = s
-  for (i in seq_along(old_children)) {
-    parts = c(parts, gap(prev, starts[i]),
+  pending = gaps[[1L]]
+  structural = TRUE
+  for (i in seq_len(n)) {
+    after = gaps[[i + 1L]]
+    after_structural = i == n
+    if (length(groups[[i]]) == 0L) {
+      if (structural && after_structural) {
+        pending = paste0(pending, after)
+      } else if (after_structural) {
+        pending = after
+        structural = TRUE
+      } else if (!structural &&
+                 nchar(after, type = "bytes") < nchar(pending, type = "bytes")) {
+        pending = after
+      }
+      next
+    }
+    parts = c(parts, pending,
               ts_join_group(purrr::map_chr(groups[[i]], to_qmd_ts_node), sep_for(i)))
-    prev = ends[i]
+    pending = after
+    structural = after_structural
   }
-  paste0(c(parts, gap(prev, e)), collapse = "")
+  paste0(c(parts, pending), collapse = "")
 }
 
 # Join the rendered members of one rewrite group. A newline-only separator is
