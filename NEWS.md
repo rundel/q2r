@@ -2,6 +2,17 @@
 
 ## Upstream sync
 
+* Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `73c5eef4` (67
+  commits after 10e16e0c: bd-quarto-tests-metadata-markdown-3wsdzq4c,
+  bd-l6eh1635). Front-matter values under `_quarto: tests:` (the upstream
+  smoke-test harness's assertion patterns) now arrive in `@meta` as `string`
+  scalars instead of markdown `inlines`, so a bracket-label pattern such as
+  `"<fig-cars>"` or an underscore-bearing regex under that key no longer
+  raises a diagnostic; a sibling `_quarto` key and a nested `my._quarto.tests`
+  still parse as markdown. No other AST, `to_qmd()`, or diagnostic change
+  (the remaining upstream work is citeproc BibTeX ingestion, which sits behind
+  the `filters` feature q2r disables).
+
 * Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `10e16e0c` (211
   commits after v0.32.0: bd-an9gkxnp, bd-star-as-str-qigl02pz,
   bd-bare-at-literal-w3ytmu8e, bd-angle-bracket-u27e8, bd-nycn85a8,
