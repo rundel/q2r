@@ -2,6 +2,23 @@
 
 ## Upstream sync
 
+* Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `4753b6a2` (78
+  commits after 73c5eef4: bd-6hf7nz7i, bd-hsb5fext). A caption line with no
+  table to attach to (`: text` after anything but a table) is no longer
+  dropped: it parses as a `pandoc_paragraph` holding the verbatim source line
+  as one `pandoc_str`, so the text survives `to_qmd()`. Directly after a
+  paragraph, the shape of an unsupported Pandoc definition list, the warning
+  is the new Q-2-54 "Pandoc definition lists are not supported" with hints
+  pointing at `::: {.definition-list}`, `\:`, and `qmd-syntax-helper convert
+  -r definition-lists`; elsewhere it stays "Caption found without a preceding
+  table". A misordered attribute list now always has a coded diagnostic:
+  `{.c #i}` raises the new Q-2-55 and `{k=v #i}` the new Q-2-56 (both were an
+  uncoded "Parse error"), and these two plus Q-2-3 (`{k=v .c}`) carry a hint
+  with the author's own list reordered, e.g. "Reorder the attributes as
+  `{#tip-alignment .callout-tip}`". The note on Q-2-10 now reads "No opening
+  quote was found before this mark" instead of "This is the opening quote".
+  No tree-sitter grammar change.
+
 * Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `73c5eef4` (67
   commits after 10e16e0c: bd-quarto-tests-metadata-markdown-3wsdzq4c,
   bd-l6eh1635). Front-matter values under `_quarto: tests:` (the upstream
