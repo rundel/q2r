@@ -281,6 +281,7 @@ pub fn format_diag(
     source_text: &str,
     source_filename: &str,
     hyperlinks: bool,
+    color: bool,
 ) -> String {
     let mut diag = reconstruct_diagnostic(kind, code, title, problem, details, hints, location);
 
@@ -302,8 +303,8 @@ pub fn format_diag(
     }
     ctx.add_file(source_filename.to_string(), Some(padded));
 
-    let opts = TextRenderOptions {
-        enable_hyperlinks: hyperlinks,
-    };
+    let opts = TextRenderOptions::default()
+        .hyperlinks(hyperlinks)
+        .color(color);
     diag.to_text_with_options(Some(&ctx), &opts)
 }

@@ -2,6 +2,26 @@
 
 ## Upstream sync
 
+* Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `3d3360ab` (76
+  commits after 4753b6a2: bd-ckbqmupi) and `quarto-error-reporting` to
+  0.4.0. `format()` / `print()` of a `pampa_diagnostic` with `color = FALSE`
+  now render with colour switched off inside the renderer, so the text
+  carries no escape sequences at all (it used to be rendered in colour and
+  stripped afterwards; the visible output is unchanged). The pampa QMD
+  writer, which `to_qmd()` routes through, now escapes a `pandoc_str` that
+  begins a line and would re-read as block syntax (`\- x`, `1\. x`, `\: x`,
+  `\::: x`; `1.5` and `-5` stay), escapes a `(` directly after a span's
+  `]`, alternates `*` / `-` between adjacent bullet lists, writes a
+  `<!-- -->` raw block between adjacent ordered lists, and writes a
+  multi-block `pandoc_note` as a `[^nK]` reference plus a `::: ^nK` fenced
+  definition. Those shapes only arise from R-constructed ASTs; for parsed
+  documents the one visible change is that an inline editorial mark with
+  attributes (`[++ added]{.x key="v"}`) now writes back in shorthand rather
+  than as `[added]{.quarto-insert .x key="v"}`, and that the literal
+  paragraph kept for an unsupported Pandoc definition line writes back as
+  `\:   text`, which re-parses as an ordinary paragraph with no Q-2-54
+  warning. No tree-sitter grammar change.
+
 * Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `4753b6a2` (78
   commits after 73c5eef4: bd-6hf7nz7i, bd-hsb5fext). A caption line with no
   table to attach to (`: text` after anything but a table) is no longer

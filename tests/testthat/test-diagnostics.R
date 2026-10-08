@@ -212,7 +212,7 @@ test_that("format() renders the caret/location and honours the color flag", {
   expect_match(plain, "Parse error", fixed = TRUE)
   expect_match(plain, "<text>:1:7", fixed = TRUE)
   expect_match(plain, "unexpected character or token", fixed = TRUE)
-  # color = FALSE strips ANSI; ariadne's hardcoded colour survives color = TRUE
+  # color = FALSE renders without ANSI in Rust; color = TRUE keeps ariadne's colour
   expect_false(grepl("\033", plain, fixed = TRUE))
   expect_true(grepl("\033", format(d, color = TRUE), fixed = TRUE))
 })

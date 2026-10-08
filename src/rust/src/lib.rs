@@ -205,6 +205,7 @@ fn pampa_diag_format_impl(
     source_text: &str,
     source_filename: &str,
     hyperlinks: bool,
+    color: bool,
 ) -> String {
     diag_to_r::format_diag(
         kind,
@@ -217,6 +218,7 @@ fn pampa_diag_format_impl(
         source_text,
         source_filename,
         hyperlinks,
+        color,
     )
 }
 

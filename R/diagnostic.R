@@ -88,10 +88,9 @@ format_pampa_diagnostic = function(x, color = cli::num_ansi_colors() > 1L, ...) 
     location        = x@location,
     source_text     = x@source_text,
     source_filename = x@source_filename,
-    hyperlinks      = isTRUE(color)
+    hyperlinks      = isTRUE(color),
+    color           = isTRUE(color)
   )
-  if (!isTRUE(color)) txt = cli::ansi_strip(txt)
-  txt
 }
 
 # Raise classed conditions so callers can tryCatch by class

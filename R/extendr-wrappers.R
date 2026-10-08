@@ -51,7 +51,7 @@ pampa_write_qmd_ast_impl <- function(r_ast) .Call(wrap__pampa_write_qmd_ast_impl
 #' rendering (which includes ANSI colour codes); callers that want
 #' colourless output should strip ANSI afterward.
 #' @noRd
-pampa_diag_format_impl <- function(kind, code, title, problem, details, hints, location, source_text, source_filename, hyperlinks) .Call(wrap__pampa_diag_format_impl, kind, code, title, problem, details, hints, location, source_text, source_filename, hyperlinks)
+pampa_diag_format_impl <- function(kind, code, title, problem, details, hints, location, source_text, source_filename, hyperlinks, color) .Call(wrap__pampa_diag_format_impl, kind, code, title, problem, details, hints, location, source_text, source_filename, hyperlinks, color)
 
 #' Run a tree-sitter `.scm` query against QMD source.
 #'

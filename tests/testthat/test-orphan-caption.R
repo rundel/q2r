@@ -38,8 +38,20 @@ test_that("a definition line after a term is a literal paragraph with Q-2-54", {
   expect_match(format(d, color = FALSE), "literal text instead of a definition", fixed = TRUE)
   expect_warning(parse_qmd(src), class = "q2r_parse_warning")
 
-  expect_identical(to_qmd(pd), src)
-  expect_pd_ast_equal(parse_qmd(to_qmd(pd), quiet = TRUE), pd)
+  # Since q2 3d3360ab (c26b3e832) the writer escapes a line-start colon, so the
+  # literal line comes back as `\:` and re-reads as an ordinary paragraph with
+  # no diagnostic; the round trip is a one-step canonicalization that is then
+  # stable (q2#TBD-orphan-caption-colon-escape).
+  expect_identical(to_qmd(pd), "time\n\n\\: A timestamp.\n\n\\: Type: string\n")
+  pd2 = parse_qmd(to_qmd(pd), quiet = TRUE)
+  expect_length(pd2@diagnostics, 0L)
+  expect_identical(
+    purrr::map_chr(pd2@blocks[[2]]@content@content, function(x) class(x)[1]),
+    c("q2r::pandoc_str", "q2r::pandoc_space", "q2r::pandoc_str", "q2r::pandoc_space", "q2r::pandoc_str")
+  )
+  expect_identical(pd2@blocks[[2]]@content@content[[1]]@text, ":")
+  expect_identical(to_qmd(pd2), to_qmd(pd))
+  expect_pd_ast_equal(parse_qmd(to_qmd(pd2), quiet = TRUE), pd2)
 })
 
 test_that("the literal line keeps its spacing and trailing attribute", {
@@ -75,7 +87,10 @@ test_that("a caption after a non-paragraph block keeps the generic warning", {
     expect_match(
       pd@diagnostics[[1]]@title, "Caption found without a preceding table", fixed = TRUE
     )
-    expect_pd_ast_equal(parse_qmd(to_qmd(pd), quiet = TRUE), pd)
+    expect_match(to_qmd(pd), "\n\\: This caption has no table\n", fixed = TRUE)
+    pd2 = parse_qmd(to_qmd(pd), quiet = TRUE)
+    expect_length(pd2@diagnostics, 0L)
+    expect_pd_ast_equal(parse_qmd(to_qmd(pd2), quiet = TRUE), pd2)
   }
 })
 

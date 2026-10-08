@@ -72,6 +72,28 @@ test_that("a mark class that is not first, inline marks, and plain divs are unch
   expect_identical(pd@blocks[[1]]@attr@classes, "note")
 })
 
+# As of q2 3d3360ab (c26b3e832) the writer applies the same first-class rule
+# to spans: an inline mark with extra attributes is written in shorthand with
+# the rest of its attributes in braces, where it used to fall back to the
+# generic `[x]{.quarto-insert ...}` form.
+test_that("an inline mark with attributes writes back in shorthand", {
+  src = "Text [++ added]{.x key=\"v\"} here.\n"
+  pd = parse_qmd(src, quiet = TRUE)
+  expect_identical(to_qmd(pd), src)
+  expect_pd_ast_equal(parse_qmd(to_qmd(pd), quiet = TRUE), pd)
+
+  pd = parse_qmd("[++ x]{#i1 .foo author=\"A\"}\n", quiet = TRUE)
+  expect_identical(to_qmd(pd), "[++ x]{#i1 .foo author=\"A\"}\n")
+
+  pd = parse_qmd("[x]{.quarto-insert .foo}\n", quiet = TRUE)
+  expect_identical(to_qmd(pd), "[++ x]{.foo}\n")
+
+  for (src in c("[x]{.foo .quarto-insert}\n", "[x]{.quarto-insert .quarto-delete}\n")) {
+    pd = parse_qmd(src, quiet = TRUE)
+    expect_identical(to_qmd(pd), src, info = src)
+  }
+})
+
 test_that("a div info string starting with - raises Q-2-53 on both paths", {
   for (src in c("::: --foo\n\nText.\n\n:::\n", ":::--foo\n\nText.\n\n:::\n")) {
     pd = parse_qmd(src, quiet = TRUE)
