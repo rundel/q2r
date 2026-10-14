@@ -2,6 +2,24 @@
 
 ## Upstream sync
 
+* Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `a3a928d8` (113
+  commits after 495a4fad). No user-visible change: every upstream edit on
+  the pampa crate is behind the disabled `lua-filter` feature, and the
+  tree-sitter grammar, the diagnostic crates and `quarto-yaml` are
+  unchanged.
+
+* Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `495a4fad` (149
+  commits after 3d3360ab: bd-x30aq7ae, bd-e0e9kd4a), pulling in
+  `quarto-yaml` 0.5.0. YAML front matter that fails to parse is now
+  reported as an error diagnostic with `@code` `"Q-1-1"` and title "YAML
+  Syntax Error", located at the character where parsing failed (an
+  unclosed bracket at the end of the block points just after the last
+  content) and carrying a hint, instead of an uncoded "Failed to parse YAML
+  frontmatter" error spanning the whole block. Diagnostics on metadata
+  keys that follow a `>` / `|` block scalar holding non-ASCII text now
+  point at the right bytes, and the spurious "no content provenance"
+  warning there is gone. No tree-sitter grammar change.
+
 * Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `3d3360ab` (76
   commits after 4753b6a2: bd-ckbqmupi) and `quarto-error-reporting` to
   0.4.0. `format()` / `print()` of a `pampa_diagnostic` with `color = FALSE`
