@@ -2,6 +2,12 @@
 
 ## Upstream sync
 
+* Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `e308835b` (60
+  commits after a3a928d8, workspace version 0.33.0). No user-visible
+  change: nothing under the pampa or tree-sitter-qmd crates moved, and the
+  diagnostic crates and `quarto-yaml` are unchanged; the upstream commits
+  are website search, hub-client and release-pipeline work.
+
 * Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `a3a928d8` (113
   commits after 495a4fad). No user-visible change: every upstream edit on
   the pampa crate is behind the disabled `lua-filter` feature, and the
