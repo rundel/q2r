@@ -2,6 +2,28 @@
 
 ## Upstream sync
 
+* Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `d3ed54fe` (60
+  commits after d9a862c7, workspace version 0.35.0). One writer change,
+  from q2 GH #877: `to_qmd()` now spells an image's alt text as `fig-alt`
+  wherever the bracket text cannot carry it. A lone image in a paragraph
+  with alt inlines is written `![](src){fig-alt="..."}` (as `![alt](src)` it
+  would re-read as a figure captioned by its alt), and a figure whose image
+  alt differs from its caption, an empty alt included, is written
+  `![Caption](src){fig-alt="..."}` instead of the fenced-div fallback. The
+  reader never produces these shapes, so parsed documents are unaffected;
+  only R-constructed or filter-modified ASTs change. Pinned in
+  `test-fig-alt-respell.R`. The tree-sitter grammar, the diagnostic crates
+  and `quarto-yaml` are unchanged.
+
+* Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `d9a862c7` (135
+  commits after e308835b, workspace version 0.34.0). No user-visible
+  change: the pampa edits are the lmd module system, Lua numeric/boolean
+  coercion and the native/JSON writers' `DefaultStyle` / `DefaultDelim`
+  spelling, none of which q2r links, plus a behaviour-preserving move of
+  the list-table, definition-list and implicit-figure rewrites into
+  `pandoc::desugar`; the tree-sitter grammar, the diagnostic crates and
+  `quarto-yaml` are unchanged.
+
 * Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `e308835b` (60
   commits after a3a928d8, workspace version 0.33.0). No user-visible
   change: nothing under the pampa or tree-sitter-qmd crates moved, and the
