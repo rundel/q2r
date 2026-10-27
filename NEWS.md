@@ -2,6 +2,30 @@
 
 ## Upstream sync
 
+* Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `4ecbd278` (117
+  commits after d3ed54fe, workspace version 0.36.0, tag v0.36.0). Five
+  behaviour changes, all in pampa. Writer: `to_qmd()` now spells a
+  definition list as the `::: {.definition-list}` div the reader parses
+  (one `*` item per term with a `-` list of definitions; an empty term is
+  `* []`, a term with no definitions re-reads as a plain div) instead of
+  Pandoc's `Term` / `:   Def.` syntax, which never round-tripped
+  (`test-deflist-writer.R`); and a blank line inside a bullet or ordered
+  list item is written empty rather than indentation-only, so a loose item
+  holding a paragraph and a code block no longer re-reads tight
+  (`test-list-item-blank-line.R`). Reader: the content of a rewritten
+  `.definition-list` / `.list-table` div now gets the full postprocess
+  pass, so nested definition-list and list-table divs, implicit figures,
+  header auto ids and the Q-2-50 doubled-brace warning apply inside them
+  (q2 GH #895, `test-rewritten-div-content.R`); a pipe-table caption
+  written directly under the table with no space after the colon
+  (`:Caption {#id .cls}`) keeps its attribute block, lifted onto the table
+  like the blank-line form (`test-table-caption-adjacent-attr.R`); and
+  `link-external-filter`, top-level or under `format.*`, arrives in
+  `@meta` as a plain `string` rather than markdown inlines, so its regex
+  backslashes survive (`test-meta-link-external-filter.R`). The
+  tree-sitter grammar, the diagnostic crates and `quarto-yaml` are
+  unchanged.
+
 * Pinned `pampa` / `tree-sitter-qmd` to quarto-dev/q2 `d3ed54fe` (60
   commits after d9a862c7, workspace version 0.35.0). One writer change,
   from q2 GH #877: `to_qmd()` now spells an image's alt text as `fig-alt`
