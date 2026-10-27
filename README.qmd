@@ -19,10 +19,7 @@ devtools::load_all(quiet = TRUE)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-`q2r` is an exploratory R package that wraps the [`pampa`](https://github.com/quarto-dev/q2)
-Rust crate to expose Quarto's QMD parser to R. It parses QMD text or files and
-returns either the tree-sitter AST or the Pandoc AST, together with any parse
-diagnostics.
+`q2r` is an exploratory R package that wraps the [`pampa`](https://github.com/quarto-dev/q2) Rust crate to expose Quarto's QMD parser to R. It parses QMD text or files and returns either the tree-sitter AST or the Pandoc AST, together with any parse diagnostics.
 
 ## Installation
 
@@ -33,18 +30,11 @@ diagnostics.
 pak::pak("rundel/q2r")
 ```
 
-Building from source requires a working Rust toolchain with `rustc >= 1.85`
-(edition 2024). [`rustup`](https://rustup.rs/) is the most reliable way to get
-this. The first build fetches the upstream `q2` workspace (~40 crates) via
-cargo; subsequent builds use the cargo cache.
+Building from source requires a working Rust toolchain with `rustc >= 1.85` (edition 2024). [`rustup`](https://rustup.rs/) is the most reliable way to get this. The first build fetches the upstream `q2` workspace (~40 crates) via cargo; subsequent builds use the cargo cache.
 
 ## Usage
 
-The single entry point is `parse_qmd()`. With `ast = "pd"` (the default) it
-returns a `pandoc` S7 object holding the Pandoc AST; with `ast = "ts"` it
-returns a `ts_tree` S7 object holding the tree-sitter concrete syntax tree. It
-accepts either a file path or a string of QMD text, and attaches any parse
-diagnostics to the returned object's `@diagnostics` slot.
+The single entry point is `parse_qmd()`. With `ast = "pd"` (the default) it returns a `pandoc` S7 object holding the Pandoc AST; with `ast = "ts"` it returns a `ts_tree` S7 object holding the tree-sitter concrete syntax tree. It accepts either a file path or a string of QMD text, and attaches any parse diagnostics to the returned object's `@diagnostics` slot.
 
 ```{r}
 #| eval: false
@@ -78,9 +68,7 @@ ts
 
 ### Rendering back to QMD
 
-`to_qmd()` renders a parsed AST (a `pandoc` or `ts_tree` object) back to QMD
-source. A `pandoc` object is written by pampa's QMD writer; a `ts_tree` is
-recovered from its source bytes.
+`to_qmd()` renders a parsed AST (a `pandoc` or `ts_tree` object) back to QMD source. A `pandoc` object is written by pampa's QMD writer; a `ts_tree` is recovered from its source bytes.
 
 ```{r}
 cat(to_qmd(pd))
@@ -88,10 +76,7 @@ cat(to_qmd(pd))
 
 ### Diagnostics
 
-Parse errors and warnings are returned as structured `pampa_diagnostic` objects
-attached to the parsed result. By default `parse_qmd()` signals error-kind
-diagnostics as R errors and warning-kind diagnostics as R warnings; pass
-`quiet = TRUE` to suppress signalling and inspect them directly.
+Parse errors and warnings are returned as structured `pampa_diagnostic` objects attached to the parsed result. By default `parse_qmd()` signals error-kind diagnostics as R errors and warning-kind diagnostics as R warnings; pass `quiet = TRUE` to suppress signalling and inspect them directly.
 
 ```{r}
 #| error: true
@@ -105,17 +90,8 @@ See [my page](https://example.com/some path) for details.
 
 ## Working with the AST
 
-Beyond `parse_qmd()` / `to_qmd()`, q2r ships a tidyselect-style vocabulary for
-querying and rewriting either AST (`select_nodes()`, `select_descendants()`,
-`map_nodes()`, `replace_nodes()`, `delete_nodes()`, `insert_before()`, ...), an
-`ast_filter()` Lua-filter-style walker, document-level helpers (`ast_summary()`,
-`select_section()`, `ast_toc()`, `split_sections()`), code-cell helpers
-(`cell_options()`, `set_cell_options()`, `collect_code()`), table bridges
-(`as_df()` / `as_table()`), file round-trip sugar (`read_qmd()`, `write_qmd()`,
-`edit_qmd()`), and multi-document collections (`parse_qmd_dir()`). See the
-`vignette("selecting-and-rewriting")` for a tour.
+Beyond `parse_qmd()` / `to_qmd()`, q2r ships a tidyselect-style vocabulary for querying and rewriting either AST (`select_nodes()`, `select_descendants()`, `map_nodes()`, `replace_nodes()`, `delete_nodes()`, `insert_before()`, ...), an `ast_filter()` Lua-filter-style walker, document-level helpers (`ast_summary()`, `select_section()`, `ast_toc()`, `split_sections()`), code-cell helpers (`cell_options()`, `set_cell_options()`, `collect_code()`), table bridges (`as_df()` / `as_table()`), file round-trip sugar (`read_qmd()`, `write_qmd()`, `edit_qmd()`), and multi-document collections (`parse_qmd_dir()`). See the `vignette("selecting-and-rewriting")` for a tour.
 
 ## Related
 
-- [`quarto-dev/q2`](https://github.com/quarto-dev/q2) - upstream Rust workspace
-  containing `pampa` and the tree-sitter-qmd grammar.
+- [`quarto-dev/q2`](https://github.com/quarto-dev/q2) - upstream Rust workspace containing `pampa` and the tree-sitter-qmd grammar.

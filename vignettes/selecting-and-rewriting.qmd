@@ -12,10 +12,7 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
-q2r exposes two ASTs for a QMD document: the high-level `pandoc` S7
-hierarchy and the `ts_tree` tree-sitter concrete syntax tree. The
-`select_*` / `map_nodes` / `*_nodes` API lets you query and rewrite
-either one with the same vocabulary.
+q2r exposes two ASTs for a QMD document: the high-level `pandoc` S7 hierarchy and the `ts_tree` tree-sitter concrete syntax tree. The `select_*` / `map_nodes` / `*_nodes` API lets you query and rewrite either one with the same vocabulary.
 
 ```{r}
 library(q2r)
@@ -41,24 +38,19 @@ doc = parse_qmd(src)
 
 ## Selecting
 
-Predicates are unquoted R expressions evaluated against each candidate
-node with a node-aware data mask. The mask exposes node slots
-(`level`, `url`, `text`, `kind`, ...) and a small set of helpers
-(`is()`, `has_class()`, `has_id()`, `has_attr()`, `is_leaf()`).
+Predicates are unquoted R expressions evaluated against each candidate node with a node-aware data mask. The mask exposes node slots (`level`, `url`, `text`, `kind`, ...) and a small set of helpers (`is()`, `has_class()`, `has_id()`, `has_attr()`, `is_leaf()`).
 
 ```{r}
 select_nodes(doc, is(pandoc_header))
 ```
 
-`is()` honours S7 inheritance, so `is(pandoc_block)` matches every
-block kind:
+`is()` honours S7 inheritance, so `is(pandoc_block)` matches every block kind:
 
 ```{r}
 length(select_nodes(doc, is(pandoc_block)))
 ```
 
-Bare slot access lets you filter on properties without writing
-accessors yourself:
+Bare slot access lets you filter on properties without writing accessors yourself:
 
 ```{r}
 select_nodes(doc, is(pandoc_header) & level == 2L)
@@ -72,8 +64,7 @@ select_nodes(doc, is(pandoc_div) & has_class("callout-note"))
 
 ## Chaining
 
-The selection verbs accept a list of nodes, so a pipe chain narrows
-without nesting:
+The selection verbs accept a list of nodes, so a pipe chain narrows without nesting:
 
 ```{r}
 doc |>
@@ -81,15 +72,11 @@ doc |>
   select_descendants(is(pandoc_header))
 ```
 
-`select_descendants()` excludes the root(s) of its input;
-`select_children()` only inspects direct children.
+`select_descendants()` excludes the root(s) of its input; `select_children()` only inspects direct children.
 
 ## Rewriting
 
-`map_nodes()` rewrites every match in place. `.f` may return a single
-node (replace), a list of nodes (splice into the parent's child
-list), or `NULL` (delete). The walker traverses bottom-up, matching
-Pandoc Lua filters' default.
+`map_nodes()` rewrites every match in place. `.f` may return a single node (replace), a list of nodes (splice into the parent's child list), or `NULL` (delete). The walker traverses bottom-up, matching Pandoc Lua filters' default.
 
 Promote every level-2 heading to level 1:
 
@@ -103,8 +90,7 @@ out = map_nodes(
 purrr::map_int(select_nodes(out, is(pandoc_header)), \(h) h@level)
 ```
 
-Strip bold by splicing each `pandoc_strong`'s content up into the
-parent:
+Strip bold by splicing each `pandoc_strong`'s content up into the parent:
 
 ```{r}
 out = map_nodes(doc, is(pandoc_strong), .f = ~ .x@content@content)
@@ -113,9 +99,7 @@ length(select_nodes(out, is(pandoc_strong)))
 
 ## Structural edits
 
-`insert_before()` / `insert_after()` add siblings around each match;
-`delete_nodes()` removes them; `replace_nodes()` swaps them out for a
-constant value.
+`insert_before()` / `insert_after()` add siblings around each match; `delete_nodes()` removes them; `replace_nodes()` swaps them out for a constant value.
 
 ```{r}
 banner = pandoc_paragraph(
@@ -129,11 +113,7 @@ doc |>
 
 ## Type-keyed dispatch with `ast_filter()`
 
-`map_nodes()` is most natural for single-type rewrites driven by a
-predicate. When you want to rewrite *several* node types in a single
-pass, `ast_filter()` accepts a table of handlers keyed by S7 class.
-This is the q2r analogue of a Pandoc Lua filter
-(`{ Header = function(el) ... end, Strong = ... }`).
+`map_nodes()` is most natural for single-type rewrites driven by a predicate. When you want to rewrite *several* node types in a single pass, `ast_filter()` accepts a table of handlers keyed by S7 class. This is the q2r analogue of a Pandoc Lua filter (`{ Header = function(el) ... end, Strong = ... }`).
 
 ```{r}
 out = doc |> ast_filter(
@@ -148,13 +128,9 @@ out = doc |> ast_filter(
 cat(to_qmd(out))
 ```
 
-Handlers honour the same return-value contract as `map_nodes()`: return
-a node to replace, a list of nodes to splice, `NULL` to delete, or the
-input to no-op.
+Handlers honour the same return-value contract as `map_nodes()`: return a node to replace, a list of nodes to splice, `NULL` to delete, or the input to no-op.
 
-Dispatch respects S7 inheritance, so an abstract-class handler acts as
-a catch-all (first-match-wins, so put specific types before general
-ones):
+Dispatch respects S7 inheritance, so an abstract-class handler acts as a catch-all (first-match-wins, so put specific types before general ones):
 
 ```{r}
 visits = c()
@@ -167,10 +143,7 @@ table(visits)
 
 ## Top-down traversal and skipping subtrees
 
-Pass `.order = "pre"` to visit parents before children. From a pre-order
-handler, return `ast_skip(x)` to install `x` at that position without
-descending into its children. This mirrors Pandoc Lua filters'
-`traverse = 'topdown'` plus `return el, false`.
+Pass `.order = "pre"` to visit parents before children. From a pre-order handler, return `ast_skip(x)` to install `x` at that position without descending into its children. This mirrors Pandoc Lua filters' `traverse = 'topdown'` plus `return el, false`.
 
 ```{r}
 # Strip ALL formatting inside callout divs, leaving the rest of the
@@ -191,21 +164,16 @@ out = doc |> ast_filter(
 cat(to_qmd(out))
 ```
 
-Without `ast_skip()`, the walker would still descend into the rewritten
-div's content; the skip is what makes "this whole subtree is now done"
-explicit.
+Without `ast_skip()`, the walker would still descend into the rewritten div's content; the skip is what makes "this whole subtree is now done" explicit.
 
 ## List-level filters
 
-Two special handler names dispatch on entire inline/block sequences
-after their contents have been rewritten:
+Two special handler names dispatch on entire inline/block sequences after their contents have been rewritten:
 
 - `pandoc_inlines = \(xs) ...` runs once per `pandoc_inlines` wrapper.
 - `pandoc_blocks = \(xs) ...` is the equivalent for `pandoc_blocks`.
 
-These are essential for context-aware transforms that single-element
-handlers cannot express (merging adjacent runs, dropping siblings based
-on neighbours, etc.).
+These are essential for context-aware transforms that single-element handlers cannot express (merging adjacent runs, dropping siblings based on neighbours, etc.).
 
 ```{r}
 # Drop any paragraph whose plain-text form contains "Final".
@@ -241,10 +209,7 @@ purrr::map_chr(select_children(out, is(pandoc_paragraph)), ast_text)
 
 ## Flattening to plain text with `ast_text()`
 
-`ast_text()` recursively concatenates the textual content of any
-subtree, dropping all formatting. It is the q2r analogue of
-`pandoc.utils.stringify()` and is handy for matching on document
-content without walking the AST yourself.
+`ast_text()` recursively concatenates the textual content of any subtree, dropping all formatting. It is the q2r analogue of `pandoc.utils.stringify()` and is handy for matching on document content without walking the AST yourself.
 
 ```{r}
 ast_text(doc)
@@ -268,10 +233,7 @@ doc |>
 
 ## Editing attributes
 
-The `@attr` slot carries id, classes, and key/value attributes for the
-nodes that have one (headers, divs, code, links, spans, ...). q2r ships
-immutable getters/setters that read like Lua's direct field access
-(`el.classes`, `el.identifier`) but return a new node:
+The `@attr` slot carries id, classes, and key/value attributes for the nodes that have one (headers, divs, code, links, spans, ...). q2r ships immutable getters/setters that read like Lua's direct field access (`el.classes`, `el.identifier`) but return a new node:
 
 - `has_class(x, cls)` / `add_class(x, cls)` / `remove_class(x, cls)`
 - `get_id(x)` / `set_id(x, id)`
@@ -285,45 +247,31 @@ out = doc |> ast_filter(pandoc_header = \(h) {
 out |> select_nodes(is(pandoc_header)) |> purrr::map(\(h) h@attr)
 ```
 
-Nodes without an `@attr` slot degrade gracefully for predicates
-(`has_class(pandoc_str(...), "x")` returns `FALSE`) but error on
-setters with a clear message.
+Nodes without an `@attr` slot degrade gracefully for predicates (`has_class(pandoc_str(...), "x")` returns `FALSE`) but error on setters with a clear message.
 
 ## Document-level helpers
 
-The verbs above descend the whole nested tree. A second, complementary
-set of helpers works at the document author's altitude: the flat stream
-of top-level blocks, where headings partition the document into
-sections. These mirror the section, label, and tabular conveniences from
-the parsermd package.
+The verbs above descend the whole nested tree. A second, complementary set of helpers works at the document author's altitude: the flat stream of top-level blocks, where headings partition the document into sections. These mirror the section, label, and tabular conveniences from the parsermd package.
 
-`ast_summary()` gives a one-row-per-top-level-block overview. The `node`
-column is a list-column of the live S7 objects, so a filtered frame can
-be fed straight back through the verbs.
+`ast_summary()` gives a one-row-per-top-level-block overview. The `node` column is a list-column of the live S7 objects, so a filtered frame can be fed straight back through the verbs.
 
 ```{r}
 ast_summary(doc)
 ```
 
-`ast_sections()` reports, for each top-level block, the chain of
-enclosing heading titles (`h1` through `h6`). A heading is part of the
-section it opens.
+`ast_sections()` reports, for each top-level block, the chain of enclosing heading titles (`h1` through `h6`). A heading is part of the section it opens.
 
 ```{r}
 ast_sections(doc)
 ```
 
-Two predicate helpers extend the selection mask with the same flavour as
-`has_class()`. `has_text()` greps a node's flattened `ast_text()`, and
-`has_label()` glob-matches its `@attr@id` (where Quarto labels live).
+Two predicate helpers extend the selection mask with the same flavour as `has_class()`. `has_text()` greps a node's flattened `ast_text()`, and `has_label()` glob-matches its `@attr@id` (where Quarto labels live).
 
 ```{r}
 select_nodes(doc, is(pandoc_header) & has_text("Watch"))
 ```
 
-`select_section()` slices the contiguous run of blocks under a heading,
-up to the next heading of equal or higher level. The `path` names the
-enclosing heading chain, outermost first, with glob matching.
+`select_section()` slices the contiguous run of blocks under a heading, up to the next heading of equal or higher level. The `path` names the enclosing heading chain, outermost first, with glob matching.
 
 ```{r}
 doc |>
@@ -331,9 +279,7 @@ doc |>
   purrr::map_chr(ast_text)
 ```
 
-Finally, `read_qmd()` / `write_qmd()` / `edit_qmd()` close the
-parse-edit-write loop over files. `write_qmd()` renders with `to_qmd()`
-and writes verbatim, so the round trip stays byte-faithful.
+Finally, `read_qmd()` / `write_qmd()` / `edit_qmd()` close the parse-edit-write loop over files. `write_qmd()` renders with `to_qmd()` and writes verbatim, so the round trip stays byte-faithful.
 
 ```{r}
 tmp = tempfile(fileext = ".qmd")
@@ -341,30 +287,17 @@ write_qmd(doc, tmp)
 identical(to_qmd(read_qmd(tmp)), to_qmd(doc))
 ```
 
-`edit_qmd(path, .f)` is the in-place shorthand for
-`write_qmd(.f(read_qmd(path)), path)`.
+`edit_qmd(path, .f)` is the in-place shorthand for `write_qmd(.f(read_qmd(path)), path)`.
 
 ## Recipes: porting Pandoc / Quarto Lua filters
 
-The verbs above are general purpose, but most Lua filters in the wild
-follow a handful of recognisable shapes. The recipes below pair the
-Lua original with its q2r translation so the mapping is obvious.
+The verbs above are general purpose, but most Lua filters in the wild follow a handful of recognisable shapes. The recipes below pair the Lua original with its q2r translation so the mapping is obvious.
 
-A note on output formats first: Pandoc and Quarto Lua filters run as a
-stage of the render pipeline, so the output target is known and
-exposed via `FORMAT` / `quarto.doc.isFormat()`. q2r is a parsing and
-rewriting library, not a pipeline, and `ast_filter()` does not know
-what (if anything) the caller will do next with the AST. Document
-metadata is still available on `doc@meta`, but the *target* is not;
-filters that branch on it (Quarto's `fancy-text`, `kbd`, `color-box`,
-...) therefore become parameterised functions whose caller picks the
-branch up front. The recipes below all describe target-agnostic
-rewrites.
+A note on output formats first: Pandoc and Quarto Lua filters run as a stage of the render pipeline, so the output target is known and exposed via `FORMAT` / `quarto.doc.isFormat()`. q2r is a parsing and rewriting library, not a pipeline, and `ast_filter()` does not know what (if anything) the caller will do next with the AST. Document metadata is still available on `doc@meta`, but the *target* is not; filters that branch on it (Quarto's `fancy-text`, `kbd`, `color-box`, ...) therefore become parameterised functions whose caller picks the branch up front. The recipes below all describe target-agnostic rewrites.
 
 ### Open external links in a new tab
 
-A staple of HTML-rendering Lua filters. The Pandoc version sets two
-attributes on every `Link` whose target is an absolute URL:
+A staple of HTML-rendering Lua filters. The Pandoc version sets two attributes on every `Link` whose target is an absolute URL:
 
 ``` lua
 function Link(l)
@@ -376,8 +309,7 @@ function Link(l)
 end
 ```
 
-The q2r translation is a single `ast_filter` handler keyed on
-`pandoc_link`, using `set_attr()` immutably:
+The q2r translation is a single `ast_filter` handler keyed on `pandoc_link`, using `set_attr()` immutably:
 
 ```{r}
 out = doc |> ast_filter(
@@ -394,9 +326,7 @@ out |>
 
 ### Auto-anchor headings
 
-A common Pandoc recipe that wraps each heading's content in a link
-pointing at its own id, so readers can grab a permalink by clicking
-the heading:
+A common Pandoc recipe that wraps each heading's content in a link pointing at its own id, so readers can grab a permalink by clicking the heading:
 
 ``` lua
 function Header(h)
@@ -406,9 +336,7 @@ function Header(h)
 end
 ```
 
-pampa applies pandoc's auto-identifier rules during parsing, so the
-headings in `doc` already have ids; the translation reads them with
-`get_id()` and rebuilds the inline content with `as_inlines()`:
+pampa applies pandoc's auto-identifier rules during parsing, so the headings in `doc` already have ids; the translation reads them with `get_id()` and rebuilds the inline content with `as_inlines()`:
 
 ```{r}
 out = doc |> ast_filter(
@@ -432,8 +360,7 @@ cat(to_qmd(out))
 
 ### Force every callout to "caution"
 
-Straight from the Quarto docs: rewrite the class of every callout
-`Div` so the whole document renders as caution callouts.
+Straight from the Quarto docs: rewrite the class of every callout `Div` so the whole document renders as caution callouts.
 
 ``` lua
 function Div(d)
@@ -446,8 +373,7 @@ function Div(d)
 end
 ```
 
-`remove_class()` accepts a vector, so the entire callout-prefixed
-sublist can be dropped in one call before adding the replacement:
+`remove_class()` accepts a vector, so the entire callout-prefixed sublist can be dropped in one call before adding the replacement:
 
 ```{r}
 out = doc |> ast_filter(
@@ -470,10 +396,7 @@ out |>
 
 ### Count words
 
-A read-only traversal: count every `Str` that contains a
-non-punctuation character. The Lua version accumulates into a
-file-level local because Lua filters return one element at a time
-and have no first-class way to fold across calls.
+A read-only traversal: count every `Str` that contains a non-punctuation character. The Lua version accumulates into a file-level local because Lua filters return one element at a time and have no first-class way to fold across calls.
 
 ``` lua
 local n = 0
@@ -483,8 +406,7 @@ end
 function Pandoc(_) print(n .. ' words') end
 ```
 
-In R the natural shape is just `select_nodes()` + `map_lgl()` +
-`sum()` -- no accumulator, no side effects:
+In R the natural shape is just `select_nodes()` + `map_lgl()` + `sum()` -- no accumulator, no side effects:
 
 ```{r}
 doc |>
@@ -495,9 +417,7 @@ doc |>
 
 ### Extract a link inventory
 
-When the goal is to *collect* rather than to rewrite, `select_nodes()`
-plus `purrr` is usually shorter than an `ast_filter` handler with a
-side-effecting accumulator:
+When the goal is to *collect* rather than to rewrite, `select_nodes()` plus `purrr` is usually shorter than an `ast_filter` handler with a side-effecting accumulator:
 
 ``` lua
 local links = {}
@@ -517,12 +437,7 @@ data.frame(
 
 ## Constructing content quickly
 
-Pandoc constructors are strictly typed, so even a simple emphasised
-phrase requires a few layers of wrapping. `as_inlines()` and
-`as_blocks()` accept strings (whitespace is converted to spaces,
-newlines to soft breaks), single nodes, lists, or existing wrappers,
-and produce the canonical wrapper type. Use them inside an
-`ast_filter()` handler to keep the body terse.
+Pandoc constructors are strictly typed, so even a simple emphasised phrase requires a few layers of wrapping. `as_inlines()` and `as_blocks()` accept strings (whitespace is converted to spaces, newlines to soft breaks), single nodes, lists, or existing wrappers, and produce the canonical wrapper type. Use them inside an `ast_filter()` handler to keep the body terse.
 
 ```{r}
 # Append a "[Edited]" tag to every paragraph.
@@ -553,15 +468,7 @@ doc |>
 
 ## The tree-sitter side
 
-The node-tree verbs (`select_nodes()`, `select_descendants()`,
-`select_children()`, `select_first()`, `walk_nodes()`, and the mutators)
-dispatch on a `ts_tree` too. The mask exposes the ts-specific slots
-(`kind`, `is_named`, `field_name`, `text`), but the attribute/text mask
-helpers (`has_class()`, `has_id()`, `has_attr()`, `has_text()`,
-`has_label()`) and the document-level helpers (`ast_summary()`,
-`ast_sections()`, `select_section()`, `ast_toc()`, `split_sections()`)
-are pandoc-only - on a `ts_tree` the mask helpers are a silent no-match
-and the document-level helpers have no method:
+The node-tree verbs (`select_nodes()`, `select_descendants()`, `select_children()`, `select_first()`, `walk_nodes()`, and the mutators) dispatch on a `ts_tree` too. The mask exposes the ts-specific slots (`kind`, `is_named`, `field_name`, `text`), but the attribute/text mask helpers (`has_class()`, `has_id()`, `has_attr()`, `has_text()`, `has_label()`) and the document-level helpers (`ast_summary()`, `ast_sections()`, `select_section()`, `ast_toc()`, `split_sections()`) are pandoc-only - on a `ts_tree` the mask helpers are a silent no-match and the document-level helpers have no method:
 
 ```{r}
 ts = parse_qmd(src, ast = "ts")
@@ -569,9 +476,7 @@ ts = parse_qmd(src, ast = "ts")
 select_nodes(ts, kind == "atx_heading")
 ```
 
-For full structural pattern matching, captures, and predicates
-(`#eq?`, `#match?`, ...) there's a `ts_query()` escape hatch that
-runs a tree-sitter `.scm` query directly:
+For full structural pattern matching, captures, and predicates (`#eq?`, `#match?`, ...) there's a `ts_query()` escape hatch that runs a tree-sitter `.scm` query directly:
 
 ```{r}
 matches = ts_query(ts, "(atx_heading) @h")
@@ -581,8 +486,7 @@ matches[[1]]$h
 
 ## Round-trips
 
-Rewriting produces a new AST of the same class as the input, so the
-result feeds straight back into the renderer:
+Rewriting produces a new AST of the same class as the input, so the result feeds straight back into the renderer:
 
 ```{r}
 out = doc |>

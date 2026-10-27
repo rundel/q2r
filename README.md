@@ -88,7 +88,8 @@ ts = parse_qmd(qmd, ast = "ts")
 ts
 #> ts_tree language=qmd
 #> └─document
-#>   ├─metadata "---\ntitle: Example\n---\n"
+#>   ├─metadata
+#>   │ └─body: yaml "title: Example\n"
 #>   ├─section "\n"
 #>   └─section
 #>     ├─atx_heading
