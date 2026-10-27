@@ -197,7 +197,7 @@ Every Phase 3 item marked `Coverage: yes` needs a targeted test, even when the q
 1. One file per behavior, `tests/testthat/test-<behavior>.R`, opened with a short comment naming the upstream commit (plus its bd-/q2# id) and what moved. Take the smallest inputs from the upstream integration test or from the Phase 5 smoke test.
 2. Assert the shape, not just "it parses": AST class and slot values on the pd path (and ts kinds where the grammar moved), diagnostic `@code` / `@kind` / hint text where a diagnostic changed, and `to_qmd()` output where the writer changed. Finish with a round trip (`expect_pd_ast_equal`; on the ts path `expect_ts_ast_equal` plus byte identity).
 3. Include the negative neighbour that keeps the change narrow (an inline tag that must not be lifted, a colon run that must stay in a paragraph, a correctly spaced shortcode that must not warn).
-4. Add a `NEWS.md` bullet under `## Upstream sync` when the AST shape, writer output, or diagnostic surface moved in a way a user can see.
+4. Do not touch `NEWS.md`. It tracks high-level feature changes only, with at most one `## Upstream` bullet per release naming the pinned q2 rev and subcrate versions; that line is refreshed at release time, not per bump. Per-bump detail belongs in `notes/q2-sync-notes.md` and the targeted tests.
 5. Run only the new files (`devtools::test(filter = "...")`), then list them in the current `notes/q2-sync-notes.md` section.
 
 Skip this phase only for a pure rev bump (Phase 3 found nothing on a linked surface).
