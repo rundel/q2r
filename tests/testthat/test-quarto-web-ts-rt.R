@@ -348,6 +348,18 @@ test_that("about.qmd", {
   expect_ts_ast_equal(ts2, ts)
 })
 
+test_that("accessibility/site-report.qmd", {
+  skip_if_no_quarto_web()
+  text = quarto_web_read("accessibility/site-report.qmd")
+  ts = parse_qmd(text, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts)
+  if (has_error_diagnostics(ts)) return(invisible())
+  rendered = to_qmd(ts)
+  ts2 = parse_qmd(rendered, ast = "ts", quiet = TRUE)
+  expect_no_error_diagnostics(ts2)
+  expect_ts_ast_equal(ts2, ts)
+})
+
 test_that("bug-reports.qmd", {
   skip_if_no_quarto_web()
   text = quarto_web_read("bug-reports.qmd")
