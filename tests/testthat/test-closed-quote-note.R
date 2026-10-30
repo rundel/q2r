@@ -3,11 +3,13 @@
 # quote" even for a stray closing mark such as a plural possessive; it now says
 # no opening quote was found. Q-2-7 (a genuinely unclosed quote) keeps the old
 # wording. The note reaches R as the diagnostic's first `@details` entry.
+# Since q2 9c4f3b3f2 (GH #943) a `'` directly after a word is an apostrophe, so
+# Q-2-10 is triggered here by a `'` with whitespace on both sides.
 
 detail_text = function(d) d@details[[1]]$content$text
 
 test_that("the Q-2-10 note says no opening quote was found", {
-  pd = parse_qmd("the users' guide\n", quiet = TRUE)
+  pd = parse_qmd("the users ' guide\n", quiet = TRUE)
   expect_length(pd@diagnostics, 1L)
   d = pd@diagnostics[[1]]
   expect_identical(d@code, "Q-2-10")
