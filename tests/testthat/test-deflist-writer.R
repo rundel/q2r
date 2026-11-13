@@ -66,15 +66,12 @@ test_that("definition list shapes round-trip through the div spelling", {
   }
 })
 
-test_that("single-paragraph definitions settle into tight plain ones after one trip", {
+test_that("single-paragraph definitions round-trip as loose", {
   loose = doc_of(deflist(item("T", list(para("a")), list(para("b")))))
-  tight = doc_of(deflist(item("T", "a", "b")))
   first = to_qmd(loose)
   pd = parse_qmd(first, quiet = TRUE)
-  expect_pd_ast_equal(pd, tight)
-  second = to_qmd(pd)
-  expect_false(identical(first, second))
-  expect_identical(to_qmd(parse_qmd(second, quiet = TRUE)), second)
+  expect_pd_ast_equal(pd, loose)
+  expect_identical(to_qmd(pd), first)
 })
 
 test_that("an empty term is written as the [] placeholder and reads back empty", {

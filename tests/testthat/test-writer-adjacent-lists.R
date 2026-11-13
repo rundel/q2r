@@ -32,7 +32,7 @@ test_that("a paragraph between two bullet lists keeps the star, as do nested per
     pandoc_blocks(list(bullets("a", "b")))
   ))
   d = doc(rows)
-  expect_identical(to_qmd(d), "* * h1\n  * h2\n\n* * a\n  * b\n")
+  expect_identical(to_qmd(d), "* * h1\n  * h2\n* * a\n  * b\n")
   expect_pd_ast_equal(parse_qmd(to_qmd(d), quiet = TRUE), d)
 })
 
