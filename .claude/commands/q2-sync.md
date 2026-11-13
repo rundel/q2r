@@ -1,10 +1,16 @@
 ---
-description: Sync q2r with upstream q2 - review changes since the pinned rev, identify impact, integrate, and update the bindings
-argument-hint: [target-rev]
+description: Sync q2r with an upstream q2 GitHub release - review changes since the pinned release, identify impact, integrate, and update the bindings
+argument-hint: [release-tag | prerelease]
 allowed-tools: [Bash, Read, Edit, Write, Agent]
 ---
 
-Update q2r to a newer revision of `quarto-dev/q2`. The argument `$ARGUMENTS` is an optional target rev (commit SHA, branch, or tag). If empty, default to `origin/main`.
+Update q2r to a newer GitHub release of `quarto-dev/q2`. Syncs track published releases, not arbitrary commits. The argument `$ARGUMENTS` selects the target release:
+
+- Empty: the latest stable release (`gh release view -R quarto-dev/q2 --json tagName,name,isPrerelease`, which never returns a prerelease).
+- `prerelease` (or `nightly`): the most recent prerelease, i.e. the first entry with `isPrerelease: true` in `gh release list -R quarto-dev/q2 --json tagName,name,isPrerelease,publishedAt`. Today that is the moving `nightly` tag, whose release name carries the version and short SHA (e.g. `q2 nightly 0.45.0-nightly.20261112 (a76c96abf)`).
+- A tag (e.g. `v0.44.0`): that specific release. Confirm it exists with `gh release view <tag> -R quarto-dev/q2`; if it does not, stop and say so rather than falling back to a commit.
+
+The pin in `src/rust/Cargo.toml` is always the release tag's resolved commit SHA in `rev = '...'` (never `tag = '...'`, since the `nightly` tag moves), with a `# q2 <release>` comment on the line above each `rev` naming the release it came from (the tag for a stable release, the full nightly version string for a prerelease).
 
 Work through the phases below in order. Stop and confirm with the user at every checkpoint marked CHECKPOINT. Do not proceed past a checkpoint without explicit go-ahead.
 
@@ -23,21 +29,24 @@ If the diff shows that something outside these four crates has a downstream effe
 
 ## Phase 1: Set up
 
-1. Read the current pinned rev from `src/rust/Cargo.toml`. There are two `rev = '...'` lines (`pampa`, `tree-sitter-qmd`) and they should match. If they don't, stop and surface the mismatch.
+1. Read the current pinned rev from `src/rust/Cargo.toml`. There are two `rev = '...'` lines (`pampa`, `tree-sitter-qmd`) and they should match. If they don't, stop and surface the mismatch. Note the `# q2 <release>` comment above them if present (pins made before the move to releases have none).
 2. Locate the q2 repo at `../q2/` (sibling of this project). If it isn't there, ask the user where it lives.
-3. In `../q2/`, run `git fetch --all --tags`. Do not check out, reset, or modify the working tree.
-4. Resolve the target rev to a SHA. Default: `origin/main`.
-5. If target SHA equals the current pinned SHA, report "already up to date" and exit.
+3. In `../q2/`, run `git fetch --tags --force origin` (`--force` because the `nightly` tag is rewritten on every nightly). Do not check out, reset, or modify the working tree.
+4. Pick the target release from `$ARGUMENTS` as described above, then resolve its tag to a SHA with `git -C ../q2 rev-parse <tag>^{commit}`. For a prerelease, check that the short SHA in the release name matches; if it does not, the local tag is stale or the release is mid-publish, so stop and report it.
+5. Describe the current pin relative to releases: `git -C ../q2 tag --points-at <pinned> 'v*'` names it if it is a release, otherwise `git -C ../q2 describe --tags --match 'v*' <pinned>` gives the nearest release (e.g. `v0.43.0-34-gd644dc95f`, an older commit pin).
+6. If the target SHA equals the pinned SHA, report "already up to date" and exit. If the target is an ancestor of the pin (`git merge-base --is-ancestor <target> <pinned>`), it would be a downgrade (likely when a commit or nightly pin is ahead of the latest stable release): stop and ask whether to wait for the next release, take the prerelease instead, or downgrade.
 
 Report:
 
-- Current pinned SHA (short form + author date + subject)
-- Target SHA (short form + author date + subject)
-- Number of commits between them
+- Current pin: release (or nearest-release description) + short SHA + author date + subject
+- Target: release name + tag + short SHA + publish date
+- Number of commits between them, and the stable releases crossed (`git -C ../q2 tag --merged <target> --no-merged <pinned> 'v*' --sort=version:refname`)
 
-CHECKPOINT 1: confirm the user wants to proceed with this target rev.
+CHECKPOINT 1: confirm the user wants to proceed with this target release.
 
 ## Phase 2: Diff narrowing
+
+Start with the release notes for each release crossed (`gh release view <tag> -R quarto-dev/q2 --json body --jq .body`, plus the target prerelease's notes if it is one). They summarize user-facing changes and often name the bd-/q2# ids, which makes the commit-level pass below faster to triage, but they are not a substitute for it.
 
 For the two in-tree crates (`crates/pampa/`, `crates/tree-sitter-qmd/`):
 
@@ -58,7 +67,7 @@ Report per crate:
 
 Plus a separate section for any workspace `Cargo.toml` shifts worth flagging (version bumps on shared deps, new feature flags, etc.).
 
-If no files in the four crates changed, ask the user whether to proceed anyway (they may want a pure rev bump for unrelated reasons).
+If no files in the four crates changed, ask the user whether to proceed anyway (they may want a pure release bump for unrelated reasons).
 
 ## Phase 3: Impact analysis
 
@@ -90,7 +99,7 @@ CHECKPOINT 2: present the impact report. Ask the user to confirm the integration
 
 ## Phase 4: Bump the pin
 
-1. Update both `rev = '...'` lines in `src/rust/Cargo.toml` to the new SHA in a single Edit (use `replace_all`).
+1. Update both `rev = '...'` lines in `src/rust/Cargo.toml` to the target release's full SHA in a single Edit (use `replace_all`), and set the `# q2 <release>` comment above each (add it if missing) to the release tag, or to the full nightly version string for a prerelease. Update the "Current pinned commit" line in `CLAUDE.md` to the new SHA and release.
 2. Refresh `Cargo.lock`: `cargo update --manifest-path src/rust/Cargo.toml`. If that pulls in more than the four target crates, narrow with `-p pampa -p tree-sitter-qmd -p quarto-source-map -p quarto-error-reporting -p quarto-yaml`. Always include `quarto-yaml`: q2's workspace manifest has under-declared its requirement (`0.1.2` while the code needed `0.1.3`), and a narrowed update that skips it leaves `quarto-config` failing to compile against the stale version.
 3. Briefly report what changed in `Cargo.lock` (which crates moved, anything surprising).
 
@@ -160,7 +169,7 @@ Group failures by failure mode (e.g., "12 tests fail with `pd ast mismatch: trai
 
 Append a new dated section to the top of the file. Each section should contain:
 
-- Header: `## <YYYY-MM-DD>: <old-short-sha> → <new-short-sha>`
+- Header: `## <YYYY-MM-DD>: <old-release> (<old-short-sha>) → <new-release> (<new-short-sha>)`, using the nearest-release description for an old commit pin and the nightly version string for a prerelease
 - Total failure count
 - Failure-mode groups with counts
 - Per-fixture failure list (path + line ref + one-line failure-mode tag), sorted alphabetically, so future diffs are stable
@@ -200,13 +209,13 @@ Every Phase 3 item marked `Coverage: yes` needs a targeted test, even when the q
 4. Do not touch `NEWS.md`. It tracks high-level feature changes only, with at most one `## Upstream` bullet per release naming the pinned q2 rev and subcrate versions; that line is refreshed at release time, not per bump. Per-bump detail belongs in `notes/q2-sync-notes.md` and the targeted tests.
 5. Run only the new files (`devtools::test(filter = "...")`), then list them in the current `notes/q2-sync-notes.md` section.
 
-Skip this phase only for a pure rev bump (Phase 3 found nothing on a linked surface).
+Skip this phase only for a pure release bump (Phase 3 found nothing on a linked surface).
 
 ## Phase 9: Wrap up
 
 Summarize:
 
-- Old SHA -> new SHA
+- Old release + SHA -> new release + SHA
 - Files in q2r that changed, one line each, with why
 - Tests added for absorbed behavior changes (Phase 8), one line each with what they pin; say explicitly if none were needed
 - Opportunities deferred (e.g., grammar-gap cleanup we noted but did not take)
