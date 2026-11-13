@@ -110,6 +110,10 @@ Top-level [`tools/config.R`](tools/config.R) and [`tools/msrv.R`](tools/msrv.R) 
 - Rust: standard rustfmt; no decorative comments.
 - Commit messages: one sentence, no body, no `Co-Authored-By` or other self-attribution trailers.
 
+## Version control
+
+This project opts in to GitButler: use `but` (following the installed GitButler skill) for inspection and all version-control writes, not plain git. Sync work lands by fast-forwarding `origin/main` directly, with no pull requests.
+
 ## Notes folder
 
 All ad-hoc notes, drafts, state logs, and upstream-bug write-ups live under `notes/` (gitignored). This includes upstream issue drafts (`notes/GH#<NNN-or-TBD>-<short-name>.md`), the sync-failure log (`notes/q2-sync-notes.md`), and the running upstream issue list (`notes/issues.md`). Do not put these at the project root or under `../q2/`.
