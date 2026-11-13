@@ -150,7 +150,7 @@ fn attr_from_r(r: &Robj) -> ERResult<Attr> {
     for (k, v) in keys.into_iter().zip(values.into_iter()) {
         map.insert(k, v);
     }
-    Ok((id, classes, map))
+    Ok((id, classes, map).into())
 }
 
 fn items_from_r(r: &Robj) -> ERResult<Vec<List>> {
@@ -550,101 +550,101 @@ fn inline_from_list(list: List) -> ERResult<Inline> {
             content: inlines_from_content_field(&list, "content")?,
             source_info: si,
         }),
-        "Code" => Inline::Code(Code {
+        "Code" => Inline::Code(Box::new(Code {
             attr: attr_field(&list)?,
             text: need_str(&list, "text")?,
             source_info: si,
             attr_source: asi(),
-        }),
+        })),
         "Math" => {
             let math_type = math_type_from_str(&str_or_empty(&list, "math_type"));
-            Inline::Math(Math {
+            Inline::Math(Box::new(Math {
                 math_type,
                 text: need_str(&list, "text")?,
                 source_info: si,
                 text_source: None,
-            })
+            }))
         }
-        "RawInline" => Inline::RawInline(RawInline {
+        "RawInline" => Inline::RawInline(Box::new(RawInline {
             format: need_str(&list, "format")?,
             text: need_str(&list, "text")?,
             source_info: si,
-        }),
+        })),
         "Quoted" => {
             let quote_type = quote_type_from_str(&str_or_empty(&list, "quote_type"));
-            Inline::Quoted(Quoted {
+            Inline::Quoted(Box::new(Quoted {
                 quote_type,
                 content: inlines_from_content_field(&list, "content")?,
                 source_info: si,
-            })
+            }))
         }
-        "Link" => Inline::Link(Link {
+        "Link" => Inline::Link(Box::new(Link {
             attr: attr_field(&list)?,
             content: inlines_from_content_field(&list, "content")?,
             target: (str_or_empty(&list, "url"), str_or_empty(&list, "title")),
             source_info: si,
             attr_source: asi(),
             target_source: tsi(),
-        }),
-        "Image" => Inline::Image(Image {
+        })),
+        "Image" => Inline::Image(Box::new(Image {
             attr: attr_field(&list)?,
             content: inlines_from_content_field(&list, "content")?,
             target: (str_or_empty(&list, "url"), str_or_empty(&list, "title")),
             source_info: si,
             attr_source: asi(),
             target_source: tsi(),
-        }),
+        })),
         "Note" => Inline::Note(Note {
             content: blocks_from_content_field(&list, "content")?,
             source_info: si,
         }),
-        "Span" => Inline::Span(Span {
+        "Span" => Inline::Span(Box::new(Span {
             attr: attr_field(&list)?,
             content: inlines_from_content_field(&list, "content")?,
             source_info: si,
             attr_source: asi(),
-        }),
+        })),
         "Cite" => {
             let citations_r = field(&list, "citations").unwrap_or(NULL.into_robj());
             let citation_lists = items_from_r(&citations_r)?;
             let citations: ERResult<Vec<Citation>> =
                 citation_lists.into_iter().map(citation_from_list).collect();
-            Inline::Cite(Cite {
+            Inline::Cite(Box::new(Cite {
                 citations: citations?,
                 content: inlines_from_content_field(&list, "content")?,
                 source_info: si,
-            })
+            }))
         }
         "NoteReference" => Inline::NoteReference(NoteReference {
             id: need_str(&list, "id")?,
             source_info: si,
         }),
-        "AttrInline" => Inline::Attr(InlineAttr::new(attr_field(&list)?, asi(), si)),
-        "Insert" => Inline::Insert(Insert {
+        "AttrInline" => Inline::Attr(Box::new(InlineAttr::new(attr_field(&list)?, asi(), si))),
+        "Insert" => Inline::Insert(Box::new(Insert {
             attr: attr_field(&list)?,
             content: inlines_from_content_field(&list, "content")?,
             source_info: si,
             attr_source: asi(),
-        }),
-        "Delete" => Inline::Delete(Delete {
+        })),
+        "Delete" => Inline::Delete(Box::new(Delete {
             attr: attr_field(&list)?,
             content: inlines_from_content_field(&list, "content")?,
             source_info: si,
             attr_source: asi(),
-        }),
-        "Highlight" => Inline::Highlight(Highlight {
+        })),
+        "Highlight" => Inline::Highlight(Box::new(Highlight {
             attr: attr_field(&list)?,
             content: inlines_from_content_field(&list, "content")?,
             source_info: si,
             attr_source: asi(),
-        }),
-        "EditComment" => Inline::EditComment(EditComment {
+        })),
+        "EditComment" => Inline::EditComment(Box::new(EditComment {
             attr: attr_field(&list)?,
             content: inlines_from_content_field(&list, "content")?,
             source_info: si,
             attr_source: asi(),
-        }),
-        "Shortcode" => Inline::Shortcode(shortcode_from_list(list)?),
+        })),
+        "Shortcode" => Inline::Shortcode(Box::new(shortcode_from_list(list)?)),
         "CustomInline" => {
             return Err(Error::Other(format!(
                 "inline tag '{}' is not yet supported by the R -> Rust converter",
@@ -687,17 +687,17 @@ fn block_from_list(list: List) -> ERResult<Block> {
                 source_info: si,
             })
         }
-        "CodeBlock" => Block::CodeBlock(CodeBlock {
+        "CodeBlock" => Block::CodeBlock(Box::new(CodeBlock {
             attr: attr_field(&list)?,
             text: need_str(&list, "text")?,
             source_info: si,
             attr_source: asi(),
-        }),
-        "RawBlock" => Block::RawBlock(RawBlock {
+        })),
+        "RawBlock" => Block::RawBlock(Box::new(RawBlock {
             format: need_str(&list, "format")?,
             text: need_str(&list, "text")?,
             source_info: si,
-        }),
+        })),
         "BlockQuote" => Block::BlockQuote(BlockQuote {
             content: blocks_from_content_field(&list, "content")?,
             source_info: si,
@@ -718,11 +718,11 @@ fn block_from_list(list: List) -> ERResult<Block> {
                 })
                 .collect();
             let attr: ListAttributes = (start, style, delim);
-            Block::OrderedList(OrderedList {
+            Block::OrderedList(Box::new(OrderedList {
                 attr,
                 content: content?,
                 source_info: si,
-            })
+            }))
         }
         "BulletList" => {
             let item_lists = field(&list, "items")
@@ -768,13 +768,13 @@ fn block_from_list(list: List) -> ERResult<Block> {
                 source_info: si,
             })
         }
-        "Header" => Block::Header(Header {
+        "Header" => Block::Header(Box::new(Header {
             level: need_i32(&list, "level")? as usize,
             attr: attr_field(&list)?,
             content: inlines_from_content_field(&list, "content")?,
             source_info: si,
             attr_source: asi(),
-        }),
+        })),
         "HorizontalRule" => Block::HorizontalRule(HorizontalRule { source_info: si }),
         "Figure" => {
             let caption = match field(&list, "caption") {
@@ -785,45 +785,44 @@ fn block_from_list(list: List) -> ERResult<Block> {
                     source_info: default_si(),
                 },
             };
-            Block::Figure(Figure {
+            Block::Figure(Box::new(Figure {
                 attr: attr_field(&list)?,
                 caption,
                 content: blocks_from_content_field(&list, "content")?,
                 source_info: si,
                 attr_source: asi(),
-            })
+            }))
         }
-        "Div" => Block::Div(Div {
+        "Div" => Block::Div(Box::new(Div {
             attr: attr_field(&list)?,
             content: blocks_from_content_field(&list, "content")?,
             source_info: si,
             attr_source: asi(),
-        }),
-        "NoteDefinitionPara" => Block::NoteDefinitionPara(NoteDefinitionPara {
+        })),
+        "NoteDefinitionPara" => Block::NoteDefinitionPara(Box::new(NoteDefinitionPara {
             id: need_str(&list, "id")?,
             content: inlines_from_content_field(&list, "content")?,
             source_info: si,
-        }),
+        })),
         "NoteDefinitionFencedBlock" => {
-            Block::NoteDefinitionFencedBlock(NoteDefinitionFencedBlock {
+            Block::NoteDefinitionFencedBlock(Box::new(NoteDefinitionFencedBlock {
                 id: need_str(&list, "id")?,
                 content: blocks_from_content_field(&list, "content")?,
                 source_info: si,
-            })
+            }))
         }
         "CaptionBlock" => Block::CaptionBlock(CaptionBlock {
             content: inlines_from_content_field(&list, "content")?,
             source_info: si,
         }),
-        "Table" => Block::Table(table_from_list(list)?),
+        "Table" => Block::Table(Box::new(table_from_list(list)?)),
         "BlockMetadata" => {
-            let meta_obj = field(&list, "meta").ok_or_else(|| {
-                Error::Other("BlockMetadata: missing 'meta' field".to_string())
-            })?;
-            Block::BlockMetadata(MetaBlock {
+            let meta_obj = field(&list, "meta")
+                .ok_or_else(|| Error::Other("BlockMetadata: missing 'meta' field".to_string()))?;
+            Block::BlockMetadata(Box::new(MetaBlock {
                 meta: config_value_from_r(&meta_obj)?,
                 source_info: si,
-            })
+            }))
         }
         "CustomBlock" => {
             return Err(Error::Other(format!(

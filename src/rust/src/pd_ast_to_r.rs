@@ -9,7 +9,7 @@ use pampa::pandoc::{
 };
 
 fn attr_to_r(attr: &Attr) -> Robj {
-    let (id, classes, attrs) = attr;
+    let (id, classes, attrs) = &**attr;
     let class_vec: Vec<&str> = classes.iter().map(|s| s.as_str()).collect();
     let keys: Vec<&str> = attrs.keys().map(|s| s.as_str()).collect();
     let vals: Vec<&str> = attrs.values().map(|s| s.as_str()).collect();
