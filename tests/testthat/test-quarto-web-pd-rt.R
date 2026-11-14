@@ -2608,6 +2608,18 @@ test_that("docs/download/changelog/1.1/index.qmd", {
   expect_pd_ast_equal(pd2, pd)
 })
 
+test_that("docs/download/changelog/1.10/index.qmd", {
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/download/changelog/1.10/index.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
+})
+
 test_that("docs/download/changelog/1.2/index.qmd", {
   skip_if_no_quarto_web()
   text = quarto_web_read("docs/download/changelog/1.2/index.qmd")
@@ -4503,6 +4515,30 @@ test_that("docs/prerelease/1.11/_highlights.qmd", {
 test_that("docs/prerelease/1.11/index.qmd", {
   skip_if_no_quarto_web()
   text = quarto_web_read("docs/prerelease/1.11/index.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
+})
+
+test_that("docs/prerelease/1.12/_highlights.qmd", {
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/prerelease/1.12/_highlights.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
+})
+
+test_that("docs/prerelease/1.12/index.qmd", {
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/prerelease/1.12/index.qmd")
   pd = parse_qmd(text, quiet = TRUE)
   expect_no_error_diagnostics(pd)
   if (has_error_diagnostics(pd)) return(invisible())
@@ -6451,6 +6487,18 @@ test_that("docs/visual-editor/technical.qmd", {
 test_that("docs/websites/website-about.qmd", {
   skip_if_no_quarto_web()
   text = quarto_web_read("docs/websites/website-about.qmd")
+  pd = parse_qmd(text, quiet = TRUE)
+  expect_no_error_diagnostics(pd)
+  if (has_error_diagnostics(pd)) return(invisible())
+  rendered = to_qmd(pd)
+  pd2 = parse_qmd(rendered, quiet = TRUE)
+  expect_no_error_diagnostics(pd2)
+  expect_pd_ast_equal(pd2, pd)
+})
+
+test_that("docs/websites/website-accessibility.qmd", {
+  skip_if_no_quarto_web()
+  text = quarto_web_read("docs/websites/website-accessibility.qmd")
   pd = parse_qmd(text, quiet = TRUE)
   expect_no_error_diagnostics(pd)
   if (has_error_diagnostics(pd)) return(invisible())
