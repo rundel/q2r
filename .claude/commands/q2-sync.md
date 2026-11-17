@@ -102,6 +102,7 @@ CHECKPOINT 2: present the impact report. Ask the user to confirm the integration
 1. Update both `rev = '...'` lines in `src/rust/Cargo.toml` to the target release's full SHA in a single Edit (use `replace_all`), and set the `# q2 <release>` comment above each (add it if missing) to the release tag, or to the full nightly version string for a prerelease. Update the "Current pinned commit" line in `CLAUDE.md` to the new SHA and release.
 2. Refresh `Cargo.lock`: `cargo update --manifest-path src/rust/Cargo.toml`. If that pulls in more than the four target crates, narrow with `-p pampa -p tree-sitter-qmd -p quarto-source-map -p quarto-error-reporting -p quarto-yaml`. Always include `quarto-yaml`: q2's workspace manifest has under-declared its requirement (`0.1.2` while the code needed `0.1.3`), and a narrowed update that skips it leaves `quarto-config` failing to compile against the stale version.
 3. Briefly report what changed in `Cargo.lock` (which crates moved, anything surprising).
+4. Update the `q2r/q2` entry in `../upstream-watch/deps.yaml` (private repo `rundel/upstream-watch`, which opens an `upstream` issue while `current` lags the latest stable q2 release): set `current` to the release tag and the short SHA in `notes` (`(<short-sha> for <tag>)`); touch `where` only if the pinned locations moved. The entry's `pattern` matches stable tags only, so for a prerelease target set `current` to the newest stable release the pin contains (`git -C ../q2 describe --tags --abbrev=0 --match 'v*' <target>`) and name the nightly version in `notes`. Confirm with `GITHUB_TOKEN=$(gh auth token) uv run check.py --dry-run` from `../upstream-watch`; the `q2r/q2` row should read `ok`. Commit and push happen in Phase 9.
 
 ## Phase 5: Rebuild and absorb breakage
 
@@ -221,4 +222,6 @@ Summarize:
 - Opportunities deferred (e.g., grammar-gap cleanup we noted but did not take)
 - Follow-ups: any TODO updates needed in `CLAUDE.md` (the Known risks / TODO sections), or any new memory worth recording about a behavior change.
 
-Do not commit. Leave that to the user.
+Do not commit in q2r. Leave that to the user.
+
+The one exception is `../upstream-watch`: once the suite is green (or the user has signed off at CHECKPOINT 3), commit the `deps.yaml` edit from Phase 4 there with plain git (that repo does not use GitButler) as a short imperative line like `Bump q2r q2 to v0.46.0`, and push to `main`. The push triggers the check workflow, which closes the open `q2r/q2` issue. Report the commit in the summary.
