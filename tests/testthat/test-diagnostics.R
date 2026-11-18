@@ -149,7 +149,7 @@ test_that("info / note diagnostics next to errors do not appear in the error mes
   expect_false(grepl("N1", err_msg, fixed = TRUE))
 })
 
-multi_err_qmd = "{< unknown_shortcode >}\n\n{< another_shortcode >}"
+multi_err_qmd = "a ' b.\n\nA bad [attribute]{[\n"
 
 test_that("parse_qmd() coalesces distinct parser errors into a single stop()", {
   res = parse_qmd(multi_err_qmd, quiet = TRUE)
