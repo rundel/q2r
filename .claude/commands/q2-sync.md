@@ -30,17 +30,17 @@ If the diff shows that something outside these four crates has a downstream effe
 ## Phase 1: Set up
 
 1. Read the current pinned rev from `src/rust/Cargo.toml`. There are two `rev = '...'` lines (`pampa`, `tree-sitter-qmd`) and they should match. If they don't, stop and surface the mismatch. Note the `# q2 <release>` comment above them if present (pins made before the move to releases have none).
-2. Locate the q2 repo at `../q2/` (sibling of this project). If it isn't there, ask the user where it lives.
-3. In `../q2/`, run `git fetch --tags --force origin` (`--force` because the `nightly` tag is rewritten on every nightly). Do not check out, reset, or modify the working tree.
-4. Pick the target release from `$ARGUMENTS` as described above, then resolve its tag to a SHA with `git -C ../q2 rev-parse <tag>^{commit}`. For a prerelease, check that the short SHA in the release name matches; if it does not, the local tag is stale or the release is mid-publish, so stop and report it.
-5. Describe the current pin relative to releases: `git -C ../q2 tag --points-at <pinned> 'v*'` names it if it is a release, otherwise `git -C ../q2 describe --tags --match 'v*' <pinned>` gives the nearest release (e.g. `v0.43.0-34-gd644dc95f`, an older commit pin).
+2. Locate the q2 repo at `../forks/q2/` (under the `forks/` folder beside this project). If it isn't there, ask the user where it lives.
+3. In `../forks/q2/`, run `git fetch --tags --force origin` (`--force` because the `nightly` tag is rewritten on every nightly). Do not check out, reset, or modify the working tree.
+4. Pick the target release from `$ARGUMENTS` as described above, then resolve its tag to a SHA with `git -C ../forks/q2 rev-parse <tag>^{commit}`. For a prerelease, check that the short SHA in the release name matches; if it does not, the local tag is stale or the release is mid-publish, so stop and report it.
+5. Describe the current pin relative to releases: `git -C ../forks/q2 tag --points-at <pinned> 'v*'` names it if it is a release, otherwise `git -C ../forks/q2 describe --tags --match 'v*' <pinned>` gives the nearest release (e.g. `v0.43.0-34-gd644dc95f`, an older commit pin).
 6. If the target SHA equals the pinned SHA, report "already up to date" and exit. If the target is an ancestor of the pin (`git merge-base --is-ancestor <target> <pinned>`), it would be a downgrade (likely when a commit or nightly pin is ahead of the latest stable release): stop and ask whether to wait for the next release, take the prerelease instead, or downgrade.
 
 Report:
 
 - Current pin: release (or nearest-release description) + short SHA + author date + subject
 - Target: release name + tag + short SHA + publish date
-- Number of commits between them, and the stable releases crossed (`git -C ../q2 tag --merged <target> --no-merged <pinned> 'v*' --sort=version:refname`)
+- Number of commits between them, and the stable releases crossed (`git -C ../forks/q2 tag --merged <target> --no-merged <pinned> 'v*' --sort=version:refname`)
 
 CHECKPOINT 1: confirm the user wants to proceed with this target release.
 
@@ -102,7 +102,7 @@ CHECKPOINT 2: present the impact report. Ask the user to confirm the integration
 1. Update both `rev = '...'` lines in `src/rust/Cargo.toml` to the target release's full SHA in a single Edit (use `replace_all`), and set the `# q2 <release>` comment above each (add it if missing) to the release tag, or to the full nightly version string for a prerelease. Update the "Current pinned commit" line in `CLAUDE.md` to the new SHA and release.
 2. Refresh `Cargo.lock`: `cargo update --manifest-path src/rust/Cargo.toml`. If that pulls in more than the four target crates, narrow with `-p pampa -p tree-sitter-qmd -p quarto-source-map -p quarto-error-reporting -p quarto-yaml`. Always include `quarto-yaml`: q2's workspace manifest has under-declared its requirement (`0.1.2` while the code needed `0.1.3`), and a narrowed update that skips it leaves `quarto-config` failing to compile against the stale version.
 3. Briefly report what changed in `Cargo.lock` (which crates moved, anything surprising).
-4. Update the `q2r/q2` entry in `../upstream-watch/deps.yaml` (private repo `rundel/upstream-watch`, which opens an `upstream` issue while `current` lags the latest stable q2 release): set `current` to the release tag and the short SHA in `notes` (`(<short-sha> for <tag>)`); touch `where` only if the pinned locations moved. The entry's `pattern` matches stable tags only, so for a prerelease target set `current` to the newest stable release the pin contains (`git -C ../q2 describe --tags --abbrev=0 --match 'v*' <target>`) and name the nightly version in `notes`. Confirm with `GITHUB_TOKEN=$(gh auth token) uv run check.py --dry-run` from `../upstream-watch`; the `q2r/q2` row should read `ok`. Commit and push happen in Phase 9.
+4. Update the `q2r/q2` entry in `../upstream-watch/deps.yaml` (private repo `rundel/upstream-watch`, which opens an `upstream` issue while `current` lags the latest stable q2 release): set `current` to the release tag and the short SHA in `notes` (`(<short-sha> for <tag>)`); touch `where` only if the pinned locations moved. The entry's `pattern` matches stable tags only, so for a prerelease target set `current` to the newest stable release the pin contains (`git -C ../forks/q2 describe --tags --abbrev=0 --match 'v*' <target>`) and name the nightly version in `notes`. Confirm with `GITHUB_TOKEN=$(gh auth token) uv run check.py --dry-run` from `../upstream-watch`; the `q2r/q2` row should read `ok`. Commit and push happen in Phase 9.
 
 ## Phase 5: Rebuild and absorb breakage
 
